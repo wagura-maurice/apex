@@ -3,31 +3,6 @@
 
     <?php
     $apex_request_demo_href = home_url('/request-demo');
-    $apex_footer_groups = [
-        'Platform' => [
-            ['label' => 'ApexCore Overview', 'href' => home_url('/platform/apexcore')],
-            ['label' => 'Request Demo', 'href' => $apex_request_demo_href],
-        ],
-        'Solutions' => [
-            ['label' => 'Solutions Overview', 'href' => home_url('/solutions/overview')],
-            ['label' => 'Core Banking & Microfinance', 'href' => home_url('/solutions/core-banking-microfinance')],
-            ['label' => 'Internet & Mobile Banking', 'href' => home_url('/solutions/internet-mobile-banking')],
-            ['label' => 'Agency & Branch Banking', 'href' => home_url('/solutions/agency-branch-banking')],
-            ['label' => 'Reporting & Analytics', 'href' => home_url('/solutions/reporting-analytics')],
-        ],
-        'Industry' => [
-            ['label' => 'Industry Overview', 'href' => home_url('/industry/overview')],
-            ['label' => 'MFIs', 'href' => home_url('/industry/mfis')],
-            ['label' => 'SACCOs & Credit Unions', 'href' => home_url('/industry/credit-unions')],
-            ['label' => 'Commercial Banks', 'href' => home_url('/industry/banks-microfinance')],
-        ],
-        'Company' => [
-            ['label' => 'About Apex Softwares', 'href' => home_url('/about-us')],
-            ['label' => 'Our Approach', 'href' => home_url('/about-us/our-approach')],
-            ['label' => 'News & Updates', 'href' => home_url('/about-us/news')],
-            ['label' => 'Contact', 'href' => home_url('/contact')],
-        ],
-    ];
     ?>
 
     <footer class="border-t border-apex-gray-200 bg-gradient-to-br from-apex-gray-50 via-white to-apex-blue/5 relative overflow-hidden apex-gradient-shell">
@@ -92,20 +67,61 @@
 
                 <div class="lg:col-span-7">
                     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-                        <?php foreach ($apex_footer_groups as $title => $links) : ?>
-                            <div>
-                                <p class="text-base font-bold text-apex-dark mb-4 apex-gradient-text"><?php echo esc_html($title); ?></p>
-                                <ul class="space-y-3">
-                                    <?php foreach ($links as $link) : ?>
-                                        <li>
-                                            <a class="relative text-apex-gray-600 hover:text-apex-dark transition-colors duration-200 text-sm apex-footer-link" href="<?php echo esc_url($link['href']); ?>">
-                                                <?php echo esc_html($link['label']); ?>
-                                            </a>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endforeach; ?>
+                        <!-- Footer navigation using WordPress menu system -->
+                        <?php
+                        $footer_args = array(
+                            'theme_location' => 'footer',
+                            'container' => 'div',
+                            'container_class' => 'grid gap-10 sm:grid-cols-2 lg:grid-cols-4',
+                            'items_wrap' => '%3$s', // Just output the li's without ul wrapper
+                            'depth' => 1,
+                            'fallback_cb' => 'apex_footer_default_nav'
+                        );
+                        wp_nav_menu($footer_args);
+                        
+                        function apex_footer_default_nav() {
+                            $apex_footer_groups = [
+                                'Platform' => [
+                                    ['label' => 'ApexCore Overview', 'href' => home_url('/platform/apexcore')],
+                                    ['label' => 'Request Demo', 'href' => home_url('/request-demo')],
+                                ],
+                                'Solutions' => [
+                                    ['label' => 'Solutions Overview', 'href' => home_url('/solutions/overview')],
+                                    ['label' => 'Core Banking & Microfinance', 'href' => home_url('/solutions/core-banking-microfinance')],
+                                    ['label' => 'Internet & Mobile Banking', 'href' => home_url('/solutions/internet-mobile-banking')],
+                                    ['label' => 'Agency & Branch Banking', 'href' => home_url('/solutions/agency-branch-banking')],
+                                    ['label' => 'Reporting & Analytics', 'href' => home_url('/solutions/reporting-analytics')],
+                                ],
+                                'Industry' => [
+                                    ['label' => 'Industry Overview', 'href' => home_url('/industry/overview')],
+                                    ['label' => 'MFIs', 'href' => home_url('/industry/mfis')],
+                                    ['label' => 'SACCOs & Credit Unions', 'href' => home_url('/industry/credit-unions')],
+                                    ['label' => 'Commercial Banks', 'href' => home_url('/industry/banks-microfinance')],
+                                ],
+                                'Company' => [
+                                    ['label' => 'About Apex Softwares', 'href' => home_url('/about-us')],
+                                    ['label' => 'Our Approach', 'href' => home_url('/about-us/our-approach')],
+                                    ['label' => 'News & Updates', 'href' => home_url('/about-us/news')],
+                                    ['label' => 'Contact', 'href' => home_url('/contact')],
+                                ],
+                            ];
+                            
+                            foreach ($apex_footer_groups as $title => $links) {
+                                echo '<div>';
+                                echo '<p class="text-base font-bold text-apex-dark mb-4 apex-gradient-text">' . esc_html($title) . '</p>';
+                                echo '<ul class="space-y-3">';
+                                foreach ($links as $link) {
+                                    echo '<li>';
+                                    echo '<a class="relative text-apex-gray-600 hover:text-apex-dark transition-colors duration-200 text-sm apex-footer-link" href="' . esc_url($link['href']) . '">';
+                                    echo esc_html($link['label']);
+                                    echo '</a>';
+                                    echo '</li>';
+                                }
+                                echo '</ul>';
+                                echo '</div>';
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </div>

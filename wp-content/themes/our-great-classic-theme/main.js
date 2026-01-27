@@ -82,4 +82,73 @@
       mobileToggle.setAttribute('aria-expanded', 'false');
     }
   });
+
+  // ---------------------------------------------------------------------------
+  // Home hero: simple rotating carousel (approx. every 15 seconds)
+  // ---------------------------------------------------------------------------
+  const heroCarousel = qs('[data-hero-carousel]');
+  if (heroCarousel) {
+    const heroSection = qs('[data-hero-bg]');
+    const heroBackgrounds = [
+      'https://www.rediansoftware.com/wp-content/uploads/2025/12/digital-core-banking-sacco-platform-dashboard-east-west-africa-2048x1152.jpg',
+      'https://i0.wp.com/fintech.rediansoftware.com/wp-content/uploads/2023/06/standard-quality-control-concept-m.jpg',
+      'https://i0.wp.com/fintech.rediansoftware.com/wp-content/uploads/2023/05/businessman-touch-cloud-computin-1.webp',
+    ];
+
+    const slides = qsa('[data-hero-slide]', heroCarousel);
+    const dots = qsa('[data-hero-dot]', heroCarousel.parentElement?.parentElement || document);
+
+    if (slides.length > 1) {
+      let current = 0;
+      let timerId;
+
+      const setActive = (index) => {
+        slides.forEach((slide, i) => {
+          const isActive = i === index;
+          slide.dataset.heroSlideActive = String(isActive);
+          slide.classList.toggle('opacity-100', isActive);
+          slide.classList.toggle('translate-y-0', isActive);
+          slide.classList.toggle('opacity-0', !isActive);
+          slide.classList.toggle('translate-y-4', !isActive);
+          slide.style.zIndex = isActive ? '20' : '10';
+        });
+
+        dots.forEach((dot, i) => {
+          const isActive = i === index;
+          dot.classList.toggle('w-6', isActive);
+          dot.classList.toggle('w-3', !isActive);
+          dot.classList.toggle('bg-apex-orange', isActive);
+          dot.classList.toggle('bg-apex-gray-200', !isActive);
+        });
+
+        if (heroSection && heroBackgrounds[index]) {
+          heroSection.style.backgroundImage = `url('${heroBackgrounds[index]}')`;
+        }
+
+        current = index;
+      };
+
+      const next = () => {
+        const nextIndex = (current + 1) % slides.length;
+        setActive(nextIndex);
+      };
+
+      const start = () => {
+        if (timerId) window.clearInterval(timerId);
+        timerId = window.setInterval(next, 15000);
+      };
+
+      // Initialize
+      setActive(0);
+      start();
+
+      // Allow manual navigation via dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          setActive(index);
+          start();
+        });
+      });
+    }
+  }
 })();
