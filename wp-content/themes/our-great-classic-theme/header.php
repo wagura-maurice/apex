@@ -67,18 +67,19 @@ $apex_request_demo_href = home_url('/request-demo');
 
 <div class="min-h-screen flex flex-col">
     <!-- Sticky Header -->
-    <header class="sticky top-0 z-50 border-b border-apex-gray-200/70 bg-white/95 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/90 transition-all duration-300">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="flex h-16 items-center justify-between gap-3">
+    <header class="sticky top-0 z-50 bg-transparent backdrop-blur-md supports-[backdrop-filter]:bg-transparent transition-all duration-500 apex-gradient-shell">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+            <div class="apex-header-surface">
+                <div class="flex h-16 items-center justify-between gap-3">
                 <!-- Brand -->
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-3 group transition-transform duration-200 hover:scale-105">
-                    <div class="relative overflow-hidden rounded-lg">
-                        <img src="https://web.archive.org/web/20220401202046im_/https://apex-softwares.com/wp-content/uploads/2017/08/newlogo3.png" alt="Apex Softwares" class="h-10 w-auto transition-transform duration-300 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-r from-apex-orange/20 to-apex-blue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-3 group transition-transform duration-300 hover:scale-105">
+                    <div class="relative overflow-hidden rounded-xl shadow-md">
+                        <img src="https://web.archive.org/web/20220401202046im_/https://apex-softwares.com/wp-content/uploads/2017/08/newlogo3.png" alt="Apex Softwares" class="h-10 w-auto transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-r from-apex-orange/30 via-apex-blue/30 to-apex-purple/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply"></div>
                     </div>
                     <span class="leading-tight">
-                        <span class="block text-sm font-bold text-apex-dark group-hover:text-apex-orange transition-colors duration-200">Apex Softwares</span>
-                        <span class="block text-xs text-apex-gray-500 -mt-0.5">Core banking & digital finance</span>
+                        <span class="block text-sm font-bold text-apex-dark group-hover:text-apex-orange transition-colors duration-200 apex-gradient-text">Apex Softwares</span>
+                        <span class="block text-xs text-apex-gray-500 -mt-0.5">Core banking &amp; digital finance</span>
                     </span>
                 </a>
 
@@ -86,14 +87,14 @@ $apex_request_demo_href = home_url('/request-demo');
                 <nav class="hidden lg:flex items-center gap-1 text-sm font-medium text-apex-gray-700" aria-label="Primary">
                     <?php foreach ($apex_nav as $item) : ?>
                         <?php if (empty($item['type'])) : ?>
-                            <a href="<?php echo esc_url($item['href']); ?>" class="relative rounded-lg px-4 py-2 hover:bg-apex-gray-100 hover:text-apex-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200 group">
+                            <a href="<?php echo esc_url($item['href']); ?>" class="relative rounded-lg px-4 py-2 hover:bg-apex-gray-100/70 hover:text-apex-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200 group apex-nav-link">
                                 <?php echo esc_html($item['label']); ?>
                                 <span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-apex-orange transform -translate-x-1/2 transition-all duration-300 group-hover:w-8"></span>
                             </a>
                         <?php elseif ($item['type'] === 'dropdown') : ?>
                             <div class="relative apex-nav-item" data-nav="dropdown">
-                                <button type="button" class="apex-nav-trigger rounded-lg px-4 py-2 hover:bg-apex-gray-100 hover:text-apex-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200" aria-expanded="false">
-                                    <span class="inline-flex items-center gap-1">
+                                <button type="button" class="apex-nav-trigger rounded-lg px-4 py-2 hover:bg-apex-gray-100/70 hover:text-apex-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200 apex-nav-link" aria-expanded="false">
+                                    <span class="inline-flex items-center gap-1 relative z-10">
                                         <?php echo esc_html($item['label']); ?>
                                         <span class="text-apex-gray-400 transition-transform duration-200 group-hover:rotate-180">▾</span>
                                     </span>
@@ -110,8 +111,8 @@ $apex_request_demo_href = home_url('/request-demo');
                             </div>
                         <?php else : /* mega */ ?>
                             <div class="relative apex-nav-item" data-nav="mega">
-                                <button type="button" class="apex-nav-trigger rounded-lg px-4 py-2 hover:bg-apex-gray-100 hover:text-apex-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200" aria-expanded="false">
-                                    <span class="inline-flex items-center gap-1">
+                                <button type="button" class="apex-nav-trigger rounded-lg px-4 py-2 hover:bg-apex-gray-100/70 hover:text-apex-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200 apex-nav-link" aria-expanded="false">
+                                    <span class="inline-flex items-center gap-1 relative z-10">
                                         <?php echo esc_html($item['label']); ?>
                                         <span class="text-apex-gray-400 transition-transform duration-200 group-hover:rotate-180">▾</span>
                                     </span>
@@ -150,20 +151,21 @@ $apex_request_demo_href = home_url('/request-demo');
 
                 <!-- Actions -->
                 <div class="flex items-center gap-3">
-                    <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="hidden sm:inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-apex-orange to-apex-orange/90 px-5 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-xl hover:from-apex-orange/95 hover:to-apex-orange/85 transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/60 transition-all duration-200">
+                    <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="hidden sm:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/60 transition-all duration-200 apex-rainbow-cta">
                         Request Demo
                     </a>
-                    <button type="button" class="lg:hidden inline-flex items-center justify-center rounded-lg border border-apex-gray-200 bg-white px-3 py-2 text-sm font-semibold text-apex-gray-700 hover:bg-apex-gray-50 hover:border-apex-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200" data-mobile-menu-toggle aria-expanded="false" aria-controls="apex-mobile-menu">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" class="lg:hidden inline-flex items-center justify-center rounded-full border border-apex-gray-200/60 bg-white/80 px-3 py-2 text-sm font-semibold text-apex-gray-700 hover:bg-apex-gray-900 hover:text-white hover:border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-300 shadow-sm apex-mobile-toggle" data-mobile-menu-toggle aria-expanded="false" aria-controls="apex-mobile-menu">
+                        <svg class="w-5 h-5 apex-mobile-toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
+                </div>
                 </div>
             </div>
         </div>
 
         <!-- Mobile menu -->
-        <div id="apex-mobile-menu" class="lg:hidden hidden border-t border-apex-gray-200 bg-white/95 backdrop-blur-md">
+        <div id="apex-mobile-menu" class="lg:hidden hidden border-t border-apex-gray-200 bg-gradient-to-b from-white/95 via-apex-blue/5 to-apex-purple/5 backdrop-blur-md">
             <div class="mx-auto max-w-7xl px-4 py-6">
                 <div class="grid gap-3">
                     <a class="rounded-lg px-4 py-3 text-sm font-bold text-apex-dark hover:bg-apex-orange/10 hover:text-apex-orange transition-all duration-200" href="<?php echo esc_url(home_url('/')); ?>">Home</a>
