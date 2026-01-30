@@ -36,14 +36,6 @@ host('206.189.120.35')
     ->identityFile('~/.ssh/id_rsa')
     ->set('deploy_path', '/var/www/html/{{application}}');
 
-// Tasks
-task('build', function () {
-    // WordPress doesn't typically need a build step, but you can add composer if needed
-    if (test('[ -f {{release_path}}/composer.json ]')) {
-        run('cd {{release_path}} && composer install --no-dev --optimize-autoloader');
-    }
-});
-
 // WordPress-specific release tasks
 task('release:application', function () {
     // Set proper permissions for WordPress
@@ -61,8 +53,6 @@ task('release:application', function () {
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
 
-// Run build after vendors
-after('deploy:vendors', 'build');
 
 // Run WordPress tasks before symlink new release
 before('deploy:symlink', 'release:application');
@@ -75,7 +65,6 @@ task('deploy', [
     'deploy:update_code',
     'deploy:shared',
     'deploy:writable',
-    'deploy:vendors',
     'deploy:symlink',
     'deploy:unlock',
     'deploy:clear_paths',
