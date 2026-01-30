@@ -1789,21 +1789,30 @@
 }
 
 .apex-request-demo__container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr;
     gap: 3rem;
 }
 
 @media (min-width: 1024px) {
     .apex-request-demo__container {
         grid-template-columns: 1.5fr 1fr;
+        gap: 4rem;
     }
 }
 
 .apex-request-demo__content {
-    max-width: 600px;
+    background: #f8fafc;
+    border-radius: 24px;
+    padding: 2.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+@media (max-width: 768px) {
+    .apex-request-demo__content {
+        padding: 1.5rem;
+    }
 }
 
 .apex-request-demo__header {

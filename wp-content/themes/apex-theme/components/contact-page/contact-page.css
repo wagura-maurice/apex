@@ -116,35 +116,30 @@
     min-height: 120px;
 }
 
-.apex-contact-main__form-consent {
+.apex-contact-main__checkbox {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-}
-
-.apex-contact-main__form-consent label {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    font-size: 0.875rem;
-    color: #64748b;
+    align-items: center;
+    gap: 0.5rem;
     cursor: pointer;
 }
 
-.apex-contact-main__form-consent input[type="checkbox"] {
+.apex-contact-main__checkbox input {
     width: 18px;
     height: 18px;
-    margin-top: 2px;
     accent-color: #f97316;
-    flex-shrink: 0;
 }
 
-.apex-contact-main__form-consent a {
+.apex-contact-main__checkbox span {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.apex-contact-main__checkbox a {
     color: #f97316;
     text-decoration: none;
 }
 
-.apex-contact-main__form-consent a:hover {
+.apex-contact-main__checkbox a:hover {
     text-decoration: underline;
 }
 
@@ -245,6 +240,10 @@
 }
 
 .apex-contact-main__info-card--social h3 {
+    margin-bottom: 0.25rem;
+}
+
+.apex-contact-main__info-card--social p {
     margin-bottom: 1rem;
 }
 
@@ -413,7 +412,12 @@
     font-weight: 600;
     color: #0f172a;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 .apex-contact-offices__card-map:hover {
@@ -425,25 +429,36 @@
     height: 16px;
 }
 
+/* Active office card state */
+.apex-contact-offices__card--active {
+    border-color: #f97316;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(234, 88, 12, 0.05) 100%);
+    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.15);
+}
+
+.apex-contact-offices__card--active .apex-contact-offices__card-map {
+    color: #f97316;
+}
+
 /* ========================================
-   FAQ Section
+   Map Section
    ======================================== */
-.apex-contact-faq {
+.apex-contact-map {
     padding: 6rem 1.5rem;
     background: #ffffff;
 }
 
-.apex-contact-faq__container {
+.apex-contact-map__container {
     max-width: 1280px;
     margin: 0 auto;
 }
 
-.apex-contact-faq__header {
+.apex-contact-map__header {
     text-align: center;
     margin-bottom: 3rem;
 }
 
-.apex-contact-faq__badge {
+.apex-contact-map__badge {
     display: inline-block;
     padding: 0.5rem 1rem;
     background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
@@ -456,63 +471,116 @@
     margin-bottom: 1rem;
 }
 
-.apex-contact-faq__heading {
+.apex-contact-map__heading {
     font-size: clamp(2rem, 4vw, 2.5rem);
     font-weight: 700;
     color: #0f172a;
     margin: 0 0 1rem 0;
 }
 
-.apex-contact-faq__description {
+.apex-contact-map__description {
     font-size: 1.0625rem;
     color: #64748b;
     margin: 0;
 }
 
-.apex-contact-faq__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+.apex-contact-map__embed {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    margin-bottom: 3rem;
+    border: 1px solid #e2e8f0;
+}
+
+.apex-contact-map__embed iframe {
+    display: block;
+    width: 100%;
+    height: 450px;
+    border: none;
 }
 
 @media (min-width: 768px) {
-    .apex-contact-faq__grid {
-        grid-template-columns: repeat(2, 1fr);
+    .apex-contact-map__embed iframe {
+        height: 500px;
     }
 }
 
-@media (min-width: 1024px) {
-    .apex-contact-faq__grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-.apex-contact-faq__item {
-    background: #f8fafc;
-    border-radius: 16px;
-    padding: 1.5rem;
+.apex-contact-map__info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 20px;
+    padding: 2.5rem;
     border: 1px solid #e2e8f0;
-    transition: all 0.3s ease;
 }
 
-.apex-contact-faq__item:hover {
-    border-color: #f97316;
-    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.1);
+@media (min-width: 768px) {
+    .apex-contact-map__info {
+        grid-template-columns: repeat(3, 1fr);
+        text-align: center;
+    }
 }
 
-.apex-contact-faq__item h3 {
-    font-size: 1rem;
+.apex-contact-map__address,
+.apex-contact-map__contact,
+.apex-contact-map__hours {
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .apex-contact-map__address::after,
+    .apex-contact-map__contact::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 60%;
+        background: linear-gradient(to bottom, transparent, #e2e8f0, transparent);
+    }
+}
+
+.apex-contact-map__info h3 {
+    font-size: 0.75rem;
     font-weight: 700;
-    color: #0f172a;
-    margin: 0 0 0.75rem 0;
-    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #f97316;
+    margin: 0 0 1rem 0;
 }
 
-.apex-contact-faq__item p {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: #64748b;
-    margin: 0;
+.apex-contact-map__info address {
+    font-style: normal;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: #475569;
+}
+
+.apex-contact-map__contact a {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #0f172a;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.apex-contact-map__contact a:hover {
+    color: #f97316;
+}
+
+.apex-contact-map__hours p {
+    font-size: 0.9375rem;
+    color: #475569;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-contact-map__hours p:last-child {
+    font-weight: 600;
+    color: #0f172a;
 }
 
 /* ========================================
@@ -521,11 +589,19 @@
 @media (max-width: 768px) {
     .apex-contact-main,
     .apex-contact-offices,
-    .apex-contact-faq {
+    .apex-contact-map {
         padding: 4rem 1rem;
     }
     
     .apex-contact-main__form-wrapper {
         padding: 1.5rem;
+    }
+    
+    .apex-contact-map__info {
+        padding: 1.5rem;
+    }
+    
+    .apex-contact-map__embed iframe {
+        height: 350px;
     }
 }
