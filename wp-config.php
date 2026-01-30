@@ -19,17 +19,22 @@
  */
 
 // ** Database settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define( 'DB_NAME', 'apex' );
+// Detect environment based on server hostname or define WP_ENV
+$environment = getenv('WP_ENV') ?: (strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || strpos($_SERVER['HTTP_HOST'] ?? '', '.local') !== false ? 'local' : 'production');
 
-/** Database username */
-define( 'DB_USER', 'root' );
-
-/** Database password */
-define( 'DB_PASSWORD', 'Qwerty123!' );
-
-/** Database hostname */
-define( 'DB_HOST', 'localhost' );
+if ($environment === 'local') {
+    // Local development
+    define( 'DB_NAME', 'apex' );
+    define( 'DB_USER', 'root' );
+    define( 'DB_PASSWORD', 'Qwerty123!' );
+    define( 'DB_HOST', 'localhost' );
+} else {
+    // Production
+    define( 'DB_NAME', 'apex' );
+    define( 'DB_USER', 'root' );
+    define( 'DB_PASSWORD', 'v1b3qqNMddevyh8Rn1U/IRoF8UBfWAnl6kCmF68TCJM=' );
+    define( 'DB_HOST', 'localhost' );
+}
 
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8mb4' );
