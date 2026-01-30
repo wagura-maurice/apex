@@ -38,16 +38,12 @@ host('206.189.120.35')
 
 // WordPress-specific release tasks
 task('release:application', function () {
-    // Set proper permissions for WordPress
-    run('chmod -R 755 {{release_path}}');
-    run('chmod -R 775 {{release_path}}/wp-content/uploads');
+    // Set proper permissions for WordPress (exclude symlinks)
+    run('find {{release_path}} -type f -exec chmod 644 {} \;');
+    run('find {{release_path}} -type d -exec chmod 755 {} \;');
     
-    // Clear any WordPress cache if using a caching plugin
-    // Uncomment and modify based on your caching solution
-    // run('rm -rf {{release_path}}/wp-content/cache/*');
-    
-    // Flush rewrite rules by touching .htaccess (optional)
-    // run('touch {{release_path}}/.htaccess');
+    // Set permissions on shared uploads directory
+    run('chmod -R 775 {{deploy_path}}/shared/wp-content/uploads');
 })->once();
 
 // [Optional] if deploy fails automatically unlock.
