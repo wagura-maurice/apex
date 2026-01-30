@@ -14,7 +14,7 @@ get_header();
 apex_render_about_hero([
     'badge' => 'Join Our Team',
     'heading' => 'Build the Future of African Fintech',
-    'description' => 'Join a team of passionate innovators transforming financial services across Africa. We're looking for talented individuals who want to make an impact.',
+    'description' => 'Join a team of passionate innovators transforming financial services across Africa. We\'re looking for talented individuals who want to make an impact.',
     'stats' => [
         ['value' => '50+', 'label' => 'Team Members'],
         ['value' => '15+', 'label' => 'Countries'],
@@ -179,7 +179,7 @@ apex_render_about_hero([
 // CTA Section
 apex_render_about_cta([
     'heading' => 'Ready to Join Us?',
-    'description' => 'Send us your resume and let's talk about how you can help transform African fintech.',
+    'description' => 'Send us your resume and let\'s talk about how you can help transform African fintech.',
     'cta_primary' => [
         'text' => 'View Open Positions',
         'url' => '#openings'

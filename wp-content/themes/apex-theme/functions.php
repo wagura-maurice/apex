@@ -400,9 +400,9 @@ add_action('after_switch_theme', 'apex_flush_rewrite_rules');
  * One-time flush for development (remove in production)
  */
 function apex_maybe_flush_rules() {
-    if (get_option('apex_rewrite_rules_flushed') !== '6') {
+    if (get_option('apex_rewrite_rules_flushed') !== '7') {
         flush_rewrite_rules();
-        update_option('apex_rewrite_rules_flushed', '6');
+        update_option('apex_rewrite_rules_flushed', '7');
     }
 }
 add_action('init', 'apex_maybe_flush_rules', 20);

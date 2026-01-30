@@ -191,7 +191,7 @@ apex_render_about_hero([
 // CTA Section
 apex_render_about_cta([
     'heading' => 'Still Have Questions?',
-    'description' => 'Our team is here to help. Get in touch and we'll answer any questions you have.',
+    'description' => 'Our team is here to help. Get in touch and we\'ll answer any questions you have.',
     'cta_primary' => [
         'text' => 'Contact Support',
         'url' => home_url('/help-support')
