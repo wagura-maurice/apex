@@ -166,6 +166,213 @@ function apex_theme_assets(): void {
         .nav-links a { background: white; border: 1px solid #e2e8f0; color: #475569; }
         .nav-links a:hover { border-color: #f97316; color: #f97316; }
         .nav-links .current { background: #f97316; color: white; border: 1px solid #f97316; }
+        
+        /* Sidebar Widget Styling */
+        .widget-item { margin-bottom: 1.5rem; }
+        .widget-item:last-child { margin-bottom: 0; }
+        .widget-title, .widget-item h2 { 
+            font-size: 1.125rem; 
+            font-weight: 700; 
+            color: #1e293b; 
+            margin-bottom: 1rem; 
+            padding-bottom: 0.75rem; 
+            border-bottom: 2px solid #fed7aa;
+        }
+        
+        /* Search Widget - WordPress Block & Classic - High Specificity */
+        .side-column .wp-block-search .wp-block-search__inside-wrapper,
+        aside .wp-block-search .wp-block-search__inside-wrapper,
+        .widget .wp-block-search .wp-block-search__inside-wrapper,
+        .wp-block-search__inside-wrapper {
+            display: flex !important;
+            gap: 0.5rem !important;
+            flex-wrap: nowrap !important;
+        }
+        .side-column .wp-block-search .wp-block-search__input,
+        aside .wp-block-search .wp-block-search__input,
+        .widget .wp-block-search .wp-block-search__input,
+        .side-column .wp-block-search input[type='search'],
+        aside .wp-block-search input[type='search'],
+        .wp-block-search .wp-block-search__input,
+        .wp-block-search__input {
+            flex: 1 !important;
+            min-width: 0 !important;
+            padding: 12px 16px !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 9999px !important;
+            font-size: 14px !important;
+            color: #1e293b !important;
+            background: white !important;
+            transition: all 0.2s !important;
+            box-sizing: border-box !important;
+            height: auto !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+        }
+        .side-column .wp-block-search .wp-block-search__input:focus,
+        aside .wp-block-search .wp-block-search__input:focus,
+        .wp-block-search .wp-block-search__input:focus,
+        .wp-block-search__input:focus {
+            outline: none !important;
+            border-color: #f97316 !important;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1) !important;
+        }
+        .side-column .wp-block-search .wp-block-search__button,
+        aside .wp-block-search .wp-block-search__button,
+        .widget .wp-block-search .wp-block-search__button,
+        .wp-block-search .wp-block-search__button,
+        .wp-block-search__button {
+            padding: 12px 20px !important;
+            background: linear-gradient(to right, #f97316, #ea580c) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 9999px !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+            height: auto !important;
+        }
+        .side-column .wp-block-search .wp-block-search__button:hover,
+        aside .wp-block-search .wp-block-search__button:hover,
+        .wp-block-search .wp-block-search__button:hover,
+        .wp-block-search__button:hover {
+            background: linear-gradient(to right, #ea580c, #dc2626) !important;
+        }
+        
+        /* Classic Search Widget */
+        .widget_search form { 
+            display: flex; 
+            gap: 0.5rem; 
+            flex-wrap: wrap; 
+        }
+        .widget_search input[type='search'],
+        .widget_search input[type='text'],
+        .side-column input[name='s'],
+        input#s,
+        input.search-field {
+            flex: 1;
+            min-width: 0;
+            padding: 0.75rem 1rem !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 9999px !important;
+            font-size: 0.875rem !important;
+            color: #1e293b !important;
+            background: white !important;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+        .widget_search input[type='search']:focus,
+        .widget_search input[type='text']:focus,
+        input#s:focus,
+        input.search-field:focus {
+            outline: none !important;
+            border-color: #f97316 !important;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1) !important;
+        }
+        .widget_search input[type='submit'],
+        input#searchsubmit {
+            padding: 0.75rem 1.25rem !important;
+            background: linear-gradient(to right, #f97316, #ea580c) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 9999px !important;
+            font-weight: 600 !important;
+            font-size: 0.875rem !important;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .widget_search input[type='submit']:hover,
+        input#searchsubmit:hover {
+            background: linear-gradient(to right, #ea580c, #dc2626) !important;
+        }
+        
+        /* Recent Posts & Recent Comments Widgets */
+        .widget_recent_entries ul,
+        .widget_recent_comments ul,
+        .wp-block-latest-posts,
+        .wp-block-latest-comments {
+            list-style: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .widget_recent_entries li,
+        .widget_recent_comments li,
+        .wp-block-latest-posts__post-title {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        .widget_recent_entries li:last-child,
+        .widget_recent_comments li:last-child {
+            border-bottom: none;
+        }
+        .widget_recent_entries a,
+        .widget_recent_comments a,
+        .wp-block-latest-posts a {
+            color: #475569;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .widget_recent_entries a:hover,
+        .widget_recent_comments a:hover,
+        .wp-block-latest-posts a:hover {
+            color: #f97316;
+        }
+        .widget_recent_comments .comment-author-link {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        /* Categories & Archives Widgets */
+        .widget_categories ul,
+        .widget_archive ul {
+            list-style: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .widget_categories li,
+        .widget_archive li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+        }
+        .widget_categories li:last-child,
+        .widget_archive li:last-child {
+            border-bottom: none;
+        }
+        .widget_categories a,
+        .widget_archive a {
+            color: #475569;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .widget_categories a:hover,
+        .widget_archive a:hover {
+            color: #f97316;
+        }
+        
+        /* Tag Cloud Widget */
+        .widget_tag_cloud .tagcloud a,
+        .wp-block-tag-cloud a {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            margin: 0.25rem;
+            background: #f1f5f9;
+            color: #475569;
+            border-radius: 9999px;
+            font-size: 0.75rem !important;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .widget_tag_cloud .tagcloud a:hover,
+        .wp-block-tag-cloud a:hover {
+            background: #f97316;
+            color: white;
+        }
     ";
     wp_add_inline_style('apex-theme-style', $comment_styles);
 }
@@ -202,6 +409,37 @@ function custom_excerpt_length() {
 }
 
 add_filter('excerpt_length', 'custom_excerpt_length');
+
+// Add search widget styles in footer to override WordPress block styles
+function apex_search_widget_styles() {
+    ?>
+    <style id="apex-search-override">
+        /* Override WordPress Block Search Styles */
+        .wp-block-search__input,
+        .wp-block-search .wp-block-search__input,
+        input.wp-block-search__input {
+            border-radius: 9999px !important;
+            padding: 12px 16px !important;
+            border: 1px solid #e2e8f0 !important;
+            background: white !important;
+        }
+        .wp-block-search__button,
+        .wp-block-search .wp-block-search__button,
+        button.wp-block-search__button {
+            border-radius: 9999px !important;
+            padding: 12px 20px !important;
+            background: linear-gradient(to right, #f97316, #ea580c) !important;
+            color: white !important;
+            border: none !important;
+            font-weight: 600 !important;
+        }
+        .wp-block-search__button:hover {
+            background: linear-gradient(to right, #ea580c, #dc2626) !important;
+        }
+    </style>
+    <?php
+}
+add_action('wp_footer', 'apex_search_widget_styles');
 
 // Add Widget Areas
 function apex_theme_widgets_init() {

@@ -35,8 +35,8 @@ get_header(); ?>
     </section>
 
     <!-- Results Section -->
-    <section class="py-16 bg-slate-50">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section class="py-16 bg-slate-50 px-4">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <?php if (have_posts()) : ?>
                 <div class="mb-8">
                     <p class="text-slate-600">

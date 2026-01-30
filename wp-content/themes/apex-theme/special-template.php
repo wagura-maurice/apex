@@ -8,8 +8,8 @@ get_header();
 
 <main class="flex-1">
 	<!-- Special Template Content -->
-	<section class="py-16 bg-slate-50">
-		<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+	<section class="py-16 bg-slate-50 px-4">
+		<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
 			<?php
 			if (have_posts()) :
 				while (have_posts()) : the_post(); ?>
