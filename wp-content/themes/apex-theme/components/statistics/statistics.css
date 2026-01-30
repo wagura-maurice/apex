@@ -1,0 +1,210 @@
+/**
+ * Statistics Counter Component Styles
+ * Animated metrics display
+ * 
+ * @package ApexTheme
+ * @subpackage Components/Statistics
+ */
+
+/* ========================================
+   Section Container
+   ======================================== */
+.apex-statistics {
+    position: relative;
+    padding: 6rem 1.5rem;
+    overflow: hidden;
+}
+
+/* ========================================
+   Background
+   ======================================== */
+.apex-statistics__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.apex-statistics__bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.apex-statistics__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.95) 0%,
+        rgba(30, 58, 138, 0.92) 50%,
+        rgba(37, 99, 235, 0.9) 100%
+    );
+}
+
+/* ========================================
+   Container
+   ======================================== */
+.apex-statistics__container {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+.apex-statistics__header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-statistics__header.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-statistics__heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.apex-statistics__subheading {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+/* ========================================
+   Stats Grid
+   ======================================== */
+.apex-statistics__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .apex-statistics__grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+    }
+}
+
+/* ========================================
+   Stat Items
+   ======================================== */
+.apex-statistics__item {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.apex-statistics__item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-statistics__item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.apex-statistics__item-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.2) 100%);
+    border-radius: 16px;
+    margin: 0 auto 1.5rem;
+    color: #fb923c;
+}
+
+.apex-statistics__item-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.apex-statistics__item-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.apex-statistics__number {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.apex-statistics__suffix {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+    color: #fb923c;
+}
+
+.apex-statistics__item-label {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-statistics {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-statistics__header {
+        margin-bottom: 3rem;
+    }
+    
+    .apex-statistics__item {
+        padding: 1.5rem 1rem;
+    }
+    
+    .apex-statistics__item-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+    
+    .apex-statistics__item-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .apex-statistics__grid {
+        gap: 1rem;
+    }
+    
+    .apex-statistics__item {
+        padding: 1.25rem 0.75rem;
+    }
+}

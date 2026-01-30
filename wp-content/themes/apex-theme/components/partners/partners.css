@@ -1,0 +1,258 @@
+/**
+ * Partners Component Styles
+ * Logo showcase section
+ * 
+ * @package ApexTheme
+ * @subpackage Components/Partners
+ */
+
+/* ========================================
+   Section Container
+   ======================================== */
+.apex-partners {
+    padding: 6rem 1.5rem;
+    background: #0f172a;
+    position: relative;
+    overflow: hidden;
+}
+
+.apex-partners::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(249, 115, 22, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.apex-partners__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+.apex-partners__header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-partners__header.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-partners__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(249, 115, 22, 0.15);
+    color: #fb923c;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
+.apex-partners__heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.apex-partners__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+/* ========================================
+   Logo Grid (Desktop)
+   ======================================== */
+.apex-partners__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.apex-partners__grid.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+    .apex-partners__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .apex-partners__grid {
+        display: none;
+    }
+}
+
+.apex-partners__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+}
+
+.apex-partners__item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+    text-decoration: none;
+}
+
+.apex-partners__logo {
+    max-width: 120px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.apex-partners__item:hover .apex-partners__logo {
+    opacity: 1;
+    filter: brightness(0) invert(1);
+}
+
+/* ========================================
+   Marquee (Mobile)
+   ======================================== */
+.apex-partners__marquee {
+    display: none;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+@media (max-width: 640px) {
+    .apex-partners__marquee {
+        display: block;
+    }
+}
+
+.apex-partners__marquee-track {
+    display: flex;
+    gap: 3rem;
+    animation: partnersMarquee 30s linear infinite;
+    width: max-content;
+}
+
+.apex-partners__marquee-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    min-width: 150px;
+}
+
+.apex-partners__marquee-item .apex-partners__logo {
+    max-width: 100px;
+    max-height: 40px;
+}
+
+@keyframes partnersMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ========================================
+   CTA
+   ======================================== */
+.apex-partners__cta-wrapper {
+    text-align: center;
+    margin-top: 4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-partners__cta-wrapper.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-partners__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.apex-partners__cta:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.apex-partners__cta svg {
+    transition: transform 0.3s ease;
+}
+
+.apex-partners__cta:hover svg {
+    transform: translateX(4px);
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-partners {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-partners__header {
+        margin-bottom: 3rem;
+    }
+    
+    .apex-partners__cta-wrapper {
+        margin-top: 3rem;
+    }
+}

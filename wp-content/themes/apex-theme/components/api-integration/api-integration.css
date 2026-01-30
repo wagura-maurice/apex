@@ -1,0 +1,401 @@
+/**
+ * API Integration Component Styles
+ * Developer platform showcase
+ * 
+ * @package ApexTheme
+ * @subpackage Components/APIIntegration
+ */
+
+/* ========================================
+   Section Container
+   ======================================== */
+.apex-api-integration {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.apex-api-integration__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   Grid Layout
+   ======================================== */
+.apex-api-integration__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+    .apex-api-integration__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: start;
+    }
+}
+
+/* ========================================
+   Info Column
+   ======================================== */
+.apex-api-integration__info {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-api-integration__info.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.apex-api-integration__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    color: #7c3aed;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
+.apex-api-integration__heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.apex-api-integration__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #64748b;
+    margin: 0 0 2rem 0;
+}
+
+/* ========================================
+   Features
+   ======================================== */
+.apex-api-integration__features {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.apex-api-integration__feature {
+    display: flex;
+    gap: 1rem;
+}
+
+.apex-api-integration__feature-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    border-radius: 12px;
+    color: #7c3aed;
+    flex-shrink: 0;
+}
+
+.apex-api-integration__feature-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.apex-api-integration__feature-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-api-integration__feature-desc {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ========================================
+   Stats
+   ======================================== */
+.apex-api-integration__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 16px;
+}
+
+.apex-api-integration__stat {
+    text-align: center;
+}
+
+.apex-api-integration__stat-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.apex-api-integration__stat-label {
+    display: block;
+    font-size: 0.6875rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ========================================
+   CTAs
+   ======================================== */
+.apex-api-integration__ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.apex-api-integration__btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    color: #ffffff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.apex-api-integration__btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.35);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.apex-api-integration__btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 1.5rem;
+    background: transparent;
+    color: #0f172a;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid #e2e8f0;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.apex-api-integration__btn-secondary:hover {
+    border-color: #7c3aed;
+    color: #7c3aed;
+    text-decoration: none;
+}
+
+/* ========================================
+   Terminal Preview
+   ======================================== */
+.apex-api-integration__preview {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.apex-api-integration__preview.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.apex-api-integration__terminal {
+    background: #1e293b;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.apex-api-integration__terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: #0f172a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.apex-api-integration__terminal-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.apex-api-integration__terminal-dots span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.apex-api-integration__terminal-dots span:nth-child(1) { background: #ef4444; }
+.apex-api-integration__terminal-dots span:nth-child(2) { background: #fbbf24; }
+.apex-api-integration__terminal-dots span:nth-child(3) { background: #22c55e; }
+
+.apex-api-integration__terminal-title {
+    font-size: 0.8125rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.apex-api-integration__terminal-body {
+    padding: 1.5rem;
+}
+
+/* ========================================
+   Endpoints
+   ======================================== */
+.apex-api-integration__endpoints {
+    margin-bottom: 1.5rem;
+}
+
+.apex-api-integration__endpoint {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.apex-api-integration__endpoint:last-child {
+    border-bottom: none;
+}
+
+.apex-api-integration__method {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+    min-width: 45px;
+    text-align: center;
+}
+
+.apex-api-integration__method--get { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+.apex-api-integration__method--post { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+.apex-api-integration__method--put { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+.apex-api-integration__method--delete { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+.apex-api-integration__path {
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 0.8125rem;
+    color: #e2e8f0;
+    flex: 1;
+}
+
+.apex-api-integration__endpoint-desc {
+    font-size: 0.75rem;
+    color: #64748b;
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .apex-api-integration__endpoint-desc {
+        display: block;
+    }
+}
+
+/* ========================================
+   Code Samples
+   ======================================== */
+.apex-api-integration__code-sample {
+    background: #0f172a;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.apex-api-integration__code-sample:last-child {
+    margin-bottom: 0;
+}
+
+.apex-api-integration__code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.apex-api-integration__code-header span {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.apex-api-integration__copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.apex-api-integration__copy-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.apex-api-integration__code {
+    padding: 1rem;
+    margin: 0;
+    overflow-x: auto;
+}
+
+.apex-api-integration__code code {
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+    white-space: pre;
+}
+
+.apex-api-integration__code--response code {
+    color: #22c55e;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-api-integration {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-api-integration__stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .apex-api-integration__terminal-body {
+        padding: 1rem;
+    }
+}

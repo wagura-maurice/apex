@@ -1,0 +1,268 @@
+/**
+ * What We Do Component Styles
+ * Services and solutions showcase
+ * 
+ * @package ApexTheme
+ * @subpackage Components/WhatWeDo
+ */
+
+/* ========================================
+   Section Container
+   ======================================== */
+.apex-what-we-do {
+    padding: 6rem 1.5rem;
+    background: #0f172a;
+    position: relative;
+    overflow: hidden;
+}
+
+.apex-what-we-do::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.apex-what-we-do__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================================
+   Section Header
+   ======================================== */
+.apex-what-we-do__header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-what-we-do__header.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-what-we-do__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(249, 115, 22, 0.15);
+    color: #fb923c;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
+.apex-what-we-do__heading {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.apex-what-we-do__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+/* ========================================
+   Services Grid
+   ======================================== */
+.apex-what-we-do__grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-what-we-do__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-what-we-do__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* ========================================
+   Service Cards
+   ======================================== */
+.apex-what-we-do__card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.apex-what-we-do__card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-what-we-do__card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.apex-what-we-do__card-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.apex-what-we-do__card:hover .apex-what-we-do__card-icon {
+    transform: scale(1.1);
+}
+
+.apex-what-we-do__card-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.apex-what-we-do__card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-what-we-do__card-description {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 1.5rem 0;
+}
+
+.apex-what-we-do__card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.apex-what-we-do__card-link:hover {
+    text-decoration: none;
+    gap: 0.75rem;
+}
+
+.apex-what-we-do__card-link svg {
+    transition: transform 0.3s ease;
+}
+
+.apex-what-we-do__card-link:hover svg {
+    transform: translateX(4px);
+}
+
+.apex-what-we-do__card-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.apex-what-we-do__card:hover .apex-what-we-do__card-accent {
+    opacity: 1;
+}
+
+/* ========================================
+   CTA Section
+   ======================================== */
+.apex-what-we-do__cta-wrapper {
+    text-align: center;
+    margin-top: 4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-what-we-do__cta-wrapper.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-what-we-do__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+}
+
+.apex-what-we-do__cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.4);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.apex-what-we-do__cta svg {
+    transition: transform 0.3s ease;
+}
+
+.apex-what-we-do__cta:hover svg {
+    transform: translateX(4px);
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-what-we-do {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-what-we-do__header {
+        margin-bottom: 3rem;
+    }
+    
+    .apex-what-we-do__card {
+        padding: 1.5rem;
+    }
+    
+    .apex-what-we-do__cta-wrapper {
+        margin-top: 3rem;
+    }
+}

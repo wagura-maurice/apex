@@ -1,617 +1,373 @@
-<?php get_header(); ?>
+<?php 
+/**
+ * Front Page Template
+ * Uses modular component system for clean separation of concerns
+ * 
+ * @package ApexTheme
+ */
 
-<!-- Full-Screen Hero Section with Blurred Background Carousel -->
-<section class="apex-hero-fullscreen" data-hero-carousel-container>
-    <!-- Background Images Container -->
-    <div class="apex-hero-bg-container">
-        <!-- Slide 1 Background -->
-        <div class="apex-hero-bg-slide active" data-bg-slide="0">
-            <img 
-                src="https://www.rediansoftware.com/wp-content/uploads/2025/12/digital-core-banking-sacco-platform-dashboard-east-west-africa-2048x1152.jpg" 
-                alt="Digital Core Banking Platform" 
-                class="apex-hero-bg-image"
-            />
-        </div>
-        <!-- Slide 2 Background -->
-        <div class="apex-hero-bg-slide" data-bg-slide="1">
-            <img 
-                src="https://i0.wp.com/fintech.rediansoftware.com/wp-content/uploads/2023/06/standard-quality-control-concept-m.jpg" 
-                alt="Quality Digital Banking Experience" 
-                class="apex-hero-bg-image"
-            />
-        </div>
-        <!-- Slide 3 Background -->
-        <div class="apex-hero-bg-slide" data-bg-slide="2">
-            <img 
-                src="https://i0.wp.com/fintech.rediansoftware.com/wp-content/uploads/2023/05/businessman-touch-cloud-computin-1.webp" 
-                alt="Cloud Banking Solutions" 
-                class="apex-hero-bg-image"
-            />
-        </div>
-        <!-- Dark Overlay -->
-        <div class="apex-hero-overlay"></div>
-    </div>
+get_header(); 
+?>
 
-    <!-- Hero Content -->
-    <div class="apex-hero-content">
-        <div class="apex-hero-content-inner">
-            <!-- Tagline -->
-            <p class="apex-hero-tagline" data-hero-content="tagline">
-                <span class="apex-hero-tagline-dot"></span>
-                ApexCore Platform
-            </p>
-            
-            <!-- Main Heading - Changes with slides -->
-            <h1 class="apex-hero-heading" data-hero-content="heading">
-                <span class="apex-hero-heading-text active" data-heading-slide="0">
-                    Launch Your Digital Bank of the Future
-                </span>
-                <span class="apex-hero-heading-text" data-heading-slide="1">
-                    Omnichannel Banking Made Simple
-                </span>
-                <span class="apex-hero-heading-text" data-heading-slide="2">
-                    Extend Your Reach with Agent Banking
-                </span>
-            </h1>
-            
-            <!-- Subheading - Changes with slides -->
-            <p class="apex-hero-subheading">
-                <span class="apex-hero-subheading-text active" data-subheading-slide="0">
-                    Power your winning neobank strategy with ApexCore – the web-based, multi-tenant core banking platform built for MFIs, SACCOs, and banks.
-                </span>
-                <span class="apex-hero-subheading-text" data-subheading-slide="1">
-                    Deliver mobile apps, USSD, and web banking experiences that share workflows, limits, and risk rules across every touchpoint.
-                </span>
-                <span class="apex-hero-subheading-text" data-subheading-slide="2">
-                    Equip staff and agents with offline-ready apps for onboarding, KYC, collections, and monitoring—safely synced into your core.
-                </span>
-            </p>
-            
-            <!-- CTA Buttons -->
-            <div class="apex-hero-cta-group">
-                <a href="<?php echo esc_url(home_url('/request-demo')); ?>" class="apex-hero-cta-primary">
-                    Explore the Platform
-                </a>
-                <a href="<?php echo esc_url(home_url('/solutions/overview')); ?>" class="apex-hero-cta-secondary">
-                    View Solutions
-                </a>
-            </div>
-            
-            <!-- Carousel Navigation -->
-            <div class="apex-hero-nav">
-                <button type="button" class="apex-hero-nav-btn apex-hero-nav-prev" data-hero-prev aria-label="Previous slide">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button type="button" class="apex-hero-nav-btn apex-hero-nav-next" data-hero-next aria-label="Next slide">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Slide Indicators -->
-            <div class="apex-hero-indicators">
-                <button type="button" class="apex-hero-indicator active" data-hero-indicator="0" aria-label="Slide 1"></button>
-                <button type="button" class="apex-hero-indicator" data-hero-indicator="1" aria-label="Slide 2"></button>
-                <button type="button" class="apex-hero-indicator" data-hero-indicator="2" aria-label="Slide 3"></button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Bottom Banner -->
-    <div class="apex-hero-banner">
-        <p>Apex Softwares' technology solutions impact <strong>100+ financial institutions</strong> across Africa. <a href="<?php echo esc_url(home_url('/about-us')); ?>">Learn More</a></p>
-    </div>
-</section>
+<?php 
+// Hero Section Component
+apex_render_hero([
+    'slides' => [
+        [
+            'image' => 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1920',
+            'heading' => 'Launch Your Digital Bank of the Future',
+            'subheading' => 'Power your winning neobank strategy with ApexCore – the web-based, multi-tenant core banking platform built for MFIs, SACCOs, and banks.',
+            'alt' => 'Digital Core Banking Platform'
+        ],
+        [
+            'image' => 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920',
+            'heading' => 'Omnichannel Banking Made Simple',
+            'subheading' => 'Deliver mobile apps, USSD, and web banking experiences that share workflows, limits, and risk rules across every touchpoint.',
+            'alt' => 'Omnichannel Banking Solutions'
+        ],
+        [
+            'image' => 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1920',
+            'heading' => 'Extend Your Reach with Agent Banking',
+            'subheading' => 'Equip staff and agents with offline-ready apps for onboarding, KYC, collections, and monitoring—safely synced into your core.',
+            'alt' => 'Agent Banking Solutions'
+        ]
+    ],
+    'tagline' => 'ApexCore Platform',
+    'cta_primary' => [
+        'text' => 'Explore the Platform',
+        'url' => home_url('/request-demo')
+    ],
+    'cta_secondary' => [
+        'text' => 'View Solutions',
+        'url' => home_url('/solutions')
+    ],
+    'banner_text' => 'Apex Softwares\' technology solutions impact <strong>100+ financial institutions</strong> across Africa.',
+    'banner_link' => [
+        'text' => 'Learn More',
+        'url' => home_url('/about-us')
+    ]
+]);
+?>
 
-<!-- Main Content after hero -->
+<?php 
+// Who We Are Section Component
+apex_render_who_we_are([
+    'badge' => 'Who We Are',
+    'heading' => 'Pioneering Digital Financial Solutions Across Africa',
+    'description' => 'Apex Softwares is a leading financial technology company dedicated to transforming how financial institutions operate. With over a decade of experience, we deliver innovative, scalable, and secure solutions that empower banks, MFIs, and SACCOs to thrive in the digital age.',
+    'features' => [
+        [
+            'icon' => 'shield',
+            'title' => 'Trusted Partner',
+            'text' => '100+ financial institutions rely on our platform'
+        ],
+        [
+            'icon' => 'globe',
+            'title' => 'Pan-African Reach',
+            'text' => 'Operating across 15+ countries in Africa'
+        ],
+        [
+            'icon' => 'award',
+            'title' => 'Industry Leader',
+            'text' => 'Award-winning fintech solutions since 2010'
+        ]
+    ],
+    'image' => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
+    'cta' => [
+        'text' => 'Learn More About Us',
+        'url' => home_url('/about-us')
+    ]
+]);
+?>
+
+<?php 
+// What We Do Section Component
+apex_render_what_we_do([
+    'badge' => 'What We Do',
+    'heading' => 'Comprehensive Financial Technology Solutions',
+    'description' => 'We provide end-to-end digital banking solutions that transform how financial institutions serve their customers.',
+    'services' => [
+        [
+            'icon' => 'database',
+            'title' => 'Core Banking System',
+            'description' => 'A robust, scalable core banking platform that handles deposits, loans, payments, and accounting with real-time processing.',
+            'link' => '/solutions/core-banking',
+            'color' => 'blue'
+        ],
+        [
+            'icon' => 'smartphone',
+            'title' => 'Mobile Banking',
+            'description' => 'Native mobile applications for iOS and Android with biometric authentication, instant transfers, and bill payments.',
+            'link' => '/solutions/mobile-banking',
+            'color' => 'orange'
+        ],
+        [
+            'icon' => 'users',
+            'title' => 'Agent Banking',
+            'description' => 'Extend your reach with agent networks. Enable cash-in, cash-out, account opening, and loan collections.',
+            'link' => '/solutions/agent-banking',
+            'color' => 'green'
+        ],
+        [
+            'icon' => 'credit-card',
+            'title' => 'Payment Gateway',
+            'description' => 'Secure payment processing with support for cards, mobile money, bank transfers, and QR payments.',
+            'link' => '/solutions/payments',
+            'color' => 'purple'
+        ],
+        [
+            'icon' => 'bar-chart',
+            'title' => 'Analytics & Reporting',
+            'description' => 'Real-time dashboards, regulatory reports, and business intelligence tools for data-driven decisions.',
+            'link' => '/solutions/analytics',
+            'color' => 'cyan'
+        ],
+        [
+            'icon' => 'shield',
+            'title' => 'Risk & Compliance',
+            'description' => 'AML/KYC compliance, fraud detection, credit scoring, and regulatory reporting automation.',
+            'link' => '/solutions/compliance',
+            'color' => 'red'
+        ]
+    ],
+    'cta' => [
+        'text' => 'Explore All Solutions',
+        'url' => home_url('/solutions')
+    ]
+]);
+?>
+
+<?php 
+// How We Do It Section Component
+apex_render_how_we_do_it([
+    'badge' => 'How We Do It',
+    'heading' => 'Our Proven Implementation Approach',
+    'description' => 'We follow a structured methodology that ensures successful deployments, minimal disruption, and maximum value for your institution.',
+    'steps' => [
+        [
+            'number' => '01',
+            'title' => 'Discovery & Assessment',
+            'description' => 'We analyze your current systems, processes, and requirements to create a tailored implementation roadmap.',
+            'icon' => 'search',
+            'duration' => '2-4 Weeks'
+        ],
+        [
+            'number' => '02',
+            'title' => 'Solution Design',
+            'description' => 'Our architects design a customized solution that integrates seamlessly with your existing infrastructure.',
+            'icon' => 'layout',
+            'duration' => '3-6 Weeks'
+        ],
+        [
+            'number' => '03',
+            'title' => 'Development & Configuration',
+            'description' => 'We configure the platform to your specifications and develop any custom modules required.',
+            'icon' => 'code',
+            'duration' => '6-12 Weeks'
+        ],
+        [
+            'number' => '04',
+            'title' => 'Testing & Training',
+            'description' => 'Rigorous testing ensures quality while comprehensive training prepares your team for success.',
+            'icon' => 'check-circle',
+            'duration' => '4-6 Weeks'
+        ],
+        [
+            'number' => '05',
+            'title' => 'Go-Live & Support',
+            'description' => 'We ensure a smooth launch with dedicated support and continuous optimization post-deployment.',
+            'icon' => 'rocket',
+            'duration' => 'Ongoing'
+        ]
+    ],
+    'cta' => [
+        'text' => 'Start Your Journey',
+        'url' => home_url('/contact')
+    ]
+]);
+?>
+
+<?php 
+// Statistics Counter Section Component
+apex_render_statistics([
+    'heading' => 'Powering Financial Institutions Across Africa',
+    'subheading' => 'Our platform processes millions of transactions daily, serving customers across the continent.',
+    'stats' => [
+        [
+            'value' => 100,
+            'suffix' => '+',
+            'label' => 'Financial Institutions',
+            'icon' => 'building'
+        ],
+        [
+            'value' => 15,
+            'suffix' => '+',
+            'label' => 'Countries Served',
+            'icon' => 'globe'
+        ],
+        [
+            'value' => 5,
+            'suffix' => 'M+',
+            'label' => 'Active Users',
+            'icon' => 'users'
+        ],
+        [
+            'value' => 99.9,
+            'suffix' => '%',
+            'label' => 'Uptime SLA',
+            'icon' => 'shield'
+        ]
+    ],
+    'background_image' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920'
+]);
+?>
+
+<?php 
+// Testimonials Section Component
+apex_render_testimonials([
+    'badge' => 'Client Success Stories',
+    'heading' => 'Trusted by Leading Financial Institutions',
+    'description' => 'See what our clients say about transforming their operations with ApexCore.',
+    'testimonials' => [
+        [
+            'quote' => 'ApexCore has revolutionized our operations. We\'ve seen a 40% increase in efficiency and our customers love the new mobile banking experience.',
+            'author' => 'James Mwangi',
+            'position' => 'CEO',
+            'company' => 'Unity SACCO',
+            'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+            'rating' => 5
+        ],
+        [
+            'quote' => 'The implementation was smooth and the support team is exceptional. We went live in just 12 weeks with zero downtime.',
+            'author' => 'Sarah Ochieng',
+            'position' => 'CTO',
+            'company' => 'Premier MFI',
+            'image' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+            'rating' => 5
+        ],
+        [
+            'quote' => 'The agent banking module has helped us reach rural communities we couldn\'t serve before. Our customer base has grown by 60%.',
+            'author' => 'David Kimani',
+            'position' => 'Operations Director',
+            'company' => 'Heritage Bank',
+            'image' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+            'rating' => 5
+        ],
+        [
+            'quote' => 'Real-time reporting and analytics have transformed how we make decisions. We now have complete visibility into our operations.',
+            'author' => 'Grace Wanjiku',
+            'position' => 'Finance Manager',
+            'company' => 'Faulu Microfinance',
+            'image' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
+            'rating' => 5
+        ]
+    ]
+]);
+?>
+
+<?php 
+// Partners Section Component
+apex_render_partners([
+    'badge' => 'Our Partners',
+    'heading' => 'Trusted Technology & Integration Partners',
+    'description' => 'We collaborate with leading technology providers to deliver comprehensive solutions.',
+    'cta' => [
+        'text' => 'Become a Partner',
+        'url' => home_url('/partners')
+    ]
+]);
+?>
+
+<?php 
+// Solutions Detail Component - Technical Specifications & Comparisons
+apex_render_solutions_detail();
+?>
+
+<?php 
+// ROI Calculator Component - Interactive Investment Calculator
+apex_render_roi_calculator([
+    'badge' => 'ROI Calculator',
+    'heading' => 'Calculate Your Return on Investment',
+    'description' => 'See how ApexCore can transform your financial institution\'s efficiency and profitability.',
+    'cta' => [
+        'text' => 'Get Detailed Analysis',
+        'url' => home_url('/contact')
+    ]
+]);
+?>
+
+<?php 
+// Case Studies Component - Client Success Stories
+apex_render_case_studies([
+    'badge' => 'Case Studies',
+    'heading' => 'Real Results from Real Clients',
+    'description' => 'Discover how financial institutions across Africa have transformed their operations with ApexCore.',
+    'cta' => [
+        'text' => 'View All Case Studies',
+        'url' => home_url('/case-studies')
+    ]
+]);
+?>
+
+<?php 
+// API Integration Component - Developer Platform
+apex_render_api_integration([
+    'badge' => 'Developer Platform',
+    'heading' => 'Powerful API & Integration Capabilities',
+    'description' => 'Build custom solutions with our comprehensive REST APIs, webhooks, and SDKs. Connect ApexCore to your existing systems seamlessly.',
+    'cta' => [
+        'primary' => [
+            'text' => 'View API Documentation',
+            'url' => home_url('/developers/api-docs')
+        ],
+        'secondary' => [
+            'text' => 'Get API Keys',
+            'url' => home_url('/developers/register')
+        ]
+    ]
+]);
+?>
+
+<?php 
+// Compliance & Security Component
+apex_render_compliance([
+    'badge' => 'Security & Compliance',
+    'heading' => 'Enterprise-Grade Security You Can Trust',
+    'description' => 'ApexCore meets the highest standards of security, privacy, and regulatory compliance required by financial institutions worldwide.',
+    'cta' => [
+        'text' => 'Download Security Whitepaper',
+        'url' => home_url('/resources/security-whitepaper')
+    ]
+]);
+?>
+
+<?php 
+// What's New Section Component
+apex_render_whats_new([
+    'badge' => "What's New",
+    'heading' => 'Latest News & Insights',
+    'description' => 'Stay updated with the latest developments in financial technology and Apex Softwares.',
+    'posts_per_page' => 3,
+    'cta' => [
+        'text' => 'View All Articles',
+        'url' => home_url('/blog')
+    ]
+]);
+?>
+
+<!-- Optional: WordPress Content Area -->
+<?php if (have_posts() && get_the_content()) : ?>
 <main id="site-main" class="flex-1">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div class="site-content clearfix">
-            <?php if (have_posts()) :
-                while (have_posts()) : the_post();
-                    the_content();
-                endwhile;
-            else :
-                echo '<p>No content found</p>';
-            endif;
+            <?php 
+            while (have_posts()) : the_post();
+                the_content();
+            endwhile;
             ?>
         </div>
     </div>
 </main>
-
-<!-- Hero Carousel Styles -->
-<style>
-/* Full-Screen Hero Section */
-.apex-hero-fullscreen {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    min-height: 600px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
-
-/* Remove any spacing from closed containers */
-body > .min-h-screen > main > div:empty,
-body > div:empty {
-    display: none;
-}
-
-/* Background Container */
-.apex-hero-bg-container {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
-
-/* Background Slides */
-.apex-hero-bg-slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-
-.apex-hero-bg-slide.active {
-    opacity: 1;
-}
-
-/* Background Images - Blurred */
-.apex-hero-bg-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    filter: blur(4px);
-    transform: scale(1.05);
-}
-
-/* Dark Overlay with Blue Tint (like softwaregroup.com) */
-.apex-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(30, 58, 138, 0.85) 0%,
-        rgba(30, 64, 175, 0.75) 50%,
-        rgba(37, 99, 235, 0.7) 100%
-    );
-    z-index: 1;
-}
-
-/* Hero Content */
-.apex-hero-content {
-    position: relative;
-    z-index: 10;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
-    padding-top: 100px;
-    padding-bottom: 2rem;
-}
-
-.apex-hero-content-inner {
-    width: 100%;
-    max-width: 700px;
-    margin: 0;
-    padding: 0;
-}
-
-/* Tagline */
-.apex-hero-tagline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #fed7aa;
-    margin-bottom: 1rem;
-}
-
-.apex-hero-tagline-dot {
-    width: 8px;
-    height: 8px;
-    background-color: #fa8b24;
-    border-radius: 50%;
-    animation: pulse-dot 2s infinite;
-}
-
-@keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.2); }
-}
-
-/* Main Heading */
-.apex-hero-heading {
-    position: relative;
-    min-height: 220px;
-    margin-bottom: 1.5rem;
-}
-
-.apex-hero-heading-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    color: #ffffff;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease-out;
-    max-width: 100%;
-    width: 100%;
-}
-
-.apex-hero-heading-text.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Subheading */
-.apex-hero-subheading {
-    position: relative;
-    min-height: 100px;
-    margin-bottom: 2rem;
-}
-
-.apex-hero-subheading-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 1.125rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.85);
-    max-width: 100%;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: all 0.6s ease-out 0.1s;
-}
-
-.apex-hero-subheading-text.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* CTA Buttons */
-.apex-hero-cta-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-}
-
-.apex-hero-cta-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: #1e3a8a;
-    background-color: #fa8b24;
-    border-radius: 9999px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(250, 139, 36, 0.4);
-}
-
-.apex-hero-cta-primary:hover {
-    background-color: #f97316;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(250, 139, 36, 0.5);
-    text-decoration: none;
-    color: #ffffff;
-}
-
-.apex-hero-cta-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: #ffffff;
-    background-color: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    border-radius: 9999px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.apex-hero-cta-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    color: #ffffff;
-}
-
-/* Navigation Arrows */
-.apex-hero-nav {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 2rem;
-}
-
-.apex-hero-nav-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.apex-hero-nav-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Slide Indicators */
-.apex-hero-indicators {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.apex-hero-indicator {
-    width: 12px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.apex-hero-indicator.active {
-    background-color: #fa8b24;
-    width: 32px;
-    border-radius: 6px;
-}
-
-.apex-hero-indicator:hover:not(.active) {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Bottom Banner */
-.apex-hero-banner {
-    position: relative;
-    z-index: 10;
-    background-color: #fa8b24;
-    padding: 1rem 1.5rem;
-    text-align: center;
-}
-
-.apex-hero-banner p {
-    margin: 0;
-    font-size: 0.9375rem;
-    color: #1e3a8a;
-}
-
-.apex-hero-banner a {
-    color: #1e3a8a;
-    font-weight: 600;
-    text-decoration: underline;
-}
-
-.apex-hero-banner a:hover {
-    color: #1e40af;
-}
-
-/* Responsive Styles */
-@media (min-width: 640px) {
-    .apex-hero-content {
-        padding: 0 3rem;
-        padding-top: 100px;
-    }
-    
-    .apex-hero-content-inner {
-        max-width: 650px;
-    }
-    
-    .apex-hero-heading {
-        min-height: 160px;
-    }
-    
-    .apex-hero-heading-text {
-        font-size: 2.75rem;
-    }
-    
-    .apex-hero-subheading {
-        min-height: 90px;
-    }
-    
-    .apex-hero-subheading-text {
-        font-size: 1.125rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .apex-hero-content {
-        padding: 0 4rem;
-        padding-top: 100px;
-    }
-    
-    .apex-hero-content-inner {
-        max-width: 700px;
-    }
-    
-    .apex-hero-heading {
-        min-height: 140px;
-    }
-    
-    .apex-hero-heading-text {
-        font-size: 3.25rem;
-    }
-    
-    .apex-hero-subheading {
-        min-height: 80px;
-    }
-    
-    .apex-hero-subheading-text {
-        font-size: 1.25rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .apex-hero-content {
-        padding: 0 6rem;
-        padding-top: 80px;
-    }
-    
-    .apex-hero-content-inner {
-        max-width: 750px;
-    }
-    
-    .apex-hero-heading {
-        min-height: 130px;
-    }
-    
-    .apex-hero-heading-text {
-        font-size: 3.75rem;
-    }
-    
-    .apex-hero-subheading {
-        min-height: 70px;
-    }
-    
-    .apex-hero-subheading-text {
-        font-size: 1.25rem;
-    }
-}
-
-@media (min-width: 1280px) {
-    .apex-hero-content {
-        padding: 0 8rem;
-    }
-    
-    .apex-hero-content-inner {
-        max-width: 800px;
-    }
-    
-    .apex-hero-heading {
-        min-height: 120px;
-    }
-    
-    .apex-hero-heading-text {
-        font-size: 4rem;
-    }
-}
-
-@media (min-width: 1536px) {
-    .apex-hero-content {
-        padding: 0 calc((100vw - 1280px) / 2 + 2rem);
-    }
-}
-</style>
-
-<!-- Hero Carousel JavaScript -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const container = document.querySelector('[data-hero-carousel-container]');
-    if (!container) return;
-    
-    const bgSlides = container.querySelectorAll('[data-bg-slide]');
-    const headingSlides = container.querySelectorAll('[data-heading-slide]');
-    const subheadingSlides = container.querySelectorAll('[data-subheading-slide]');
-    const indicators = container.querySelectorAll('[data-hero-indicator]');
-    const prevBtn = container.querySelector('[data-hero-prev]');
-    const nextBtn = container.querySelector('[data-hero-next]');
-    
-    let currentSlide = 0;
-    const totalSlides = bgSlides.length;
-    let autoplayInterval;
-    
-    function goToSlide(index) {
-        // Wrap around
-        if (index < 0) index = totalSlides - 1;
-        if (index >= totalSlides) index = 0;
-        
-        // Update background slides
-        bgSlides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
-        });
-        
-        // Update heading slides
-        headingSlides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
-        });
-        
-        // Update subheading slides
-        subheadingSlides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
-        });
-        
-        // Update indicators
-        indicators.forEach((indicator, i) => {
-            indicator.classList.toggle('active', i === index);
-        });
-        
-        currentSlide = index;
-    }
-    
-    function nextSlide() {
-        goToSlide(currentSlide + 1);
-    }
-    
-    function prevSlide() {
-        goToSlide(currentSlide - 1);
-    }
-    
-    function startAutoplay() {
-        autoplayInterval = setInterval(nextSlide, 5000);
-    }
-    
-    function stopAutoplay() {
-        clearInterval(autoplayInterval);
-    }
-    
-    // Event listeners
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            prevSlide();
-            stopAutoplay();
-            startAutoplay();
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            nextSlide();
-            stopAutoplay();
-            startAutoplay();
-        });
-    }
-    
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            goToSlide(index);
-            stopAutoplay();
-            startAutoplay();
-        });
-    });
-    
-    // Pause on hover
-    container.addEventListener('mouseenter', stopAutoplay);
-    container.addEventListener('mouseleave', startAutoplay);
-    
-    // Start autoplay
-    startAutoplay();
-});
-</script>
+<?php endif; ?>
 
 <?php get_footer(); ?>

@@ -1,0 +1,310 @@
+/**
+ * Who We Are Component Styles
+ * Company introduction section
+ * 
+ * @package ApexTheme
+ * @subpackage Components/WhoWeAre
+ */
+
+/* ========================================
+   Section Container
+   ======================================== */
+.apex-who-we-are {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.apex-who-we-are::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: radial-gradient(circle at 70% 30%, rgba(249, 115, 22, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.apex-who-we-are__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   Grid Layout
+   ======================================== */
+.apex-who-we-are__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .apex-who-we-are__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+    }
+}
+
+/* ========================================
+   Content Column
+   ======================================== */
+.apex-who-we-are__content {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-who-we-are__content.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.apex-who-we-are__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #ea580c;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
+.apex-who-we-are__heading {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.apex-who-we-are__description {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: #64748b;
+    margin-bottom: 2.5rem;
+}
+
+/* ========================================
+   Features List
+   ======================================== */
+.apex-who-we-are__features {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.apex-who-we-are__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.apex-who-we-are__feature:hover {
+    border-color: #f97316;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.1);
+    transform: translateX(5px);
+}
+
+.apex-who-we-are__feature-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    border-radius: 12px;
+    color: #ffffff;
+}
+
+.apex-who-we-are__feature-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.apex-who-we-are__feature-content {
+    flex: 1;
+}
+
+.apex-who-we-are__feature-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-who-we-are__feature-text {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ========================================
+   CTA Button
+   ======================================== */
+.apex-who-we-are__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.apex-who-we-are__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.3);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.apex-who-we-are__cta svg {
+    transition: transform 0.3s ease;
+}
+
+.apex-who-we-are__cta:hover svg {
+    transform: translateX(4px);
+}
+
+/* ========================================
+   Visual Column
+   ======================================== */
+.apex-who-we-are__visual {
+    position: relative;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.apex-who-we-are__visual.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.apex-who-we-are__image-wrapper {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+.apex-who-we-are__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+}
+
+.apex-who-we-are__image-accent {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 60%;
+    height: 60%;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.1) 100%);
+    border-radius: 20px;
+    z-index: -1;
+}
+
+/* ========================================
+   Stats Card
+   ======================================== */
+.apex-who-we-are__stats-card {
+    position: absolute;
+    bottom: -30px;
+    left: -20px;
+    background: #ffffff;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.apex-who-we-are__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.apex-who-we-are__stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.apex-who-we-are__stat-label {
+    font-size: 0.8125rem;
+    color: #64748b;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+@media (max-width: 1024px) {
+    .apex-who-we-are {
+        padding: 4rem 1.5rem;
+    }
+    
+    .apex-who-we-are__visual {
+        order: -1;
+    }
+    
+    .apex-who-we-are__stats-card {
+        bottom: -20px;
+        left: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .apex-who-we-are {
+        padding: 3rem 1rem;
+    }
+    
+    .apex-who-we-are__grid {
+        gap: 3rem;
+    }
+    
+    .apex-who-we-are__feature {
+        padding: 0.75rem;
+    }
+    
+    .apex-who-we-are__stats-card {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    
+    .apex-who-we-are__cta {
+        width: 100%;
+        justify-content: center;
+    }
+}

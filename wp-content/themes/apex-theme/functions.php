@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Load modular component system
+ */
+require_once get_template_directory() . '/components/component-loader.php';
+
+/**
  * Theme setup.
  */
 function apex_theme_setup(): void {
