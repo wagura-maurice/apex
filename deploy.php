@@ -70,9 +70,15 @@ before('deploy:symlink', 'release:application');
 // Main deploy task
 task('deploy', [
     'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:writable',
     'deploy:vendors',
-    'deploy:publish',
+    'deploy:symlink',
+    'deploy:unlock',
+    'deploy:clear_paths',
 ]);
 
 desc('Deploy WordPress');
-task('deploy');
