@@ -167,6 +167,12 @@ $apex_request_demo_href = home_url('/request-demo');
 
                 <!-- Actions -->
                 <div class="flex items-center gap-3 flex-shrink-0">
+                    <!-- Search Toggle -->
+                    <button type="button" id="header-search-toggle" class="hidden sm:inline-flex items-center justify-center rounded-full w-10 h-10 text-slate-600 hover:text-orange-500 hover:bg-orange-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/50 transition-all duration-200" aria-label="Search">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
                     <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="hidden sm:inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/60 transition-all duration-200 bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg hover:shadow-xl transform hover:scale-105">
                         Request Demo
                     </a>
@@ -274,6 +280,18 @@ $apex_request_demo_href = home_url('/request-demo');
                 <!-- Contact Us -->
                 <a class="rounded-lg px-4 py-3 text-sm font-bold transition-all duration-200 <?php echo $is_contact_active ? 'bg-orange-50 text-orange-500 border-l-4 border-orange-500' : 'text-slate-700 hover:bg-orange-50 hover:text-orange-500'; ?>" href="<?php echo esc_url(home_url('/contact')); ?>">Contact Us</a>
 
+                <!-- Mobile Search Form -->
+                <div class="mt-4 pt-4 border-t border-slate-200">
+                    <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="flex gap-2">
+                        <input type="text" name="s" placeholder="Search..." value="<?php echo get_search_query(); ?>" class="flex-1 rounded-lg border border-slate-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400/50 focus:border-orange-400">
+                        <button type="submit" class="rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
                 <!-- Request Demo CTA -->
                 <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="mt-4 inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-400 px-5 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all duration-200">
                     Request Demo
@@ -282,9 +300,69 @@ $apex_request_demo_href = home_url('/request-demo');
         </div>
     </div>
 
+    <!-- Search Overlay Modal -->
+    <div id="apex-search-overlay" class="fixed inset-0 z-[9999] hidden" aria-hidden="true">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" id="search-overlay-backdrop"></div>
+        <div class="relative flex items-start justify-center pt-20 px-4">
+            <div class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+                <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="relative">
+                    <input type="text" name="s" id="apex-search-input" placeholder="Search pages, solutions, insights..." value="<?php echo get_search_query(); ?>" class="w-full px-6 py-5 text-lg border-0 focus:outline-none focus:ring-0" autocomplete="off">
+                    <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-orange-500 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </form>
+                <div class="px-6 py-4 bg-slate-50 border-t border-slate-100">
+                    <p class="text-xs text-slate-500">Press <kbd class="px-2 py-1 bg-white rounded border border-slate-200 text-slate-600 font-mono">ESC</kbd> to close or <kbd class="px-2 py-1 bg-white rounded border border-slate-200 text-slate-600 font-mono">Enter</kbd> to search</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
     (function() {
         'use strict';
+        
+        // ===========================================
+        // Search Overlay Toggle
+        // ===========================================
+        const searchToggle = document.getElementById('header-search-toggle');
+        const searchOverlay = document.getElementById('apex-search-overlay');
+        const searchInput = document.getElementById('apex-search-input');
+        const searchBackdrop = document.getElementById('search-overlay-backdrop');
+        
+        function openSearch() {
+            if (searchOverlay) {
+                searchOverlay.classList.remove('hidden');
+                searchOverlay.setAttribute('aria-hidden', 'false');
+                if (searchInput) searchInput.focus();
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeSearch() {
+            if (searchOverlay) {
+                searchOverlay.classList.add('hidden');
+                searchOverlay.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        if (searchToggle) {
+            searchToggle.addEventListener('click', openSearch);
+        }
+        
+        if (searchBackdrop) {
+            searchBackdrop.addEventListener('click', closeSearch);
+        }
+        
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchOverlay && !searchOverlay.classList.contains('hidden')) {
+                closeSearch();
+            }
+        });
         
         // ===========================================
         // Mobile Menu Toggle - Initialize FIRST
