@@ -1,0 +1,243 @@
+/**
+ * About Hero Component Styles
+ * Hero section for About Us pages
+ * 
+ * @package ApexTheme
+ * @subpackage Components/AboutHero
+ */
+
+/* ========================================
+   Section Container
+   ======================================== */
+.apex-about-hero {
+    position: relative;
+    padding: 8rem 1.5rem 6rem;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.apex-about-hero__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    z-index: 0;
+}
+
+.apex-about-hero__gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(249, 115, 22, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+}
+
+.apex-about-hero__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+@media (min-width: 1024px) {
+    .apex-about-hero__container {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+    }
+}
+
+/* ========================================
+   Content
+   ======================================== */
+.apex-about-hero__content {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-about-hero__content.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-about-hero__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.2) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
+.apex-about-hero__heading {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+}
+
+.apex-about-hero__description {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #94a3b8;
+    margin: 0 0 2.5rem 0;
+    max-width: 540px;
+}
+
+/* ========================================
+   Stats
+   ======================================== */
+.apex-about-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-about-hero__stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+.apex-about-hero__stat {
+    text-align: left;
+}
+
+.apex-about-hero__stat-value {
+    display: block;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+}
+
+.apex-about-hero__stat-label {
+    display: block;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+/* ========================================
+   Image
+   ======================================== */
+.apex-about-hero__image-wrapper {
+    position: relative;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.apex-about-hero__image-wrapper.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.apex-about-hero__image-container {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+}
+
+.apex-about-hero__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+}
+
+.apex-about-hero__image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+    pointer-events: none;
+}
+
+.apex-about-hero__decoration {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.apex-about-hero__decoration--1 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.3) 0%, transparent 70%);
+    top: -50px;
+    right: -50px;
+    filter: blur(40px);
+}
+
+.apex-about-hero__decoration--2 {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+    bottom: -30px;
+    left: -30px;
+    filter: blur(30px);
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 1024px) {
+    .apex-about-hero {
+        padding: 6rem 1.5rem 4rem;
+        min-height: auto;
+    }
+    
+    .apex-about-hero__image-wrapper {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .apex-about-hero {
+        padding: 5rem 1rem 3rem;
+    }
+    
+    .apex-about-hero__heading {
+        font-size: 2rem;
+    }
+    
+    .apex-about-hero__description {
+        font-size: 1rem;
+    }
+    
+    .apex-about-hero__stats {
+        gap: 1rem;
+    }
+    
+    .apex-about-hero__stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .apex-about-hero__stat-label {
+        font-size: 0.75rem;
+    }
+}

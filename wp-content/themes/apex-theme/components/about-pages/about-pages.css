@@ -1,0 +1,1174 @@
+/**
+ * About Pages Shared Styles
+ * Styles for Our Approach, Leadership Team, and News pages
+ * 
+ * @package ApexTheme
+ * @subpackage Components/AboutPages
+ */
+
+/* ========================================
+   Our Approach - Methodology Section
+   ======================================== */
+.apex-approach-methodology {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-approach-methodology__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-approach-methodology__header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+}
+
+.apex-approach-methodology__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-approach-methodology__heading {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-approach-methodology__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #64748b;
+    margin: 0;
+}
+
+.apex-approach-methodology__phases {
+    position: relative;
+}
+
+.apex-approach-methodology__phase {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.apex-approach-methodology__phase:last-child {
+    margin-bottom: 0;
+}
+
+.apex-approach-methodology__phase-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.apex-approach-methodology__phase-content {
+    background: #f8fafc;
+    padding: 2rem;
+    border-radius: 16px;
+    border-left: 4px solid #f97316;
+}
+
+.apex-approach-methodology__phase-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-approach-methodology__phase-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #475569;
+    margin: 0 0 1rem 0;
+}
+
+.apex-approach-methodology__phase-content ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.apex-approach-methodology__phase-content li {
+    font-size: 0.9375rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+/* ========================================
+   Our Approach - Principles Section
+   ======================================== */
+.apex-approach-principles {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.apex-approach-principles__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-approach-principles__header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.apex-approach-principles__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-approach-principles__heading {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.apex-approach-principles__grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-approach-principles__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-approach-principles__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.apex-approach-principles__card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.apex-approach-principles__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.apex-approach-principles__icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    color: #f97316;
+}
+
+.apex-approach-principles__icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.apex-approach-principles__card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-approach-principles__card p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ========================================
+   Our Approach - Support Section
+   ======================================== */
+.apex-approach-support {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.apex-approach-support__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .apex-approach-support__container {
+        grid-template-columns: 1.5fr 1fr;
+    }
+}
+
+.apex-approach-support__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.2) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-approach-support__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.apex-approach-support__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #94a3b8;
+    margin: 0 0 2rem 0;
+}
+
+.apex-approach-support__features {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.apex-approach-support__feature {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.apex-approach-support__feature svg {
+    width: 24px;
+    height: 24px;
+    color: #f97316;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.apex-approach-support__feature h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-approach-support__feature p {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.apex-approach-support__stats {
+    display: grid;
+    gap: 1rem;
+}
+
+.apex-approach-support__stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.apex-approach-support__stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #f97316;
+    margin-bottom: 0.25rem;
+}
+
+.apex-approach-support__stat-label {
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+
+/* ========================================
+   Leadership - Executive Section
+   ======================================== */
+.apex-leadership-executive {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-leadership-executive__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-leadership-executive__header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+}
+
+.apex-leadership-executive__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-leadership-executive__heading {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-leadership-executive__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #64748b;
+    margin: 0;
+}
+
+.apex-leadership-executive__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .apex-leadership-executive__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.apex-leadership-executive__member {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    background: #f8fafc;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+@media (min-width: 640px) {
+    .apex-leadership-executive__member {
+        grid-template-columns: 200px 1fr;
+    }
+}
+
+.apex-leadership-executive__member-image {
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.apex-leadership-executive__member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.apex-leadership-executive__member-info {
+    padding: 1.5rem;
+}
+
+.apex-leadership-executive__member-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-leadership-executive__member-role {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f97316;
+    margin-bottom: 1rem;
+}
+
+.apex-leadership-executive__member-info p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-leadership-executive__member-social {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.apex-leadership-executive__member-social a {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a;
+    border-radius: 50%;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.apex-leadership-executive__member-social a:hover {
+    background: #f97316;
+}
+
+.apex-leadership-executive__member-social svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ========================================
+   Leadership - Senior Section
+   ======================================== */
+.apex-leadership-senior {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.apex-leadership-senior__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-leadership-senior__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-leadership-senior__heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-leadership-senior__description {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.apex-leadership-senior__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-leadership-senior__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-leadership-senior__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.apex-leadership-senior__member {
+    text-align: center;
+}
+
+.apex-leadership-senior__member img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.apex-leadership-senior__member h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-leadership-senior__member span {
+    font-size: 0.8125rem;
+    color: #64748b;
+}
+
+/* ========================================
+   Leadership - Culture Section
+   ======================================== */
+.apex-leadership-culture {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-leadership-culture__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .apex-leadership-culture__container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.apex-leadership-culture__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-leadership-culture__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-leadership-culture__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #64748b;
+    margin: 0 0 2rem 0;
+}
+
+.apex-leadership-culture__benefits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.apex-leadership-culture__benefit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    color: #475569;
+}
+
+.apex-leadership-culture__benefit svg {
+    width: 20px;
+    height: 20px;
+    color: #22c55e;
+    flex-shrink: 0;
+}
+
+.apex-leadership-culture__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.apex-leadership-culture__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.35);
+    color: #ffffff;
+}
+
+.apex-leadership-culture__cta svg {
+    width: 20px;
+    height: 20px;
+}
+
+.apex-leadership-culture__image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.apex-leadership-culture__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========================================
+   News - Featured Section
+   ======================================== */
+.apex-news-featured {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-news-featured__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-news-featured__header {
+    margin-bottom: 2rem;
+}
+
+.apex-news-featured__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+}
+
+.apex-news-featured__card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    background: #f8fafc;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+    .apex-news-featured__card {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.apex-news-featured__image {
+    position: relative;
+    aspect-ratio: 16/10;
+}
+
+.apex-news-featured__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.apex-news-featured__category {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: #f97316;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 50px;
+}
+
+.apex-news-featured__content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.apex-news-featured__date {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+}
+
+.apex-news-featured__title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+}
+
+.apex-news-featured__excerpt {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #64748b;
+    margin: 0 0 1rem 0;
+}
+
+.apex-news-featured__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f97316;
+    text-decoration: none;
+    margin-top: auto;
+}
+
+.apex-news-featured__link:hover {
+    color: #ea580c;
+}
+
+.apex-news-featured__link svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ========================================
+   News - Grid Section
+   ======================================== */
+.apex-news-grid {
+    padding: 4rem 1.5rem 6rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.apex-news-grid__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-news-grid__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.apex-news-grid__heading {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.apex-news-grid__filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.apex-news-grid__filter {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apex-news-grid__filter:hover,
+.apex-news-grid__filter.active {
+    background: #f97316;
+    border-color: #f97316;
+    color: #ffffff;
+}
+
+.apex-news-grid__items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 640px) {
+    .apex-news-grid__items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-news-grid__items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.apex-news-grid__item {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.apex-news-grid__item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.apex-news-grid__item-image {
+    aspect-ratio: 16/10;
+    overflow: hidden;
+}
+
+.apex-news-grid__item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.apex-news-grid__item:hover .apex-news-grid__item-image img {
+    transform: scale(1.05);
+}
+
+.apex-news-grid__item-content {
+    padding: 1.5rem;
+}
+
+.apex-news-grid__item-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #f97316;
+    text-transform: uppercase;
+    margin-right: 1rem;
+}
+
+.apex-news-grid__item-date {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.apex-news-grid__item-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0.75rem 0;
+    line-height: 1.4;
+}
+
+.apex-news-grid__item-content p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0 0 1rem 0;
+}
+
+.apex-news-grid__item-content a {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #f97316;
+    text-decoration: none;
+}
+
+.apex-news-grid__item-content a:hover {
+    color: #ea580c;
+}
+
+.apex-news-grid__load-more {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.apex-news-grid__load-btn {
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apex-news-grid__load-btn:hover {
+    border-color: #f97316;
+    color: #f97316;
+}
+
+/* ========================================
+   News - Press Section
+   ======================================== */
+.apex-news-press {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.apex-news-press__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-news-press__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-news-press__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-news-press__description {
+    font-size: 1rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.apex-news-press__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-news-press__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-news-press__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.apex-news-press__item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.apex-news-press__logo {
+    margin-bottom: 1rem;
+}
+
+.apex-news-press__logo span {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.apex-news-press__item blockquote {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    font-style: italic;
+    margin: 0 0 1rem 0;
+}
+
+.apex-news-press__item a {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #f97316;
+    text-decoration: none;
+}
+
+.apex-news-press__item a:hover {
+    color: #fb923c;
+}
+
+/* ========================================
+   News - Newsletter Section
+   ======================================== */
+.apex-news-newsletter {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}
+
+.apex-news-newsletter__container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.apex-news-newsletter__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.apex-news-newsletter__description {
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 2rem 0;
+}
+
+.apex-news-newsletter__form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 500px;
+    margin: 0 auto 1rem;
+}
+
+@media (max-width: 640px) {
+    .apex-news-newsletter__form {
+        flex-direction: column;
+    }
+}
+
+.apex-news-newsletter__form input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.apex-news-newsletter__form button {
+    padding: 1rem 2rem;
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apex-news-newsletter__form button:hover {
+    background: #1e293b;
+}
+
+.apex-news-newsletter__note {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+/* ========================================
+   News - Contact Section
+   ======================================== */
+.apex-news-contact {
+    padding: 4rem 1.5rem;
+    background: #f8fafc;
+}
+
+.apex-news-contact__container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.apex-news-contact__heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-news-contact__description {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0 0 2rem 0;
+}
+
+.apex-news-contact__info {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.apex-news-contact__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.apex-news-contact__item svg {
+    width: 24px;
+    height: 24px;
+    color: #f97316;
+}
+
+.apex-news-contact__item strong {
+    display: block;
+    font-size: 0.875rem;
+    color: #0f172a;
+}
+
+.apex-news-contact__item a {
+    font-size: 0.875rem;
+    color: #f97316;
+    text-decoration: none;
+}
+
+.apex-news-contact__item a:hover {
+    color: #ea580c;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-approach-methodology,
+    .apex-approach-principles,
+    .apex-approach-support,
+    .apex-leadership-executive,
+    .apex-leadership-senior,
+    .apex-leadership-culture,
+    .apex-news-featured,
+    .apex-news-grid,
+    .apex-news-press,
+    .apex-news-newsletter,
+    .apex-news-contact {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-approach-methodology__phase {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .apex-approach-methodology__phase-number {
+        font-size: 2rem;
+    }
+    
+    .apex-leadership-culture__benefits {
+        grid-template-columns: 1fr;
+    }
+}

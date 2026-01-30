@@ -1,0 +1,780 @@
+/**
+ * Insights Pages Shared Styles - Part 3
+ * Webinars and Whitepapers pages
+ * 
+ * @package ApexTheme
+ * @subpackage Components/InsightsPages
+ */
+
+/* ========================================
+   Webinars - Upcoming Section
+   ======================================== */
+.apex-webinars-upcoming {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-webinars-upcoming__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-webinars-upcoming__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-webinars-upcoming__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-webinars-upcoming__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-webinars-upcoming__description {
+    font-size: 1.0625rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.apex-webinars-upcoming__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .apex-webinars-upcoming__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.apex-webinars-upcoming__item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-upcoming__item:hover {
+    border-color: #f97316;
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.1);
+}
+
+.apex-webinars-upcoming__item--featured {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: none;
+}
+
+.apex-webinars-upcoming__item-badge {
+    position: absolute;
+    top: -10px;
+    left: 1.5rem;
+    padding: 0.375rem 0.75rem;
+    background: #f97316;
+    color: #ffffff;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 50px;
+}
+
+.apex-webinars-upcoming__item-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    height: fit-content;
+}
+
+.apex-webinars-upcoming__item--featured .apex-webinars-upcoming__item-date {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.apex-webinars-upcoming__item-day {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #f97316;
+    line-height: 1;
+}
+
+.apex-webinars-upcoming__item-month {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.apex-webinars-upcoming__item--featured .apex-webinars-upcoming__item-month {
+    color: #94a3b8;
+}
+
+.apex-webinars-upcoming__item-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.apex-webinars-upcoming__item-type {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #f97316;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.apex-webinars-upcoming__item-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+}
+
+.apex-webinars-upcoming__item--featured .apex-webinars-upcoming__item-content h3 {
+    color: #ffffff;
+    font-size: 1.25rem;
+}
+
+.apex-webinars-upcoming__item-content p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0 0 1rem 0;
+}
+
+.apex-webinars-upcoming__item--featured .apex-webinars-upcoming__item-content p {
+    color: #94a3b8;
+}
+
+.apex-webinars-upcoming__item-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.apex-webinars-upcoming__item-time,
+.apex-webinars-upcoming__item-duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #64748b;
+}
+
+.apex-webinars-upcoming__item--featured .apex-webinars-upcoming__item-time,
+.apex-webinars-upcoming__item--featured .apex-webinars-upcoming__item-duration {
+    color: #94a3b8;
+}
+
+.apex-webinars-upcoming__item-time svg,
+.apex-webinars-upcoming__item-duration svg {
+    width: 16px;
+    height: 16px;
+}
+
+.apex-webinars-upcoming__item-speakers {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+    color: #94a3b8;
+}
+
+.apex-webinars-upcoming__item-speaker-avatars {
+    display: flex;
+}
+
+.apex-webinars-upcoming__item-speaker-avatars img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #1e293b;
+    margin-left: -8px;
+}
+
+.apex-webinars-upcoming__item-speaker-avatars img:first-child {
+    margin-left: 0;
+}
+
+.apex-webinars-upcoming__item-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    width: fit-content;
+}
+
+.apex-webinars-upcoming__item-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.35);
+    color: #ffffff;
+}
+
+.apex-webinars-upcoming__item-cta--secondary {
+    background: transparent;
+    border: 2px solid #f97316;
+    color: #f97316;
+}
+
+.apex-webinars-upcoming__item-cta--secondary:hover {
+    background: #f97316;
+    color: #ffffff;
+}
+
+/* Webinars Conference */
+.apex-webinars-conference {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}
+
+.apex-webinars-conference__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .apex-webinars-conference__container {
+        grid-template-columns: 1.2fr 1fr;
+    }
+}
+
+.apex-webinars-conference__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-webinars-conference__heading {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.apex-webinars-conference__description {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 2rem 0;
+}
+
+.apex-webinars-conference__details {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.apex-webinars-conference__detail {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.apex-webinars-conference__detail svg {
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.apex-webinars-conference__detail strong {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+}
+
+.apex-webinars-conference__detail span {
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+.apex-webinars-conference__highlights {
+    margin-bottom: 2rem;
+}
+
+.apex-webinars-conference__highlights h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-webinars-conference__highlights ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.apex-webinars-conference__highlights li {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+}
+
+.apex-webinars-conference__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.apex-webinars-conference__cta-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #ffffff;
+    color: #f97316;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-conference__cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    color: #ea580c;
+}
+
+.apex-webinars-conference__cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-conference__cta-secondary:hover {
+    background: #ffffff;
+    color: #f97316;
+}
+
+.apex-webinars-conference__image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.apex-webinars-conference__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Webinars On-Demand */
+.apex-webinars-ondemand {
+    padding: 6rem 1.5rem;
+    background: #f8fafc;
+}
+
+.apex-webinars-ondemand__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-webinars-ondemand__header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.apex-webinars-ondemand__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-webinars-ondemand__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-webinars-ondemand__description {
+    font-size: 1.0625rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.apex-webinars-ondemand__filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+}
+
+.apex-webinars-ondemand__filter {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-ondemand__filter:hover,
+.apex-webinars-ondemand__filter.active {
+    background: #f97316;
+    border-color: #f97316;
+    color: #ffffff;
+}
+
+.apex-webinars-ondemand__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 640px) {
+    .apex-webinars-ondemand__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-webinars-ondemand__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.apex-webinars-ondemand__item {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-ondemand__item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.apex-webinars-ondemand__item-thumbnail {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.apex-webinars-ondemand__item-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.apex-webinars-ondemand__item-duration {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.apex-webinars-ondemand__item-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(249, 115, 22, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-ondemand__item:hover .apex-webinars-ondemand__item-play {
+    opacity: 1;
+}
+
+.apex-webinars-ondemand__item-play svg {
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
+    margin-left: 4px;
+}
+
+.apex-webinars-ondemand__item-content {
+    padding: 1.5rem;
+}
+
+.apex-webinars-ondemand__item-category {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #f97316;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.apex-webinars-ondemand__item-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+}
+
+.apex-webinars-ondemand__item-content p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0 0 1rem 0;
+}
+
+.apex-webinars-ondemand__item-meta {
+    display: flex;
+    gap: 1rem;
+}
+
+.apex-webinars-ondemand__item-meta span {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.apex-webinars-ondemand__load-more {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.apex-webinars-ondemand__load-btn {
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-ondemand__load-btn:hover {
+    border-color: #f97316;
+    color: #f97316;
+}
+
+/* Webinars Speakers */
+.apex-webinars-speakers {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-webinars-speakers__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-webinars-speakers__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-webinars-speakers__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-webinars-speakers__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-webinars-speakers__description {
+    font-size: 1.0625rem;
+    color: #64748b;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.apex-webinars-speakers__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .apex-webinars-speakers__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.apex-webinars-speakers__item {
+    text-align: center;
+}
+
+.apex-webinars-speakers__item img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 4px solid #f8fafc;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.apex-webinars-speakers__item h4 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-webinars-speakers__item span {
+    display: block;
+    font-size: 0.8125rem;
+    color: #f97316;
+    margin-bottom: 0.5rem;
+}
+
+.apex-webinars-speakers__item p {
+    font-size: 0.8125rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Webinars Newsletter */
+.apex-webinars-newsletter {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.apex-webinars-newsletter__container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.apex-webinars-newsletter__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.apex-webinars-newsletter__description {
+    font-size: 1.0625rem;
+    color: #94a3b8;
+    margin: 0 0 2rem 0;
+}
+
+.apex-webinars-newsletter__form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 500px;
+    margin: 0 auto 1rem;
+}
+
+@media (max-width: 640px) {
+    .apex-webinars-newsletter__form {
+        flex-direction: column;
+    }
+}
+
+.apex-webinars-newsletter__form input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.apex-webinars-newsletter__form button {
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apex-webinars-newsletter__form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.35);
+}
+
+.apex-webinars-newsletter__note {
+    font-size: 0.8125rem;
+    color: #64748b;
+    margin: 0;
+}

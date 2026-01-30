@@ -303,4 +303,355 @@ function apex_header_scripts() {
 }
 add_action('wp_footer', 'apex_header_scripts');
 
+/**
+ * Register custom rewrite rules for About Us pages
+ */
+function apex_about_us_rewrite_rules() {
+    add_rewrite_rule('^about-us/?$', 'index.php?apex_about_page=overview', 'top');
+    add_rewrite_rule('^about-us/overview/?$', 'index.php?apex_about_page=overview', 'top');
+    add_rewrite_rule('^about-us/our-approach/?$', 'index.php?apex_about_page=our-approach', 'top');
+    add_rewrite_rule('^about-us/leadership-team/?$', 'index.php?apex_about_page=leadership-team', 'top');
+    add_rewrite_rule('^about-us/news/?$', 'index.php?apex_about_page=news', 'top');
+}
+add_action('init', 'apex_about_us_rewrite_rules');
+
+/**
+ * Register custom rewrite rules for Insights pages
+ */
+function apex_insights_rewrite_rules() {
+    add_rewrite_rule('^insights/blog/?$', 'index.php?apex_insights_page=blog', 'top');
+    add_rewrite_rule('^insights/success-stories/?$', 'index.php?apex_insights_page=success-stories', 'top');
+    add_rewrite_rule('^insights/webinars/?$', 'index.php?apex_insights_page=webinars', 'top');
+    add_rewrite_rule('^insights/whitepapers-reports/?$', 'index.php?apex_insights_page=whitepapers-reports', 'top');
+}
+add_action('init', 'apex_insights_rewrite_rules');
+
+/**
+ * Register custom rewrite rules for Contact page
+ */
+function apex_contact_rewrite_rules() {
+    add_rewrite_rule('^contact/?$', 'index.php?apex_contact_page=contact', 'top');
+}
+add_action('init', 'apex_contact_rewrite_rules');
+
+/**
+ * Register custom rewrite rules for Industry pages
+ */
+function apex_industry_rewrite_rules() {
+    add_rewrite_rule('^industry/overview/?$', 'index.php?apex_industry_page=overview', 'top');
+    add_rewrite_rule('^industry/mfis/?$', 'index.php?apex_industry_page=mfis', 'top');
+    add_rewrite_rule('^industry/credit-unions/?$', 'index.php?apex_industry_page=credit-unions', 'top');
+    add_rewrite_rule('^industry/banks-microfinance/?$', 'index.php?apex_industry_page=banks', 'top');
+    add_rewrite_rule('^industry/digital-government/?$', 'index.php?apex_industry_page=digital-government', 'top');
+}
+add_action('init', 'apex_industry_rewrite_rules');
+
+/**
+ * Register custom rewrite rules for Legal and Support pages
+ */
+function apex_support_rewrite_rules() {
+    // Legal pages
+    add_rewrite_rule('^privacy-policy/?$', 'index.php?apex_support_page=privacy-policy', 'top');
+    add_rewrite_rule('^terms-conditions/?$', 'index.php?apex_support_page=terms-conditions', 'top');
+    
+    // Support pages
+    add_rewrite_rule('^careers/?$', 'index.php?apex_support_page=careers', 'top');
+    add_rewrite_rule('^help-support/?$', 'index.php?apex_support_page=help-support', 'top');
+    add_rewrite_rule('^faq/?$', 'index.php?apex_support_page=faq', 'top');
+    add_rewrite_rule('^knowledge-base/?$', 'index.php?apex_support_page=knowledge-base', 'top');
+    add_rewrite_rule('^developers/?$', 'index.php?apex_support_page=developers', 'top');
+    add_rewrite_rule('^partners/?$', 'index.php?apex_support_page=partners', 'top');
+    add_rewrite_rule('^request-demo/?$', 'index.php?apex_support_page=request-demo', 'top');
+}
+add_action('init', 'apex_support_rewrite_rules');
+
+/**
+ * Register custom rewrite rules for Solutions pages
+ */
+function apex_solutions_rewrite_rules() {
+    add_rewrite_rule('^solutions/overview/?$', 'index.php?apex_solutions_page=overview', 'top');
+    add_rewrite_rule('^solutions/core-banking-microfinance/?$', 'index.php?apex_solutions_page=core-banking', 'top');
+    add_rewrite_rule('^solutions/mobile-wallet-app/?$', 'index.php?apex_solutions_page=mobile-wallet', 'top');
+    add_rewrite_rule('^solutions/agency-branch-banking/?$', 'index.php?apex_solutions_page=agency-banking', 'top');
+    add_rewrite_rule('^solutions/internet-mobile-banking/?$', 'index.php?apex_solutions_page=internet-banking', 'top');
+    add_rewrite_rule('^solutions/loan-origination-workflows/?$', 'index.php?apex_solutions_page=loan-origination', 'top');
+    add_rewrite_rule('^solutions/digital-field-agent/?$', 'index.php?apex_solutions_page=field-agent', 'top');
+    add_rewrite_rule('^solutions/enterprise-integration/?$', 'index.php?apex_solutions_page=enterprise-integration', 'top');
+    add_rewrite_rule('^solutions/payment-switch-ledger/?$', 'index.php?apex_solutions_page=payment-switch', 'top');
+    add_rewrite_rule('^solutions/reporting-analytics/?$', 'index.php?apex_solutions_page=reporting', 'top');
+}
+add_action('init', 'apex_solutions_rewrite_rules');
+
+/**
+ * Flush rewrite rules on theme activation
+ */
+function apex_flush_rewrite_rules() {
+    apex_about_us_rewrite_rules();
+    apex_insights_rewrite_rules();
+    apex_contact_rewrite_rules();
+    apex_industry_rewrite_rules();
+    apex_support_rewrite_rules();
+    apex_solutions_rewrite_rules();
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'apex_flush_rewrite_rules');
+
+/**
+ * One-time flush for development (remove in production)
+ */
+function apex_maybe_flush_rules() {
+    if (get_option('apex_rewrite_rules_flushed') !== '6') {
+        flush_rewrite_rules();
+        update_option('apex_rewrite_rules_flushed', '6');
+    }
+}
+add_action('init', 'apex_maybe_flush_rules', 20);
+
+/**
+ * Register custom query vars
+ */
+function apex_about_us_query_vars($vars) {
+    $vars[] = 'apex_about_page';
+    $vars[] = 'apex_insights_page';
+    $vars[] = 'apex_contact_page';
+    $vars[] = 'apex_industry_page';
+    $vars[] = 'apex_support_page';
+    $vars[] = 'apex_solutions_page';
+    return $vars;
+}
+add_filter('query_vars', 'apex_about_us_query_vars');
+
+/**
+ * Handle About Us pages early in the request lifecycle
+ */
+function apex_about_us_template_redirect() {
+    $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+    $request_uri = strtok($request_uri, '?');
+    
+    // Map of about-us URLs to their templates
+    $about_templates = [
+        'about-us' => 'page-about-us-overview.php',
+        'about-us/' => 'page-about-us-overview.php',
+        'about-us/overview' => 'page-about-us-overview.php',
+        'about-us/overview/' => 'page-about-us-overview.php',
+        'about-us/our-approach' => 'page-about-us-our-approach.php',
+        'about-us/our-approach/' => 'page-about-us-our-approach.php',
+        'about-us/leadership-team' => 'page-about-us-leadership-team.php',
+        'about-us/leadership-team/' => 'page-about-us-leadership-team.php',
+        'about-us/news' => 'page-about-us-news.php',
+        'about-us/news/' => 'page-about-us-news.php',
+    ];
+    
+    if (isset($about_templates[$request_uri])) {
+        // Set proper headers
+        status_header(200);
+        
+        // Load the template directly
+        $template = get_template_directory() . '/' . $about_templates[$request_uri];
+        if (file_exists($template)) {
+            include($template);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'apex_about_us_template_redirect', 1);
+
+/**
+ * Handle Insights pages early in the request lifecycle
+ */
+function apex_insights_template_redirect() {
+    $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+    $request_uri = strtok($request_uri, '?');
+    
+    // Map of insights URLs to their templates
+    $insights_templates = [
+        'insights/blog' => 'page-insights-blog.php',
+        'insights/blog/' => 'page-insights-blog.php',
+        'insights/success-stories' => 'page-insights-success-stories.php',
+        'insights/success-stories/' => 'page-insights-success-stories.php',
+        'insights/webinars' => 'page-insights-webinars.php',
+        'insights/webinars/' => 'page-insights-webinars.php',
+        'insights/whitepapers-reports' => 'page-insights-whitepapers-reports.php',
+        'insights/whitepapers-reports/' => 'page-insights-whitepapers-reports.php',
+    ];
+    
+    if (isset($insights_templates[$request_uri])) {
+        // Set proper headers
+        status_header(200);
+        
+        // Load the template directly
+        $template = get_template_directory() . '/' . $insights_templates[$request_uri];
+        if (file_exists($template)) {
+            include($template);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'apex_insights_template_redirect', 1);
+
+/**
+ * Handle Contact page early in the request lifecycle
+ */
+function apex_contact_template_redirect() {
+    $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+    $request_uri = strtok($request_uri, '?');
+    
+    // Map of contact URLs to their templates
+    $contact_templates = [
+        'contact' => 'page-contact.php',
+        'contact/' => 'page-contact.php',
+    ];
+    
+    if (isset($contact_templates[$request_uri])) {
+        // Set proper headers
+        status_header(200);
+        
+        // Load the template directly
+        $template = get_template_directory() . '/' . $contact_templates[$request_uri];
+        if (file_exists($template)) {
+            include($template);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'apex_contact_template_redirect', 1);
+
+/**
+ * Handle Industry pages early in the request lifecycle
+ */
+function apex_industry_template_redirect() {
+    $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+    $request_uri = strtok($request_uri, '?');
+    
+    // Map of industry URLs to their templates
+    $industry_templates = [
+        'industry/overview' => 'page-industry-overview.php',
+        'industry/overview/' => 'page-industry-overview.php',
+        'industry/mfis' => 'page-industry-mfis.php',
+        'industry/mfis/' => 'page-industry-mfis.php',
+        'industry/credit-unions' => 'page-industry-credit-unions.php',
+        'industry/credit-unions/' => 'page-industry-credit-unions.php',
+        'industry/banks-microfinance' => 'page-industry-banks.php',
+        'industry/banks-microfinance/' => 'page-industry-banks.php',
+        'industry/digital-government' => 'page-industry-digital-government.php',
+        'industry/digital-government/' => 'page-industry-digital-government.php',
+    ];
+    
+    if (isset($industry_templates[$request_uri])) {
+        // Set proper headers
+        status_header(200);
+        
+        // Load the template directly
+        $template = get_template_directory() . '/' . $industry_templates[$request_uri];
+        if (file_exists($template)) {
+            include($template);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'apex_industry_template_redirect', 1);
+
+/**
+ * Handle Solutions pages early in the request lifecycle
+ */
+function apex_solutions_template_redirect() {
+    $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+    $request_uri = strtok($request_uri, '?');
+    
+    // Map of solutions URLs to their templates
+    $solutions_templates = [
+        'solutions/overview' => 'page-solutions-overview.php',
+        'solutions/overview/' => 'page-solutions-overview.php',
+        'solutions/core-banking-microfinance' => 'page-solutions-core-banking.php',
+        'solutions/core-banking-microfinance/' => 'page-solutions-core-banking.php',
+        'solutions/mobile-wallet-app' => 'page-solutions-mobile-wallet.php',
+        'solutions/mobile-wallet-app/' => 'page-solutions-mobile-wallet.php',
+        'solutions/agency-branch-banking' => 'page-solutions-agency-banking.php',
+        'solutions/agency-branch-banking/' => 'page-solutions-agency-banking.php',
+        'solutions/internet-mobile-banking' => 'page-solutions-internet-banking.php',
+        'solutions/internet-mobile-banking/' => 'page-solutions-internet-banking.php',
+        'solutions/loan-origination-workflows' => 'page-solutions-loan-origination.php',
+        'solutions/loan-origination-workflows/' => 'page-solutions-loan-origination.php',
+        'solutions/digital-field-agent' => 'page-solutions-field-agent.php',
+        'solutions/digital-field-agent/' => 'page-solutions-field-agent.php',
+        'solutions/enterprise-integration' => 'page-solutions-enterprise-integration.php',
+        'solutions/enterprise-integration/' => 'page-solutions-enterprise-integration.php',
+        'solutions/payment-switch-ledger' => 'page-solutions-payment-switch.php',
+        'solutions/payment-switch-ledger/' => 'page-solutions-payment-switch.php',
+        'solutions/reporting-analytics' => 'page-solutions-reporting.php',
+        'solutions/reporting-analytics/' => 'page-solutions-reporting.php',
+    ];
+    
+    if (isset($solutions_templates[$request_uri])) {
+        // Set proper headers
+        status_header(200);
+        
+        // Load the template directly
+        $template = get_template_directory() . '/' . $solutions_templates[$request_uri];
+        if (file_exists($template)) {
+            include($template);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'apex_solutions_template_redirect', 1);
+
+/**
+ * Handle Support pages early in the request lifecycle
+ */
+function apex_support_template_redirect() {
+    $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+    $request_uri = strtok($request_uri, '?');
+    
+    // Map of support URLs to their templates
+    $support_templates = [
+        'privacy-policy' => 'page-privacy-policy.php',
+        'privacy-policy/' => 'page-privacy-policy.php',
+        'terms-conditions' => 'page-terms-conditions.php',
+        'terms-conditions/' => 'page-terms-conditions.php',
+        'careers' => 'page-careers.php',
+        'careers/' => 'page-careers.php',
+        'help-support' => 'page-help-support.php',
+        'help-support/' => 'page-help-support.php',
+        'faq' => 'page-faq.php',
+        'faq/' => 'page-faq.php',
+        'knowledge-base' => 'page-knowledge-base.php',
+        'knowledge-base/' => 'page-knowledge-base.php',
+        'developers' => 'page-developers.php',
+        'developers/' => 'page-developers.php',
+        'partners' => 'page-partners.php',
+        'partners/' => 'page-partners.php',
+        'request-demo' => 'page-request-demo.php',
+        'request-demo/' => 'page-request-demo.php',
+    ];
+    
+    if (isset($support_templates[$request_uri])) {
+        // Set proper headers
+        status_header(200);
+        
+        // Load the template directly
+        $template = get_template_directory() . '/' . $support_templates[$request_uri];
+        if (file_exists($template)) {
+            include($template);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'apex_support_template_redirect', 1);
+
+/**
+ * Custom template for About Us pages (fallback)
+ */
+function apex_about_us_template($template) {
+    $apex_about_page = get_query_var('apex_about_page');
+    if ($apex_about_page) {
+        $custom_template = locate_template('page-about-us-overview.php');
+        if ($custom_template) {
+            return $custom_template;
+        }
+    }
+    
+    return $template;
+}
+add_filter('template_include', 'apex_about_us_template');
 

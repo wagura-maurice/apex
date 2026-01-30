@@ -1,0 +1,786 @@
+/**
+ * Industry Pages Styles
+ * 
+ * @package ApexTheme
+ * @subpackage Components/IndustryPages
+ */
+
+/* ========================================
+   Industry Sectors Section
+   ======================================== */
+.apex-industry-sectors {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-industry-sectors__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-industry-sectors__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-industry-sectors__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-sectors__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-industry-sectors__description {
+    font-size: 1.0625rem;
+    color: #64748b;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.apex-industry-sectors__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .apex-industry-sectors__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.apex-industry-sectors__card {
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid #e2e8f0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.apex-industry-sectors__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(249, 115, 22, 0.15);
+    border-color: #f97316;
+}
+
+.apex-industry-sectors__card-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.apex-industry-sectors__card-icon svg {
+    width: 28px;
+    height: 28px;
+    color: #ffffff;
+}
+
+.apex-industry-sectors__card h3 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-industry-sectors__card p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0 0 1rem 0;
+}
+
+.apex-industry-sectors__card-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-sectors__card-stats span {
+    font-size: 0.8125rem;
+    color: #64748b;
+}
+
+.apex-industry-sectors__card-stats strong {
+    color: #f97316;
+    font-weight: 700;
+}
+
+.apex-industry-sectors__card-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #f97316;
+    transition: color 0.3s ease;
+}
+
+.apex-industry-sectors__card:hover .apex-industry-sectors__card-link {
+    color: #ea580c;
+}
+
+/* ========================================
+   Industry Why Section
+   ======================================== */
+.apex-industry-why {
+    padding: 6rem 1.5rem;
+    background: #f8fafc;
+}
+
+.apex-industry-why__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .apex-industry-why__container {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 4rem;
+    }
+}
+
+.apex-industry-why__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-why__heading {
+    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-industry-why__description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #64748b;
+    margin: 0 0 2rem 0;
+}
+
+.apex-industry-why__features {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.apex-industry-why__feature {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.apex-industry-why__feature-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.apex-industry-why__feature-icon svg {
+    width: 22px;
+    height: 22px;
+    color: #f97316;
+}
+
+.apex-industry-why__feature h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-industry-why__feature p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0;
+}
+
+.apex-industry-why__image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.apex-industry-why__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========================================
+   Industry Stats Section
+   ======================================== */
+.apex-industry-stats {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+}
+
+.apex-industry-stats__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-industry-stats__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-industry-stats__heading {
+    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-industry-stats__description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.apex-industry-stats__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .apex-industry-stats__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.apex-industry-stats__item {
+    text-align: center;
+}
+
+.apex-industry-stats__value {
+    display: block;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: #f97316;
+    margin-bottom: 0.5rem;
+}
+
+.apex-industry-stats__label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ========================================
+   Industry Testimonial Section
+   ======================================== */
+.apex-industry-testimonial {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-industry-testimonial__container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.apex-industry-testimonial__quote {
+    margin-bottom: 1.5rem;
+}
+
+.apex-industry-testimonial__quote svg {
+    width: 48px;
+    height: 48px;
+    color: #f97316;
+    opacity: 0.3;
+}
+
+.apex-industry-testimonial__text {
+    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.6;
+    color: #0f172a;
+    margin: 0 0 2rem 0;
+    font-style: italic;
+}
+
+.apex-industry-testimonial__author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.apex-industry-testimonial__author img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.apex-industry-testimonial__author strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.apex-industry-testimonial__author span {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+/* ========================================
+   Industry Challenges Section
+   ======================================== */
+.apex-industry-challenges {
+    padding: 6rem 1.5rem;
+    background: #f8fafc;
+}
+
+.apex-industry-challenges__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-industry-challenges__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-industry-challenges__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-challenges__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+}
+
+.apex-industry-challenges__description {
+    font-size: 1.0625rem;
+    color: #64748b;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.apex-industry-challenges__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-industry-challenges__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-industry-challenges__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.apex-industry-challenges__item {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.apex-industry-challenges__item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.apex-industry-challenges__icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.apex-industry-challenges__icon svg {
+    width: 28px;
+    height: 28px;
+    color: #f97316;
+}
+
+.apex-industry-challenges__item h3 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-industry-challenges__item p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ========================================
+   Industry Solutions Section
+   ======================================== */
+.apex-industry-solutions {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-industry-solutions__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-industry-solutions__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-industry-solutions__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-solutions__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.apex-industry-solutions__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .apex-industry-solutions__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.apex-industry-solutions__item {
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.apex-industry-solutions__item:hover {
+    border-color: #f97316;
+    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.1);
+}
+
+.apex-industry-solutions__item-number {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #f97316;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-solutions__item h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-industry-solutions__item p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0 0 1rem 0;
+}
+
+.apex-industry-solutions__item ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.apex-industry-solutions__item li {
+    font-size: 0.8125rem;
+    color: #64748b;
+    padding-left: 1.25rem;
+    position: relative;
+}
+
+.apex-industry-solutions__item li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #f97316;
+    font-weight: 700;
+}
+
+/* ========================================
+   Industry Case Study Section
+   ======================================== */
+.apex-industry-case-study {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+}
+
+.apex-industry-case-study__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .apex-industry-case-study__container {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 4rem;
+    }
+}
+
+.apex-industry-case-study__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-case-study__heading {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.apex-industry-case-study__description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 2rem 0;
+}
+
+.apex-industry-case-study__results {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.apex-industry-case-study__result {
+    text-align: center;
+}
+
+.apex-industry-case-study__result-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #f97316;
+}
+
+.apex-industry-case-study__result-label {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.apex-industry-case-study__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #f97316;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.apex-industry-case-study__link:hover {
+    color: #fb923c;
+}
+
+.apex-industry-case-study__image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.apex-industry-case-study__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========================================
+   Industry Use Cases Section
+   ======================================== */
+.apex-industry-use-cases {
+    padding: 6rem 1.5rem;
+    background: #f8fafc;
+}
+
+.apex-industry-use-cases__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-industry-use-cases__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.apex-industry-use-cases__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-industry-use-cases__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.apex-industry-use-cases__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-industry-use-cases__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-industry-use-cases__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.apex-industry-use-cases__item {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.apex-industry-use-cases__item:hover {
+    border-color: #f97316;
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.1);
+}
+
+.apex-industry-use-cases__item h3 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-industry-use-cases__item p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-industry-sectors,
+    .apex-industry-why,
+    .apex-industry-stats,
+    .apex-industry-testimonial,
+    .apex-industry-challenges,
+    .apex-industry-solutions,
+    .apex-industry-case-study,
+    .apex-industry-use-cases {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-industry-case-study__results {
+        justify-content: center;
+    }
+}

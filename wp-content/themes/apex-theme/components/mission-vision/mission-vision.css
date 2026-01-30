@@ -1,0 +1,235 @@
+/**
+ * Mission & Vision Component Styles
+ * Company mission, vision, and core values
+ * 
+ * @package ApexTheme
+ * @subpackage Components/MissionVision
+ */
+
+/* ========================================
+   Section Container
+   ======================================== */
+.apex-mission-vision {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    position: relative;
+}
+
+.apex-mission-vision__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   Mission & Vision Cards
+   ======================================== */
+.apex-mission-vision__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-mission-vision__cards.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+    .apex-mission-vision__cards {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.apex-mission-vision__card {
+    padding: 3rem;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.apex-mission-vision__card--mission {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+}
+
+.apex-mission-vision__card--vision {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #ffffff;
+}
+
+.apex-mission-vision__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.apex-mission-vision__card-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+}
+
+.apex-mission-vision__card-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: currentColor;
+}
+
+.apex-mission-vision__card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+}
+
+.apex-mission-vision__card-desc {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* ========================================
+   Core Values
+   ======================================== */
+.apex-mission-vision__values {
+    text-align: center;
+}
+
+.apex-mission-vision__values-heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 3rem 0;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-mission-vision__values-heading.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-mission-vision__values-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .apex-mission-vision__values-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .apex-mission-vision__values-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.apex-mission-vision__value {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: left;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apex-mission-vision__value.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apex-mission-vision__value:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.apex-mission-vision__value-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    color: #f97316;
+}
+
+.apex-mission-vision__value-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.apex-mission-vision__value-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-mission-vision__value-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-mission-vision {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-mission-vision__cards {
+        margin-bottom: 3rem;
+    }
+    
+    .apex-mission-vision__card {
+        padding: 2rem;
+    }
+    
+    .apex-mission-vision__card-icon {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .apex-mission-vision__card-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .apex-mission-vision__card-title {
+        font-size: 1.25rem;
+    }
+    
+    .apex-mission-vision__card-desc {
+        font-size: 1rem;
+    }
+    
+    .apex-mission-vision__value {
+        padding: 1.5rem;
+    }
+}

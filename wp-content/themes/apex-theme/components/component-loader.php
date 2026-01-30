@@ -30,6 +30,28 @@ function apex_load_components() {
         'case-studies/case-studies.php',
         'api-integration/api-integration.php',
         'compliance/compliance.php',
+        // About Us page components
+        'about-hero/about-hero.php',
+        'company-story/company-story.php',
+        'mission-vision/mission-vision.php',
+        'leadership-team/leadership-team.php',
+        'global-presence/global-presence.php',
+        'about-cta/about-cta.php',
+        'about-pages/about-pages.php',
+        // Insights page components
+        'insights-pages/insights-pages.php',
+        // Contact page components
+        'contact-page/contact-page.php',
+        // Industry page components
+        'industry-pages/industry-pages.php',
+        // Legal page components
+        'legal-pages/legal-pages.php',
+        // Support page components
+        'support-pages/support-pages.php',
+        // Solutions page components
+        'solutions-pages/solutions-pages.php',
+        // Footer component
+        'footer/footer.php',
     ];
     
     foreach ($components as $component) {

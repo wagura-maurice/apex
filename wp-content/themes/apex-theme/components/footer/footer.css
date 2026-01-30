@@ -1,0 +1,542 @@
+/**
+ * Footer Styles
+ * Modern, cohesive footer design matching the site's design language
+ * 
+ * @package ApexTheme
+ * @subpackage Components/Footer
+ */
+
+/* ========================================
+   Footer Base
+   ======================================== */
+.apex-footer {
+    background: #ffffff;
+}
+
+/* ========================================
+   Footer CTA Section
+   ======================================== */
+.apex-footer-cta {
+    padding: 4rem 1.5rem;
+    background: #f8fafc;
+}
+
+.apex-footer-cta__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-footer-cta__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .apex-footer-cta__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.apex-footer-cta__card {
+    border-radius: 24px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.apex-footer-cta__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.apex-footer-cta__card--primary {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}
+
+.apex-footer-cta__card--secondary {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+}
+
+.apex-footer-cta__card-content {
+    position: relative;
+    z-index: 1;
+}
+
+.apex-footer-cta__card-decoration {
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+}
+
+.apex-footer-cta__title {
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+}
+
+.apex-footer-cta__description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 1.5rem 0;
+}
+
+.apex-footer-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.apex-footer-cta__btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.apex-footer-cta__btn:hover svg {
+    transform: translateX(4px);
+}
+
+.apex-footer-cta__btn--white {
+    background: #ffffff;
+    color: #0f172a;
+}
+
+.apex-footer-cta__btn--white:hover {
+    background: #f8fafc;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.apex-footer-cta__btn--outline {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.apex-footer-cta__btn--outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ========================================
+   Footer Main Section
+   ======================================== */
+.apex-footer-main {
+    padding: 4rem 1.5rem;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+.apex-footer-main__container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.apex-footer-main__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+    .apex-footer-main__grid {
+        grid-template-columns: 1fr 2fr;
+        gap: 4rem;
+    }
+}
+
+/* Brand Column */
+.apex-footer-main__brand {
+    max-width: 360px;
+}
+
+.apex-footer-main__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.apex-footer-main__logo:hover {
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+.apex-footer-main__logo-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+}
+
+.apex-footer-main__logo-img-wrapper img {
+    width: 56px;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.apex-footer-main__logo:hover .apex-footer-main__logo-img-wrapper img {
+    transform: scale(1.1);
+}
+
+.apex-footer-main__logo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(249, 115, 22, 0.3), rgba(14, 165, 233, 0.3), rgba(168, 85, 247, 0.3));
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    mix-blend-mode: multiply;
+}
+
+.apex-footer-main__logo:hover .apex-footer-main__logo-overlay {
+    opacity: 1;
+}
+
+.apex-footer-main__logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.apex-footer-main__logo-name {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: #ffffff;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.apex-footer-main__logo:hover .apex-footer-main__logo-name {
+    color: #f97316;
+    text-decoration: none;
+}
+
+.apex-footer-main__logo-tagline {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: -1px;
+    text-decoration: none;
+}
+
+.apex-footer-main__description {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 1.5rem 0;
+}
+
+/* Newsletter */
+.apex-footer-main__newsletter {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.apex-footer-main__newsletter h4 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.25rem 0;
+}
+
+.apex-footer-main__newsletter p {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-footer-main__newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.apex-footer-main__newsletter-form input {
+    flex: 1;
+    padding: 0.625rem 0.875rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #ffffff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.apex-footer-main__newsletter-form input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.apex-footer-main__newsletter-form input:focus {
+    border-color: #f97316;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.apex-footer-main__newsletter-form button {
+    padding: 0.625rem 0.875rem;
+    background: #f97316;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apex-footer-main__newsletter-form button:hover {
+    background: #ea580c;
+}
+
+.apex-footer-main__newsletter-form button svg {
+    width: 18px;
+    height: 18px;
+    color: #ffffff;
+}
+
+/* Social Links */
+.apex-footer-main__social {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.apex-footer-main__social a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.apex-footer-main__social a:hover {
+    background: #f97316;
+    transform: translateY(-2px);
+}
+
+.apex-footer-main__social a svg {
+    width: 18px;
+    height: 18px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.apex-footer-main__social a:hover svg {
+    color: #ffffff;
+}
+
+/* Links Columns */
+.apex-footer-main__links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .apex-footer-main__links {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.apex-footer-main__links-column h4 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.apex-footer-main__links-subtitle {
+    margin-top: 1.5rem !important;
+}
+
+.apex-footer-main__links-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.apex-footer-main__links-column li {
+    margin-bottom: 0.5rem;
+}
+
+.apex-footer-main__links-column a {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.apex-footer-main__links-column a:hover {
+    color: #f97316;
+}
+
+/* Contact Items */
+.apex-footer-main__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.apex-footer-main__contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.apex-footer-main__contact-item svg {
+    width: 16px;
+    height: 16px;
+    color: #f97316;
+    flex-shrink: 0;
+}
+
+.apex-footer-main__contact-item a,
+.apex-footer-main__contact-item span {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.apex-footer-main__contact-item a:hover {
+    color: #f97316;
+}
+
+/* App Store Badges */
+.apex-footer-main__apps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.apex-footer-main__apps a {
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.apex-footer-main__apps a:hover {
+    opacity: 0.8;
+}
+
+.apex-footer-main__apps img {
+    height: 36px;
+    width: auto;
+}
+
+/* ========================================
+   Footer Bottom
+   ======================================== */
+.apex-footer-bottom {
+    padding: 1.5rem;
+    background: #0a0f1a;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.apex-footer-bottom__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .apex-footer-bottom__container {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+}
+
+.apex-footer-bottom__copyright {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+.apex-footer-bottom__company-name {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
+}
+
+.apex-footer-bottom__company-name:hover {
+    color: #f97316;
+}
+
+.apex-footer-bottom__certifications img {
+    height: 32px;
+    width: auto;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.apex-footer-bottom__certifications img:hover {
+    opacity: 1;
+}
+
+.apex-footer-bottom__credit {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+}
+
+.apex-footer-bottom__credit span {
+    color: #ef4444;
+}
+
+.apex-footer-bottom__credit .fab {
+    color: #21759b;
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+
+.apex-footer-bottom__credit a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.apex-footer-bottom__credit a:hover {
+    color: #f97316;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-footer-cta {
+        padding: 3rem 1rem;
+    }
+    
+    .apex-footer-cta__card {
+        padding: 1.5rem;
+    }
+    
+    .apex-footer-main {
+        padding: 3rem 1rem;
+    }
+    
+    .apex-footer-main__brand {
+        max-width: 100%;
+    }
+}

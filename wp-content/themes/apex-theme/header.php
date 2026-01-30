@@ -476,7 +476,30 @@ $apex_request_demo_href = home_url('/request-demo');
     </script>
 
     <!-- Main -->
-    <?php if (!is_front_page()) : ?>
+    <?php 
+    // Check if this is a full-width page (about-us, insights, contact, industry, or support pages - NOT front page)
+    $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+    $request_uri = strtok($request_uri, '?');
+    $is_full_width_inner_page = strpos($request_uri, 'about-us') === 0 || 
+                                 strpos($request_uri, 'insights') === 0 ||
+                                 strpos($request_uri, 'contact') === 0 ||
+                                 strpos($request_uri, 'industry') === 0 ||
+                                 strpos($request_uri, 'careers') === 0 ||
+                                 strpos($request_uri, 'help-support') === 0 ||
+                                 strpos($request_uri, 'faq') === 0 ||
+                                 strpos($request_uri, 'knowledge-base') === 0 ||
+                                 strpos($request_uri, 'developers') === 0 ||
+                                 strpos($request_uri, 'partners') === 0 ||
+                                 strpos($request_uri, 'request-demo') === 0 ||
+                                 strpos($request_uri, 'privacy-policy') === 0 ||
+                                 strpos($request_uri, 'terms-conditions') === 0 ||
+                                 strpos($request_uri, 'solutions') === 0;
+    ?>
+    <?php if (is_front_page()) : ?>
+        <!-- Front page has no main wrapper -->
+    <?php elseif ($is_full_width_inner_page) : ?>
+    <main id="site-main" class="flex-1">
+    <?php else : ?>
     <main id="site-main" class="flex-1">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
     <?php endif; ?>

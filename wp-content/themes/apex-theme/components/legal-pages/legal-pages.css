@@ -1,0 +1,126 @@
+/**
+ * Legal Pages Styles
+ * 
+ * @package ApexTheme
+ * @subpackage Components/LegalPages
+ */
+
+/* ========================================
+   Legal Page Container
+   ======================================== */
+.apex-legal-page {
+    padding: 6rem 1.5rem;
+    background: #ffffff;
+}
+
+.apex-legal-page__container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.apex-legal-page__header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.apex-legal-page__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #f97316;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.apex-legal-page__heading {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.apex-legal-page__description {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.apex-legal-page__content {
+    line-height: 1.8;
+    color: #334155;
+}
+
+.apex-legal-page__content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 2.5rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.apex-legal-page__content h2:first-of-type {
+    margin-top: 0;
+}
+
+.apex-legal-page__content p {
+    margin: 0 0 1rem 0;
+}
+
+.apex-legal-page__content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+.apex-legal-page__content li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.apex-legal-page__content li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #f97316;
+    font-weight: 700;
+}
+
+.apex-legal-page__content strong {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.apex-legal-page__content address {
+    font-style: normal;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    margin: 1rem 0;
+}
+
+.apex-legal-page__content address strong {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+@media (max-width: 768px) {
+    .apex-legal-page {
+        padding: 4rem 1rem;
+    }
+    
+    .apex-legal-page__content h2 {
+        font-size: 1.25rem;
+    }
+}
