@@ -420,6 +420,14 @@
     color: #f97316;
 }
 
+.apex-footer-main__contact-address {
+    align-items: flex-start;
+}
+
+.apex-footer-main__contact-address span {
+    line-height: 1.5;
+}
+
 /* App Store Badges */
 .apex-footer-main__apps {
     display: flex;

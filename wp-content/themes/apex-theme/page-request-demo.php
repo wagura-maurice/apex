@@ -141,8 +141,37 @@ apex_render_about_hero([
                 
                 <div class="apex-request-demo__form-group">
                     <label for="attachment">Attach Relevant Documents (Optional)</label>
-                    <input type="file" id="attachment" name="attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
-                    <span class="apex-request-demo__form-hint">PDF, Word, Excel, PowerPoint files up to 10MB</span>
+                    <div class="apex-request-demo__dropzone" id="dropzone">
+                        <input type="file" id="attachment" name="attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" class="apex-request-demo__dropzone-input">
+                        <div class="apex-request-demo__dropzone-content">
+                            <div class="apex-request-demo__dropzone-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                            <p class="apex-request-demo__dropzone-text">
+                                <span class="apex-request-demo__dropzone-cta">Click to upload</span> or drag and drop
+                            </p>
+                            <p class="apex-request-demo__dropzone-hint">PDF, Word, Excel, PowerPoint (max 10MB)</p>
+                        </div>
+                        <div class="apex-request-demo__dropzone-preview" id="dropzone-preview" style="display: none;">
+                            <div class="apex-request-demo__dropzone-file">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                </svg>
+                                <span id="file-name"></span>
+                                <button type="button" class="apex-request-demo__dropzone-remove" id="remove-file">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="apex-request-demo__form-group">
@@ -284,5 +313,76 @@ apex_render_about_hero([
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('attachment');
+    const dropzoneContent = document.querySelector('.apex-request-demo__dropzone-content');
+    const dropzonePreview = document.getElementById('dropzone-preview');
+    const fileName = document.getElementById('file-name');
+    const removeBtn = document.getElementById('remove-file');
+
+    // Drag and drop events
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+        dropzone.classList.add('dragover');
+    }
+
+    function unhighlight() {
+        dropzone.classList.remove('dragover');
+    }
+
+    // Handle dropped files
+    dropzone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            showPreview(files[0]);
+        }
+    }
+
+    // Handle file input change
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            showPreview(this.files[0]);
+        }
+    });
+
+    function showPreview(file) {
+        dropzoneContent.style.display = 'none';
+        dropzonePreview.style.display = 'flex';
+        fileName.textContent = file.name;
+    }
+
+    // Remove file
+    removeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.value = '';
+        dropzoneContent.style.display = 'block';
+        dropzonePreview.style.display = 'none';
+    });
+});
+</script>
 
 <?php get_footer(); ?>
