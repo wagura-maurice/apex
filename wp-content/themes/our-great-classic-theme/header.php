@@ -31,7 +31,7 @@ $apex_request_demo_href = home_url('/request-demo');
                 </a>
 
                 <!-- Desktop nav -->
-                <nav class="hidden lg:flex items-center gap-1 text-sm font-medium text-apex-gray-700" aria-label="Primary">
+                <nav class="hidden lg:flex items-center gap-1 text-sm font-bold text-apex-gray-700" aria-label="Primary">
                     <?php
                     // WordPress menu implementation following learningWordPress methodology
                     $args = array(

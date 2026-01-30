@@ -14,8 +14,8 @@ $apex_request_demo_href = home_url('/request-demo');
 
 <div class="min-h-screen flex flex-col">
     <!-- Sticky Header -->
-    <header class="sticky top-0 z-50 bg-transparent backdrop-blur-md supports-[backdrop-filter]:bg-transparent transition-all duration-500 apex-gradient-shell">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+    <header id="apex-main-header" class="sticky top-0 z-50 transition-all duration-500 py-2 px-4 bg-gradient-to-r from-[#0f172a] via-[#1e3a5f] to-[#0f172a]">
+        <div class="apex-header-inner mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 bg-white rounded-2xl transition-all duration-500 shadow-xl border border-white/20">
             <div class="apex-header-surface">
                 <div class="flex h-16 items-center justify-between gap-3">
                 <!-- Brand -->
@@ -25,7 +25,7 @@ $apex_request_demo_href = home_url('/request-demo');
                         <div class="absolute inset-0 bg-gradient-to-r from-apex-orange/30 via-apex-blue/30 to-apex-purple/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply"></div>
                     </div>
                     <span class="leading-tight">
-                        <span class="block text-lg font-black text-apex-dark group-hover:text-apex-orange transition-colors duration-200 apex-gradient-text">Apex Softwares</span>
+                        <span class="block text-lg font-black text-apex-dark group-hover:text-apex-orange transition-colors duration-200">Apex Softwares</span>
                         <span class="block text-sm text-apex-gray-500 -mt-0.5">Microfinance &amp; Banking Solutions</span>
                     </span>
                 </a>
@@ -47,6 +47,16 @@ $apex_request_demo_href = home_url('/request-demo');
                     function apex_default_nav() {
                         $apex_nav = [
                             ['label' => 'Home', 'href' => home_url('/')],
+                            [
+                                'label' => 'About Us',
+                                'type'  => 'dropdown',
+                                'items' => [
+                                    ['label' => 'About Apex Softwares', 'href' => home_url('/about-us/overview')],
+                                    ['label' => 'Our Approach', 'href' => home_url('/about-us/our-approach')],
+                                    ['label' => 'Leadership Team', 'href' => home_url('/about-us/leadership-team')],
+                                    ['label' => 'News & Updates', 'href' => home_url('/about-us/news')],
+                                ],
+                            ],
                             [
                                 'label' => 'Solutions',
                                 'type'  => 'mega',
@@ -84,24 +94,14 @@ $apex_request_demo_href = home_url('/request-demo');
                                     ['label' => 'Whitepapers & Reports', 'href' => home_url('/insights/whitepapers-reports')],
                                 ],
                             ],
-                            [
-                                'label' => 'About Us',
-                                'type'  => 'dropdown',
-                                'items' => [
-                                    ['label' => 'About Apex Softwares', 'href' => home_url('/about-us')],
-                                    ['label' => 'Our Approach', 'href' => home_url('/about-us/our-approach')],
-                                    ['label' => 'Leadership Team', 'href' => home_url('/about-us/leadership-team')],
-                                    ['label' => 'News & Updates', 'href' => home_url('/about-us/news')],
-                                    ['label' => 'Contact Us', 'href' => home_url('/contact')],
-                                ],
-                            ],
+                            ['label' => 'Contact Us', 'href' => home_url('/contact')],
                         ];
 
                         foreach ($apex_nav as $item) {
                             if (empty($item['type'])) {
                                 echo '<a href="' . esc_url($item['href']) . '" class="relative rounded-lg px-4 py-2 hover:bg-apex-gray-100/70 hover:text-apex-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-200 group apex-nav-link">';
                                 echo esc_html($item['label']);
-                                echo '<span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-apex-orange transform -translate-x-1/2 transition-all duration-300 group-hover:w-8"></span>';
+                                echo '<span class="apex-nav-underline absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-apex-orange to-sky-500 transform -translate-x-1/2 transition-all duration-300"></span>';
                                 echo '</a>';
                             } elseif ($item['type'] === 'dropdown') {
                                 echo '<div class="relative apex-nav-item" data-nav="dropdown">';
@@ -110,12 +110,12 @@ $apex_request_demo_href = home_url('/request-demo');
                                 echo esc_html($item['label']);
                                 echo '<span class="text-apex-gray-400 transition-transform duration-200 group-hover:rotate-180">▾</span>';
                                 echo '</span>';
-                                echo '<span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-apex-orange transform -translate-x-1/2 transition-all duration-300 group-hover:w-8"></span>';
+                                echo '<span class="apex-nav-underline absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-apex-orange to-sky-500 transform -translate-x-1/2 transition-all duration-300"></span>';
                                 echo '</button>';
                                 echo '<div class="apex-nav-panel invisible opacity-0 translate-y-2 pointer-events-none absolute left-0 mt-3 w-80 rounded-xl border border-apex-gray-200 bg-white shadow-2xl transition-all duration-300">';
                                 echo '<div class="p-3">';
                                 foreach ($item['items'] as $sub) {
-                                    echo '<a class="block rounded-lg px-4 py-3 text-sm text-apex-gray-700 hover:bg-apex-orange/50 hover:text-white hover:shadow-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50" href="' . esc_url($sub['href']) . '">';
+                                    echo '<a class="block rounded-lg px-4 py-3 text-sm text-apex-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/40" href="' . esc_url($sub['href']) . '">';
                                     echo esc_html($sub['label']);
                                     echo '</a>';
                                 }
@@ -129,24 +129,24 @@ $apex_request_demo_href = home_url('/request-demo');
                                 echo esc_html($item['label']);
                                 echo '<span class="text-apex-gray-400 transition-transform duration-200 group-hover:rotate-180">▾</span>';
                                 echo '</span>';
-                                echo '<span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-apex-orange transform -translate-x-1/2 transition-all duration-300 group-hover:w-8"></span>';
+                                echo '<span class="apex-nav-underline absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-apex-orange to-sky-500 transform -translate-x-1/2 transition-all duration-300"></span>';
                                 echo '</button>';
-                                echo '<div class="apex-nav-panel invisible opacity-0 translate-y-2 pointer-events-none absolute left-0 mt-3 w-full lg:w-[min(800px,calc(100vw-4rem))] lg:left-1/2 lg:-translate-x-1/2 rounded-2xl border border-apex-gray-200 bg-white shadow-2xl transition-all duration-300" data-type="mega">';
+                                echo '<div class="apex-nav-panel invisible opacity-0 pointer-events-none rounded-2xl border border-apex-gray-200 bg-white shadow-2xl transition-opacity duration-300" data-type="mega">';
                                 echo '<div class="grid gap-6 p-6 lg:grid-cols-12">';
                                 echo '<div class="lg:col-span-4">';
-                                echo '<p class="text-xs font-bold uppercase tracking-wider text-apex-orange">Solutions</p>';
+                                echo '<p class="text-xs font-bold uppercase tracking-wider text-orange-500">Solutions</p>';
                                 echo '<p class="mt-3 text-sm text-apex-gray-600 leading-relaxed">';
                                 echo 'Modular capabilities built around <span class="font-bold text-apex-dark">ApexCore</span> to digitize onboarding, lending, channels, and integrations.';
                                 echo '</p>';
-                                echo '<a href="' . esc_url(home_url('/solutions/overview')) . '" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-apex-orange hover:text-apex-orange/80 transition-colors duration-200">';
+                                echo '<a href="' . esc_url(home_url('/solutions/overview')) . '" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors duration-200">';
                                 echo 'Explore all solutions <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-1">→</span>';
                                 echo '</a>';
                                 echo '</div>';
                                 echo '<div class="lg:col-span-8">';
                                 echo '<div class="grid gap-3 sm:grid-cols-2">';
                                 foreach ($item['items'] as $sub) {
-                                    echo '<a class="group rounded-xl border border-apex-gray-200 p-5 hover:border-apex-orange hover:bg-gradient-to-br hover:from-apex-orange/5 hover:to-apex-blue/5 hover:shadow-lg transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 min-h-[100px]" href="' . esc_url($sub['href']) . '">';
-                                    echo '<div class="text-sm font-semibold text-apex-dark group-hover:text-apex-orange transition-colors duration-200">';
+                                    echo '<a class="group rounded-xl border border-slate-100 p-5 hover:border-orange-300 hover:bg-gradient-to-br hover:from-orange-50/50 hover:to-sky-50/30 hover:shadow-md transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/40 min-h-[100px]" href="' . esc_url($sub['href']) . '">';
+                                    echo '<div class="text-sm font-semibold text-slate-700 group-hover:text-orange-500 transition-colors duration-200">';
                                     echo esc_html($sub['label']);
                                     echo '</div>';
                                     echo '<div class="mt-2 text-xs text-apex-gray-500 leading-relaxed">';
@@ -197,11 +197,11 @@ $apex_request_demo_href = home_url('/request-demo');
                     
                     // Default mobile navigation fallback if no menu is set
                     function apex_mobile_default_nav() {
-                        echo '<a class="rounded-lg px-4 py-3 text-sm font-bold text-apex-dark hover:bg-apex-orange/10 hover:text-apex-orange transition-all duration-200" href="' . esc_url(home_url('/')) . '">Home</a>';
+                        echo '<a class="rounded-lg px-4 py-3 text-sm font-bold text-slate-700 hover:bg-orange-50 hover:text-orange-500 transition-all duration-200" href="' . esc_url(home_url('/')) . '">Home</a>';
 
                         echo '<div class="rounded-xl border border-apex-gray-200 overflow-hidden">';
-                        echo '<button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold text-apex-dark hover:bg-apex-orange/10 transition-all duration-200" data-mobile-accordion aria-expanded="false">';
-                        echo 'Solutions <span class="text-apex-gray-400 transition-transform duration-200">▾</span>';
+                        echo '<button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold text-slate-700 hover:bg-orange-50 transition-all duration-200" data-mobile-accordion aria-expanded="false">';
+                        echo 'Solutions <span class="text-slate-400 transition-transform duration-200">▾</span>';
                         echo '</button>';
                         echo '<div class="hidden px-3 pb-3" data-mobile-panel>';
                         $apex_nav = [
@@ -225,7 +225,7 @@ $apex_request_demo_href = home_url('/request-demo');
                         foreach ($apex_nav as $item) {
                             if (!empty($item['type']) && $item['label'] === 'Solutions') {
                                 foreach ($item['items'] as $sub) {
-                                    echo '<a class="block rounded-lg px-3 py-2 text-sm text-apex-gray-700 hover:bg-apex-gray-100 hover:text-apex-orange transition-all duration-200" href="' . esc_url($sub['href']) . '">' . esc_html($sub['label']) . '</a>';
+                                    echo '<a class="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-orange-50 hover:text-orange-500 transition-all duration-200" href="' . esc_url($sub['href']) . '">' . esc_html($sub['label']) . '</a>';
                                 }
                             }
                         }
@@ -234,8 +234,8 @@ $apex_request_demo_href = home_url('/request-demo');
 
                         foreach (['Industry', 'Insights', 'About Us'] as $group) {
                             echo '<div class="rounded-xl border border-apex-gray-200 overflow-hidden">';
-                            echo '<button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold text-apex-dark hover:bg-apex-orange/10 transition-all duration-200" data-mobile-accordion aria-expanded="false">';
-                            echo esc_html($group) . ' <span class="text-apex-gray-400 transition-transform duration-200">▾</span>';
+                            echo '<button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold text-slate-700 hover:bg-orange-50 transition-all duration-200" data-mobile-accordion aria-expanded="false">';
+                            echo esc_html($group) . ' <span class="text-slate-400 transition-transform duration-200">▾</span>';
                             echo '</button>';
                             echo '<div class="hidden px-3 pb-3" data-mobile-panel>';
                             $apex_nav = [
@@ -275,7 +275,7 @@ $apex_request_demo_href = home_url('/request-demo');
                             foreach ($apex_nav as $item) {
                                 if (!empty($item['type']) && $item['label'] === $group) {
                                     foreach ($item['items'] as $sub) {
-                                        echo '<a class="block rounded-lg px-3 py-2 text-sm text-apex-gray-700 hover:bg-apex-gray-100 hover:text-apex-orange transition-all duration-200" href="' . esc_url($sub['href']) . '">' . esc_html($sub['label']) . '</a>';
+                                        echo '<a class="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-orange-50 hover:text-orange-500 transition-all duration-200" href="' . esc_url($sub['href']) . '">' . esc_html($sub['label']) . '</a>';
                                     }
                                 }
                             }
@@ -285,7 +285,7 @@ $apex_request_demo_href = home_url('/request-demo');
                     }
                     ?>
 
-                    <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="mt-4 inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-apex-orange to-apex-orange/90 px-5 py-3 text-sm font-bold text-white shadow-lg hover:shadow-xl transition-all duration-200">
+                    <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="mt-4 inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-400 px-5 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all duration-200">
                         Request Demo
                     </a>
                 </div>
@@ -293,6 +293,204 @@ $apex_request_demo_href = home_url('/request-demo');
         </div>
     </header>
 
+    <script>
+    (function() {
+        'use strict';
+        
+        // ===========================================
+        // Header Scroll Effect
+        // ===========================================
+        const header = document.getElementById('apex-main-header');
+        if (header) {
+            function handleScroll() {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            }
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+        }
+        
+        // ===========================================
+        // Desktop Dropdown Navigation
+        // ===========================================
+        const navItems = document.querySelectorAll('.apex-nav-item');
+        const navTriggers = document.querySelectorAll('.apex-nav-trigger');
+        let activeDropdown = null;
+        let hoverTimeout = null;
+        
+        // Show dropdown - CSS handles all positioning, no JavaScript positioning needed
+        function showDropdown(item) {
+            const panel = item.querySelector('.apex-nav-panel');
+            const trigger = item.querySelector('.apex-nav-trigger');
+            if (!panel) return;
+            
+            // Hide any other open dropdown
+            if (activeDropdown && activeDropdown !== item) {
+                hideDropdown(activeDropdown);
+            }
+            
+            // Simply toggle visibility - CSS handles positioning
+            panel.classList.add('visible');
+            panel.classList.remove('invisible', 'opacity-0', 'pointer-events-none');
+            trigger?.setAttribute('aria-expanded', 'true');
+            activeDropdown = item;
+        }
+        
+        // Hide dropdown
+        function hideDropdown(item) {
+            const panel = item.querySelector('.apex-nav-panel');
+            const trigger = item.querySelector('.apex-nav-trigger');
+            if (!panel) return;
+            
+            panel.classList.remove('visible');
+            panel.classList.add('invisible', 'opacity-0', 'pointer-events-none');
+            trigger?.setAttribute('aria-expanded', 'false');
+            if (activeDropdown === item) activeDropdown = null;
+        }
+        
+        // Event listeners for desktop dropdowns
+        navItems.forEach(item => {
+            const trigger = item.querySelector('.apex-nav-trigger');
+            const panel = item.querySelector('.apex-nav-panel');
+            if (!trigger || !panel) return;
+            
+            // Mouse events with delay for better UX
+            item.addEventListener('mouseenter', () => {
+                clearTimeout(hoverTimeout);
+                showDropdown(item);
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                hoverTimeout = setTimeout(() => hideDropdown(item), 150);
+            });
+            
+            // Click toggle for touch devices
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (panel.classList.contains('visible')) {
+                    hideDropdown(item);
+                } else {
+                    showDropdown(item);
+                }
+            });
+            
+            // Keyboard navigation
+            trigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (panel.classList.contains('visible')) {
+                        hideDropdown(item);
+                    } else {
+                        showDropdown(item);
+                        // Focus first link in dropdown
+                        const firstLink = panel.querySelector('a');
+                        if (firstLink) firstLink.focus();
+                    }
+                } else if (e.key === 'Escape') {
+                    hideDropdown(item);
+                    trigger.focus();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (!panel.classList.contains('visible')) {
+                        showDropdown(item);
+                    }
+                    const firstLink = panel.querySelector('a');
+                    if (firstLink) firstLink.focus();
+                }
+            });
+            
+            // Arrow key navigation within dropdown
+            panel.addEventListener('keydown', (e) => {
+                const links = Array.from(panel.querySelectorAll('a'));
+                const currentIndex = links.indexOf(document.activeElement);
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextIndex = (currentIndex + 1) % links.length;
+                    links[nextIndex]?.focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevIndex = currentIndex <= 0 ? links.length - 1 : currentIndex - 1;
+                    links[prevIndex]?.focus();
+                } else if (e.key === 'Escape') {
+                    hideDropdown(item);
+                    trigger.focus();
+                } else if (e.key === 'Tab' && !e.shiftKey && currentIndex === links.length - 1) {
+                    hideDropdown(item);
+                }
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (activeDropdown && !activeDropdown.contains(e.target)) {
+                hideDropdown(activeDropdown);
+            }
+        });
+        
+        // CSS handles responsive positioning, no JS resize handler needed
+        
+        // ===========================================
+        // Mobile Menu Toggle
+        // ===========================================
+        const mobileToggle = document.querySelector('[data-mobile-menu-toggle]');
+        const mobileMenu = document.getElementById('apex-mobile-menu');
+        
+        if (mobileToggle && mobileMenu) {
+            mobileToggle.addEventListener('click', () => {
+                const isExpanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+                mobileToggle.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+                
+                // Update icon
+                const icon = mobileToggle.querySelector('svg');
+                if (icon) {
+                    if (isExpanded) {
+                        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+                    } else {
+                        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+                    }
+                }
+            });
+        }
+        
+        // ===========================================
+        // Mobile Accordion Menus
+        // ===========================================
+        const mobileAccordions = document.querySelectorAll('[data-mobile-accordion]');
+        
+        mobileAccordions.forEach(accordion => {
+            accordion.addEventListener('click', () => {
+                const isExpanded = accordion.getAttribute('aria-expanded') === 'true';
+                const panel = accordion.nextElementSibling;
+                
+                // Close other accordions
+                mobileAccordions.forEach(other => {
+                    if (other !== accordion) {
+                        other.setAttribute('aria-expanded', 'false');
+                        const otherPanel = other.nextElementSibling;
+                        if (otherPanel) otherPanel.classList.add('hidden');
+                    }
+                });
+                
+                // Toggle current
+                accordion.setAttribute('aria-expanded', !isExpanded);
+                if (panel) {
+                    panel.classList.toggle('hidden');
+                }
+                
+                // Rotate arrow
+                const arrow = accordion.querySelector('span:last-child');
+                if (arrow) {
+                    arrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+                }
+            });
+        });
+        
+    })();
+    </script>
+
     <!-- Main -->
+    <?php if (!is_front_page()) : ?>
     <main id="site-main" class="flex-1">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <?php endif; ?>

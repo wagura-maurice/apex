@@ -7,7 +7,7 @@ Text Domain: apex-softwares
 */
 
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap");
 
 /* Base Styles */
 * {
@@ -22,10 +22,10 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+font-family: 'Josefin Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   line-height: 1.6;
-  color: #1e293b;
-  background-color: #ffffff;
+  color: #475569;
+  background-color: #fafbfc;
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 100vh;
@@ -162,37 +162,31 @@ body {
 
 /* Active navigation states */
 .apex-nav-active {
-  color: #FF6200 !important;
-  background-color: rgba(255, 98, 0, 0.1) !important;
+  color: #f97316 !important;
+  background-color: rgba(249, 115, 22, 0.06) !important;
   font-weight: 600 !important;
   position: relative;
 }
 
-.apex-nav-active::after {
+/* Hide ::after underline for items using .apex-nav-underline span */
+.apex-nav-active:has(.apex-nav-underline)::after {
+  display: none !important;
+}
+
+/* Fallback ::after for items without .apex-nav-underline (e.g., WordPress menu items) */
+.apex-nav-active:not(:has(.apex-nav-underline))::after {
   content: '';
   position: absolute;
   bottom: -2px;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #FF6200, #0ea5e9);
+  height: 2px;
+  background: linear-gradient(90deg, #f97316, #38bdf8);
   border-radius: 2px;
   width: 100%;
 }
 
-/* Hover underline for top navigation - matching active state gradient */
-.apex-nav-link:hover > span:last-child:not(.inline-flex),
-.apex-nav-trigger:hover > span:last-child:not(.inline-flex) {
-  width: 100% !important;
-  background: linear-gradient(90deg, #FF6200, #0ea5e9) !important;
-  height: 2px !important;
-}
-
-/* Only apply underline to direct links (not dropdown triggers) */
-.apex-nav-link.apex-nav-active:not(.apex-nav-trigger) > span:first-child:last-child {
-  width: 100% !important;
-  background: linear-gradient(90deg, #FF6200, #0ea5e9) !important;
-}
+/* Hover underline now handled by .apex-nav-underline class - see unified styles below */
 
 /* Dropdown triggers should NOT get orange styling */
 .apex-nav-trigger.apex-nav-active {
@@ -207,8 +201,8 @@ body {
 
 /* Dropdown triggers should get orange styling when their dropdown has active items */
 .apex-nav-item.apex-nav-parent-active .apex-nav-trigger {
-  color: #FF6200 !important;
-  background-color: rgba(255, 98, 0, 0.1) !important;
+  color: #f97316 !important;
+  background-color: rgba(249, 115, 22, 0.06) !important;
   font-weight: 600 !important;
   position: relative;
 }
@@ -216,15 +210,15 @@ body {
 /* Make the underline span full width when dropdown parent is active */
 .apex-nav-item.apex-nav-parent-active .apex-nav-trigger > span:last-child {
   width: 100% !important;
-  background: linear-gradient(90deg, #FF6200, #0ea5e9) !important;
+  background: linear-gradient(90deg, #f97316, #38bdf8) !important;
 }
 
 /* Active dropdown links */
 .apex-subnav-active {
-  background-color: rgba(255, 98, 0, 0.15) !important;
-  color: #FF6200 !important;
+  background-color: rgba(249, 115, 22, 0.08) !important;
+  color: #f97316 !important;
   font-weight: 600 !important;
-  border-left: 3px solid #FF6200 !important;
+  border-left: 2px solid #f97316 !important;
   position: relative;
 }
 
@@ -234,22 +228,22 @@ body {
   left: 8px;
   top: 50%;
   transform: translateY(-50%);
-  color: #FF6200;
+  color: #f97316;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 /* Active mega menu items */
 .apex-nav-panel[data-type="mega"] .apex-subnav-active {
   border-left: none;
-  border: 2px solid #FF6200 !important;
-  background: linear-gradient(135deg, rgba(255, 98, 0, 0.1), rgba(14, 165, 233, 0.05)) !important;
+  border: 1px solid #f97316 !important;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(56, 189, 248, 0.03)) !important;
 }
 
 .apex-nav-panel[data-type="mega"] .apex-subnav-active::before {
   content: '✓';
   left: 12px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* Remove underlines from social media links in footer */
@@ -280,7 +274,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5rem;
   font-weight: 600;
   line-height: 1.2;
-  color: #1e293b;
+  color: #334155;
 }
 
 h1 {
@@ -301,13 +295,27 @@ p {
 }
 
 a {
-  color: #FF6200;
+  color: #f97316;
   text-decoration: none;
 }
 
 a:hover {
-  color: #e65800;
+  color: #ea580c;
   text-decoration: underline;
+}
+
+/* Navigation links should NOT have text-decoration underline */
+a.apex-nav-link,
+a.apex-nav-link:hover,
+a.apex-nav-link:focus,
+a.apex-nav-link:active,
+a.apex-nav-link:visited {
+  text-decoration: none !important;
+  color: #64748b;
+}
+
+a.apex-nav-link:hover {
+  color: #1e293b;
 }
 
 /* Layout */
@@ -351,13 +359,13 @@ body {
 
 .apex-header-surface {
   position: relative;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* background: rgba(255, 255, 255, 0.92); */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .apex-gradient-shell {
-  background: linear-gradient(135deg, rgba(255, 98, 0, 0.05) 0%, rgba(14, 165, 233, 0.05) 50%, rgba(139, 92, 246, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 98, 0, 0.02) 0%, rgba(14, 165, 233, 0.02) 50%, rgba(139, 92, 246, 0.02) 100%);
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -370,7 +378,7 @@ body {
 }
 
 .apex-gradient-text {
-  background: linear-gradient(135deg, #FF6200 0%, #0ea5e9 50%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #f97316 0%, #38bdf8 50%, #a78bfa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -385,11 +393,12 @@ body {
   text-decoration: none;
   border-radius: 0.5rem;
   transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .apex-nav-link:hover {
-  color: #1e293b;
-  background-color: rgba(241, 245, 249, 0.7);
+  color: #475569;
+  background-color: rgba(241, 245, 249, 0.5);
 }
 
 .apex-nav-item {
@@ -408,61 +417,70 @@ body {
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .apex-nav-trigger:hover {
-  color: #1e293b;
-  background-color: rgba(241, 245, 249, 0.7);
+  color: #475569;
+  background-color: rgba(241, 245, 249, 0.5);
 }
 
 .apex-nav-panel {
   position: absolute;
-  z-index: 50;
+  z-index: 9999;
   top: 100%;
-  left: 0;
-  min-width: 16rem;
-  max-width: 20rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0.5rem);
+  min-width: 280px;
+  max-width: 320px;
   padding: 0.75rem;
-  margin-top: 0.75rem;
-  border-radius: 0.5rem;
-  border: 1px solid #e2e8f0;
+  margin-top: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #f1f5f9;
   background-color: white;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(0.5rem);
-  transition: all 0.3s ease;
-  /* Allow JavaScript to override positioning */
-  transition-property: opacity, visibility, transform;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
 }
 
-/* Ensure dropdown links are clickable */
-.apex-nav-panel.visible {
-  pointer-events: auto !important;
+/* Visible state for dropdown panels (regular dropdowns only) */
+.apex-nav-panel:not([data-type="mega"]).visible,
+.apex-nav-item:hover > .apex-nav-panel:not([data-type="mega"]),
+.apex-nav-item:focus-within > .apex-nav-panel:not([data-type="mega"]) {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
 }
 
-.apex-nav-panel.visible a {
-  pointer-events: auto !important;
-  cursor: pointer !important;
+/* Visible state for mega menu - NO transform */
+.apex-nav-panel[data-type="mega"].visible,
+.apex-nav-item:hover > .apex-nav-panel[data-type="mega"],
+.apex-nav-item:focus-within > .apex-nav-panel[data-type="mega"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.apex-nav-panel.mega {
-  left: 50%;
-  transform: translateX(-50%) translateY(0.75rem);
-  width: min(50rem, calc(100vw - 4rem));
+.apex-nav-panel.visible a,
+.apex-nav-item:hover > .apex-nav-panel a {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 /* CTA Buttons */
 .apex-rainbow-cta {
-  background: linear-gradient(135deg, #FF6200 0%, #0ea5e9 50%, #8b5cf6 100%);
-  box-shadow: 0 4px 6px -1px rgba(255, 98, 0, 0.1), 0 2px 4px -1px rgba(255, 98, 0, 0.06);
+  background: linear-gradient(135deg, #f97316 0%, #38bdf8 50%, #a78bfa 100%);
+  box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.08), 0 2px 4px -1px rgba(249, 115, 22, 0.04);
   color: white !important;
   text-decoration: none !important;
 }
 
 .apex-rainbow-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(255, 98, 0, 0.1), 0 4px 6px -2px rgba(255, 98, 0, 0.05);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 12px -3px rgba(249, 115, 22, 0.1), 0 4px 6px -2px rgba(249, 115, 22, 0.05);
   color: white !important;
 }
 
@@ -478,7 +496,7 @@ body {
 
 /* Footer Styles */
 .apex-newsletter {
-  background: linear-gradient(135deg, rgba(255, 98, 0, 0.03) 0%, rgba(14, 165, 233, 0.03) 50%, rgba(139, 92, 246, 0.03) 100%);
+  background: linear-gradient(135deg, rgba(255, 98, 0, 0.02) 0%, rgba(14, 165, 233, 0.02) 50%, rgba(139, 92, 246, 0.02) 100%);
 }
 
 /* Footer link hover and active background effect */
@@ -492,8 +510,8 @@ body {
 
 .apex-footer-link:hover,
 .apex-footer-link.active {
-  background-color: rgba(255, 98, 0, 0.1);
-  color: #FF6200;
+  background-color: rgba(249, 115, 22, 0.08);
+  color: #f97316;
   font-weight: 600;
 }
 
@@ -505,7 +523,7 @@ body {
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #FF6200, #0ea5e9);
+  background: linear-gradient(90deg, #f97316, #38bdf8);
   border-radius: 1px;
   transition: width 0.3s ease;
 }
@@ -540,12 +558,12 @@ body {
   background: conic-gradient(
     from 0deg,
     transparent,
-    rgba(255, 98, 0, 0.2),
-    rgba(14, 165, 233, 0.2),
-    rgba(139, 92, 246, 0.2),
+    rgba(249, 115, 22, 0.1),
+    rgba(56, 189, 248, 0.1),
+    rgba(167, 139, 250, 0.1),
     transparent
   );
-  animation: rotateGradient 6s linear infinite;
+  animation: rotateGradient 8s linear infinite;
   z-index: -1;
 }
 
@@ -559,9 +577,9 @@ body {
 }
 
 /* Color Classes */
-.bg-apex-orange { background-color: #FF6200; }
-.text-apex-orange { color: #FF6200; }
-.border-apex-orange { border-color: #FF6200; }
+.bg-apex-orange { background-color: #f97316; }
+.text-apex-orange { color: #f97316; }
+.border-apex-orange { border-color: #f97316; }
 
 .bg-apex-dark { background-color: #1e293b; }
 .text-apex-dark { color: #1e293b; }
@@ -636,13 +654,11 @@ body {
     transform: translateY(0);
   }
   
-  .apex-nav-panel.mega {
-    transform: translateX(-50%) translateY(0);
-  }
-  
-  .apex-nav-item:nth-last-child(1) .apex-nav-panel[data-type="mega"]:hover,
-  .apex-nav-item:nth-last-child(2) .apex-nav-panel[data-type="mega"]:hover {
-    transform: translateX(-50%) translateY(0);
+  /* Mega menu uses fixed positioning - no transform needed */
+  .apex-nav-panel[data-type="mega"],
+  .apex-nav-panel[data-type="mega"]:hover,
+  .apex-nav-item:hover > .apex-nav-panel[data-type="mega"] {
+    transform: none !important;
   }
   
   /* Prevent CSS from overriding JavaScript positioning */
@@ -787,7 +803,7 @@ main#site-main {
 
 .apex-header-surface {
   position: relative;
-  background: rgba(255, 255, 255, 0.95);
+  /* background: rgba(255, 255, 255, 0.95); */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   margin-bottom: 0;
@@ -1112,12 +1128,12 @@ div.hd-search #s {
 
 /* Accessibility improvements */
 .apex-nav-trigger:focus {
-  outline: 2px solid #FF6200;
+  outline: 2px solid #f97316;
   outline-offset: 2px;
 }
 
 .apex-mobile-toggle:focus {
-  outline: 2px solid #FF6200;
+  outline: 2px solid #f97316;
   outline-offset: 2px;
 }
 
@@ -1144,40 +1160,81 @@ html {
   }
 }
 
-/* Mega menu specific styles */
+/* ===========================================
+   Responsive Dropdown & Mega Menu System
+   =========================================== */
+
+/* Regular dropdown panels - centered under trigger */
+.apex-nav-panel:not([data-type="mega"]) {
+  min-width: 280px;
+  max-width: 320px;
+}
+
+/* Mega menu panel - FIXED position, never moves */
 .apex-nav-panel[data-type="mega"] {
-  width: min(800px, calc(100vw - 4rem));
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: calc(100vw - 4rem);
+  position: fixed !important;
+  left: 2rem !important;
+  right: 2rem !important;
+  top: 80px !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: auto;
+  padding: 1.5rem;
+  transform: none !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  z-index: 9999 !important;
 }
 
-/* Fix dropdown positioning for right-aligned items */
-.apex-nav-item:nth-last-child(1) .apex-nav-panel:not([data-type="mega"]),
-.apex-nav-item:nth-last-child(2) .apex-nav-panel:not([data-type="mega"]) {
-  left: auto;
-  right: 0;
-}
-
-.apex-nav-item:nth-last-child(1) .apex-nav-panel[data-type="mega"],
-.apex-nav-item:nth-last-child(2) .apex-nav-panel[data-type="mega"] {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-}
-
-/* Responsive mega menu breakpoints */
-@media (max-width: 1200px) {
+/* Desktop (1024px+): Proper dropdown alignment */
+@media (min-width: 1024px) {
+  /* Keep regular dropdowns centered under their triggers */
+  .apex-nav-panel:not([data-type="mega"]) {
+    left: 50%;
+    transform: translateX(-50%) translateY(0.5rem);
+  }
+  
+  .apex-nav-panel:not([data-type="mega"]).visible,
+  .apex-nav-item:hover > .apex-nav-panel:not([data-type="mega"]),
+  .apex-nav-item:focus-within > .apex-nav-panel:not([data-type="mega"]) {
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  /* Mega menu - ensure no transform is applied */
   .apex-nav-panel[data-type="mega"] {
-    width: min(700px, calc(100vw - 3rem));
-    max-width: calc(100vw - 3rem);
+    transform: none !important;
+  }
+  
+  /* Prevent right-edge overflow for dropdowns near edge */
+  .apex-nav-item:nth-last-child(-n+3) .apex-nav-panel:not([data-type="mega"]) {
+    left: auto;
+    right: 0;
+    transform: translateY(0.5rem);
+  }
+  
+  .apex-nav-item:nth-last-child(-n+3):hover > .apex-nav-panel:not([data-type="mega"]),
+  .apex-nav-item:nth-last-child(-n+3) .apex-nav-panel:not([data-type="mega"]).visible {
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 1024px) {
+/* Large screens (1400px+): Constrain mega menu width but keep fixed position */
+@media (min-width: 1400px) {
   .apex-nav-panel[data-type="mega"] {
-    width: min(600px, calc(100vw - 2rem));
-    max-width: calc(100vw - 2rem);
+    left: 2rem !important;
+    right: 2rem !important;
+    max-width: 900px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* Tablet (768px - 1023px): Adjusted sizing */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .apex-nav-panel[data-type="mega"] {
+    left: 1rem !important;
+    right: 1rem !important;
+    width: auto !important;
   }
   
   .apex-nav-panel[data-type="mega"] .grid {
@@ -1185,44 +1242,43 @@ html {
     gap: 1rem !important;
   }
   
-  .apex-nav-panel[data-type="mega"] .lg\\:col-span-4 {
-    grid-column: span 1 !important;
-    margin-bottom: 1rem;
-  }
-  
-  .apex-nav-panel[data-type="mega"] .lg\\:col-span-8 {
+  .apex-nav-panel[data-type="mega"] .lg\:col-span-4,
+  .apex-nav-panel[data-type="mega"] .lg\:col-span-8 {
     grid-column: span 1 !important;
   }
 }
 
-@media (max-width: 768px) {
+/* Mobile (< 768px): Full-width dropdowns */
+@media (max-width: 767px) {
+  .apex-nav-panel:not([data-type="mega"]) {
+    position: fixed;
+    left: 1rem !important;
+    right: 1rem !important;
+    width: calc(100vw - 2rem) !important;
+    max-width: none !important;
+    transform: translateY(0.5rem) !important;
+  }
+  
+  .apex-nav-panel:not([data-type="mega"]).visible {
+    transform: translateY(0) !important;
+  }
+  
+  /* Mega menu on mobile - no transform */
   .apex-nav-panel[data-type="mega"] {
-    width: calc(100vw - 1rem);
-    max-width: calc(100vw - 1rem);
-    left: 1rem;
-    right: 1rem;
-    transform: none;
-    border-radius: 0.5rem;
+    padding: 1rem;
+    transform: none !important;
   }
   
   .apex-nav-panel[data-type="mega"] .grid {
     grid-template-columns: 1fr !important;
     gap: 0.75rem !important;
-    padding: 1rem !important;
   }
   
-  .apex-nav-panel[data-type="mega"] .lg\\:col-span-8 .grid {
+  .apex-nav-panel[data-type="mega"] .lg\:col-span-8 .grid {
     grid-template-columns: 1fr !important;
     gap: 0.5rem !important;
   }
 }
-
-@media (max-width: 1023px) {
-  .apex-nav-panel[data-type="mega"] {
-    left: 0;
-    transform: none;
-  }
-  }
   
   /* Hide default underline for header dropdown links */
   .apex-nav-panel a {
@@ -1270,23 +1326,29 @@ html {
      /* Focus styles for accessibility */
      .apex-nav-link:focus,
      .apex-nav-trigger:focus {
-       outline: 2px solid #FF6200;
+       outline: 2px solid #f97316;
        outline-offset: 2px;
        border-radius: 0.25rem;
      }
      
-     /* Animation for dropdowns */
-     .apex-nav-panel {
+     /* Animation for regular dropdowns only - NOT mega menu */
+     .apex-nav-panel:not([data-type="mega"]) {
        animation-duration: 0.3s;
        animation-timing-function: ease;
      }
      
-     .apex-nav-panel.visible {
+     .apex-nav-panel:not([data-type="mega"]).visible {
        animation-name: fadeInSlideDown;
      }
      
-     .apex-nav-panel.invisible {
+     .apex-nav-panel:not([data-type="mega"]).invisible {
        animation-name: fadeOutSlideUp;
+     }
+     
+     /* Mega menu - simple fade only, no transform animation */
+     .apex-nav-panel[data-type="mega"] {
+       animation: none !important;
+       transition: opacity 0.2s ease !important;
      }
      
      @keyframes fadeInSlideDown {
@@ -1310,3 +1372,58 @@ html {
          transform: translateY(-0.5rem);
        }
      }
+     
+/* ===========================================
+   Unified Navigation Hover Underline Effect
+   =========================================== */
+.apex-nav-underline {
+  height: 2px !important;
+  background: linear-gradient(90deg, #f97316, #38bdf8) !important;
+  border-radius: 1px;
+  bottom: 2px;
+}
+
+/* Hover effect for simple nav links */
+.apex-nav-link:hover .apex-nav-underline,
+.apex-nav-link:focus .apex-nav-underline {
+  width: 60% !important;
+}
+
+/* Hover effect for dropdown/mega triggers */
+.apex-nav-trigger:hover .apex-nav-underline,
+.apex-nav-trigger:focus .apex-nav-underline,
+.apex-nav-item:hover > .apex-nav-trigger .apex-nav-underline {
+  width: 60% !important;
+}
+
+/* Active state underline */
+.apex-nav-link.apex-nav-active .apex-nav-underline,
+.apex-nav-item.apex-nav-parent-active .apex-nav-trigger .apex-nav-underline {
+  width: 100% !important;
+}
+
+     /* Header Scroll Effect Styles */
+     #apex-main-header {
+       background: transparent;
+     }
+     
+     #apex-main-header .apex-header-inner {
+       box-shadow: none;
+       border: 2px solid transparent;
+     }
+     
+     #apex-main-header.scrolled {
+       background: transparent;
+     }
+     
+     #apex-main-header.scrolled .apex-header-inner {
+       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+       /* border: 2px solid #22c55e; */
+       border: 2px solid #fa8b24;
+     }
+
+/* Custom Tooltip Styles */
+.apex-tooltip {
+  background-color: #1e293b !important;
+  color: white !important;
+}
