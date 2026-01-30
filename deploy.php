@@ -31,9 +31,9 @@ add('writable_dirs', [
 
 // Hosts
 host('206.189.120.35')
-    ->set('remote_user', 'deployer')
-    ->set('port', 22)
-    ->set('identityFile', '~/.ssh/id_rsa')
+    ->user('deployer')
+    ->port(22)
+    ->identityFile('~/.ssh/id_rsa')
     ->set('deploy_path', '/var/www/html/{{application}}');
 
 // Tasks
