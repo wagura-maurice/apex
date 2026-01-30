@@ -275,67 +275,8 @@ function apex_header_scripts() {
         // Initialize active states
         setActiveStates();
         
-        // NOTE: Desktop dropdown positioning is handled in header.php inline script
-        // to avoid duplicate event handlers causing position shifts
-        
-        // Mobile menu toggle functionality
-        const mobileToggle = document.querySelector('[data-mobile-menu-toggle]');
-        const mobileMenu = document.getElementById('apex-mobile-menu');
-        
-        if (mobileToggle && mobileMenu) {
-            mobileToggle.addEventListener('click', function() {
-                const isExpanded = mobileToggle.getAttribute('aria-expanded') === 'true';
-                mobileMenu.classList.toggle('hidden');
-                mobileToggle.setAttribute('aria-expanded', !isExpanded);
-                
-                // Change the icon based on state
-                const iconElement = mobileToggle.querySelector('.apex-mobile-toggle-icon');
-                if (iconElement) {
-                    if (isExpanded) {
-                        // Show hamburger icon
-                        iconElement.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
-                    } else {
-                        // Show close icon
-                        iconElement.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
-                    }
-                }
-            });
-        }
-        
-        // Mobile accordion functionality
-        const mobileAccordions = document.querySelectorAll('[data-mobile-accordion]');
-        
-        mobileAccordions.forEach(accordion => {
-            accordion.addEventListener('click', function() {
-                const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                
-                // Close all other panels
-                mobileAccordions.forEach(otherAccordion => {
-                    if (otherAccordion !== this) {
-                        const otherPanel = otherAccordion.nextElementSibling ||
-                                          otherAccordion.parentElement?.querySelector('[data-mobile-panel]');
-                        if (otherPanel) {
-                            otherPanel.classList.add('hidden');
-                        }
-                        otherAccordion.setAttribute('aria-expanded', 'false');
-                        const otherIcon = otherAccordion.querySelector('span:last-child');
-                        if (otherIcon) otherIcon.style.transform = '';
-                    }
-                });
-                
-                // Toggle current panel
-                const panel = this.nextElementSibling ||
-                             this.parentElement?.querySelector('[data-mobile-panel]');
-                if (panel) {
-                    panel.classList.toggle('hidden');
-                }
-                this.setAttribute('aria-expanded', !isExpanded);
-                const icon = this.querySelector('span:last-child');
-                if (icon) {
-                    icon.style.transform = isExpanded ? '' : 'rotate(180deg)';
-                }
-            });
-        });
+        // NOTE: Desktop dropdown positioning and mobile menu toggle are handled in header.php inline script
+        // to avoid duplicate event handlers causing conflicts
         
         // Header scroll effect
         let header = document.querySelector('header');

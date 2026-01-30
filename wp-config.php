@@ -19,8 +19,19 @@
  */
 
 // ** Database settings - You can get this info from your web host ** //
-// Detect environment based on server hostname or define WP_ENV
-$environment = getenv('WP_ENV') ?: (strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || strpos($_SERVER['HTTP_HOST'] ?? '', '.local') !== false ? 'local' : 'production');
+// Detect environment: check for local indicators
+$host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? '';
+$path = __DIR__;
+$is_local = (
+    strpos($host, 'localhost') !== false ||
+    strpos($host, '127.0.0.1') !== false ||
+    strpos($host, '.local') !== false ||
+    strpos($host, '.test') !== false ||
+    strpos($host, '.devops') !== false ||
+    strpos($path, '/var/www/html/apex') !== false && strpos($path, '/releases/') === false ||
+    file_exists(__DIR__ . '/.local')
+);
+$environment = getenv('WP_ENV') ?: ($is_local ? 'local' : 'production');
 
 if ($environment === 'local') {
     // Local development

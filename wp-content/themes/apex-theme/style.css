@@ -1318,9 +1318,32 @@ html {
        z-index: 9999 !important;
      }
      
-     /* Mobile menu overlay styles */
+     /* Mobile menu overlay styles - positioned outside header */
      #apex-mobile-menu {
-       transition: all 0.3s ease;
+       position: fixed !important;
+       top: 6rem !important;
+       left: 1rem !important;
+       right: 1rem !important;
+       z-index: 9999 !important;
+       background: white !important;
+       border-radius: 1rem !important;
+       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+       max-height: 75vh !important;
+       overflow-y: auto !important;
+       transition: opacity 0.2s ease, transform 0.2s ease;
+     }
+     
+     /* When menu is shown (display:block via JS) */
+     #apex-mobile-menu[style*="display: block"] {
+       opacity: 1;
+       transform: translateY(0);
+     }
+     
+     /* Hide on large screens */
+     @media (min-width: 1024px) {
+       #apex-mobile-menu {
+         display: none !important;
+       }
      }
      
      /* Focus styles for accessibility */

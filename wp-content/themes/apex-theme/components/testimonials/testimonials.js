@@ -118,8 +118,8 @@
                 slide.classList.remove('is-active', 'is-prev');
                 if (i === index) {
                     slide.classList.add('is-active');
-                } else if (i === this.currentSlide) {
-                    slide.classList.add(direction > 0 ? 'is-prev' : '');
+                } else if (i === this.currentSlide && direction > 0) {
+                    slide.classList.add('is-prev');
                 }
             });
             

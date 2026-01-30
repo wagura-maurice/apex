@@ -15,18 +15,18 @@ $apex_request_demo_href = home_url('/request-demo');
 <div class="min-h-screen flex flex-col">
     <!-- Sticky Header -->
     <header id="apex-main-header" class="sticky top-0 z-50 transition-all duration-500 py-2 px-4 bg-gradient-to-r from-[#0f172a] via-[#1e3a5f] to-[#0f172a]">
-        <div class="apex-header-inner mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 bg-white rounded-2xl transition-all duration-500 shadow-xl border border-white/20">
+        <div class="apex-header-inner mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-2 bg-white rounded-2xl transition-all duration-500 shadow-xl border border-white/20">
             <div class="apex-header-surface">
-                <div class="flex h-16 items-center justify-between gap-3">
+                <div class="flex h-16 items-center justify-between gap-2">
                 <!-- Brand -->
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-3 group transition-transform duration-300 hover:scale-105">
-                    <div class="relative overflow-hidden rounded-xl shadow-md">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-2 group transition-transform duration-300 hover:scale-105 flex-shrink min-w-0 overflow-hidden">
+                    <div class="relative overflow-hidden rounded-xl shadow-md flex-shrink-0">
                         <img src="https://web.archive.org/web/20220401202046im_/https://apex-softwares.com/wp-content/uploads/2017/08/newlogo3.png" alt="Apex Softwares" class="h-10 w-auto transition-transform duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-r from-apex-orange/30 via-apex-blue/30 to-apex-purple/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply"></div>
                     </div>
-                    <span class="leading-tight">
-                        <span class="block text-lg font-black text-apex-dark group-hover:text-apex-orange transition-colors duration-200">Apex Softwares</span>
-                        <span class="block text-sm text-apex-gray-500 -mt-0.5">Microfinance &amp; Banking Solutions</span>
+                    <span class="leading-tight min-w-0 overflow-hidden">
+                        <span class="block text-sm sm:text-lg font-black text-apex-dark group-hover:text-apex-orange transition-colors duration-200 truncate">Apex Softwares</span>
+                        <span class="block text-xs sm:text-sm text-apex-gray-500 -mt-0.5 truncate">Microfinance &amp; Banking Solutions</span>
                     </span>
                 </a>
 
@@ -166,136 +166,179 @@ $apex_request_demo_href = home_url('/request-demo');
                 </nav>
 
                 <!-- Actions -->
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-shrink-0">
                     <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="hidden sm:inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/60 transition-all duration-200 apex-rainbow-cta shadow-md hover:shadow-lg transform hover:scale-105">
                         Request Demo
                     </a>
-                    <button type="button" class="lg:hidden inline-flex items-center justify-center rounded-full border border-apex-gray-200/60 bg-white/80 px-3 py-2 text-sm font-semibold text-apex-gray-700 hover:bg-apex-gray-900 hover:text-white hover:border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-300 shadow-sm apex-mobile-toggle" data-mobile-menu-toggle aria-expanded="false" aria-controls="apex-mobile-menu">
-                        <svg class="w-5 h-5 apex-mobile-toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" id="mobile-menu-btn" class="lg:hidden inline-flex items-center justify-center rounded-full border border-apex-gray-200/60 bg-white/80 px-3 py-2 text-sm font-semibold text-apex-gray-700 hover:bg-apex-gray-900 hover:text-white hover:border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-apex-orange/50 transition-all duration-300 shadow-sm apex-mobile-toggle" data-mobile-menu-toggle aria-expanded="false" aria-controls="apex-mobile-menu">
+                        <!-- Hamburger icon -->
+                        <svg id="hamburger-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <!-- Close X icon (hidden by default) -->
+                        <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
                 </div>
             </div>
         </div>
+    </header>
 
-        <!-- Mobile menu -->
-        <div id="apex-mobile-menu" class="lg:hidden hidden border-t border-apex-gray-200 bg-gradient-to-b from-white/95 via-apex-blue/5 to-apex-purple/5 backdrop-blur-md">
-            <div class="mx-auto max-w-7xl px-4 py-6">
-                <div class="grid gap-3">
-                    <?php
-                    // WordPress mobile menu implementation following learningWordPress methodology
-                    $mobile_args = array(
-                        'theme_location' => 'primary',
-                        'container' => false,
-                        'items_wrap' => '%3$s', // Remove ul wrapper, just output the li's
-                        'depth' => 2,
-                        'fallback_cb' => 'apex_mobile_default_nav'
-                    );
-                    wp_nav_menu($mobile_args);
-                    
-                    // Default mobile navigation fallback if no menu is set
-                    function apex_mobile_default_nav() {
-                        echo '<a class="rounded-lg px-4 py-3 text-sm font-bold text-slate-700 hover:bg-orange-50 hover:text-orange-500 transition-all duration-200" href="' . esc_url(home_url('/')) . '">Home</a>';
+    <!-- Mobile menu - OUTSIDE header to avoid clipping -->
+    <?php
+    // Get current URL path for active state detection
+    $current_url = $_SERVER['REQUEST_URI'];
+    $current_path = trim(parse_url($current_url, PHP_URL_PATH) ?: '', '/');
+    
+    // Debug disabled
+    // echo "<div style='position:fixed;bottom:0;left:0;background:red;color:white;padding:5px;z-index:99999;font-size:12px;'>PATH: $current_path</div>";
+    
+    // Active classes
+    $active_link = 'bg-orange-100 text-orange-600 font-semibold border-l-4 border-orange-500';
+    $inactive_link = 'text-slate-600 hover:bg-orange-50 hover:text-orange-500';
+    
+    // Check which sections are active (for parent highlighting)
+    $is_home_active = is_front_page() || empty($current_path);
+    $is_about_active = strpos($current_path, 'about') !== false;
+    $is_solutions_active = strpos($current_path, 'solutions') !== false;
+    $is_industry_active = strpos($current_path, 'industry') !== false;
+    $is_contact_active = strpos($current_path, 'contact') !== false;
+    ?>
+    <div id="apex-mobile-menu" class="lg:hidden hidden fixed top-24 left-4 right-4 z-[9999] rounded-2xl shadow-2xl border border-gray-200 bg-white max-h-[75vh] overflow-y-auto" style="display: none;">
+        <div class="px-4 py-6">
+            <div class="grid gap-3">
+                <!-- Home -->
+                <a class="rounded-lg px-4 py-3 text-sm font-bold transition-all duration-200 <?php echo $is_home_active ? 'bg-orange-50 text-orange-500 border-l-4 border-orange-500' : 'text-slate-700 hover:bg-orange-50 hover:text-orange-500'; ?>" href="<?php echo esc_url(home_url('/')); ?>">Home</a>
 
-                        echo '<div class="rounded-xl border border-apex-gray-200 overflow-hidden">';
-                        echo '<button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold text-slate-700 hover:bg-orange-50 transition-all duration-200" data-mobile-accordion aria-expanded="false">';
-                        echo 'Solutions <span class="text-slate-400 transition-transform duration-200">▾</span>';
-                        echo '</button>';
-                        echo '<div class="hidden px-3 pb-3" data-mobile-panel>';
-                        $apex_nav = [
-                            [
-                                'label' => 'Solutions',
-                                'type'  => 'mega',
-                                'items' => [
-                                    ['label' => 'Overview', 'href' => home_url('/solutions/overview')],
-                                    ['label' => 'Core Banking & Microfinance', 'href' => home_url('/solutions/core-banking-microfinance')],
-                                    ['label' => 'Mobile Wallet App', 'href' => home_url('/solutions/mobile-wallet-app')],
-                                    ['label' => 'Agency & Branch Banking', 'href' => home_url('/solutions/agency-branch-banking')],
-                                    ['label' => 'Internet & Mobile Banking', 'href' => home_url('/solutions/internet-mobile-banking')],
-                                    ['label' => 'Loan Origination & Workflows', 'href' => home_url('/solutions/loan-origination-workflows')],
-                                    ['label' => 'Digital Field Agent', 'href' => home_url('/solutions/digital-field-agent')],
-                                    ['label' => 'Enterprise Integration', 'href' => home_url('/solutions/enterprise-integration')],
-                                    ['label' => 'Payment Switch & General Ledger', 'href' => home_url('/solutions/payment-switch-ledger')],
-                                    ['label' => 'Reporting & Analytics', 'href' => home_url('/solutions/reporting-analytics')],
-                                ],
-                            ]
-                        ];
-                        foreach ($apex_nav as $item) {
-                            if (!empty($item['type']) && $item['label'] === 'Solutions') {
-                                foreach ($item['items'] as $sub) {
-                                    echo '<a class="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-orange-50 hover:text-orange-500 transition-all duration-200" href="' . esc_url($sub['href']) . '">' . esc_html($sub['label']) . '</a>';
-                                }
-                            }
-                        }
-                        echo '</div>';
-                        echo '</div>';
-
-                        foreach (['Industry', 'Insights', 'About Us'] as $group) {
-                            echo '<div class="rounded-xl border border-apex-gray-200 overflow-hidden">';
-                            echo '<button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold text-slate-700 hover:bg-orange-50 transition-all duration-200" data-mobile-accordion aria-expanded="false">';
-                            echo esc_html($group) . ' <span class="text-slate-400 transition-transform duration-200">▾</span>';
-                            echo '</button>';
-                            echo '<div class="hidden px-3 pb-3" data-mobile-panel>';
-                            $apex_nav = [
-                                [
-                                    'label' => 'Industry',
-                                    'type'  => 'dropdown',
-                                    'items' => [
-                                        ['label' => 'Overview', 'href' => home_url('/industry/overview')],
-                                        ['label' => 'Microfinance Institutions (MFIs)', 'href' => home_url('/industry/mfis')],
-                                        ['label' => 'SACCOs & Credit Unions', 'href' => home_url('/industry/credit-unions')],
-                                        ['label' => 'Commercial Banks', 'href' => home_url('/industry/banks-microfinance')],
-                                        ['label' => 'Digital Government & NGOs', 'href' => home_url('/industry/digital-government')],
-                                    ],
-                                ],
-                                [
-                                    'label' => 'Insights',
-                                    'type'  => 'dropdown',
-                                    'items' => [
-                                        ['label' => 'Blog', 'href' => home_url('/insights/blog')],
-                                        ['label' => 'Success Stories', 'href' => home_url('/insights/success-stories')],
-                                        ['label' => 'Webinars & Events', 'href' => home_url('/insights/webinars')],
-                                        ['label' => 'Whitepapers & Reports', 'href' => home_url('/insights/whitepapers-reports')],
-                                    ],
-                                ],
-                                [
-                                    'label' => 'About Us',
-                                    'type'  => 'dropdown',
-                                    'items' => [
-                                        ['label' => 'About Apex Softwares', 'href' => home_url('/about-us')],
-                                        ['label' => 'Our Approach', 'href' => home_url('/about-us/our-approach')],
-                                        ['label' => 'Leadership Team', 'href' => home_url('/about-us/leadership-team')],
-                                        ['label' => 'News & Updates', 'href' => home_url('/about-us/news')],
-                                        ['label' => 'Contact Us', 'href' => home_url('/contact')],
-                                    ],
-                                ]
-                            ];
-                            foreach ($apex_nav as $item) {
-                                if (!empty($item['type']) && $item['label'] === $group) {
-                                    foreach ($item['items'] as $sub) {
-                                        echo '<a class="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-orange-50 hover:text-orange-500 transition-all duration-200" href="' . esc_url($sub['href']) . '">' . esc_html($sub['label']) . '</a>';
-                                    }
-                                }
-                            }
-                            echo '</div>';
-                            echo '</div>';
-                        }
-                    }
-                    ?>
-
-                    <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="mt-4 inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-400 px-5 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all duration-200">
-                        Request Demo
-                    </a>
+                <!-- About Us -->
+                <div class="rounded-xl border <?php echo $is_about_active ? 'border-orange-200' : 'border-gray-200'; ?> overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold transition-all duration-200 <?php echo $is_about_active ? 'text-orange-500' : 'text-slate-700 hover:bg-orange-50'; ?>" data-mobile-accordion aria-expanded="<?php echo $is_about_active ? 'true' : 'false'; ?>">
+                        About Us <span class="text-slate-400 transition-transform duration-200">▾</span>
+                    </button>
+                    <div class="<?php echo $is_about_active ? '' : 'hidden'; ?> px-3 pb-3" data-mobile-panel>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'about-us') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/about-us')); ?>">About Apex Softwares</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'about-us/our-approach') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/about-us/our-approach')); ?>">Our Approach</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'about-us/leadership-team') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/about-us/leadership-team')); ?>">Leadership Team</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'about-us/news') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/about-us/news')); ?>">News & Updates</a>
+                    </div>
                 </div>
+
+                <!-- Solutions -->
+                <div class="rounded-xl border <?php echo $is_solutions_active ? 'border-orange-200' : 'border-gray-200'; ?> overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold transition-all duration-200 <?php echo $is_solutions_active ? 'text-orange-500' : 'text-slate-700 hover:bg-orange-50'; ?>" data-mobile-accordion aria-expanded="<?php echo $is_solutions_active ? 'true' : 'false'; ?>">
+                        Solutions <span class="text-slate-400 transition-transform duration-200">▾</span>
+                    </button>
+                    <div class="<?php echo $is_solutions_active ? '' : 'hidden'; ?> px-3 pb-3" data-mobile-panel>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/overview') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/overview')); ?>">Overview</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/core-banking-microfinance') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/core-banking-microfinance')); ?>">Core Banking & Microfinance</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/mobile-wallet-app') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/mobile-wallet-app')); ?>">Mobile Wallet App</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/agency-branch-banking') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/agency-branch-banking')); ?>">Agency & Branch Banking</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/internet-mobile-banking') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/internet-mobile-banking')); ?>">Internet & Mobile Banking</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/loan-origination-workflows') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/loan-origination-workflows')); ?>">Loan Origination & Workflows</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/digital-field-agent') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/digital-field-agent')); ?>">Digital Field Agent</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/enterprise-integration') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/enterprise-integration')); ?>">Enterprise Integration</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/payment-switch-ledger') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/payment-switch-ledger')); ?>">Payment Switch & General Ledger</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'solutions/reporting-analytics') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/solutions/reporting-analytics')); ?>">Reporting & Analytics</a>
+                    </div>
+                </div>
+
+                <!-- Industry -->
+                <div class="rounded-xl border <?php echo $is_industry_active ? 'border-orange-200' : 'border-gray-200'; ?> overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold transition-all duration-200 <?php echo $is_industry_active ? 'text-orange-500' : 'text-slate-700 hover:bg-orange-50'; ?>" data-mobile-accordion aria-expanded="<?php echo $is_industry_active ? 'true' : 'false'; ?>">
+                        Industry <span class="text-slate-400 transition-transform duration-200">▾</span>
+                    </button>
+                    <div class="<?php echo $is_industry_active ? '' : 'hidden'; ?> px-3 pb-3" data-mobile-panel>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'industry/overview') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/industry/overview')); ?>">Overview</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'industry/mfis') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/industry/mfis')); ?>">Microfinance Institutions</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'industry/credit-unions') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/industry/credit-unions')); ?>">SACCOs & Credit Unions</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'industry/banks-microfinance') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/industry/banks-microfinance')); ?>">Commercial Banks</a>
+                    </div>
+                </div>
+
+                <!-- Insights -->
+                <?php $is_insights_active = strpos($current_path, 'insights') !== false; ?>
+                <div class="rounded-xl border <?php echo $is_insights_active ? 'border-orange-200' : 'border-gray-200'; ?> overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 text-sm font-bold transition-all duration-200 <?php echo $is_insights_active ? 'text-orange-500' : 'text-slate-700 hover:bg-orange-50'; ?>" data-mobile-accordion aria-expanded="<?php echo $is_insights_active ? 'true' : 'false'; ?>">
+                        Insights <span class="text-slate-400 transition-transform duration-200">▾</span>
+                    </button>
+                    <div class="<?php echo $is_insights_active ? '' : 'hidden'; ?> px-3 pb-3" data-mobile-panel>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'insights/blog') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/insights/blog')); ?>">Blog</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'insights/success-stories') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/insights/success-stories')); ?>">Success Stories</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'insights/webinars') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/insights/webinars')); ?>">Webinars & Events</a>
+                        <a class="block rounded-lg px-3 py-2 text-sm transition-all duration-200 <?php echo ($current_path === 'insights/whitepapers-reports') ? $active_link : $inactive_link; ?>" href="<?php echo esc_url(home_url('/insights/whitepapers-reports')); ?>">Whitepapers & Reports</a>
+                    </div>
+                </div>
+
+                <!-- Contact Us -->
+                <a class="rounded-lg px-4 py-3 text-sm font-bold transition-all duration-200 <?php echo $is_contact_active ? 'bg-orange-50 text-orange-500 border-l-4 border-orange-500' : 'text-slate-700 hover:bg-orange-50 hover:text-orange-500'; ?>" href="<?php echo esc_url(home_url('/contact')); ?>">Contact Us</a>
+
+                <!-- Request Demo CTA -->
+                <a href="<?php echo esc_url($apex_request_demo_href); ?>" class="mt-4 inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-400 px-5 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all duration-200">
+                    Request Demo
+                </a>
             </div>
         </div>
-    </header>
+    </div>
 
     <script>
     (function() {
         'use strict';
+        
+        // ===========================================
+        // Mobile Menu Toggle - Initialize FIRST
+        // ===========================================
+        const mobileToggle = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('apex-mobile-menu');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const closeIcon = document.getElementById('close-icon');
+        
+        if (mobileToggle && mobileMenu) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isHidden = mobileMenu.style.display === 'none' || mobileMenu.classList.contains('hidden');
+                
+                // Toggle menu visibility
+                mobileMenu.style.display = isHidden ? 'block' : 'none';
+                mobileMenu.classList.toggle('hidden', !isHidden);
+                this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+                
+                // Toggle icons
+                if (hamburgerIcon && closeIcon) {
+                    hamburgerIcon.classList.toggle('hidden', isHidden);
+                    closeIcon.classList.toggle('hidden', !isHidden);
+                }
+            });
+        }
+        
+        // Mobile Accordion Menus
+        document.querySelectorAll('[data-mobile-accordion]').forEach(function(accordion) {
+            accordion.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                const panel = this.nextElementSibling;
+                
+                // Close other accordions
+                document.querySelectorAll('[data-mobile-accordion]').forEach(function(other) {
+                    if (other !== accordion) {
+                        other.setAttribute('aria-expanded', 'false');
+                        const otherPanel = other.nextElementSibling;
+                        if (otherPanel) otherPanel.classList.add('hidden');
+                    }
+                });
+                
+                // Toggle current
+                this.setAttribute('aria-expanded', !isExpanded);
+                if (panel) panel.classList.toggle('hidden');
+                
+                // Rotate arrow
+                const arrow = this.querySelector('span:last-child');
+                if (arrow) arrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+        });
         
         // ===========================================
         // Header Scroll Effect
@@ -428,63 +471,6 @@ $apex_request_demo_href = home_url('/request-demo');
         });
         
         // CSS handles responsive positioning, no JS resize handler needed
-        
-        // ===========================================
-        // Mobile Menu Toggle
-        // ===========================================
-        const mobileToggle = document.querySelector('[data-mobile-menu-toggle]');
-        const mobileMenu = document.getElementById('apex-mobile-menu');
-        
-        if (mobileToggle && mobileMenu) {
-            mobileToggle.addEventListener('click', () => {
-                const isExpanded = mobileToggle.getAttribute('aria-expanded') === 'true';
-                mobileToggle.setAttribute('aria-expanded', !isExpanded);
-                mobileMenu.classList.toggle('hidden');
-                
-                // Update icon
-                const icon = mobileToggle.querySelector('svg');
-                if (icon) {
-                    if (isExpanded) {
-                        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
-                    } else {
-                        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
-                    }
-                }
-            });
-        }
-        
-        // ===========================================
-        // Mobile Accordion Menus
-        // ===========================================
-        const mobileAccordions = document.querySelectorAll('[data-mobile-accordion]');
-        
-        mobileAccordions.forEach(accordion => {
-            accordion.addEventListener('click', () => {
-                const isExpanded = accordion.getAttribute('aria-expanded') === 'true';
-                const panel = accordion.nextElementSibling;
-                
-                // Close other accordions
-                mobileAccordions.forEach(other => {
-                    if (other !== accordion) {
-                        other.setAttribute('aria-expanded', 'false');
-                        const otherPanel = other.nextElementSibling;
-                        if (otherPanel) otherPanel.classList.add('hidden');
-                    }
-                });
-                
-                // Toggle current
-                accordion.setAttribute('aria-expanded', !isExpanded);
-                if (panel) {
-                    panel.classList.toggle('hidden');
-                }
-                
-                // Rotate arrow
-                const arrow = accordion.querySelector('span:last-child');
-                if (arrow) {
-                    arrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
-                }
-            });
-        });
         
     })();
     </script>
