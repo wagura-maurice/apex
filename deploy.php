@@ -66,3 +66,13 @@ after('deploy:vendors', 'build');
 
 // Run WordPress tasks before symlink new release
 before('deploy:symlink', 'release:application');
+
+// Main deploy task
+task('deploy', [
+    'deploy:prepare',
+    'deploy:vendors',
+    'deploy:publish',
+]);
+
+desc('Deploy WordPress');
+task('deploy');
