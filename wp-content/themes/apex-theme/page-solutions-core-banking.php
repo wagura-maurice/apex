@@ -118,19 +118,4 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-apex_render_about_cta([
-    'heading' => 'Ready to Modernize Your Core Banking?',
-    'description' => 'See how ApexCore can transform your operations.',
-    'cta_primary' => [
-        'text' => 'Request a Demo',
-        'url' => home_url('/request-demo')
-    ],
-    'cta_secondary' => [
-        'text' => 'Contact Sales',
-        'url' => home_url('/contact')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>

@@ -225,20 +225,4 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Ready to Experience Our Approach?',
-    'description' => 'Let us show you how our methodology can transform your institution. Schedule a consultation with our team.',
-    'cta_primary' => [
-        'text' => 'Schedule Consultation',
-        'url' => home_url('/request-demo')
-    ],
-    'cta_secondary' => [
-        'text' => 'Download Methodology Guide',
-        'url' => home_url('/resources/methodology')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>

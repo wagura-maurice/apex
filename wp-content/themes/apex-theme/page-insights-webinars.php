@@ -382,20 +382,4 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Want to Host a Joint Webinar?',
-    'description' => 'Partner with us to share your expertise and reach our audience of financial technology professionals.',
-    'cta_primary' => [
-        'text' => 'Become a Speaker',
-        'url' => home_url('/contact')
-    ],
-    'cta_secondary' => [
-        'text' => 'Partnership Inquiries',
-        'url' => home_url('/contact')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>

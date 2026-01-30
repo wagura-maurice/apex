@@ -174,20 +174,4 @@ apex_render_global_presence([
 ]);
 ?>
 
-<?php 
-// About CTA Component
-apex_render_about_cta([
-    'heading' => 'Ready to Transform Your Institution?',
-    'description' => 'Join over 100 financial institutions that trust Apex Softwares to power their digital transformation journey.',
-    'cta_primary' => [
-        'text' => 'Request a Demo',
-        'url' => home_url('/request-demo')
-    ],
-    'cta_secondary' => [
-        'text' => 'Contact Us',
-        'url' => home_url('/contact')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>

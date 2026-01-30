@@ -291,20 +291,4 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Ready to Get Started?',
-    'description' => 'Schedule a demo to see how Apex Softwares can transform your institution.',
-    'cta_primary' => [
-        'text' => 'Schedule a Demo',
-        'url' => home_url('/request-demo')
-    ],
-    'cta_secondary' => [
-        'text' => 'View Solutions',
-        'url' => home_url('/solutions/overview')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>

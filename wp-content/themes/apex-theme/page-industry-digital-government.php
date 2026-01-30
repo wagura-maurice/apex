@@ -194,20 +194,4 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Ready to Digitize Your Program?',
-    'description' => 'See how our solutions can help you reach more beneficiaries efficiently and transparently.',
-    'cta_primary' => [
-        'text' => 'Request a Demo',
-        'url' => home_url('/request-demo')
-    ],
-    'cta_secondary' => [
-        'text' => 'Contact Us',
-        'url' => home_url('/contact')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>

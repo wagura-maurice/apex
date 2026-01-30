@@ -175,20 +175,4 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Ready to Join Us?',
-    'description' => 'Send us your resume and let\'s talk about how you can help transform African fintech.',
-    'cta_primary' => [
-        'text' => 'View Open Positions',
-        'url' => '#openings'
-    ],
-    'cta_secondary' => [
-        'text' => 'Contact HR',
-        'url' => home_url('/contact')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>

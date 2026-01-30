@@ -333,20 +333,4 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Ready to Put These Insights into Action?',
-    'description' => 'Let us help you apply these learnings to transform your institution.',
-    'cta_primary' => [
-        'text' => 'Request a Demo',
-        'url' => home_url('/request-demo')
-    ],
-    'cta_secondary' => [
-        'text' => 'Talk to an Expert',
-        'url' => home_url('/contact')
-    ]
-]);
-?>
-
 <?php get_footer(); ?>
