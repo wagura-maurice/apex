@@ -116,6 +116,58 @@ function apex_theme_assets(): void {
         [],
         wp_get_theme()->get('Version')
     );
+
+    // Add inline styles for comments
+    $comment_styles = "
+        /* Comment List Styling */
+        .comment-list { list-style: none !important; padding: 0 !important; margin: 0 !important; }
+        .comment-list .comment { 
+            background: white; 
+            border-radius: 1rem; 
+            border: 1px solid #e2e8f0; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        .comment-list .children { 
+            margin-left: 2rem; 
+            margin-top: 1rem;
+            padding-left: 1rem;
+            border-left: 2px solid #fed7aa;
+        }
+        .comment-author { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .comment-author .avatar { border-radius: 9999px; }
+        .comment-author .fn { font-weight: 600; color: #1e293b; }
+        .comment-author .fn a { color: #1e293b; text-decoration: none; }
+        .comment-author .fn a:hover { color: #f97316; }
+        .comment-author .says { display: none; }
+        .comment-metadata { font-size: 0.875rem; color: #64748b; margin-bottom: 1rem; }
+        .comment-metadata a { color: #64748b; text-decoration: none; }
+        .comment-metadata a:hover { color: #f97316; }
+        .comment-content { color: #475569; line-height: 1.6; }
+        .comment-content p { margin-bottom: 0.75rem; }
+        .reply { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+        .reply a { 
+            color: #f97316; 
+            font-weight: 500; 
+            font-size: 0.875rem; 
+            text-decoration: none;
+        }
+        .reply a:hover { color: #ea580c; }
+        
+        /* Pagination styling */
+        .nav-links { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+        .nav-links a, .nav-links span { 
+            padding: 0.5rem 1rem; 
+            border-radius: 0.5rem; 
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-links a { background: white; border: 1px solid #e2e8f0; color: #475569; }
+        .nav-links a:hover { border-color: #f97316; color: #f97316; }
+        .nav-links .current { background: #f97316; color: white; border: 1px solid #f97316; }
+    ";
+    wp_add_inline_style('apex-theme-style', $comment_styles);
 }
 add_action('wp_enqueue_scripts', 'apex_theme_assets');
 

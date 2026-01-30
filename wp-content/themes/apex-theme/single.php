@@ -18,6 +18,11 @@ get_header(); ?>
 								get_template_part('content', get_post_format());
 							}
 
+							// Comments
+							if (comments_open() || get_comments_number()) :
+								comments_template();
+							endif;
+
 						endwhile;
 						
 						// Post Navigation
