@@ -237,20 +237,5 @@ console.log(accounts);</code></pre>
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Ready to Build?',
-    'description' => 'Start integrating our APIs today and build amazing financial solutions.',
-    'cta_primary' => [
-        'text' => 'Get API Keys',
-        'url' => home_url('/contact')
-    ],
-    'cta_secondary' => [
-        'text' => 'View Documentation',
-        'url' => '#'
-    ]
-]);
-?>
 
 <?php get_footer(); ?>

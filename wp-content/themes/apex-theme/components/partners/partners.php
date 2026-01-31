@@ -69,8 +69,8 @@ class Apex_Partners_Component {
                     'url' => '#'
                 ],
                 [
-                    'name' => 'Safaricom',
-                    'logo' => 'https://upload.wikimedia.org/wikipedia/en/thumb/9/95/Safaricom_logo.svg/150px-Safaricom_logo.svg.png',
+                    'name' => 'M-Pesa (Safaricom)',
+                    'logo' => 'https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg',
                     'url' => '#'
                 ],
                 [

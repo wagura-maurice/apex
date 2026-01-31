@@ -189,22 +189,28 @@ apex_render_about_hero([
         
         <div class="apex-partners-logos__grid">
             <div class="apex-partners-logos__item">
-                <img src="https://via.placeholder.com/200x80?text=Partner+1" alt="Partner Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/150px-Microsoft_Azure.svg.png" alt="Microsoft Azure">
             </div>
             <div class="apex-partners-logos__item">
-                <img src="https://via.placeholder.com/200x80?text=Partner+2" alt="Partner Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/150px-Amazon_Web_Services_Logo.svg.png" alt="Amazon Web Services">
             </div>
             <div class="apex-partners-logos__item">
-                <img src="https://via.placeholder.com/200x80?text=Partner+3" alt="Partner Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/150px-Visa_Inc._logo.svg.png" alt="Visa">
             </div>
             <div class="apex-partners-logos__item">
-                <img src="https://via.placeholder.com/200x80?text=Partner+4" alt="Partner Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/150px-Mastercard-logo.svg.png" alt="Mastercard">
             </div>
             <div class="apex-partners-logos__item">
-                <img src="https://via.placeholder.com/200x80?text=Partner+5" alt="Partner Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg" alt="M-Pesa (Safaricom)">
             </div>
             <div class="apex-partners-logos__item">
-                <img src="https://via.placeholder.com/200x80?text=Partner+6" alt="Partner Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/150px-Oracle_logo.svg.png" alt="Oracle">
+            </div>
+            <div class="apex-partners-logos__item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/150px-IBM_logo.svg.png" alt="IBM">
+            </div>
+            <div class="apex-partners-logos__item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Google_Cloud_logo.svg/150px-Google_Cloud_logo.svg.png" alt="Google Cloud">
             </div>
         </div>
     </div>
@@ -228,20 +234,5 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Ready to Partner with Us?',
-    'description' => 'Join our growing ecosystem of partners and start earning today.',
-    'cta_primary' => [
-        'text' => 'Apply Now',
-        'url' => home_url('/contact')
-    ],
-    'cta_secondary' => [
-        'text' => 'Learn More',
-        'url' => '#'
-    ]
-]);
-?>
 
 <?php get_footer(); ?>

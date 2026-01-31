@@ -270,20 +270,5 @@ apex_render_about_hero([
     </div>
 </section>
 
-<?php 
-// CTA Section
-apex_render_about_cta([
-    'heading' => 'Can\'t Find What You Need?',
-    'description' => 'Our support team is ready to help you with any questions.',
-    'cta_primary' => [
-        'text' => 'Contact Support',
-        'url' => home_url('/help-support')
-    ],
-    'cta_secondary' => [
-        'text' => 'Browse FAQ',
-        'url' => home_url('/faq')
-    ]
-]);
-?>
 
 <?php get_footer(); ?>
