@@ -83,4 +83,39 @@ apex_render_about_hero([
     </div>
 </section>
 
+<section class="apex-solution-specs">
+    <div class="apex-solution-specs__container">
+        <div class="apex-solution-specs__content">
+            <span class="apex-solution-specs__badge">Supported Payment Rails</span>
+            <h2 class="apex-solution-specs__heading">Connect to Every Payment Network</h2>
+            
+            <div class="apex-solution-specs__list">
+                <div class="apex-solution-specs__item">
+                    <h4>Mobile Money</h4>
+                    <p>M-Pesa, Airtel Money, MTN MoMo, Orange Money, and regional wallets</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Card Networks</h4>
+                    <p>Visa, Mastercard, UnionPay, and local card schemes</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Bank Transfers</h4>
+                    <p>RTGS, EFT, SWIFT, and domestic clearing systems</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>QR Payments</h4>
+                    <p>Static and dynamic QR codes for merchant payments</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Bill Aggregators</h4>
+                    <p>Utility payments, government services, and merchant collections</p>
+                </div>
+            </div>
+        </div>
+        <div class="apex-solution-specs__image">
+            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600" alt="Payment Networks" loading="lazy">
+        </div>
+    </div>
+</section>
+
 <?php get_footer(); ?>

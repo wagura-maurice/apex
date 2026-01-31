@@ -83,4 +83,39 @@ apex_render_about_hero([
     </div>
 </section>
 
+<section class="apex-solution-specs">
+    <div class="apex-solution-specs__container">
+        <div class="apex-solution-specs__content">
+            <span class="apex-solution-specs__badge">Loan Product Types</span>
+            <h2 class="apex-solution-specs__heading">Support for All Lending Models</h2>
+            
+            <div class="apex-solution-specs__list">
+                <div class="apex-solution-specs__item">
+                    <h4>Individual Loans</h4>
+                    <p>Personal, salary, emergency, and asset financing with flexible terms</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Group Lending</h4>
+                    <p>Chama loans, group guarantees, and solidarity lending models</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>SME & Business Loans</h4>
+                    <p>Working capital, trade finance, and equipment financing</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Agricultural Loans</h4>
+                    <p>Seasonal lending with harvest-based repayment schedules</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Digital Nano-Loans</h4>
+                    <p>Instant mobile loans with automated scoring and disbursement</p>
+                </div>
+            </div>
+        </div>
+        <div class="apex-solution-specs__image">
+            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600" alt="Loan Products" loading="lazy">
+        </div>
+    </div>
+</section>
+
 <?php get_footer(); ?>

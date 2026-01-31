@@ -83,4 +83,35 @@ apex_render_about_hero([
     </div>
 </section>
 
+<section class="apex-solution-specs">
+    <div class="apex-solution-specs__container">
+        <div class="apex-solution-specs__content">
+            <span class="apex-solution-specs__badge">Channel Accessibility</span>
+            <h2 class="apex-solution-specs__heading">Banking for Every Customer Segment</h2>
+            
+            <div class="apex-solution-specs__list">
+                <div class="apex-solution-specs__item">
+                    <h4>Smartphone Users</h4>
+                    <p>Full-featured responsive web app optimized for mobile browsers</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Feature Phone Users</h4>
+                    <p>USSD banking with simple menu navigation for basic phones</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Desktop Users</h4>
+                    <p>Comprehensive internet banking portal for corporate and power users</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Low-Bandwidth Areas</h4>
+                    <p>Lightweight interfaces optimized for 2G/3G connections</p>
+                </div>
+            </div>
+        </div>
+        <div class="apex-solution-specs__image">
+            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600" alt="Multi-Channel Banking" loading="lazy">
+        </div>
+    </div>
+</section>
+
 <?php get_footer(); ?>

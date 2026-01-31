@@ -83,4 +83,39 @@ apex_render_about_hero([
     </div>
 </section>
 
+<section class="apex-solution-specs">
+    <div class="apex-solution-specs__container">
+        <div class="apex-solution-specs__content">
+            <span class="apex-solution-specs__badge">Integration Architecture</span>
+            <h2 class="apex-solution-specs__heading">Enterprise-Grade Connectivity</h2>
+            
+            <div class="apex-solution-specs__list">
+                <div class="apex-solution-specs__item">
+                    <h4>API Gateway</h4>
+                    <p>Centralized API management with rate limiting, authentication, and monitoring</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Message Queue</h4>
+                    <p>Asynchronous processing for high-volume transactions and event-driven workflows</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Data Transformation</h4>
+                    <p>Built-in ETL capabilities for format conversion between systems</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Webhook Support</h4>
+                    <p>Real-time event notifications to external systems</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Sandbox Environment</h4>
+                    <p>Test integrations safely before deploying to production</p>
+                </div>
+            </div>
+        </div>
+        <div class="apex-solution-specs__image">
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600" alt="Integration Architecture" loading="lazy">
+        </div>
+    </div>
+</section>
+
 <?php get_footer(); ?>

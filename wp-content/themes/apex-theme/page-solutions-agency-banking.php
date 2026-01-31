@@ -83,4 +83,35 @@ apex_render_about_hero([
     </div>
 </section>
 
+<section class="apex-solution-specs">
+    <div class="apex-solution-specs__container">
+        <div class="apex-solution-specs__content">
+            <span class="apex-solution-specs__badge">Agent Network Models</span>
+            <h2 class="apex-solution-specs__heading">Flexible Deployment Options</h2>
+            
+            <div class="apex-solution-specs__list">
+                <div class="apex-solution-specs__item">
+                    <h4>Retail Agent Model</h4>
+                    <p>Partner with existing shops, pharmacies, and retail outlets to offer banking services</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Super-Agent Hierarchy</h4>
+                    <p>Multi-tier agent structure with master agents managing sub-agent networks</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Bank-Led Model</h4>
+                    <p>Direct agent recruitment and management by your institution</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Hybrid Approach</h4>
+                    <p>Combine branch, agent, and digital channels for maximum coverage</p>
+                </div>
+            </div>
+        </div>
+        <div class="apex-solution-specs__image">
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600" alt="Agent Banking Network" loading="lazy">
+        </div>
+    </div>
+</section>
+
 <?php get_footer(); ?>

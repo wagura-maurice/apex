@@ -83,4 +83,39 @@ apex_render_about_hero([
     </div>
 </section>
 
+<section class="apex-solution-specs">
+    <div class="apex-solution-specs__container">
+        <div class="apex-solution-specs__content">
+            <span class="apex-solution-specs__badge">Regulatory Compliance</span>
+            <h2 class="apex-solution-specs__heading">Meet Every Reporting Requirement</h2>
+            
+            <div class="apex-solution-specs__list">
+                <div class="apex-solution-specs__item">
+                    <h4>Central Bank Returns</h4>
+                    <p>Automated CBK, BOU, BOT, and other central bank regulatory submissions</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>SASRA Compliance</h4>
+                    <p>SACCO-specific reports including prudential returns and financial statements</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>AML/CFT Reports</h4>
+                    <p>Suspicious transaction reports, CTRs, and compliance monitoring</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>IFRS 9 Reporting</h4>
+                    <p>Expected credit loss calculations and impairment reporting</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Tax Compliance</h4>
+                    <p>Withholding tax reports, excise duty, and tax authority submissions</p>
+                </div>
+            </div>
+        </div>
+        <div class="apex-solution-specs__image">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600" alt="Regulatory Reporting" loading="lazy">
+        </div>
+    </div>
+</section>
+
 <?php get_footer(); ?>

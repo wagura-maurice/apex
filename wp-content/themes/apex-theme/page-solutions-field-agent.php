@@ -83,4 +83,39 @@ apex_render_about_hero([
     </div>
 </section>
 
+<section class="apex-solution-specs">
+    <div class="apex-solution-specs__container">
+        <div class="apex-solution-specs__content">
+            <span class="apex-solution-specs__badge">Field Operations Use Cases</span>
+            <h2 class="apex-solution-specs__heading">Tools for Every Field Role</h2>
+            
+            <div class="apex-solution-specs__list">
+                <div class="apex-solution-specs__item">
+                    <h4>Loan Officers</h4>
+                    <p>Client visits, loan applications, credit assessments, and document collection</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Collection Agents</h4>
+                    <p>Daily collection routes, payment receipts, and arrears management</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Customer Acquisition</h4>
+                    <p>New member registration, KYC verification, and account opening</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Group Coordinators</h4>
+                    <p>Chama meetings, group savings collection, and member management</p>
+                </div>
+                <div class="apex-solution-specs__item">
+                    <h4>Supervisors</h4>
+                    <p>Team monitoring, performance tracking, and field visit verification</p>
+                </div>
+            </div>
+        </div>
+        <div class="apex-solution-specs__image">
+            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600" alt="Field Agent Operations" loading="lazy">
+        </div>
+    </div>
+</section>
+
 <?php get_footer(); ?>
