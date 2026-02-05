@@ -642,7 +642,7 @@ add_action('init', 'apex_industry_rewrite_rules');
 function apex_support_rewrite_rules() {
     // Legal pages
     add_rewrite_rule('^privacy-policy/?$', 'index.php?apex_support_page=privacy-policy', 'top');
-    add_rewrite_rule('^terms-conditions/?$', 'index.php?apex_support_page=terms-conditions', 'top');
+    add_rewrite_rule('^terms-and-conditions/?$', 'index.php?apex_support_page=terms-and-conditions', 'top');
     
     // Support pages
     add_rewrite_rule('^careers/?$', 'index.php?apex_support_page=careers', 'top');
@@ -897,8 +897,8 @@ function apex_support_template_redirect() {
     $support_templates = [
         'privacy-policy' => 'page-privacy-policy.php',
         'privacy-policy/' => 'page-privacy-policy.php',
-        'terms-conditions' => 'page-terms-conditions.php',
-        'terms-conditions/' => 'page-terms-conditions.php',
+        'terms-and-conditions' => 'page-terms-and-conditions.php',
+        'terms-and-conditions/' => 'page-terms-and-conditions.php',
         'careers' => 'page-careers.php',
         'careers/' => 'page-careers.php',
         'help-support' => 'page-help-support.php',

@@ -16,7 +16,7 @@ function apex_enqueue_legal_pages_css() {
     // Only load on legal pages
     $request_uri = $_SERVER['REQUEST_URI'];
     if (strpos($request_uri, 'privacy-policy') === false && 
-        strpos($request_uri, 'terms-conditions') === false) {
+        strpos($request_uri, 'terms-and-conditions') === false) {
         return;
     }
     

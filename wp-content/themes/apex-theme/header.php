@@ -570,7 +570,7 @@ $apex_request_demo_href = home_url('/request-demo');
                                  strpos($request_uri, 'partners') === 0 ||
                                  strpos($request_uri, 'request-demo') === 0 ||
                                  strpos($request_uri, 'privacy-policy') === 0 ||
-                                 strpos($request_uri, 'terms-conditions') === 0 ||
+                                 strpos($request_uri, 'terms-and-conditions') === 0 ||
                                  strpos($request_uri, 'solutions') === 0;
     ?>
     <?php if (is_front_page()) : ?>

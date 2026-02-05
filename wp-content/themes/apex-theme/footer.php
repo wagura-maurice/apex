@@ -14,7 +14,7 @@
                                  strpos($request_uri, 'partners') === 0 ||
                                  strpos($request_uri, 'request-demo') === 0 ||
                                  strpos($request_uri, 'privacy-policy') === 0 ||
-                                 strpos($request_uri, 'terms-conditions') === 0 ||
+                                 strpos($request_uri, 'terms-and-conditions') === 0 ||
                                  strpos($request_uri, 'solutions') === 0;
     ?>
     <?php if (is_front_page()) : ?>
@@ -28,6 +28,14 @@
 
     <?php
     $apex_request_demo_href = home_url('/contact');
+    
+    // Helper function to check if a link is active
+    function apex_is_footer_link_active($link_path) {
+        $current_uri = trim($_SERVER['REQUEST_URI'], '/');
+        $current_uri = strtok($current_uri, '?');
+        $link_path = trim($link_path, '/');
+        return $current_uri === $link_path ? 'active' : '';
+    }
     ?>
 
     <footer class="apex-footer">
@@ -123,16 +131,16 @@
                         <div class="apex-footer-main__links-column">
                             <h4>Solutions</h4>
                             <ul>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/overview')); ?>">Overview</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/core-banking-microfinance')); ?>">Core Banking & Microfinance</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/mobile-wallet-app')); ?>">Mobile Wallet App</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/agency-branch-banking')); ?>">Agency & Branch Banking</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/internet-mobile-banking')); ?>">Internet & Mobile Banking</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/loan-origination-workflows')); ?>">Loan Origination & Workflows</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/digital-field-agent')); ?>">Digital Field Agent</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/enterprise-integration')); ?>">Enterprise Integration</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/payment-switch-ledger')); ?>">Payment Switch & General Ledger</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/solutions/reporting-analytics')); ?>">Reporting & Analytics</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/overview')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/overview'); ?>">Overview</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/core-banking-microfinance')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/core-banking-microfinance'); ?>">Core Banking & Microfinance</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/mobile-wallet-app')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/mobile-wallet-app'); ?>">Mobile Wallet App</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/agency-branch-banking')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/agency-branch-banking'); ?>">Agency & Branch Banking</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/internet-mobile-banking')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/internet-mobile-banking'); ?>">Internet & Mobile Banking</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/loan-origination-workflows')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/loan-origination-workflows'); ?>">Loan Origination & Workflows</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/digital-field-agent')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/digital-field-agent'); ?>">Digital Field Agent</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/enterprise-integration')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/enterprise-integration'); ?>">Enterprise Integration</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/payment-switch-ledger')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/payment-switch-ledger'); ?>">Payment Switch & General Ledger</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/solutions/reporting-analytics')); ?>" class="<?php echo apex_is_footer_link_active('/solutions/reporting-analytics'); ?>">Reporting & Analytics</a></li>
                             </ul>
                         </div>
                         
@@ -140,19 +148,19 @@
                         <div class="apex-footer-main__links-column">
                             <h4>Industry</h4>
                             <ul>
-                                <li><a href="<?php echo esc_url(home_url('/industry/overview')); ?>">Overview</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/industry/mfis')); ?>">Microfinance (MFIs)</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/industry/credit-unions')); ?>">SACCOs & Credit Unions</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/industry/banks-microfinance')); ?>">Commercial Banks</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/industry/digital-government')); ?>">Digital Government</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/industry/overview')); ?>" class="<?php echo apex_is_footer_link_active('/industry/overview'); ?>">Overview</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/industry/mfis')); ?>" class="<?php echo apex_is_footer_link_active('/industry/mfis'); ?>">Microfinance (MFIs)</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/industry/credit-unions')); ?>" class="<?php echo apex_is_footer_link_active('/industry/credit-unions'); ?>">SACCOs & Credit Unions</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/industry/banks-microfinance')); ?>" class="<?php echo apex_is_footer_link_active('/industry/banks-microfinance'); ?>">Commercial Banks</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/industry/digital-government')); ?>" class="<?php echo apex_is_footer_link_active('/industry/digital-government'); ?>">Digital Government</a></li>
                             </ul>
                             
                             <h4 class="apex-footer-main__links-subtitle">Insights</h4>
                             <ul>
-                                <li><a href="<?php echo esc_url(home_url('/insights/blog')); ?>">Blog</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/insights/success-stories')); ?>">Success Stories</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/insights/webinars')); ?>">Webinars & Events</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/insights/whitepapers-reports')); ?>">Whitepapers</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/insights/blog')); ?>" class="<?php echo apex_is_footer_link_active('/insights/blog'); ?>">Blog</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/insights/success-stories')); ?>" class="<?php echo apex_is_footer_link_active('/insights/success-stories'); ?>">Success Stories</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/insights/webinars')); ?>" class="<?php echo apex_is_footer_link_active('/insights/webinars'); ?>">Webinars & Events</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/insights/whitepapers-reports')); ?>" class="<?php echo apex_is_footer_link_active('/insights/whitepapers-reports'); ?>">Whitepapers</a></li>
                             </ul>
                         </div>
                         
@@ -160,27 +168,27 @@
                         <div class="apex-footer-main__links-column">
                             <h4>Company</h4>
                             <ul>
-                                <li><a href="<?php echo esc_url(home_url('/about-us/overview')); ?>">About Us</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/about-us/our-approach')); ?>">Our Approach</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/about-us/leadership-team')); ?>">Leadership</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/about-us/news')); ?>">News & Updates</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/contact')); ?>">Contact Us</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/about-us/overview')); ?>" class="<?php echo apex_is_footer_link_active('/about-us/overview'); ?>">About Us</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/about-us/our-approach')); ?>" class="<?php echo apex_is_footer_link_active('/about-us/our-approach'); ?>">Our Approach</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/about-us/leadership-team')); ?>" class="<?php echo apex_is_footer_link_active('/about-us/leadership-team'); ?>">Leadership</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/about-us/news')); ?>" class="<?php echo apex_is_footer_link_active('/about-us/news'); ?>">News & Updates</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/contact')); ?>" class="<?php echo apex_is_footer_link_active('/contact'); ?>">Contact Us</a></li>
                             </ul>
                             
                             <h4 class="apex-footer-main__links-subtitle">Legal</h4>
                             <ul>
-                                <li><a href="<?php echo esc_url(home_url('/privacy-policy')); ?>">Privacy Policy</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/terms-conditions')); ?>">Terms of Service</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/privacy-policy')); ?>" class="<?php echo apex_is_footer_link_active('/privacy-policy'); ?>">Privacy Policy</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/terms-and-conditions')); ?>" class="<?php echo apex_is_footer_link_active('/terms-and-conditions'); ?>">Terms of Service</a></li>
                             </ul>
                             
                             <h4 class="apex-footer-main__links-subtitle">Support</h4>
                             <ul>
-                                <li><a href="<?php echo esc_url(home_url('/careers')); ?>">Careers</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/help-support')); ?>">Help & Support</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/faq')); ?>">FAQ</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/knowledge-base')); ?>">Knowledge Base</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/developers')); ?>">Developers</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/partners')); ?>">Partners</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/careers')); ?>" class="<?php echo apex_is_footer_link_active('/careers'); ?>">Careers</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/help-support')); ?>" class="<?php echo apex_is_footer_link_active('/help-support'); ?>">Help & Support</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/faq')); ?>" class="<?php echo apex_is_footer_link_active('/faq'); ?>">FAQ</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/knowledge-base')); ?>" class="<?php echo apex_is_footer_link_active('/knowledge-base'); ?>">Knowledge Base</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/developers')); ?>" class="<?php echo apex_is_footer_link_active('/developers'); ?>">Developers</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/partners')); ?>" class="<?php echo apex_is_footer_link_active('/partners'); ?>">Partners</a></li>
                             </ul>
                         </div>
                         

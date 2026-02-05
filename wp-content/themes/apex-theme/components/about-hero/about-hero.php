@@ -38,7 +38,7 @@ class Apex_AboutHero_Component {
                            strpos($request_uri, 'partners') !== false ||
                            strpos($request_uri, 'request-demo') !== false ||
                            strpos($request_uri, 'privacy-policy') !== false ||
-                           strpos($request_uri, 'terms-conditions') !== false;
+                           strpos($request_uri, 'terms-and-conditions') !== false;
         $is_solutions_page = strpos($request_uri, 'solutions') !== false;
         
         if (is_page_template('page-about-us-overview.php') || $is_about_page || $is_insights_page || $is_contact_page || $is_industry_page || $is_support_page || $is_solutions_page) {

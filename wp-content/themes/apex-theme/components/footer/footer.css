@@ -387,6 +387,11 @@
     color: #f97316;
 }
 
+.apex-footer-main__links-column a.active {
+    color: #f97316;
+    font-weight: 600;
+}
+
 /* Contact Items */
 .apex-footer-main__contact {
     display: flex;
