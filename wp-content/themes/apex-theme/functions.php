@@ -6,6 +6,11 @@
 require_once get_template_directory() . '/components/component-loader.php';
 
 /**
+ * Load ACF field definitions
+ */
+require_once get_template_directory() . '/inc/acf-about-us-overview.php';
+
+/**
  * Theme setup.
  */
 function apex_theme_setup(): void {
