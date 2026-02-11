@@ -9,6 +9,7 @@ require_once get_template_directory() . '/components/component-loader.php';
  * Load ACF field definitions
  */
 require_once get_template_directory() . '/inc/acf-about-us-overview.php';
+require_once get_template_directory() . '/inc/acf-request-demo.php';
 
 /**
  * Configure Mailtrap for email delivery in development
@@ -56,8 +57,8 @@ function apex_handle_contact_form_submission() {
         error_log('Apex Contact Form: POST data: ' . print_r($_POST, true));
     }
     
-    // Check if it's a POST request and our form was submitted
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['first_name'])) {
+    // Check if it's a POST request and our contact form was submitted (not demo form)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['first_name']) && isset($_POST['apex_contact_nonce']) && !isset($_POST['apex_demo_nonce'])) {
 
         // Debug: Log that we reached the handler
         error_log('Apex Contact Form: Form submission detected - PROCESSING');
@@ -239,6 +240,193 @@ function apex_newsletter_ajax_handler() {
 add_action('wp_ajax_apex_newsletter_submit', 'apex_newsletter_ajax_handler');
 add_action('wp_ajax_nopriv_apex_newsletter_submit', 'apex_newsletter_ajax_handler');
 
+/**
+ * AJAX handler for demo request form submission (with file upload)
+ */
+function apex_demo_request_ajax_handler() {
+    // Verify nonce
+    if (!isset($_POST['apex_demo_nonce']) || !wp_verify_nonce($_POST['apex_demo_nonce'], 'apex_demo_request_form')) {
+        wp_send_json_error(['message' => 'Security check failed!']);
+    }
+
+    // Sanitize form fields
+    $first_name      = sanitize_text_field($_POST['first_name'] ?? '');
+    $last_name       = sanitize_text_field($_POST['last_name'] ?? '');
+    $email           = sanitize_email($_POST['email'] ?? '');
+    $phone           = sanitize_text_field($_POST['phone'] ?? '');
+    $company         = sanitize_text_field($_POST['company'] ?? '');
+    $job_title       = sanitize_text_field($_POST['job_title'] ?? '');
+    $institution_type = sanitize_text_field($_POST['institution_type'] ?? '');
+    $country         = sanitize_text_field($_POST['country'] ?? '');
+    $message         = sanitize_textarea_field($_POST['message'] ?? '');
+    $privacy         = isset($_POST['privacy']) ? true : false;
+
+    // Solutions is an array of checkboxes
+    $solutions = [];
+    if (!empty($_POST['solutions']) && is_array($_POST['solutions'])) {
+        $solutions = array_map('sanitize_text_field', $_POST['solutions']);
+    }
+
+    error_log("Apex Demo Request AJAX: Processing from {$first_name} {$last_name} <{$email}>");
+
+    // Validation
+    if (empty($first_name) || empty($last_name) || empty($email) || empty($phone) || empty($company) || empty($job_title) || empty($institution_type) || empty($country)) {
+        wp_send_json_error(['message' => 'Please fill in all required fields.']);
+    }
+
+    if (!is_email($email)) {
+        wp_send_json_error(['message' => 'Please enter a valid email address.']);
+    }
+
+    if (empty($solutions)) {
+        wp_send_json_error(['message' => 'Please select at least one solution of interest.']);
+    }
+
+    if (!$privacy) {
+        wp_send_json_error(['message' => 'You must agree to the Privacy Policy to submit.']);
+    }
+
+    // Handle file attachment
+    $attachments = [];
+    $temp_file_path = '';
+
+    if (!empty($_FILES['attachment']) && $_FILES['attachment']['error'] === UPLOAD_ERR_OK) {
+        $file = $_FILES['attachment'];
+        $max_size = 5 * 1024 * 1024; // 5MB
+
+        // Validate file size
+        if ($file['size'] > $max_size) {
+            wp_send_json_error(['message' => 'File is too large. Maximum size is 5MB.']);
+        }
+
+        // Validate file type
+        $allowed_extensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg'];
+        $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if (!in_array($file_ext, $allowed_extensions)) {
+            wp_send_json_error(['message' => 'Invalid file type. Allowed: PDF, Word, Excel, PowerPoint, PNG, JPG.']);
+        }
+
+        // Validate MIME type
+        $allowed_mimes = [
+            'pdf'  => 'application/pdf',
+            'doc'  => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls'  => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'ppt'  => 'application/vnd.ms-powerpoint',
+            'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'png'  => 'image/png',
+            'jpg'  => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+        ];
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $detected_mime = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        $valid_mime = false;
+        foreach ($allowed_mimes as $ext => $mime) {
+            if ($detected_mime === $mime) {
+                $valid_mime = true;
+                break;
+            }
+        }
+        // Also accept generic octet-stream for Office docs
+        if (!$valid_mime && $detected_mime === 'application/octet-stream' && in_array($file_ext, ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'])) {
+            $valid_mime = true;
+        }
+        // Also accept application/zip for Office Open XML formats
+        if (!$valid_mime && $detected_mime === 'application/zip' && in_array($file_ext, ['docx', 'xlsx', 'pptx'])) {
+            $valid_mime = true;
+        }
+
+        if (!$valid_mime) {
+            error_log("Apex Demo Request AJAX: Rejected file MIME type: {$detected_mime} for extension: {$file_ext}");
+            wp_send_json_error(['message' => 'Invalid file type detected. Please upload an allowed document.']);
+        }
+
+        // Sanitize filename and move to temp location
+        $safe_name = sanitize_file_name($file['name']);
+        $upload_dir = wp_upload_dir();
+        $temp_dir = $upload_dir['basedir'] . '/demo-request-temp';
+        if (!file_exists($temp_dir)) {
+            wp_mkdir_p($temp_dir);
+            // Add .htaccess to block direct access
+            file_put_contents($temp_dir . '/.htaccess', 'Deny from all');
+        }
+
+        $temp_file_path = $temp_dir . '/' . uniqid('demo_') . '_' . $safe_name;
+        if (!move_uploaded_file($file['tmp_name'], $temp_file_path)) {
+            error_log('Apex Demo Request AJAX: Failed to move uploaded file');
+            wp_send_json_error(['message' => 'Failed to process uploaded file. Please try again.']);
+        }
+
+        $attachments[] = [
+            'path' => $temp_file_path,
+            'name' => $safe_name,
+        ];
+
+        error_log("Apex Demo Request AJAX: File attached - {$safe_name} ({$file['size']} bytes)");
+    } elseif (!empty($_FILES['attachment']) && $_FILES['attachment']['error'] !== UPLOAD_ERR_NO_FILE) {
+        // A file was attempted but there was an upload error
+        $upload_errors = [
+            UPLOAD_ERR_INI_SIZE   => 'File exceeds server upload limit.',
+            UPLOAD_ERR_FORM_SIZE  => 'File exceeds form upload limit.',
+            UPLOAD_ERR_PARTIAL    => 'File was only partially uploaded.',
+            UPLOAD_ERR_NO_TMP_DIR => 'Server missing temporary folder.',
+            UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk.',
+            UPLOAD_ERR_EXTENSION  => 'File upload stopped by a server extension.',
+        ];
+        $err_code = $_FILES['attachment']['error'];
+        $err_msg = $upload_errors[$err_code] ?? 'Unknown upload error.';
+        error_log("Apex Demo Request AJAX: File upload error code {$err_code}: {$err_msg}");
+        wp_send_json_error(['message' => 'File upload error: ' . $err_msg]);
+    }
+
+    // Build email
+    $email_args = [
+        'to'           => 'info@apex-softwares.com',
+        'subject'      => 'New Demo Request from ' . $first_name . ' ' . $last_name . ' (' . $company . ')',
+        'html_content' => apex_create_demo_request_email_html([
+            'first_name'       => $first_name,
+            'last_name'        => $last_name,
+            'email'            => $email,
+            'phone'            => $phone,
+            'company'          => $company,
+            'job_title'        => $job_title,
+            'institution_type' => $institution_type,
+            'country'          => $country,
+            'solutions'        => $solutions,
+            'message'          => $message,
+            'has_attachment'    => !empty($attachments),
+            'attachment_name'  => !empty($attachments) ? $attachments[0]['name'] : '',
+            'submission_date'  => current_time('F j, Y, g:i a'),
+            'ip_address'       => $_SERVER['REMOTE_ADDR'] ?? 'Unknown',
+        ]),
+    ];
+
+    if (!empty($attachments)) {
+        $email_args['attachments'] = $attachments;
+    }
+
+    $email_sent = apex_send_email_direct($email_args);
+
+    // Clean up temp file
+    if (!empty($temp_file_path) && file_exists($temp_file_path)) {
+        @unlink($temp_file_path);
+    }
+
+    error_log('Apex Demo Request AJAX: Email sending result: ' . ($email_sent ? 'SUCCESS' : 'FAILED'));
+
+    if ($email_sent) {
+        wp_send_json_success(['message' => 'Thank you! Your demo request has been submitted. Our team will contact you within 24 hours to schedule your personalized demo.']);
+    } else {
+        wp_send_json_error(['message' => 'Failed to submit your request. Please try again later or contact us directly.']);
+    }
+}
+add_action('wp_ajax_apex_demo_request_submit', 'apex_demo_request_ajax_handler');
+add_action('wp_ajax_nopriv_apex_demo_request_submit', 'apex_demo_request_ajax_handler');
+
 add_action('init', 'apex_handle_contact_form_submission');
 
 // Include PHPMailer classes at global scope
@@ -281,6 +469,17 @@ function apex_send_email_direct($args) {
         $mail->Subject = $args['subject'];
         $mail->Body    = $args['html_content'];
         $mail->AltBody = strip_tags(str_replace('<br>', "\n", $args['html_content']));
+
+        // Attachments (optional)
+        if (!empty($args['attachments']) && is_array($args['attachments'])) {
+            foreach ($args['attachments'] as $attachment) {
+                if (!empty($attachment['path']) && file_exists($attachment['path'])) {
+                    $attach_name = !empty($attachment['name']) ? $attachment['name'] : basename($attachment['path']);
+                    $mail->addAttachment($attachment['path'], $attach_name);
+                    error_log('Apex Direct Email: Attached file - ' . $attach_name);
+                }
+            }
+        }
 
         error_log('Apex Direct Email: Attempting to send email to ' . $args['to']);
 
@@ -607,6 +806,204 @@ function apex_create_newsletter_email_html($data) {
                 <p>This email was sent from the Apex Softwares website newsletter form.</p>
                 <p>The subscriber has opted-in to receive your newsletter and updates.</p>
             </div>
+        </div>
+    </body>
+    </html>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Create HTML email template for demo request form submissions
+ */
+function apex_create_demo_request_email_html($data) {
+    $institution_types = [
+        'mfi'        => 'Microfinance Institution (MFI)',
+        'sacco'      => 'SACCO / Credit Union',
+        'bank'       => 'Commercial Bank',
+        'government' => 'Government Agency',
+        'ngo'        => 'NGO / Development Organization',
+        'other'      => 'Other',
+    ];
+
+    $countries = [
+        'ke'    => 'Kenya',
+        'ug'    => 'Uganda',
+        'tz'    => 'Tanzania',
+        'ng'    => 'Nigeria',
+        'gh'    => 'Ghana',
+        'rw'    => 'Rwanda',
+        'za'    => 'South Africa',
+        'other' => 'Other',
+    ];
+
+    $solution_labels = [
+        'core-banking'           => 'Core Banking & Microfinance',
+        'mobile-wallet'          => 'Mobile Wallet App',
+        'agency-banking'         => 'Agency & Branch Banking',
+        'internet-banking'       => 'Internet & Mobile Banking',
+        'loan-origination'       => 'Loan Origination & Workflows',
+        'digital-field-agent'    => 'Digital Field Agent',
+        'enterprise-integration' => 'Enterprise Integration',
+        'payment-switch'         => 'Payment Switch & General Ledger',
+        'reporting-analytics'    => 'Reporting & Analytics',
+    ];
+
+    $institution_label = $institution_types[$data['institution_type']] ?? $data['institution_type'];
+    $country_label = $countries[$data['country']] ?? $data['country'];
+
+    $solutions_html = '';
+    if (!empty($data['solutions'])) {
+        foreach ($data['solutions'] as $sol) {
+            $label = $solution_labels[$sol] ?? $sol;
+            $solutions_html .= '<span style="display:inline-block;background:#fff3e0;color:#e65100;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:500;margin:3px 4px 3px 0;">' . esc_html($label) . '</span>';
+        }
+    }
+
+    ob_start();
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Demo Request</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f8fafc;
+            }
+            .header {
+                background: linear-gradient(135deg, #FF6200 0%, #ea580c 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+                border-radius: 12px 12px 0 0;
+            }
+            .header h1 { margin: 0; font-size: 26px; font-weight: 700; }
+            .header p { margin: 10px 0 0 0; opacity: 0.9; font-size: 15px; }
+            .content {
+                background: white;
+                padding: 35px;
+                border-radius: 0 0 12px 12px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .field-group {
+                margin-bottom: 22px;
+                padding-bottom: 22px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            .field-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+            .field-label {
+                font-weight: 600;
+                color: #1e293b;
+                margin-bottom: 8px;
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .field-value { color: #475569; font-size: 15px; margin: 4px 0; }
+            .field-value strong { color: #1e293b; font-weight: 600; }
+            .message-box {
+                background: #f8fafc;
+                padding: 18px;
+                border-radius: 8px;
+                border-left: 4px solid #FF6200;
+                margin-top: 8px;
+            }
+            .attachment-badge {
+                display: inline-block;
+                background: #e3f2fd;
+                color: #1565c0;
+                padding: 6px 14px;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                margin-top: 6px;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 25px;
+                padding-top: 18px;
+                border-top: 1px solid #e2e8f0;
+                color: #64748b;
+                font-size: 13px;
+            }
+            .logo { font-size: 22px; font-weight: 700; color: white; margin-bottom: 5px; }
+            .priority-badge {
+                display: inline-block;
+                background: #10b981;
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                margin-left: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo">Apex Softwares</div>
+            <h1>New Demo Request</h1>
+            <p>A potential client wants to see the platform in action</p>
+        </div>
+
+        <div class="content">
+            <div class="field-group">
+                <div class="field-label">Contact Information</div>
+                <p class="field-value"><strong>Name:</strong> <?php echo esc_html($data['first_name'] . ' ' . $data['last_name']); ?></p>
+                <p class="field-value"><strong>Email:</strong> <?php echo esc_html($data['email']); ?></p>
+                <p class="field-value"><strong>Phone:</strong> <?php echo esc_html($data['phone']); ?></p>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Company Details</div>
+                <p class="field-value"><strong>Company:</strong> <?php echo esc_html($data['company']); ?></p>
+                <p class="field-value"><strong>Job Title:</strong> <?php echo esc_html($data['job_title']); ?></p>
+                <p class="field-value"><strong>Institution Type:</strong> <?php echo esc_html($institution_label); ?></p>
+                <p class="field-value"><strong>Country:</strong> <?php echo esc_html($country_label); ?></p>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Solutions of Interest</div>
+                <p class="field-value"><?php echo $solutions_html; ?></p>
+            </div>
+
+            <?php if (!empty($data['message'])): ?>
+            <div class="field-group">
+                <div class="field-label">Additional Notes</div>
+                <div class="message-box">
+                    <p class="field-value"><?php echo nl2br(esc_html($data['message'])); ?></p>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if (!empty($data['has_attachment'])): ?>
+            <div class="field-group">
+                <div class="field-label">Attachment</div>
+                <div class="attachment-badge">
+                    📎 <?php echo esc_html($data['attachment_name']); ?> (attached to this email)
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <div class="field-group">
+                <div class="field-label">Submission Details</div>
+                <p class="field-value"><strong>Submitted:</strong> <?php echo esc_html($data['submission_date']); ?></p>
+                <p class="field-value"><strong>IP Address:</strong> <?php echo esc_html($data['ip_address']); ?></p>
+                <p class="field-value"><strong>Source:</strong> Apex Website - Request Demo Page</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>This email was sent from the Apex Softwares website demo request form.</p>
+            <p>Please schedule a demo with this lead within 24 hours.</p>
         </div>
     </body>
     </html>
@@ -2172,6 +2569,10 @@ function apex_render_page_editor($page_slug, $page_title) {
             'title' => 'Contact Us',
             'acf_group' => 'group_contact'
         ],
+        'request-demo' => [
+            'title' => 'Request Demo',
+            'acf_group' => 'group_request_demo'
+        ],
         // Add more page configurations as needed
     ];
     
@@ -3339,6 +3740,15 @@ function apex_render_fallback_form($page_slug, $config) {
                         <p class="description">The text on the submit button</p>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_sales_email">Sales Email</label></th>
+                    <td>
+                        <input type="email" id="apex_contact_sales_email" name="apex_contact_sales_email" 
+                               value="<?php echo esc_attr(get_option('apex_contact_sales_email_' . $page_slug, 'sales@apex-softwares.com')); ?>" 
+                               class="regular-text" placeholder="e.g., sales@apex-softwares.com">
+                        <p class="description">Sales contact email displayed in the Email Us card</p>
+                    </td>
+                </tr>
             </table>
         </div>
 
@@ -3348,9 +3758,12 @@ function apex_render_fallback_form($page_slug, $config) {
             <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
                 <p><strong>This section displays contact information cards in the sidebar.</strong> Each card includes an icon, title, description, and contact details.</p>
-                <p><strong>Format for contact cards:</strong> Enter each contact method on a new line using this format:<br>
-                <code>Type | Title | Description | Contact Info 1 | Contact Info 2 | Hours</code></p>
-                <p><strong>Available types:</strong> phone, email, hours, social</p>
+                <p><strong>Format per card type (one card per line):</strong></p>
+                <code>phone | Title | Description | Phone Number | Weekday Hours | Saturday Hours | Sunday &amp; Holiday Status</code><br>
+                <code>email | Title | Description | Email 1 | Email 2</code><br>
+                <code>hours | Title | Description | Weekday Hours | Saturday Hours | Sunday &amp; Holiday Status</code><br>
+                <code>social | Title | Description | URL 1 | URL 2 | URL 3 | URL 4</code>
+                <p style="margin-top:10px;"><strong>Available types:</strong> phone, email, hours, social</p>
             </div>
             
             <table class="form-table">
@@ -3358,14 +3771,53 @@ function apex_render_fallback_form($page_slug, $config) {
                     <th scope="row"><label for="apex_contact_sidebar_items">Contact Cards</label></th>
                     <td>
                         <textarea id="apex_contact_sidebar_items" name="apex_contact_sidebar_items" rows="12" class="large-text"
-                                  placeholder="phone | Call Us | Speak directly with our team | +254 700 000 000 | Mon - Fri: 8:00 AM - 6:00 PM EAT | &#10;email | Email Us | We'll respond within 24 hours | info@apex-softwares.com | sales@apex-softwares.com | &#10;hours | Support Hours | 24/7 for critical issues | Business Hours: Mon - Fri | 8:00 AM - 6:00 PM EAT | &#10;social | Follow Us | Stay updated with our latest news | LinkedIn | Twitter | Facebook | YouTube"><?php 
-                            $sidebar_items = get_option('apex_contact_sidebar_items_' . $page_slug, "phone | Call Us | Speak directly with our team | +254 700 000 000 | Mon - Fri: 8:00 AM - 6:00 PM EAT | \nemail | Email Us | We'll respond within 24 hours | info@apex-softwares.com | sales@apex-softwares.com | \nhours | Support Hours | 24/7 for critical issues | Business Hours: Mon - Fri | 8:00 AM - 6:00 PM EAT | \nsocial | Follow Us | Stay updated with our latest news | https://linkedin.com | https://twitter.com | https://facebook.com | https://youtube.com");
+                                  placeholder="phone | Call Us | Speak directly with our team | +254 700 000 000 | 8am - 6pm | 8am - 1pm | Closed&#10;email | Email Us | We'll respond within 24 hours | info@apex-softwares.com | sales@apex-softwares.com&#10;hours | Support Hours | 24/7 for critical issues | 8am - 6pm | 8am - 1pm | Closed&#10;social | Follow Us | Stay updated with our latest news | https://linkedin.com | https://twitter.com | https://facebook.com | https://youtube.com"><?php 
+                            $sidebar_items = get_option('apex_contact_sidebar_items_' . $page_slug, "phone | Call Us | Speak directly with our team | +254 700 000 000 | 8am - 6pm | 8am - 1pm | Closed\nemail | Email Us | We'll respond within 24 hours | info@apex-softwares.com | sales@apex-softwares.com\nhours | Support Hours | 24/7 for critical issues | 8am - 6pm | 8am - 1pm | Closed\nsocial | Follow Us | Stay updated with our latest news | https://linkedin.com | https://twitter.com | https://facebook.com | https://youtube.com");
                             echo esc_textarea($sidebar_items);
                         ?></textarea>
-                        <p class="description"><strong>Format:</strong> Type | Title | Description | Contact Info 1 | Contact Info 2 | Hours (one card per line)</p>
+                        <p class="description"><strong>Format varies by type</strong> — see the guide above. One card per line.</p>
                         <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
-                            <strong>💡 Tip:</strong> For phone cards: use phone number in Contact Info 1 and hours in Contact Info 2. For email cards: use email addresses in Contact Info 1 and 2. For social cards: use social media URLs in Contact Info fields 1-4. Leave empty fields unused.
+                            <strong>💡 Tip:</strong> For <strong>phone</strong> &amp; <strong>hours</strong> cards: set Weekday Hours, Saturday Hours, and Sunday &amp; Holiday Status separately (e.g. <code>8am - 6pm | 8am - 1pm | Closed</code>). For <strong>email</strong> cards: use email addresses. For <strong>social</strong> cards: use full URLs.
                         </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Contact Details -->
+        <div style="margin-bottom: 30px;">
+            <h4>📞 Contact Details</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>These settings control the contact information displayed in the Call Us and Email Us cards.</strong> These override the footer settings for the contact page.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_contact_phone">Phone Number</label></th>
+                    <td>
+                        <input type="tel" id="apex_contact_phone" name="apex_contact_phone" 
+                               value="<?php echo esc_attr(get_option('apex_contact_phone_' . $page_slug, get_option('apex_footer_phone', '+254 700 000 000'))); ?>" 
+                               class="regular-text" placeholder="+254 700 000 000">
+                        <p class="description">Main contact phone number displayed in Call Us card. Falls back to footer phone if not set.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_email_main">Main Email Address</label></th>
+                    <td>
+                        <input type="email" id="apex_contact_email_main" name="apex_contact_email_main" 
+                               value="<?php echo esc_attr(get_option('apex_contact_email_main_' . $page_slug, get_option('apex_footer_email', 'info@apex-softwares.com'))); ?>" 
+                               class="regular-text" placeholder="info@apex-softwares.com">
+                        <p class="description">Main contact email displayed in Email Us card. Falls back to footer email if not set.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_email_sales">Sales Email Address</label></th>
+                    <td>
+                        <input type="email" id="apex_contact_email_sales" name="apex_contact_email_sales" 
+                               value="<?php echo esc_attr(get_option('apex_contact_email_sales_' . $page_slug, 'sales@apex-softwares.com')); ?>" 
+                               class="regular-text" placeholder="sales@apex-softwares.com">
+                        <p class="description">Sales email address displayed in Email Us card.</p>
                     </td>
                 </tr>
             </table>
@@ -3501,16 +3953,235 @@ function apex_render_fallback_form($page_slug, $config) {
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="apex_offices_map_hours">Default Office Hours</label></th>
+                    <th scope="row"><label>Default Office Hours</label></th>
                     <td>
-                        <textarea id="apex_offices_map_hours" name="apex_offices_map_hours" rows="3" class="large-text"
-                                  placeholder="Monday - Friday&#10;8:00 AM - 6:00 PM EAT"><?php 
-                            $map_hours = get_option('apex_offices_map_hours_' . $page_slug, "Monday - Friday\n8:00 AM - 6:00 PM EAT");
-                            echo esc_textarea($map_hours);
-                        ?></textarea>
-                        <p class="description">Default office hours displayed in the map section</p>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div>
+                                <label for="apex_offices_weekday_hours" style="display: block; font-weight: 600; margin-bottom: 5px;">Weekdays (Mon - Fri):</label>
+                                <input type="text" id="apex_offices_weekday_hours" name="apex_offices_weekday_hours" 
+                                       value="<?php echo esc_attr(get_option('apex_offices_weekday_hours_' . $page_slug, get_option('apex_footer_weekday_hours', '8am - 6pm'))); ?>" 
+                                       class="regular-text" placeholder="e.g., 8am - 6pm">
+                            </div>
+                            <div>
+                                <label for="apex_offices_saturday_hours" style="display: block; font-weight: 600; margin-bottom: 5px;">Saturday:</label>
+                                <input type="text" id="apex_offices_saturday_hours" name="apex_offices_saturday_hours" 
+                                       value="<?php echo esc_attr(get_option('apex_offices_saturday_hours_' . $page_slug, get_option('apex_footer_saturday_hours', '8am - 1pm'))); ?>" 
+                                       class="regular-text" placeholder="e.g., 8am - 1pm">
+                            </div>
+                            <div>
+                                <label for="apex_offices_sunday_holiday_status" style="display: block; font-weight: 600; margin-bottom: 5px;">Sunday & Holidays:</label>
+                                <input type="text" id="apex_offices_sunday_holiday_status" name="apex_offices_sunday_holiday_status" 
+                                       value="<?php echo esc_attr(get_option('apex_offices_sunday_holiday_status_' . $page_slug, get_option('apex_footer_sunday_holiday_status', 'Closed'))); ?>" 
+                                       class="regular-text" placeholder="e.g., Closed">
+                            </div>
+                        </div>
+                        <p class="description">Default office hours displayed in the map section and contact page. Falls back to footer business hours if not set.</p>
                         <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
-                            <strong>💡 Tip:</strong> Use line breaks to separate hours information. This will be displayed in the map section for all offices unless overridden.
+                            <strong>💡 Tip:</strong> These hours are used in the Support Hours card on the contact page and in the map section. They sync with footer business hours settings.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'request-demo'): ?>
+        <!-- Request Demo Specific Sections -->
+
+        <!-- Form Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📝 Demo Request Form Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the heading and description shown above the request demo form.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_demo_form_heading">Form Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_form_heading" name="apex_demo_form_heading" 
+                               value="<?php echo esc_attr(get_option('apex_demo_form_heading_' . $page_slug, 'Request Your Personalized Demo')); ?>" 
+                               class="regular-text" placeholder="e.g., Request Your Personalized Demo">
+                        <p class="description">The main heading above the demo request form</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_form_description">Form Description</label></th>
+                    <td>
+                        <textarea id="apex_demo_form_description" name="apex_demo_form_description" rows="3" class="large-text"
+                                  placeholder="Fill out the form below and our team will contact you within 24 hours to schedule your demo."><?php 
+                            echo esc_textarea(get_option('apex_demo_form_description_' . $page_slug, 'Fill out the form below and our team will contact you within 24 hours to schedule your demo.'));
+                        ?></textarea>
+                        <p class="description">Description text displayed below the form heading</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- What to Expect Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✅ What to Expect Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This sidebar section tells users what they can expect from the demo.</strong> Each item appears as a bullet point with an icon.</p>
+                <p><strong>Format:</strong> One item per line — each line becomes a bullet point.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_demo_expect_title">Section Title</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_expect_title" name="apex_demo_expect_title" 
+                               value="<?php echo esc_attr(get_option('apex_demo_expect_title_' . $page_slug, 'What to Expect')); ?>" 
+                               class="regular-text" placeholder="e.g., What to Expect">
+                        <p class="description">Title for this sidebar section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_expect_items">Expect Items</label></th>
+                    <td>
+                        <textarea id="apex_demo_expect_items" name="apex_demo_expect_items" rows="8" class="large-text"
+                                  placeholder="30-45 minute personalized demo&#10;Dedicated product expert&#10;Customized to your needs&#10;Q&A and discussion&#10;Pricing and licensing information"><?php 
+                            echo esc_textarea(get_option('apex_demo_expect_items_' . $page_slug, "30-45 minute personalized demo\nDedicated product expert\nCustomized to your needs\nQ&A and discussion\nPricing and licensing information"));
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> One item per line. Each line becomes a bullet with an icon on the frontend.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Need Help / Contact Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📞 Need Help Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This sidebar section shows contact details so users can reach out directly.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_demo_help_title">Section Title</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_help_title" name="apex_demo_help_title" 
+                               value="<?php echo esc_attr(get_option('apex_demo_help_title_' . $page_slug, 'Need Help?')); ?>" 
+                               class="regular-text" placeholder="e.g., Need Help?">
+                        <p class="description">The heading for the Need Help sidebar card</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_help_description">Description</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_help_description" name="apex_demo_help_description" 
+                               value="<?php echo esc_attr(get_option('apex_demo_help_description_' . $page_slug, 'Our team is ready to assist you.')); ?>" 
+                               class="regular-text" placeholder="e.g., Our team is ready to assist you.">
+                        <p class="description">Short description shown below the Need Help title</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_phone">Phone Number</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_phone" name="apex_demo_phone" 
+                               value="<?php echo esc_attr(get_option('apex_demo_phone_' . $page_slug, '+254 700 000 000')); ?>" 
+                               class="regular-text" placeholder="+254 700 000 000">
+                        <p class="description">Contact phone number displayed in the sidebar</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_email">Email Address</label></th>
+                    <td>
+                        <input type="email" id="apex_demo_email" name="apex_demo_email" 
+                               value="<?php echo esc_attr(get_option('apex_demo_email_' . $page_slug, 'sales@apex-softwares.com')); ?>" 
+                               class="regular-text" placeholder="sales@apex-softwares.com">
+                        <p class="description">Contact email address displayed in the sidebar</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Training Materials Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📄 Training Materials Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This sidebar section lists downloadable training materials / documents.</strong></p>
+                <p><strong>Format:</strong> <code>Title | File URL | File Size</code> — one material per line.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_demo_materials_title">Section Title</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_materials_title" name="apex_demo_materials_title" 
+                               value="<?php echo esc_attr(get_option('apex_demo_materials_title_' . $page_slug, 'Training Materials')); ?>" 
+                               class="regular-text" placeholder="e.g., Training Materials">
+                        <p class="description">The heading for the training materials sidebar card</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_materials_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_materials_description" name="apex_demo_materials_description" 
+                               value="<?php echo esc_attr(get_option('apex_demo_materials_description_' . $page_slug, 'Download our product presentations and documentation.')); ?>" 
+                               class="large-text" placeholder="Download our product presentations and documentation.">
+                        <p class="description">Short description shown below the training materials title</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_materials_items">Materials List</label></th>
+                    <td>
+                        <textarea id="apex_demo_materials_items" name="apex_demo_materials_items" rows="8" class="large-text"
+                                  placeholder="Product Overview Presentation | # | PDF • 2.5 MB&#10;Technical Documentation | # | PDF • 5.1 MB&#10;Implementation Guide | # | PDF • 3.8 MB&#10;Pricing & Licensing | # | PDF • 1.2 MB"><?php 
+                            echo esc_textarea(get_option('apex_demo_materials_items_' . $page_slug, "Product Overview Presentation | # | PDF • 2.5 MB\nTechnical Documentation | # | PDF • 5.1 MB\nImplementation Guide | # | PDF • 3.8 MB\nPricing & Licensing | # | PDF • 1.2 MB"));
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Title | File URL | File Size (one material per line)</p>
+                        <p class="description"><strong>Example:</strong> Product Overview Presentation | https://example.com/file.pdf | PDF • 2.5 MB</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use # as the URL for placeholder links. Upload files to WordPress Media Library and paste their URLs here.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Upcoming Webinars Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🎥 Upcoming Webinars Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This sidebar section lists upcoming webinar/demo sessions.</strong></p>
+                <p><strong>Format:</strong> <code>Day | Month | Title | Time | Registration Link</code> — one session per line.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_demo_webinars_title">Section Title</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_webinars_title" name="apex_demo_webinars_title" 
+                               value="<?php echo esc_attr(get_option('apex_demo_webinars_title_' . $page_slug, 'Upcoming Webinars')); ?>" 
+                               class="regular-text" placeholder="e.g., Upcoming Webinars">
+                        <p class="description">The heading for the upcoming webinars sidebar card</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_webinars_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_demo_webinars_description" name="apex_demo_webinars_description" 
+                               value="<?php echo esc_attr(get_option('apex_demo_webinars_description_' . $page_slug, 'Join our live demo sessions and Q&A.')); ?>" 
+                               class="large-text" placeholder="Join our live demo sessions and Q&A.">
+                        <p class="description">Short description shown below the webinars title</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_demo_webinars_items">Webinar Sessions</label></th>
+                    <td>
+                        <textarea id="apex_demo_webinars_items" name="apex_demo_webinars_items" rows="8" class="large-text"
+                                  placeholder="15 | Feb | Core Banking Demo | 10:00 AM EAT | #&#10;22 | Feb | Mobile Banking Demo | 2:00 PM EAT | #&#10;01 | Mar | Agent Banking Demo | 10:00 AM EAT | #"><?php 
+                            echo esc_textarea(get_option('apex_demo_webinars_items_' . $page_slug, "15 | Feb | Core Banking Demo | 10:00 AM EAT | #\n22 | Feb | Mobile Banking Demo | 2:00 PM EAT | #\n01 | Mar | Agent Banking Demo | 10:00 AM EAT | #"));
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Day | Month | Title | Time | Registration Link (one session per line)</p>
+                        <p class="description"><strong>Example:</strong> 15 | Feb | Core Banking Demo | 10:00 AM EAT | https://example.com/register</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Keep webinars current — remove past sessions and add upcoming ones regularly. Use # as the registration link for placeholder items.
                         </div>
                     </td>
                 </tr>
@@ -3640,8 +4311,14 @@ function apex_render_fallback_form($page_slug, $config) {
             update_option('apex_contact_form_description_' . $page_slug, sanitize_textarea_field($_POST['apex_contact_form_description']));
             update_option('apex_contact_form_action_' . $page_slug, esc_url_raw($_POST['apex_contact_form_action']));
             update_option('apex_contact_form_submit_text_' . $page_slug, sanitize_text_field($_POST['apex_contact_form_submit_text']));
+            update_option('apex_contact_sales_email_' . $page_slug, sanitize_email($_POST['apex_contact_sales_email']));
             
             update_option('apex_contact_sidebar_items_' . $page_slug, sanitize_textarea_field($_POST['apex_contact_sidebar_items']));
+            
+            // Save Contact Details
+            update_option('apex_contact_phone_' . $page_slug, sanitize_text_field($_POST['apex_contact_phone']));
+            update_option('apex_contact_email_main_' . $page_slug, sanitize_email($_POST['apex_contact_email_main']));
+            update_option('apex_contact_email_sales_' . $page_slug, sanitize_email($_POST['apex_contact_email_sales']));
             
             // Save social media URLs for "Follow Us" card
             update_option('apex_contact_social_linkedin_' . $page_slug, esc_url_raw($_POST['apex_contact_social_linkedin']));
@@ -3656,9 +4333,35 @@ function apex_render_fallback_form($page_slug, $config) {
             update_option('apex_offices_description_' . $page_slug, sanitize_textarea_field($_POST['apex_offices_description']));
             update_option('apex_offices_items_' . $page_slug, sanitize_textarea_field($_POST['apex_offices_items']));
             update_option('apex_offices_map_heading_' . $page_slug, sanitize_text_field($_POST['apex_offices_map_heading']));
-            update_option('apex_offices_map_hours_' . $page_slug, sanitize_textarea_field($_POST['apex_offices_map_hours']));
+            
+            // Save Office Hours
+            update_option('apex_offices_weekday_hours_' . $page_slug, sanitize_text_field($_POST['apex_offices_weekday_hours']));
+            update_option('apex_offices_saturday_hours_' . $page_slug, sanitize_text_field($_POST['apex_offices_saturday_hours']));
+            update_option('apex_offices_sunday_holiday_status_' . $page_slug, sanitize_text_field($_POST['apex_offices_sunday_holiday_status']));
             
             echo '<div class="notice notice-success is-dismissible"><p>Contact Us content saved successfully! All sections with contact form, sidebar information, and office locations have been updated.</p></div>';
+        } elseif ($page_slug === 'request-demo') {
+            // Save Request Demo specific sections
+            update_option('apex_demo_form_heading_' . $page_slug, sanitize_text_field($_POST['apex_demo_form_heading']));
+            update_option('apex_demo_form_description_' . $page_slug, sanitize_textarea_field($_POST['apex_demo_form_description']));
+            
+            update_option('apex_demo_expect_title_' . $page_slug, sanitize_text_field($_POST['apex_demo_expect_title']));
+            update_option('apex_demo_expect_items_' . $page_slug, sanitize_textarea_field($_POST['apex_demo_expect_items']));
+            
+            update_option('apex_demo_help_title_' . $page_slug, sanitize_text_field($_POST['apex_demo_help_title']));
+            update_option('apex_demo_help_description_' . $page_slug, sanitize_text_field($_POST['apex_demo_help_description']));
+            update_option('apex_demo_phone_' . $page_slug, sanitize_text_field($_POST['apex_demo_phone']));
+            update_option('apex_demo_email_' . $page_slug, sanitize_email($_POST['apex_demo_email']));
+            
+            update_option('apex_demo_materials_title_' . $page_slug, sanitize_text_field($_POST['apex_demo_materials_title']));
+            update_option('apex_demo_materials_description_' . $page_slug, sanitize_text_field($_POST['apex_demo_materials_description']));
+            update_option('apex_demo_materials_items_' . $page_slug, sanitize_textarea_field($_POST['apex_demo_materials_items']));
+            
+            update_option('apex_demo_webinars_title_' . $page_slug, sanitize_text_field($_POST['apex_demo_webinars_title']));
+            update_option('apex_demo_webinars_description_' . $page_slug, sanitize_text_field($_POST['apex_demo_webinars_description']));
+            update_option('apex_demo_webinars_items_' . $page_slug, sanitize_textarea_field($_POST['apex_demo_webinars_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Request Demo content saved successfully! All sections with form, sidebar, training materials, and webinars have been updated.</p></div>';
         }
     }
 }
@@ -3843,12 +4546,29 @@ function apex_render_footer_settings_page() {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label for="apex_footer_hours">Business Hours</label></th>
+                        <th scope="row"><label>Business Hours</label></th>
                         <td>
-                            <input type="text" id="apex_footer_hours" name="apex_footer_hours" 
-                                   value="<?php echo esc_attr(get_option('apex_footer_hours', 'Mon - Fri: 8:00 AM - 6:00 PM')); ?>" 
-                                   class="large-text">
-                            <p class="description">Your business operating hours</p>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div>
+                                    <label for="apex_footer_weekday_hours" style="display: block; font-weight: 600; margin-bottom: 5px;">Weekdays (Mon - Fri):</label>
+                                    <input type="text" id="apex_footer_weekday_hours" name="apex_footer_weekday_hours" 
+                                           value="<?php echo esc_attr(get_option('apex_footer_weekday_hours', '8am - 6pm')); ?>" 
+                                           class="regular-text" placeholder="e.g., 8am - 6pm">
+                                </div>
+                                <div>
+                                    <label for="apex_footer_saturday_hours" style="display: block; font-weight: 600; margin-bottom: 5px;">Saturday:</label>
+                                    <input type="text" id="apex_footer_saturday_hours" name="apex_footer_saturday_hours" 
+                                           value="<?php echo esc_attr(get_option('apex_footer_saturday_hours', '8am - 1pm')); ?>" 
+                                           class="regular-text" placeholder="e.g., 8am - 1pm">
+                                </div>
+                                <div>
+                                    <label for="apex_footer_sunday_holiday_status" style="display: block; font-weight: 600; margin-bottom: 5px;">Sunday & Holidays:</label>
+                                    <input type="text" id="apex_footer_sunday_holiday_status" name="apex_footer_sunday_holiday_status" 
+                                           value="<?php echo esc_attr(get_option('apex_footer_sunday_holiday_status', 'Closed')); ?>" 
+                                           class="regular-text" placeholder="e.g., Closed">
+                                </div>
+                            </div>
+                            <p class="description">Enter your business operating hours for each time period</p>
                         </td>
                     </tr>
                 </table>
@@ -4041,7 +4761,11 @@ function apex_render_footer_settings_page() {
         update_option('apex_footer_phone', sanitize_text_field($_POST['apex_footer_phone']));
         update_option('apex_footer_city', sanitize_text_field($_POST['apex_footer_city']));
         update_option('apex_footer_address', sanitize_textarea_field($_POST['apex_footer_address']));
-        update_option('apex_footer_hours', sanitize_text_field($_POST['apex_footer_hours']));
+        
+        // Save Business Hours
+        update_option('apex_footer_weekday_hours', sanitize_text_field($_POST['apex_footer_weekday_hours']));
+        update_option('apex_footer_saturday_hours', sanitize_text_field($_POST['apex_footer_saturday_hours']));
+        update_option('apex_footer_sunday_holiday_status', sanitize_text_field($_POST['apex_footer_sunday_holiday_status']));
         
         // Save Social Media Links
         update_option('apex_footer_linkedin', esc_url_raw($_POST['apex_footer_linkedin']));

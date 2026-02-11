@@ -556,3 +556,177 @@ Stack trace:
 [11-Feb-2026 10:34:31 UTC] Apex Direct Email: Email sent successfully
 [11-Feb-2026 10:34:31 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
 [11-Feb-2026 10:34:31 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[11-Feb-2026 11:07:21 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[11-Feb-2026 11:07:21 UTC] Apex Contact Form: Nonce verification failed
+[11-Feb-2026 11:11:51 UTC] Apex Demo Request AJAX: Processing from Abigail Hicks <nufalyny@mailinator.com>
+[11-Feb-2026 11:11:51 UTC] Apex Demo Request AJAX: File attached - HA0jgrdX0AAZTVB.jpeg (152507 bytes)
+[11-Feb-2026 11:11:51 UTC] Apex Direct Email: Attached file - HA0jgrdX0AAZTVB.jpeg
+[11-Feb-2026 11:11:51 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 11:11:59 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 11:11:59 UTC] Apex Demo Request AJAX: Email sending result: SUCCESS
+[11-Feb-2026 11:59:29 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 11:59:29 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 12:48:06 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 12:48:06 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 12:52:21 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 12:52:21 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:00:00 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:00:00 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:06:46 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:06:46 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:07:22 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:07:22 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:08:31 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:08:31 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:09:03 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:09:03 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:10:01 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:10:01 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:13:42 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:13:42 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:15:21 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:15:21 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:15:21 UTC] PHP Warning:  Undefined variable $contact_linkedin in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 203
+[11-Feb-2026 13:15:21 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:15:21 UTC] PHP Warning:  Undefined variable $contact_twitter in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 206
+[11-Feb-2026 13:15:21 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:15:21 UTC] PHP Warning:  Undefined variable $contact_facebook in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 209
+[11-Feb-2026 13:15:21 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:15:21 UTC] PHP Warning:  Undefined variable $contact_instagram in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 212
+[11-Feb-2026 13:15:21 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:15:21 UTC] PHP Warning:  Undefined variable $contact_youtube in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 215
+[11-Feb-2026 13:15:21 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:15:21 UTC] PHP Warning:  Undefined variable $contact_whatsapp in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 218
+[11-Feb-2026 13:15:21 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:15:21 UTC] PHP Warning:  Undefined variable $contact_github in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 221
+[11-Feb-2026 13:15:21 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:19:48 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:19:48 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:19:48 UTC] PHP Warning:  Undefined variable $contact_linkedin in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 215
+[11-Feb-2026 13:19:48 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:19:48 UTC] PHP Warning:  Undefined variable $contact_twitter in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 218
+[11-Feb-2026 13:19:48 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:19:48 UTC] PHP Warning:  Undefined variable $contact_facebook in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 221
+[11-Feb-2026 13:19:48 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:19:48 UTC] PHP Warning:  Undefined variable $contact_instagram in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 224
+[11-Feb-2026 13:19:48 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:19:48 UTC] PHP Warning:  Undefined variable $contact_youtube in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 227
+[11-Feb-2026 13:19:48 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:19:48 UTC] PHP Warning:  Undefined variable $contact_whatsapp in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 230
+[11-Feb-2026 13:19:48 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:19:48 UTC] PHP Warning:  Undefined variable $contact_github in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 233
+[11-Feb-2026 13:19:48 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:26:25 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:26:25 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:26:25 UTC] PHP Warning:  Undefined variable $contact_linkedin in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 228
+[11-Feb-2026 13:26:25 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:26:25 UTC] PHP Warning:  Undefined variable $contact_twitter in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 231
+[11-Feb-2026 13:26:25 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:26:25 UTC] PHP Warning:  Undefined variable $contact_facebook in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 234
+[11-Feb-2026 13:26:25 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:26:25 UTC] PHP Warning:  Undefined variable $contact_instagram in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 237
+[11-Feb-2026 13:26:25 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:26:25 UTC] PHP Warning:  Undefined variable $contact_youtube in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 240
+[11-Feb-2026 13:26:25 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:26:25 UTC] PHP Warning:  Undefined variable $contact_whatsapp in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 243
+[11-Feb-2026 13:26:25 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:26:25 UTC] PHP Warning:  Undefined variable $contact_github in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 246
+[11-Feb-2026 13:26:25 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:27:37 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:27:37 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:29:01 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:29:01 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:29:01 UTC] PHP Warning:  Undefined variable $contact_linkedin in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 228
+[11-Feb-2026 13:29:01 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:29:01 UTC] PHP Warning:  Undefined variable $contact_twitter in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 231
+[11-Feb-2026 13:29:01 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:29:01 UTC] PHP Warning:  Undefined variable $contact_facebook in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 234
+[11-Feb-2026 13:29:01 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:29:01 UTC] PHP Warning:  Undefined variable $contact_instagram in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 237
+[11-Feb-2026 13:29:01 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:29:01 UTC] PHP Warning:  Undefined variable $contact_youtube in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 240
+[11-Feb-2026 13:29:01 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:29:01 UTC] PHP Warning:  Undefined variable $contact_whatsapp in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 243
+[11-Feb-2026 13:29:01 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:29:01 UTC] PHP Warning:  Undefined variable $contact_github in /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php on line 246
+[11-Feb-2026 13:29:01 UTC] PHP Deprecated:  ltrim(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/apex/wp-includes/formatting.php on line 4496
+[11-Feb-2026 13:37:37 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:37:37 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:38:02 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:38:02 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:45:09 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:45:09 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:45:20 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:45:20 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:49:15 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:49:15 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 13:49:30 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 13:49:30 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 14:25:13 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 14:25:13 UTC] Apex Contact Form: POST data: Array
+(
+)
+

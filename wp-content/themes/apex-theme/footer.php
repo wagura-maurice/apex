@@ -46,6 +46,12 @@
     $apex_footer_phone = get_option('apex_footer_phone', '+254 700 000 000');
     $apex_footer_city = get_option('apex_footer_city', 'Nairobi, Kenya');
     $apex_footer_address = get_option('apex_footer_address', "Westlands Business Park\n3rd Floor, Suite 305\nWaiyaki Way, Westlands");
+    
+    // Business Hours
+    $apex_footer_weekday_hours = get_option('apex_footer_weekday_hours', '8am - 6pm');
+    $apex_footer_saturday_hours = get_option('apex_footer_saturday_hours', '8am - 1pm');
+    $apex_footer_sunday_holiday_status = get_option('apex_footer_sunday_holiday_status', 'Closed');
+    
     $apex_footer_hours = get_option('apex_footer_hours', 'Mon - Fri: 8:00 AM - 6:00 PM');
     
     $apex_footer_linkedin = get_option('apex_footer_linkedin', 'https://linkedin.com');
@@ -219,12 +225,14 @@
                                 <li><a href="<?php echo esc_url(home_url('/industry/digital-government')); ?>" class="<?php echo apex_is_footer_link_active('/industry/digital-government'); ?>">Digital Government</a></li>
                             </ul>
                             
-                            <h4 class="apex-footer-main__links-subtitle">Insights</h4>
+                            <h4 class="apex-footer-main__links-subtitle">Support</h4>
                             <ul>
-                                <li><a href="<?php echo esc_url(home_url('/insights/blog')); ?>" class="<?php echo apex_is_footer_link_active('/insights/blog'); ?>">Blog</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/insights/success-stories')); ?>" class="<?php echo apex_is_footer_link_active('/insights/success-stories'); ?>">Success Stories</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/insights/webinars')); ?>" class="<?php echo apex_is_footer_link_active('/insights/webinars'); ?>">Webinars & Events</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/insights/whitepapers-reports')); ?>" class="<?php echo apex_is_footer_link_active('/insights/whitepapers-reports'); ?>">Whitepapers</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/careers')); ?>" class="<?php echo apex_is_footer_link_active('/careers'); ?>">Careers</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/help-support')); ?>" class="<?php echo apex_is_footer_link_active('/help-support'); ?>">Help & Support</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/faq')); ?>" class="<?php echo apex_is_footer_link_active('/faq'); ?>">FAQ</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/knowledge-base')); ?>" class="<?php echo apex_is_footer_link_active('/knowledge-base'); ?>">Knowledge Base</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/developers')); ?>" class="<?php echo apex_is_footer_link_active('/developers'); ?>">Developers</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/partners')); ?>" class="<?php echo apex_is_footer_link_active('/partners'); ?>">Partners</a></li>
                             </ul>
                         </div>
                         
@@ -239,20 +247,18 @@
                                 <li><a href="<?php echo esc_url(home_url('/contact')); ?>" class="<?php echo apex_is_footer_link_active('/contact'); ?>">Contact Us</a></li>
                             </ul>
                             
+                            <h4 class="apex-footer-main__links-subtitle">Insights</h4>
+                            <ul>
+                                <li><a href="<?php echo esc_url(home_url('/insights/blog')); ?>" class="<?php echo apex_is_footer_link_active('/insights/blog'); ?>">Blog</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/insights/success-stories')); ?>" class="<?php echo apex_is_footer_link_active('/insights/success-stories'); ?>">Success Stories</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/insights/webinars')); ?>" class="<?php echo apex_is_footer_link_active('/insights/webinars'); ?>">Webinars & Events</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/insights/whitepapers-reports')); ?>" class="<?php echo apex_is_footer_link_active('/insights/whitepapers-reports'); ?>">Whitepapers</a></li>
+                            </ul>
+                            
                             <h4 class="apex-footer-main__links-subtitle">Legal</h4>
                             <ul>
                                 <li><a href="<?php echo esc_url(home_url('/privacy-policy')); ?>" class="<?php echo apex_is_footer_link_active('/privacy-policy'); ?>">Privacy Policy</a></li>
                                 <li><a href="<?php echo esc_url(home_url('/terms-and-conditions')); ?>" class="<?php echo apex_is_footer_link_active('/terms-and-conditions'); ?>">Terms of Service</a></li>
-                            </ul>
-                            
-                            <h4 class="apex-footer-main__links-subtitle">Support</h4>
-                            <ul>
-                                <li><a href="<?php echo esc_url(home_url('/careers')); ?>" class="<?php echo apex_is_footer_link_active('/careers'); ?>">Careers</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/help-support')); ?>" class="<?php echo apex_is_footer_link_active('/help-support'); ?>">Help & Support</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/faq')); ?>" class="<?php echo apex_is_footer_link_active('/faq'); ?>">FAQ</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/knowledge-base')); ?>" class="<?php echo apex_is_footer_link_active('/knowledge-base'); ?>">Knowledge Base</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/developers')); ?>" class="<?php echo apex_is_footer_link_active('/developers'); ?>">Developers</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/partners')); ?>" class="<?php echo apex_is_footer_link_active('/partners'); ?>">Partners</a></li>
                             </ul>
                         </div>
                         
@@ -278,7 +284,7 @@
                                 </div>
                                 <div class="apex-footer-main__contact-item">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                    <span><?php echo esc_html($apex_footer_hours); ?></span>
+                                    <span>Weekdays: Mon - Fri <?php echo esc_html($apex_footer_weekday_hours); ?><br>Weekends: Sat <?php echo esc_html($apex_footer_saturday_hours); ?><br>Sunday & Holidays: <?php echo esc_html($apex_footer_sunday_holiday_status); ?></span>
                                 </div>
                             </div>
                             
