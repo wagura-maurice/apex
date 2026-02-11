@@ -102,9 +102,9 @@ function apex_register_about_us_overview_acf_fields() {
         'location' => [
             [
                 [
-                    'param' => 'page_template',
+                    'param' => 'options_page',
                     'operator' => '==',
-                    'value' => 'page-about-us-overview.php',
+                    'value' => 'apex-website-settings',
                 ],
             ],
         ],
@@ -211,9 +211,9 @@ function apex_register_about_us_additional_acf_fields() {
         'location' => [
             [
                 [
-                    'param' => 'page_template',
+                    'param' => 'options_page',
                     'operator' => '==',
-                    'value' => 'page-about-us-overview.php',
+                    'value' => 'apex-website-settings',
                 ],
             ],
         ],
@@ -319,9 +319,9 @@ function apex_register_about_us_additional_acf_fields() {
         'location' => [
             [
                 [
-                    'param' => 'page_template',
+                    'param' => 'options_page',
                     'operator' => '==',
-                    'value' => 'page-about-us-overview.php',
+                    'value' => 'apex-website-settings',
                 ],
             ],
         ],
@@ -425,9 +425,9 @@ function apex_register_about_us_additional_acf_fields() {
         'location' => [
             [
                 [
-                    'param' => 'page_template',
+                    'param' => 'options_page',
                     'operator' => '==',
-                    'value' => 'page-about-us-overview.php',
+                    'value' => 'apex-website-settings',
                 ],
             ],
         ],
@@ -533,9 +533,9 @@ function apex_register_about_us_additional_acf_fields() {
         'location' => [
             [
                 [
-                    'param' => 'page_template',
+                    'param' => 'options_page',
                     'operator' => '==',
-                    'value' => 'page-about-us-overview.php',
+                    'value' => 'apex-website-settings',
                 ],
             ],
         ],
@@ -569,40 +569,67 @@ function apex_get_about_hero_data() {
     ];
     
     // Check if ACF is available
-    if (!function_exists('get_field')) {
-        return $defaults;
-    }
-    
-    // Get ACF fields
-    $badge = get_field('about_hero_badge');
-    $heading = get_field('about_hero_heading');
-    $description = get_field('about_hero_description');
-    $image = get_field('about_hero_image');
-    $stats = get_field('about_hero_stats');
-    
-    // Build stats array from repeater
-    $stats_array = [];
-    if ($stats && is_array($stats)) {
-        foreach ($stats as $stat) {
-            $stats_array[] = [
-                'value' => $stat['value'] ?? '',
-                'label' => $stat['label'] ?? ''
+    if (function_exists('get_field')) {
+        // Get ACF fields from options
+        $badge = get_field('about_hero_badge', 'option');
+        $heading = get_field('about_hero_heading', 'option');
+        $description = get_field('about_hero_description', 'option');
+        $image = get_field('about_hero_image', 'option');
+        $stats = get_field('about_hero_stats', 'option');
+        
+        // Build stats array from repeater
+        $stats_array = [];
+        if ($stats && is_array($stats)) {
+            foreach ($stats as $stat) {
+                $stats_array[] = [
+                    'value' => $stat['value'] ?? '',
+                    'label' => $stat['label'] ?? ''
+                ];
+            }
+        }
+        
+        // If no stats from ACF, use defaults
+        if (empty($stats_array)) {
+            $stats_array = $defaults['stats'];
+        }
+        
+        return [
+            'badge' => $badge ?: $defaults['badge'],
+            'heading' => $heading ?: $defaults['heading'],
+            'description' => $description ?: $defaults['description'],
+            'stats' => $stats_array,
+            'image' => $image ?: $defaults['image']
+        ];
+    } else {
+        // Use fallback data when ACF is not available
+        $page_slug = 'about-us-overview';
+        if (function_exists('apex_get_fallback_content')) {
+            $fallback_data = apex_get_fallback_content($page_slug);
+            
+            // Parse stats from fallback data
+            $stats_lines = explode("\n", $fallback_data['stats']);
+            $stats_array = [];
+            foreach ($stats_lines as $line) {
+                $parts = explode(' ', trim($line), 2);
+                if (count($parts) >= 2) {
+                    $stats_array[] = [
+                        'value' => trim($parts[0]),
+                        'label' => trim($parts[1])
+                    ];
+                }
+            }
+            
+            return [
+                'badge' => $fallback_data['badge'],
+                'heading' => $fallback_data['heading'],
+                'description' => $fallback_data['description'],
+                'stats' => $stats_array ?: $defaults['stats'],
+                'image' => $fallback_data['image']
             ];
         }
+        
+        return $defaults;
     }
-    
-    // If no stats from ACF, use defaults
-    if (empty($stats_array)) {
-        $stats_array = $defaults['stats'];
-    }
-    
-    return [
-        'badge' => $badge ?: $defaults['badge'],
-        'heading' => $heading ?: $defaults['heading'],
-        'description' => $description ?: $defaults['description'],
-        'stats' => $stats_array,
-        'image' => $image ?: $defaults['image']
-    ];
 }
 
 /**
@@ -615,7 +642,7 @@ function apex_get_company_story_data() {
         'badge' => 'Our Story',
         'heading' => 'From Vision to Reality',
         'content' => [
-            'Founded in 2010, Apex Softwares began with a simple yet powerful vision: to democratize access to modern banking technology across Africa. What started as a small team of passionate developers has grown into a leading fintech company serving over 100 financial institutions.',
+            'Founded in 2010, Apex Softwares began with a simple yet powerful vision: to democratize access to modern banking technology across Africa.',
             'Our journey has been defined by a relentless focus on innovation, customer success, and the belief that every financial institution—regardless of size—deserves access to world-class technology.',
             'Today, we continue to push boundaries, developing solutions that help our partners reach more customers, reduce costs, and compete effectively in an increasingly digital world.'
         ],
@@ -630,54 +657,92 @@ function apex_get_company_story_data() {
     ];
     
     // Check if ACF is available
-    if (!function_exists('get_field')) {
-        return $defaults;
-    }
-    
-    // Get ACF fields
-    $badge = get_field('company_story_badge');
-    $heading = get_field('company_story_heading');
-    $content = get_field('company_story_content');
-    $milestones = get_field('company_story_milestones');
-    
-    // Build content array from repeater
-    $content_array = [];
-    if ($content && is_array($content)) {
-        foreach ($content as $item) {
-            if (!empty($item['paragraph'])) {
-                $content_array[] = $item['paragraph'];
+    if (function_exists('get_field')) {
+        // Get ACF fields from options
+        $badge = get_field('company_story_badge', 'option');
+        $heading = get_field('company_story_heading', 'option');
+        $content = get_field('company_story_content', 'option');
+        $milestones = get_field('company_story_milestones', 'option');
+        
+        // Build content array from repeater
+        $content_array = [];
+        if ($content && is_array($content)) {
+            foreach ($content as $item) {
+                if (!empty($item['paragraph'])) {
+                    $content_array[] = $item['paragraph'];
+                }
             }
         }
-    }
-    
-    // Build milestones array from repeater
-    $milestones_array = [];
-    if ($milestones && is_array($milestones)) {
-        foreach ($milestones as $milestone) {
-            $milestones_array[] = [
-                'year' => $milestone['year'] ?? '',
-                'title' => $milestone['title'] ?? '',
-                'description' => $milestone['description'] ?? ''
-            ];
+        
+        // Build milestones array from repeater
+        $milestones_array = [];
+        if ($milestones && is_array($milestones)) {
+            foreach ($milestones as $milestone) {
+                $milestones_array[] = [
+                    'year' => $milestone['year'] ?? '',
+                    'title' => $milestone['title'] ?? '',
+                    'description' => $milestone['description'] ?? ''
+                ];
+            }
         }
+        
+        // If no content from ACF, use defaults
+        if (empty($content_array)) {
+            $content_array = $defaults['content'];
+        }
+        
+        // If no milestones from ACF, use defaults
+        if (empty($milestones_array)) {
+            $milestones_array = $defaults['milestones'];
+        }
+        
+        return [
+            'badge' => $badge ?: $defaults['badge'],
+            'heading' => $heading ?: $defaults['heading'],
+            'content' => $content_array,
+            'milestones' => $milestones_array
+        ];
+    } else {
+        // Use fallback data when ACF is not available
+        $page_slug = 'about-us-overview';
+        
+        $badge = get_option('apex_story_badge_' . $page_slug, $defaults['badge']);
+        $heading = get_option('apex_story_heading_' . $page_slug, $defaults['heading']);
+        
+        // Get content paragraphs
+        $content_text = get_option('apex_story_content_' . $page_slug, implode("\n", $defaults['content']));
+        $content_array = array_filter(explode("\n", $content_text));
+        
+        // Get milestones
+        $milestones_text = get_option('apex_story_milestones_' . $page_slug, '');
+        $milestones_array = [];
+        
+        if (!empty($milestones_text)) {
+            $lines = explode("\n", $milestones_text);
+            foreach ($lines as $line) {
+                $parts = explode('|', trim($line));
+                if (count($parts) >= 3) {
+                    $milestones_array[] = [
+                        'year' => trim($parts[0]),
+                        'title' => trim($parts[1]),
+                        'description' => trim($parts[2])
+                    ];
+                }
+            }
+        }
+        
+        // If no milestones from fallback, use defaults
+        if (empty($milestones_array)) {
+            $milestones_array = $defaults['milestones'];
+        }
+        
+        return [
+            'badge' => $badge,
+            'heading' => $heading,
+            'content' => $content_array ?: $defaults['content'],
+            'milestones' => $milestones_array
+        ];
     }
-    
-    // If no content from ACF, use defaults
-    if (empty($content_array)) {
-        $content_array = $defaults['content'];
-    }
-    
-    // If no milestones from ACF, use defaults
-    if (empty($milestones_array)) {
-        $milestones_array = $defaults['milestones'];
-    }
-    
-    return [
-        'badge' => $badge ?: $defaults['badge'],
-        'heading' => $heading ?: $defaults['heading'],
-        'content' => $content_array,
-        'milestones' => $milestones_array
-    ];
 }
 
 /**
@@ -708,49 +773,92 @@ function apex_get_mission_vision_data() {
     ];
     
     // Check if ACF is available
-    if (!function_exists('get_field')) {
-        return $defaults;
-    }
-    
-    // Get ACF fields
-    $mission_title = get_field('mission_title');
-    $mission_description = get_field('mission_description');
-    $mission_icon = get_field('mission_icon');
-    $vision_title = get_field('vision_title');
-    $vision_description = get_field('vision_description');
-    $vision_icon = get_field('vision_icon');
-    $company_values = get_field('company_values');
-    
-    // Build values array from repeater
-    $values_array = [];
-    if ($company_values && is_array($company_values)) {
-        foreach ($company_values as $value) {
-            $values_array[] = [
-                'icon' => $value['icon'] ?? '',
-                'title' => $value['title'] ?? '',
-                'description' => $value['description'] ?? ''
-            ];
+    if (function_exists('get_field')) {
+        // Get ACF fields from options
+        $mission_title = get_field('mission_title', 'option');
+        $mission_description = get_field('mission_description', 'option');
+        $mission_icon = get_field('mission_icon', 'option');
+        $vision_title = get_field('vision_title', 'option');
+        $vision_description = get_field('vision_description', 'option');
+        $vision_icon = get_field('vision_icon', 'option');
+        $company_values = get_field('company_values', 'option');
+        
+        // Build values array from repeater
+        $values_array = [];
+        if ($company_values && is_array($company_values)) {
+            foreach ($company_values as $value) {
+                $values_array[] = [
+                    'icon' => $value['icon'] ?? '',
+                    'title' => $value['title'] ?? '',
+                    'description' => $value['description'] ?? ''
+                ];
+            }
         }
+        
+        // If no values from ACF, use defaults
+        if (empty($values_array)) {
+            $values_array = $defaults['values'];
+        }
+        
+        return [
+            'mission' => [
+                'title' => $mission_title ?: $defaults['mission']['title'],
+                'description' => $mission_description ?: $defaults['mission']['description'],
+                'icon' => $mission_icon ?: $defaults['mission']['icon']
+            ],
+            'vision' => [
+                'title' => $vision_title ?: $defaults['vision']['title'],
+                'description' => $vision_description ?: $defaults['vision']['description'],
+                'icon' => $vision_icon ?: $defaults['vision']['icon']
+            ],
+            'values' => $values_array
+        ];
+    } else {
+        // Use fallback data when ACF is not available
+        $page_slug = 'about-us-overview';
+        
+        $mission_title = get_option('apex_mission_title_' . $page_slug, $defaults['mission']['title']);
+        $mission_description = get_option('apex_mission_description_' . $page_slug, $defaults['mission']['description']);
+        $vision_title = get_option('apex_vision_title_' . $page_slug, $defaults['vision']['title']);
+        $vision_description = get_option('apex_vision_description_' . $page_slug, $defaults['vision']['description']);
+        
+        // Get core values
+        $values_text = get_option('apex_values_' . $page_slug, '');
+        $values_array = [];
+        
+        if (!empty($values_text)) {
+            $lines = explode("\n", $values_text);
+            foreach ($lines as $line) {
+                $parts = explode('|', trim($line));
+                if (count($parts) >= 3) {
+                    $values_array[] = [
+                        'icon' => trim($parts[1]),
+                        'title' => trim($parts[0]),
+                        'description' => trim($parts[2])
+                    ];
+                }
+            }
+        }
+        
+        // If no values from fallback, use defaults
+        if (empty($values_array)) {
+            $values_array = $defaults['values'];
+        }
+        
+        return [
+            'mission' => [
+                'title' => $mission_title,
+                'description' => $mission_description,
+                'icon' => 'target'
+            ],
+            'vision' => [
+                'title' => $vision_title,
+                'description' => $vision_description,
+                'icon' => 'eye'
+            ],
+            'values' => $values_array
+        ];
     }
-    
-    // If no values from ACF, use defaults
-    if (empty($values_array)) {
-        $values_array = $defaults['values'];
-    }
-    
-    return [
-        'mission' => [
-            'title' => $mission_title ?: $defaults['mission']['title'],
-            'description' => $mission_description ?: $defaults['mission']['description'],
-            'icon' => $mission_icon ?: $defaults['mission']['icon']
-        ],
-        'vision' => [
-            'title' => $vision_title ?: $defaults['vision']['title'],
-            'description' => $vision_description ?: $defaults['vision']['description'],
-            'icon' => $vision_icon ?: $defaults['vision']['icon']
-        ],
-        'values' => $values_array
-    ];
 }
 
 /**
@@ -800,42 +908,80 @@ function apex_get_leadership_team_data() {
     ];
     
     // Check if ACF is available
-    if (!function_exists('get_field')) {
-        return $defaults;
-    }
-    
-    // Get ACF fields
-    $badge = get_field('leadership_badge');
-    $heading = get_field('leadership_heading');
-    $description = get_field('leadership_description');
-    $team = get_field('leadership_team');
-    
-    // Build team array from repeater
-    $team_array = [];
-    if ($team && is_array($team)) {
-        foreach ($team as $member) {
-            $team_array[] = [
-                'name' => $member['name'] ?? '',
-                'role' => $member['role'] ?? '',
-                'image' => $member['image'] ?? '',
-                'bio' => $member['bio'] ?? '',
-                'linkedin' => $member['linkedin'] ?: '#',
-                'twitter' => $member['twitter'] ?: '#'
-            ];
+    if (function_exists('get_field')) {
+        // Get ACF fields from options
+        $badge = get_field('leadership_badge', 'option');
+        $heading = get_field('leadership_heading', 'option');
+        $description = get_field('leadership_description', 'option');
+        $team = get_field('leadership_team', 'option');
+        
+        // Build team array from repeater
+        $team_array = [];
+        if ($team && is_array($team)) {
+            foreach ($team as $member) {
+                $team_array[] = [
+                    'name' => $member['name'] ?? '',
+                    'role' => $member['role'] ?? '',
+                    'image' => $member['image'] ?? '',
+                    'bio' => $member['bio'] ?? '',
+                    'linkedin' => $member['linkedin'] ?: '#',
+                    'twitter' => $member['twitter'] ?: '#'
+                ];
+            }
         }
+        
+        // If no team from ACF, use defaults
+        if (empty($team_array)) {
+            $team_array = $defaults['team'];
+        }
+        
+        return [
+            'badge' => $badge ?: $defaults['badge'],
+            'heading' => $heading ?: $defaults['heading'],
+            'description' => $description ?: $defaults['description'],
+            'team' => $team_array
+        ];
+    } else {
+        // Use fallback data when ACF is not available
+        $page_slug = 'about-us-overview';
+        
+        $badge = get_option('apex_leadership_badge_' . $page_slug, $defaults['badge']);
+        $heading = get_option('apex_leadership_heading_' . $page_slug, $defaults['heading']);
+        $description = get_option('apex_leadership_description_' . $page_slug, $defaults['description']);
+        
+        // Get team members
+        $team_text = get_option('apex_team_members_' . $page_slug, '');
+        $team_array = [];
+        
+        if (!empty($team_text)) {
+            $lines = explode("\n", $team_text);
+            foreach ($lines as $line) {
+                $parts = explode('|', trim($line));
+                if (count($parts) >= 6) {
+                    $team_array[] = [
+                        'name' => trim($parts[0]),
+                        'role' => trim($parts[1]),
+                        'image' => trim($parts[2]),
+                        'bio' => trim($parts[3]),
+                        'linkedin' => trim($parts[4]) ?: '#',
+                        'twitter' => trim($parts[5]) ?: '#'
+                    ];
+                }
+            }
+        }
+        
+        // If no team from fallback, use defaults
+        if (empty($team_array)) {
+            $team_array = $defaults['team'];
+        }
+        
+        return [
+            'badge' => $badge,
+            'heading' => $heading,
+            'description' => $description,
+            'team' => $team_array
+        ];
     }
-    
-    // If no team from ACF, use defaults
-    if (empty($team_array)) {
-        $team_array = $defaults['team'];
-    }
-    
-    return [
-        'badge' => $badge ?: $defaults['badge'],
-        'heading' => $heading ?: $defaults['heading'],
-        'description' => $description ?: $defaults['description'],
-        'team' => $team_array
-    ];
 }
 
 /**
@@ -862,47 +1008,89 @@ function apex_get_global_presence_data() {
     ];
     
     // Check if ACF is available
-    if (!function_exists('get_field')) {
-        return $defaults;
-    }
-    
-    // Get ACF fields
-    $badge = get_field('global_badge');
-    $heading = get_field('global_heading');
-    $description = get_field('global_description');
-    $regions = get_field('global_regions');
-    $hq_city = get_field('global_headquarters_city');
-    $hq_country = get_field('global_headquarters_country');
-    $hq_address = get_field('global_headquarters_address');
-    
-    // Build regions array from repeater
-    $regions_array = [];
-    if ($regions && is_array($regions)) {
-        foreach ($regions as $region) {
-            $countries_string = $region['countries'] ?? '';
-            $countries_array = array_map('trim', explode(',', $countries_string));
-            $regions_array[] = [
-                'name' => $region['name'] ?? '',
-                'countries' => $countries_array,
-                'clients' => $region['clients'] ?? ''
-            ];
+    if (function_exists('get_field')) {
+        // Get ACF fields from options
+        $badge = get_field('global_badge', 'option');
+        $heading = get_field('global_heading', 'option');
+        $description = get_field('global_description', 'option');
+        $regions = get_field('global_regions', 'option');
+        $hq_city = get_field('global_headquarters_city', 'option');
+        $hq_country = get_field('global_headquarters_country', 'option');
+        $hq_address = get_field('global_headquarters_address', 'option');
+        
+        // Build regions array from repeater
+        $regions_array = [];
+        if ($regions && is_array($regions)) {
+            foreach ($regions as $region) {
+                $countries_string = $region['countries'] ?? '';
+                $countries_array = array_map('trim', explode(',', $countries_string));
+                $regions_array[] = [
+                    'name' => $region['name'] ?? '',
+                    'countries' => $countries_array,
+                    'clients' => $region['clients'] ?? ''
+                ];
+            }
         }
+        
+        // If no regions from ACF, use defaults
+        if (empty($regions_array)) {
+            $regions_array = $defaults['regions'];
+        }
+        
+        return [
+            'badge' => $badge ?: $defaults['badge'],
+            'heading' => $heading ?: $defaults['heading'],
+            'description' => $description ?: $defaults['description'],
+            'regions' => $regions_array,
+            'headquarters' => [
+                'city' => $hq_city ?: $defaults['headquarters']['city'],
+                'country' => $hq_country ?: $defaults['headquarters']['country'],
+                'address' => $hq_address ?: $defaults['headquarters']['address']
+            ]
+        ];
+    } else {
+        // Use fallback data when ACF is not available
+        $page_slug = 'about-us-overview';
+        
+        $badge = get_option('apex_reach_badge_' . $page_slug, $defaults['badge']);
+        $heading = get_option('apex_reach_heading_' . $page_slug, $defaults['heading']);
+        $description = get_option('apex_reach_description_' . $page_slug, $defaults['description']);
+        
+        // Get regions
+        $regions_text = get_option('apex_regions_' . $page_slug, '');
+        $regions_array = [];
+        
+        if (!empty($regions_text)) {
+            $lines = explode("\n", $regions_text);
+            foreach ($lines as $line) {
+                $parts = explode('|', trim($line));
+                if (count($parts) >= 3) {
+                    $countries_string = $parts[1] ?? '';
+                    $countries_array = array_map('trim', explode(',', $countries_string));
+                    $regions_array[] = [
+                        'name' => trim($parts[0]),
+                        'countries' => $countries_array,
+                        'clients' => trim($parts[2])
+                    ];
+                }
+            }
+        }
+        
+        // If no regions from fallback, use defaults
+        if (empty($regions_array)) {
+            $regions_array = $defaults['regions'];
+        }
+        
+        return [
+            'badge' => $badge,
+            'heading' => $heading,
+            'description' => $description,
+            'regions' => $regions_array,
+            'headquarters' => [
+                'city' => get_option('apex_headquarters_city_' . $page_slug, $defaults['headquarters']['city']),
+                'country' => get_option('apex_headquarters_country_' . $page_slug, $defaults['headquarters']['country']),
+                'address' => get_option('apex_headquarters_address_' . $page_slug, $defaults['headquarters']['address'])
+            ]
+        ];
     }
-    
-    // If no regions from ACF, use defaults
-    if (empty($regions_array)) {
-        $regions_array = $defaults['regions'];
-    }
-    
-    return [
-        'badge' => $badge ?: $defaults['badge'],
-        'heading' => $heading ?: $defaults['heading'],
-        'description' => $description ?: $defaults['description'],
-        'regions' => $regions_array,
-        'headquarters' => [
-            'city' => $hq_city ?: $defaults['headquarters']['city'],
-            'country' => $hq_country ?: $defaults['headquarters']['country'],
-            'address' => $hq_address ?: $defaults['headquarters']['address']
-        ]
-    ];
 }
