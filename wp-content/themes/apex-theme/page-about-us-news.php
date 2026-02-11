@@ -143,7 +143,7 @@ apex_render_about_hero([
         </div>
         
         <div class="apex-news-grid__load-more">
-            <button class="apex-news-grid__load-btn">Load More Articles</button>
+            <a href="<?php echo home_url('/insights/blog'); ?>" class="apex-news-grid__load-btn">Load More Articles</a>
         </div>
     </div>
 </section>

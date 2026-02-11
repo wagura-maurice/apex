@@ -11,6 +11,492 @@ require_once get_template_directory() . '/components/component-loader.php';
 require_once get_template_directory() . '/inc/acf-about-us-overview.php';
 
 /**
+ * Configure Mailtrap for email delivery in development
+ */
+function apex_mailtrap_config($phpmailer) {
+    // Debug: Log that Mailtrap config is being applied
+    error_log('Apex Mailtrap: Applying SMTP configuration');
+
+    // Force SMTP mode and clear any existing mailer settings
+    $phpmailer->isSMTP();
+    $phpmailer->Mailer = 'smtp';
+
+    // Mailtrap SMTP settings
+    $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Port = 2525;
+    $phpmailer->Username = 'be6e87f82be3a7';
+    $phpmailer->Password = '2b1dadf3db173f';
+    $phpmailer->SMTPSecure = ''; // No encryption for Mailtrap sandbox
+
+    // Force authentication
+    $phpmailer->SMTPAuth = true;
+
+    // Enable SMTP debugging
+    $phpmailer->SMTPDebug = 2;
+    $phpmailer->Debugoutput = function($str, $level) {
+        error_log("Apex Mailtrap SMTP Debug [{$level}]: {$str}");
+    };
+
+    // Clear any sendmail path that might be set
+    ini_set('sendmail_path', '');
+
+    error_log('Apex Mailtrap: SMTP configuration applied - Host: ' . $phpmailer->Host . ', Port: ' . $phpmailer->Port . ', Secure: ' . $phpmailer->SMTPSecure);
+}
+add_action('phpmailer_init', 'apex_mailtrap_config', 999); // High priority to override other configs
+
+/**
+ * Handle contact form submission
+ */
+function apex_handle_contact_form_submission() {
+    // Debug: Log all requests to contact page
+    $current_url = $_SERVER['REQUEST_URI'] ?? '';
+    if (strpos($current_url, 'contact') !== false) {
+        error_log('Apex Contact Form: Contact page accessed - Method: ' . $_SERVER['REQUEST_METHOD']);
+        error_log('Apex Contact Form: POST data: ' . print_r($_POST, true));
+    }
+    
+    // Check if it's a POST request and our form was submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['first_name'])) {
+
+        // Debug: Log that we reached the handler
+        error_log('Apex Contact Form: Form submission detected - PROCESSING');
+
+        // Verify nonce for security
+        if (!isset($_POST['apex_contact_nonce']) || !wp_verify_nonce($_POST['apex_contact_nonce'], 'apex_contact_form')) {
+            error_log('Apex Contact Form: Nonce verification failed');
+            wp_die('Security check failed!');
+        }
+
+        // Sanitize and validate form data
+        $first_name = sanitize_text_field($_POST['first_name'] ?? '');
+        $last_name = sanitize_text_field($_POST['last_name'] ?? '');
+        $email = sanitize_email($_POST['email'] ?? '');
+        $phone = sanitize_text_field($_POST['phone'] ?? '');
+        $company = sanitize_text_field($_POST['company'] ?? '');
+        $institution_type = sanitize_text_field($_POST['institution_type'] ?? '');
+        $interest = sanitize_text_field($_POST['interest'] ?? '');
+        $message = sanitize_textarea_field($_POST['message'] ?? '');
+        $consent = isset($_POST['consent']) ? true : false;
+
+        error_log("Apex Contact Form: Processing submission from {$first_name} {$last_name} <{$email}>");
+
+        // Basic validation
+        if (empty($first_name) || empty($last_name) || empty($email) || empty($message) || !$consent) {
+            error_log('Apex Contact Form: Validation failed - missing required fields');
+            wp_redirect(home_url('/contact?error=missing_fields'));
+            exit;
+        }
+
+        if (!is_email($email)) {
+            error_log('Apex Contact Form: Invalid email address: ' . $email);
+            wp_redirect(home_url('/contact?error=invalid_email'));
+            exit;
+        }
+
+        // Send email using direct PHPMailer to bypass MailHog
+        error_log('Apex Contact Form: Attempting to send email via direct PHPMailer');
+        
+        $email_sent = apex_send_email_direct([
+            'to' => 'info@apex-softwares.com',
+            'subject' => 'New Contact Form Submission from ' . $first_name . ' ' . $last_name,
+            'html_content' => apex_create_contact_email_html([
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'phone' => $phone,
+                'company' => $company,
+                'institution_type' => $institution_type,
+                'interest' => $interest,
+                'message' => $message,
+                'submission_date' => current_time('F j, Y, g:i a')
+            ])
+        ]);
+
+        error_log('Apex Contact Form: Direct email sending result: ' . ($email_sent ? 'SUCCESS' : 'FAILED'));
+
+        if ($email_sent) {
+            error_log('Apex Contact Form: Email sent successfully');
+            wp_redirect(home_url('/contact?success=1'));
+        } else {
+            error_log('Apex Contact Form: Email sending failed');
+            wp_redirect(home_url('/contact?error=send_failed'));
+        }
+        exit;
+    }
+}
+add_action('init', 'apex_handle_contact_form_submission');
+
+// Include PHPMailer classes at global scope
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+/**
+ * Send email using direct PHPMailer to bypass MailHog
+ */
+function apex_send_email_direct($args) {
+    // Include PHPMailer directly
+    require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+
+    $mail = new PHPMailer(true);
+
+    try {
+        // Server settings
+        $mail->SMTPDebug = 0; // No debug output in production
+        $mail->isSMTP();
+        $mail->Mailer = 'smtp';
+        $mail->Host       = 'sandbox.smtp.mailtrap.io';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'be6e87f82be3a7';
+        $mail->Password   = '2b1dadf3db173f';
+        $mail->SMTPSecure = ''; // No encryption for Mailtrap
+        $mail->Port       = 2525;
+
+        // Clear any sendmail path
+        ini_set('sendmail_path', '');
+
+        // Recipients
+        $mail->setFrom('contact@apex-softwares.com', 'Apex Contact Form');
+        $mail->addAddress($args['to'], 'Apex Softwares');
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = $args['subject'];
+        $mail->Body    = $args['html_content'];
+        $mail->AltBody = strip_tags(str_replace('<br>', "\n", $args['html_content']));
+
+        error_log('Apex Direct Email: Attempting to send email to ' . $args['to']);
+
+        $result = $mail->send();
+
+        if ($result) {
+            error_log('Apex Direct Email: Email sent successfully');
+            return true;
+        } else {
+            error_log('Apex Direct Email: Email sending failed - ' . $mail->ErrorInfo);
+            return false;
+        }
+
+    } catch (Exception $e) {
+        error_log('Apex Direct Email: Exception - ' . $mail->ErrorInfo);
+        return false;
+    }
+}
+
+/**
+ * Create HTML email template for contact form submissions
+ */
+function apex_create_contact_email_html($data) {
+    $institution_types = [
+        'sacco' => 'SACCO / Credit Union',
+        'mfi' => 'Microfinance Institution',
+        'bank' => 'Commercial Bank',
+        'fintech' => 'Fintech Company',
+        'ngo' => 'NGO / Development Organization',
+        'government' => 'Government Agency',
+        'other' => 'Other'
+    ];
+    
+    $interests = [
+        'demo' => 'Requesting a Demo',
+        'pricing' => 'Pricing Information',
+        'partnership' => 'Partnership Opportunities',
+        'support' => 'Technical Support',
+        'careers' => 'Career Opportunities',
+        'general' => 'General Inquiry'
+    ];
+    
+    $institution_label = $institution_types[$data['institution_type']] ?? 'Not specified';
+    $interest_label = $interests[$data['interest']] ?? 'Not specified';
+    
+    ob_start();
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Contact Form Submission</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f8fafc;
+            }
+            .header {
+                background: linear-gradient(135deg, #FF6200 0%, #ea580c 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+                border-radius: 12px 12px 0 0;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 28px;
+                font-weight: 700;
+            }
+            .header p {
+                margin: 10px 0 0 0;
+                opacity: 0.9;
+                font-size: 16px;
+            }
+            .content {
+                background: white;
+                padding: 40px;
+                border-radius: 0 0 12px 12px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .field-group {
+                margin-bottom: 25px;
+                padding-bottom: 25px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            .field-group:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            .field-label {
+                font-weight: 600;
+                color: #1e293b;
+                margin-bottom: 5px;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .field-value {
+                color: #475569;
+                font-size: 16px;
+                margin: 0;
+            }
+            .field-value strong {
+                color: #1e293b;
+                font-weight: 600;
+            }
+            .message-box {
+                background: #f8fafc;
+                padding: 20px;
+                border-radius: 8px;
+                border-left: 4px solid #FF6200;
+                margin-top: 10px;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #e2e8f0;
+                color: #64748b;
+                font-size: 14px;
+            }
+            .logo {
+                font-size: 24px;
+                font-weight: 700;
+                color: white;
+                margin-bottom: 5px;
+            }
+            .priority-badge {
+                display: inline-block;
+                background: #10b981;
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                margin-left: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo">🏦 Apex Softwares</div>
+            <h1>New Contact Form Submission</h1>
+            <p>A potential client has reached out through your website</p>
+        </div>
+        
+        <div class="content">
+            <div class="field-group">
+                <div class="field-label">Contact Information</div>
+                <p class="field-value"><strong>Name:</strong> <?php echo esc_html($data['first_name'] . ' ' . $data['last_name']); ?></p>
+                <p class="field-value"><strong>Email:</strong> <?php echo esc_html($data['email']); ?></p>
+                <?php if (!empty($data['phone'])): ?>
+                <p class="field-value"><strong>Phone:</strong> <?php echo esc_html($data['phone']); ?></p>
+                <?php endif; ?>
+                <?php if (!empty($data['company'])): ?>
+                <p class="field-value"><strong>Company:</strong> <?php echo esc_html($data['company']); ?></p>
+                <?php endif; ?>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label">Institution Details</div>
+                <p class="field-value"><strong>Institution Type:</strong> <?php echo esc_html($institution_label); ?></p>
+                <p class="field-value"><strong>Interest Area:</strong> <?php echo esc_html($interest_label); ?></p>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label">Message</div>
+                <div class="message-box">
+                    <p class="field-value"><?php echo nl2br(esc_html($data['message'])); ?></p>
+                </div>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label">Submission Details</div>
+                <p class="field-value"><strong>Submitted:</strong> <?php echo esc_html($data['submission_date']); ?></p>
+                <p class="field-value"><strong>Source:</strong> Apex Website Contact Form</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This email was sent from the Apex Softwares website contact form.</p>
+            <p>Please respond to the inquiry within 24 hours.</p>
+        </div>
+    </body>
+    </html>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Add contact form processing to the contact page
+ */
+function apex_add_contact_form_processing() {
+    // Only add to contact page
+    if (is_page('contact') || (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'contact') !== false)) {
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.querySelector('.apex-contact-main__form');
+            if (contactForm) {
+                console.log('Apex Contact Form: Form found, adding processing');
+                
+                // Add nonce field immediately
+                const nonceField = document.createElement('input');
+                nonceField.type = 'hidden';
+                nonceField.name = 'apex_contact_nonce';
+                nonceField.value = '<?php echo wp_create_nonce('apex_contact_form'); ?>';
+                contactForm.appendChild(nonceField);
+                console.log('Apex Contact Form: Nonce field added');
+
+                // Handle form submission
+                contactForm.addEventListener('submit', function(e) {
+                    console.log('Apex Contact Form: Submit event triggered');
+                    console.log('Apex Contact Form: Form data:', new FormData(contactForm));
+                    
+                    // Don't prevent default - let the form submit normally
+                    // e.preventDefault();
+
+                    // Show loading state
+                    const submitBtn = contactForm.querySelector('.apex-contact-main__form-submit');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = 'Sending...';
+                    submitBtn.disabled = true;
+
+                    console.log('Apex Contact Form: Form submitting normally');
+                    // The form will submit normally to the same page
+                    // No need to call contactForm.submit() here
+                });
+
+                // Show success/error messages
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('success') === '1') {
+                    console.log('Apex Contact Form: Showing success message');
+                    apex_show_contact_message('success', 'Thank you for your message! We\'ll get back to you within 24 hours.');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (urlParams.get('error')) {
+                    console.log('Apex Contact Form: Showing error message:', urlParams.get('error'));
+                    const errorMessages = {
+                        'missing_fields': 'Please fill in all required fields.',
+                        'invalid_email': 'Please enter a valid email address.',
+                        'send_failed': 'There was an error sending your message. Please try again.'
+                    };
+                    const errorMsg = errorMessages[urlParams.get('error')] || 'An error occurred. Please try again.';
+                    apex_show_contact_message('error', errorMsg);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } else {
+                console.log('Apex Contact Form: Form not found');
+            }
+
+            function apex_show_contact_message(type, message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'apex-contact-message apex-contact-message--' + type;
+                messageDiv.innerHTML = `
+                    <div class="apex-contact-message__content">
+                        ${type === 'success' ? '✓' : '⚠'} ${message}
+                    </div>
+                `;
+
+                const formWrapper = document.querySelector('.apex-contact-main__form-wrapper');
+                if (formWrapper) {
+                    formWrapper.insertBefore(messageDiv, formWrapper.firstChild);
+                }
+
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    if (messageDiv.parentNode) {
+                        messageDiv.parentNode.removeChild(messageDiv);
+                    }
+                }, 10000);
+            }
+        });
+        </script>
+
+        <style>
+        .apex-contact-message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .apex-contact-message--success {
+            background: #10b981;
+            color: white;
+        }
+        .apex-contact-message--error {
+            background: #ef4444;
+            color: white;
+        }
+        .apex-contact-message__content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        </style>
+        <?php
+    }
+}
+add_action('wp_footer', 'apex_add_contact_form_processing');
+
+/**
+ * Test email function - call this manually to test Mailtrap setup
+ */
+function apex_test_email() {
+    if (isset($_GET['test_email']) && current_user_can('administrator')) {
+        $to = 'info@apex-softwares.com';
+        $subject = 'Test Email from Apex Website';
+        $message = '<h1>Test Email</h1><p>This is a test email to verify Mailtrap configuration.</p>';
+        $headers = ['Content-Type: text/html; charset=UTF-8'];
+
+        $sent = wp_mail($to, $subject, $message, $headers);
+
+        if ($sent) {
+            echo 'Email sent successfully!';
+        } else {
+            echo 'Email sending failed!';
+        }
+        exit;
+    }
+}
+add_action('init', 'apex_test_email');
+
+/**
  * Theme setup.
  */
 function apex_theme_setup(): void {
@@ -888,6 +1374,16 @@ function apex_register_website_settings_menu() {
             }
         );
     }
+    
+    // Add Footer Settings submenu
+    add_submenu_page(
+        'apex-website-settings',
+        'Footer Settings',
+        'Footer Settings',
+        'edit_theme_options',
+        'apex-footer-settings',
+        'apex_render_footer_settings_page'
+    );
 }
 add_action('admin_menu', 'apex_register_website_settings_menu');
 
@@ -1335,7 +1831,7 @@ function apex_render_page_editor($page_slug, $page_title) {
         ],
         'about-us-our-approach' => [
             'title' => 'Our Approach',
-            'acf_group' => 'group_about_us_approach'
+            'acf_group' => 'group_approach_hero'
         ],
         'about-us-leadership-team' => [
             'title' => 'Leadership Team',
@@ -1432,7 +1928,6 @@ function apex_render_page_editor($page_slug, $page_title) {
         echo '<div class="wrap"><h1>Page not found</h1><p>The requested page editor is not available.</p></div>';
         return;
     }
-    
     $config = $page_config[$page_slug];
     
     ?>
@@ -1483,7 +1978,7 @@ function apex_render_fallback_form($page_slug, $config) {
         <h3>Edit Content: <?php echo esc_html($config['title']); ?></h3>
         <p class="description">Update the content for this page. Changes will appear immediately on the frontend.</p>
         
-        <!-- Hero Section -->
+        <!-- Hero Section (Common to both pages) -->
         <div style="margin-bottom: 30px;">
             <h4>🚀 Hero Section</h4>
             <table class="form-table">
@@ -1536,16 +2031,27 @@ function apex_render_fallback_form($page_slug, $config) {
             </table>
         </div>
 
+        <?php if ($page_slug === 'about-us-overview'): ?>
+        <!-- About Us Overview Specific Sections -->
+        
         <!-- Our Story Section -->
         <div style="margin-bottom: 30px;">
             <h4>📖 Our Story Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section tells your company story with multiple content paragraphs and key milestones.</strong> Content appears as flowing paragraphs followed by a timeline of important achievements.</p>
+                <p><strong>Format for milestones:</strong> Enter each milestone on a new line using this format:<br>
+                <code>Year | Title | Description</code></p>
+            </div>
+            
             <table class="form-table">
                 <tr>
-                    <th scope="row"><label for="apex_story_badge">Badge Text</label></th>
+                    <th scope="row"><label for="apex_story_badge">Section Badge</label></th>
                     <td>
                         <input type="text" id="apex_story_badge" name="apex_story_badge" 
                                value="<?php echo esc_attr(get_option('apex_story_badge_' . $page_slug, 'Our Story')); ?>" 
                                class="regular-text" placeholder="e.g., Our Story">
+                        <p class="description">The small badge text above the section heading</p>
                     </td>
                 </tr>
                 <tr>
@@ -1554,28 +2060,37 @@ function apex_render_fallback_form($page_slug, $config) {
                         <input type="text" id="apex_story_heading" name="apex_story_heading" 
                                value="<?php echo esc_attr(get_option('apex_story_heading_' . $page_slug, 'From Vision to Reality')); ?>" 
                                class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the story section</p>
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="apex_story_content">Content Paragraphs</label></th>
+                    <th scope="row"><label for="apex_story_content">Story Content Paragraphs</label></th>
                     <td>
-                        <textarea id="apex_story_content" name="apex_story_content" rows="6" class="large-text"
-                                  placeholder="Enter each paragraph on a new line"><?php 
+                        <textarea id="apex_story_content" name="apex_story_content" rows="12" class="large-text"
+                                  placeholder="Founded in 2010, Apex Softwares began with a simple yet powerful vision: to democratize access to modern banking technology across Africa.&#10;Our journey has been defined by a relentless focus on innovation, customer success, and the belief that every financial institution—regardless of size—deserves access to world-class technology.&#10;Today, we continue to push boundaries, developing solutions that help our partners reach more customers, reduce costs, and compete effectively in an increasingly digital world."><?php 
                             $content = get_option('apex_story_content_' . $page_slug, "Founded in 2010, Apex Softwares began with a simple yet powerful vision: to democratize access to modern banking technology across Africa.\nOur journey has been defined by a relentless focus on innovation, customer success, and the belief that every financial institution—regardless of size—deserves access to world-class technology.\nToday, we continue to push boundaries, developing solutions that help our partners reach more customers, reduce costs, and compete effectively in an increasingly digital world.");
                             echo esc_textarea($content);
                         ?></textarea>
-                        <p class="description">Each paragraph should be on a new line</p>
+                        <p class="description"><strong>Format:</strong> Each paragraph on a new line. These will be displayed as flowing text paragraphs.</p>
+                        <p class="description"><strong>Example:</strong> First paragraph text here.[line break]Second paragraph text here.</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Write compelling story paragraphs that engage readers. Each line break creates a new paragraph on the frontend.
+                        </div>
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="apex_story_milestones">Milestones</label></th>
+                    <th scope="row"><label for="apex_story_milestones">Company Milestones</label></th>
                     <td>
-                        <textarea id="apex_story_milestones" name="apex_story_milestones" rows="8" class="large-text"
-                                  placeholder="2010 | Company Founded | Started with a vision to transform African banking&#10;2013 | First Major Client | Deployed ApexCore to our first SACCO partner&#10;2016 | Mobile Banking Launch | Introduced mobile and agent banking solutions"><?php 
+                        <textarea id="apex_story_milestones" name="apex_story_milestones" rows="15" class="large-text"
+                                  placeholder="2010 | Company Founded | Started with a vision to transform African banking&#10;2013 | First Major Client | Deployed ApexCore to our first SACCO partner&#10;2016 | Mobile Banking Launch | Introduced mobile and agent banking solutions&#10;2019 | Pan-African Expansion | Extended operations to 10+ African countries&#10;2022 | 100+ Clients Milestone | Reached 100 financial institution partners&#10;2024 | Next-Gen Platform | Launched cloud-native ApexCore 3.0"><?php 
                             $milestones = get_option('apex_story_milestones_' . $page_slug, "2010 | Company Founded | Started with a vision to transform African banking\n2013 | First Major Client | Deployed ApexCore to our first SACCO partner\n2016 | Mobile Banking Launch | Introduced mobile and agent banking solutions\n2019 | Pan-African Expansion | Extended operations to 10+ African countries\n2022 | 100+ Clients Milestone | Reached 100 financial institution partners\n2024 | Next-Gen Platform | Launched cloud-native ApexCore 3.0");
                             echo esc_textarea($milestones);
                         ?></textarea>
-                        <p class="description">Format: Year | Title | Description (one per line)</p>
+                        <p class="description"><strong>Format:</strong> Year | Title | Description (one milestone per line)</p>
+                        <p class="description"><strong>Example:</strong> 2010 | Company Founded | Started with a vision to transform African banking</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Milestones will be displayed in a timeline format. Use chronological order and highlight key achievements that showcase your growth.
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -1584,6 +2099,14 @@ function apex_render_fallback_form($page_slug, $config) {
         <!-- Mission & Vision Section -->
         <div style="margin-bottom: 30px;">
             <h4>🎯 Mission & Vision Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your mission, vision, and core values.</strong> Mission and vision appear as prominent cards with icons, followed by a grid of core value cards.</p>
+                <p><strong>Format for values:</strong> Enter each value on a new line using this format:<br>
+                <code>Icon Name | Title | Description</code></p>
+                <p><strong>Available icons:</strong> lightbulb, handshake, shield, users, rocket, heart, wrench, message-circle, target, eye</p>
+            </div>
+            
             <table class="form-table">
                 <tr>
                     <th scope="row"><label for="apex_mission_title">Mission Title</label></th>
@@ -1591,16 +2114,18 @@ function apex_render_fallback_form($page_slug, $config) {
                         <input type="text" id="apex_mission_title" name="apex_mission_title" 
                                value="<?php echo esc_attr(get_option('apex_mission_title_' . $page_slug, 'Our Mission')); ?>" 
                                class="regular-text" placeholder="e.g., Our Mission">
+                        <p class="description">The title for your mission statement</p>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="apex_mission_description">Mission Description</label></th>
                     <td>
-                        <textarea id="apex_mission_description" name="apex_mission_description" rows="3" class="large-text"
-                                  placeholder="Mission description"><?php 
+                        <textarea id="apex_mission_description" name="apex_mission_description" rows="4" class="large-text"
+                                  placeholder="To empower financial institutions with innovative, accessible, and secure technology solutions that drive financial inclusion and economic growth across Africa."><?php 
                             $mission_desc = get_option('apex_mission_description_' . $page_slug, 'To empower financial institutions with innovative, accessible, and secure technology solutions that drive financial inclusion and economic growth across Africa.');
                             echo esc_textarea($mission_desc);
                         ?></textarea>
+                        <p class="description">Detailed description of your company's mission</p>
                     </td>
                 </tr>
                 <tr>
@@ -1609,49 +2134,57 @@ function apex_render_fallback_form($page_slug, $config) {
                         <input type="text" id="apex_vision_title" name="apex_vision_title" 
                                value="<?php echo esc_attr(get_option('apex_vision_title_' . $page_slug, 'Our Vision')); ?>" 
                                class="regular-text" placeholder="e.g., Our Vision">
+                        <p class="description">The title for your vision statement</p>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="apex_vision_description">Vision Description</label></th>
                     <td>
-                        <textarea id="apex_vision_description" name="apex_vision_description" rows="3" class="large-text"
-                                  placeholder="Vision description"><?php 
+                        <textarea id="apex_vision_description" name="apex_vision_description" rows="4" class="large-text"
+                                  placeholder="To be the leading financial technology partner in Africa, enabling every institution to deliver world-class digital banking experiences to their customers."><?php 
                             $vision_desc = get_option('apex_vision_description_' . $page_slug, 'To be the leading financial technology partner in Africa, enabling every institution to deliver world-class digital banking experiences to their customers.');
                             echo esc_textarea($vision_desc);
                         ?></textarea>
+                        <p class="description">Detailed description of your company's vision</p>
                     </td>
                 </tr>
-            </table>
-        </div>
-
-        <!-- Core Values Section -->
-        <div style="margin-bottom: 30px;">
-            <h4>💎 Core Values Section</h4>
-            <table class="form-table">
                 <tr>
                     <th scope="row"><label for="apex_values">Core Values</label></th>
                     <td>
-                        <textarea id="apex_values" name="apex_values" rows="10" class="large-text"
-                                  placeholder="Innovation | lightbulb | We continuously push boundaries to deliver cutting-edge solutions that anticipate market needs.&#10;Partnership | handshake | We succeed when our clients succeed. Their growth is our primary measure of success."><?php 
-                            $values = get_option('apex_values_' . $page_slug, "Innovation | lightbulb | We continuously push boundaries to deliver cutting-edge solutions that anticipate market needs.\nPartnership | handshake | We succeed when our clients succeed. Their growth is our primary measure of success.\nIntegrity | shield | We operate with transparency, honesty, and the highest ethical standards in everything we do.\nCustomer Focus | users | Every decision we make is guided by how it will benefit our clients and their customers.\nExcellence | rocket | We strive for excellence in our products, services, and every interaction with stakeholders.\nImpact | heart | We measure our success by the positive impact we create for communities across Africa.");
+                        <textarea id="apex_values" name="apex_values" rows="20" class="large-text"
+                                  placeholder="lightbulb | Innovation | We continuously push boundaries to deliver cutting-edge solutions that anticipate market needs.&#10;handshake | Partnership | We succeed when our clients succeed. Their growth is our primary measure of success.&#10;shield | Integrity | We operate with transparency, honesty, and the highest ethical standards in everything we do.&#10;users | Customer Focus | Every decision we make is guided by how it will benefit our clients and their customers.&#10;rocket | Excellence | We strive for excellence in our products, services, and every interaction with stakeholders.&#10;heart | Impact | We measure our success by the positive impact we create for communities across Africa."><?php 
+                            $values = get_option('apex_values_' . $page_slug, "lightbulb | Innovation | We continuously push boundaries to deliver cutting-edge solutions that anticipate market needs.\nhandshake | Partnership | We succeed when our clients succeed. Their growth is our primary measure of success.\nshield | Integrity | We operate with transparency, honesty, and the highest ethical standards in everything we do.\nusers | Customer Focus | Every decision we make is guided by how it will benefit our clients and their customers.\nrocket | Excellence | We strive for excellence in our products, services, and every interaction with stakeholders.\nheart | Impact | We measure our success by the positive impact we create for communities across Africa.");
                             echo esc_textarea($values);
                         ?></textarea>
-                        <p class="description">Format: Value Name | Icon | Description (one per line)</p>
+                        <p class="description"><strong>Format:</strong> Icon Name | Title | Description (one value per line)</p>
+                        <p class="description"><strong>Available icons:</strong> lightbulb, handshake, shield, users, rocket, heart, wrench, message-circle, target, eye</p>
+                        <p class="description"><strong>Example:</strong> lightbulb | Innovation | We continuously push boundaries...</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Values will be displayed in a grid of cards with icons. Choose values that truly represent your company culture and choose appropriate icons for each.
+                        </div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <!-- Leadership Section -->
+        <!-- Leadership Team Section -->
         <div style="margin-bottom: 30px;">
             <h4>👥 Leadership Team Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your leadership team with photos, bios, and social links.</strong> Each team member appears as a card with their photo, name, role, bio, and social media links.</p>
+                <p><strong>Format for team members:</strong> Enter each member on a new line using this format:<br>
+                <code>Name | Role | Image URL | Bio | LinkedIn URL | Twitter URL</code></p>
+            </div>
+            
             <table class="form-table">
                 <tr>
-                    <th scope="row"><label for="apex_leadership_badge">Badge Text</label></th>
+                    <th scope="row"><label for="apex_leadership_badge">Section Badge</label></th>
                     <td>
                         <input type="text" id="apex_leadership_badge" name="apex_leadership_badge" 
                                value="<?php echo esc_attr(get_option('apex_leadership_badge_' . $page_slug, 'Leadership')); ?>" 
                                class="regular-text" placeholder="e.g., Leadership">
+                        <p class="description">The small badge text above the section heading</p>
                     </td>
                 </tr>
                 <tr>
@@ -1660,27 +2193,34 @@ function apex_render_fallback_form($page_slug, $config) {
                         <input type="text" id="apex_leadership_heading" name="apex_leadership_heading" 
                                value="<?php echo esc_attr(get_option('apex_leadership_heading_' . $page_slug, 'Meet Our Team')); ?>" 
                                class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the leadership section</p>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="apex_leadership_description">Section Description</label></th>
                     <td>
-                        <textarea id="apex_leadership_description" name="apex_leadership_description" rows="2" class="large-text"
-                                  placeholder="Section description"><?php 
+                        <textarea id="apex_leadership_description" name="apex_leadership_description" rows="3" class="large-text"
+                                  placeholder="Our leadership team brings together decades of experience in financial technology, banking, and software development."><?php 
                             $leadership_desc = get_option('apex_leadership_description_' . $page_slug, 'Our leadership team brings together decades of experience in financial technology, banking, and software development.');
                             echo esc_textarea($leadership_desc);
                         ?></textarea>
+                        <p class="description">Brief description of your leadership team</p>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="apex_team_members">Team Members</label></th>
                     <td>
-                        <textarea id="apex_team_members" name="apex_team_members" rows="12" class="large-text"
-                                  placeholder="John Kamau | Chief Executive Officer | https://example.com/john-image.jpg | With 20+ years in fintech, John leads our vision to transform African banking. | https://linkedin.com/in/johnkamau | https://twitter.com/johnkamau"><?php 
+                        <textarea id="apex_team_members" name="apex_team_members" rows="25" class="large-text"
+                                  placeholder="John Kamau | Chief Executive Officer | https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400 | With 20+ years in fintech, John leads our vision to transform African banking. | https://linkedin.com/in/johnkamau | https://twitter.com/johnkamau&#10;Sarah Ochieng | Chief Technology Officer | https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400 | Sarah drives our technology strategy and product innovation initiatives. | https://linkedin.com/in/sarahochieng | https://twitter.com/sarahochieng"><?php 
                             $team = get_option('apex_team_members_' . $page_slug, "John Kamau | Chief Executive Officer | https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400 | With 20+ years in fintech, John leads our vision to transform African banking. | # | #\nSarah Ochieng | Chief Technology Officer | https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400 | Sarah drives our technology strategy and product innovation initiatives. | # | #\nMichael Njoroge | Chief Operations Officer | https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400 | Michael ensures operational excellence across all our client implementations. | # | #\nGrace Wanjiku | Chief Financial Officer | https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400 | Grace oversees our financial strategy and sustainable growth initiatives. | # | #");
                             echo esc_textarea($team);
                         ?></textarea>
-                        <p class="description">Format: Name | Role | Image URL | Bio | LinkedIn URL | Twitter URL (one per line)</p>
+                        <p class="description"><strong>Format:</strong> Name | Role | Image URL | Bio | LinkedIn URL | Twitter URL (one member per line)</p>
+                        <p class="description"><strong>Example:</strong> John Kamau | Chief Executive Officer | https://image-url.jpg | Bio text here... | https://linkedin.com/profile | https://twitter.com/handle</p>
+                        <p class="description"><strong>Note:</strong> Use # for social links if you don't have them</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Team members will be displayed in a grid of cards. Use professional headshot photos (400x400px recommended). Write compelling bios highlighting experience and achievements.
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -1689,13 +2229,21 @@ function apex_render_fallback_form($page_slug, $config) {
         <!-- Our Reach Section -->
         <div style="margin-bottom: 30px;">
             <h4>🌍 Our Reach Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your global presence with regional coverage and headquarters information.</strong> Regions display with country lists and client counts, followed by headquarters location details.</p>
+                <p><strong>Format for regions:</strong> Enter each region on a new line using this format:<br>
+                <code>Region Name | Countries (comma-separated) | Client Count</code></p>
+            </div>
+            
             <table class="form-table">
                 <tr>
-                    <th scope="row"><label for="apex_reach_badge">Badge Text</label></th>
+                    <th scope="row"><label for="apex_reach_badge">Section Badge</label></th>
                     <td>
                         <input type="text" id="apex_reach_badge" name="apex_reach_badge" 
                                value="<?php echo esc_attr(get_option('apex_reach_badge_' . $page_slug, 'Our Reach')); ?>" 
                                class="regular-text" placeholder="e.g., Our Reach">
+                        <p class="description">The small badge text above the section heading</p>
                     </td>
                 </tr>
                 <tr>
@@ -1704,27 +2252,33 @@ function apex_render_fallback_form($page_slug, $config) {
                         <input type="text" id="apex_reach_heading" name="apex_reach_heading" 
                                value="<?php echo esc_attr(get_option('apex_reach_heading_' . $page_slug, 'Pan-African Presence')); ?>" 
                                class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the reach section</p>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="apex_reach_description">Section Description</label></th>
                     <td>
-                        <textarea id="apex_reach_description" name="apex_reach_description" rows="2" class="large-text"
-                                  placeholder="Section description"><?php 
+                        <textarea id="apex_reach_description" name="apex_reach_description" rows="3" class="large-text"
+                                  placeholder="From our headquarters in Nairobi, we serve financial institutions across the African continent."><?php 
                             $reach_desc = get_option('apex_reach_description_' . $page_slug, 'From our headquarters in Nairobi, we serve financial institutions across the African continent.');
                             echo esc_textarea($reach_desc);
                         ?></textarea>
+                        <p class="description">Brief description of your geographical presence</p>
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="apex_regions">Regions</label></th>
+                    <th scope="row"><label for="apex_regions">Regional Presence</label></th>
                     <td>
-                        <textarea id="apex_regions" name="apex_regions" rows="6" class="large-text"
-                                  placeholder="East Africa | Kenya, Uganda, Tanzania, Rwanda, Ethiopia | 60+&#10;West Africa | Nigeria, Ghana, Senegal, Ivory Coast | 25+"><?php 
+                        <textarea id="apex_regions" name="apex_regions" rows="15" class="large-text"
+                                  placeholder="East Africa | Kenya, Uganda, Tanzania, Rwanda, Ethiopia | 60+&#10;West Africa | Nigeria, Ghana, Senegal, Ivory Coast | 25+&#10;Southern Africa | South Africa, Zambia, Zimbabwe, Malawi | 15+&#10;Central Africa | DRC, Cameroon | 5+"><?php 
                             $regions = get_option('apex_regions_' . $page_slug, "East Africa | Kenya, Uganda, Tanzania, Rwanda, Ethiopia | 60+\nWest Africa | Nigeria, Ghana, Senegal, Ivory Coast | 25+\nSouthern Africa | South Africa, Zambia, Zimbabwe, Malawi | 15+\nCentral Africa | DRC, Cameroon | 5+");
                             echo esc_textarea($regions);
                         ?></textarea>
-                        <p class="description">Format: Region Name | Countries (comma-separated) | Clients Count (one per line)</p>
+                        <p class="description"><strong>Format:</strong> Region Name | Countries (comma-separated) | Client Count (one region per line)</p>
+                        <p class="description"><strong>Example:</strong> East Africa | Kenya, Uganda, Tanzania, Rwanda, Ethiopia | 60+</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Regions will be displayed with country flags and client counts. List all countries in each region where you have clients. Client counts show your market presence strength.
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -1733,6 +2287,7 @@ function apex_render_fallback_form($page_slug, $config) {
                         <input type="text" id="apex_headquarters_city" name="apex_headquarters_city" 
                                value="<?php echo esc_attr(get_option('apex_headquarters_city_' . $page_slug, 'Nairobi')); ?>" 
                                class="regular-text" placeholder="e.g., Nairobi">
+                        <p class="description">The city where your headquarters is located</p>
                     </td>
                 </tr>
                 <tr>
@@ -1741,6 +2296,7 @@ function apex_render_fallback_form($page_slug, $config) {
                         <input type="text" id="apex_headquarters_country" name="apex_headquarters_country" 
                                value="<?php echo esc_attr(get_option('apex_headquarters_country_' . $page_slug, 'Kenya')); ?>" 
                                class="regular-text" placeholder="e.g., Kenya">
+                        <p class="description">The country where your headquarters is located</p>
                     </td>
                 </tr>
                 <tr>
@@ -1748,11 +2304,969 @@ function apex_render_fallback_form($page_slug, $config) {
                     <td>
                         <input type="text" id="apex_headquarters_address" name="apex_headquarters_address" 
                                value="<?php echo esc_attr(get_option('apex_headquarters_address_' . $page_slug, 'Westlands Business Park, 4th Floor')); ?>" 
-                               class="regular-text" placeholder="Full address">
+                               class="large-text" placeholder="Full street address">
+                        <p class="description">The complete street address of your headquarters</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Headquarters information appears prominently at the bottom of the section. Include specific details that help clients locate and visit your offices.
+                        </div>
                     </td>
                 </tr>
             </table>
         </div>
+
+        <?php elseif ($page_slug === 'about-us-our-approach'): ?>
+        <!-- Our Approach Specific Sections -->
+
+        <!-- Our Methodology Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔄 Our Methodology Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays your 5-phase implementation methodology.</strong> Each phase includes a title, detailed description, and bullet points explaining key activities.</p>
+                <p><strong>Format for phases:</strong> Enter each phase on a new line using this format:<br>
+                <code>Phase Number | Title | Description | Bullet1, Bullet2, Bullet3, Bullet4</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_methodology_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_methodology_badge" name="apex_methodology_badge" 
+                               value="<?php echo esc_attr(get_option('apex_methodology_badge_' . $page_slug, 'Our Methodology')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Methodology">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_methodology_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_methodology_heading" name="apex_methodology_heading" 
+                               value="<?php echo esc_attr(get_option('apex_methodology_heading_' . $page_slug, 'A Proven Framework for Success')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the methodology section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_methodology_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_methodology_description" name="apex_methodology_description" rows="3" class="large-text"
+                                  placeholder="Section description"><?php 
+                            $methodology_desc = get_option('apex_methodology_description_' . $page_slug, 'We follow a structured yet flexible approach that ensures every implementation delivers maximum value while minimizing risk.');
+                            echo esc_textarea($methodology_desc);
+                        ?></textarea>
+                        <p class="description">Brief description of your methodology approach</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_methodology_phases">Methodology Phases</label></th>
+                    <td>
+                        <textarea id="apex_methodology_phases" name="apex_methodology_phases" rows="25" class="large-text"
+                                  placeholder="01 | Discovery & Assessment | We begin by deeply understanding your institution's unique challenges, goals, and existing infrastructure. Our team conducts comprehensive assessments to identify opportunities for optimization and growth. | Stakeholder interviews and requirements gathering, Current system and process analysis, Gap analysis and opportunity identification, Regulatory compliance review&#10;02 | Solution Design | Based on our findings, we design a tailored solution architecture that addresses your specific needs while leveraging the full power of the ApexCore platform. | Custom solution architecture design, Integration mapping and API planning, User experience and workflow design, Security and compliance framework"><?php 
+                            $phases = get_option('apex_methodology_phases_' . $page_slug, "01 | Discovery & Assessment | We begin by deeply understanding your institution's unique challenges, goals, and existing infrastructure. Our team conducts comprehensive assessments to identify opportunities for optimization and growth. | Stakeholder interviews and requirements gathering, Current system and process analysis, Gap analysis and opportunity identification, Regulatory compliance review\n02 | Solution Design | Based on our findings, we design a tailored solution architecture that addresses your specific needs while leveraging the full power of the ApexCore platform. | Custom solution architecture design, Integration mapping and API planning, User experience and workflow design, Security and compliance framework\n03 | Agile Implementation | Our agile development methodology ensures rapid delivery with continuous feedback loops. We work in sprints, delivering functional components that you can test and validate. | Iterative development with 2-week sprints, Continuous integration and testing, Regular demos and stakeholder reviews, Parallel data migration and validation\n04 | Training & Change Management | Technology is only as good as the people using it. We invest heavily in training and change management to ensure your team is confident and capable. | Role-based training programs, Train-the-trainer sessions, Comprehensive documentation and guides, Change management support\n05 | Go-Live & Optimization | We ensure a smooth transition to production with comprehensive support. Post-launch, we continue to optimize and enhance your solution based on real-world usage. | Phased rollout strategy, Hypercare support period, Performance monitoring and optimization, Continuous improvement roadmap");
+                            echo esc_textarea($phases);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Phase Number | Title | Description | Bullet1, Bullet2, Bullet3, Bullet4 (one phase per line)</p>
+                        <p class="description"><strong>Example:</strong> 01 | Discovery & Assessment | We begin by deeply understanding... | Stakeholder interviews..., Current system analysis..., Gap analysis..., Regulatory compliance...</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Each phase will be displayed with a numbered circle, title, description paragraph, and bullet points. Use commas to separate bullet points.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Guiding Principles Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💎 Guiding Principles Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays your core guiding principles in a beautiful grid layout.</strong> Each principle includes an icon, title, and detailed description explaining your values and approach.</p>
+                <p><strong>Format for principles:</strong> Enter each principle on a new line using this format:<br>
+                <code>Icon Name | Title | Description</code></p>
+                <p><strong>Available icons:</strong> users, shield, clock, arrow-up, wrench, message-circle, lightbulb, handshake, rocket, heart</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_principles_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_principles_badge" name="apex_principles_badge" 
+                               value="<?php echo esc_attr(get_option('apex_principles_badge_' . $page_slug, 'Guiding Principles')); ?>" 
+                               class="regular-text" placeholder="e.g., Guiding Principles">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_principles_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_principles_heading" name="apex_principles_heading" 
+                               value="<?php echo esc_attr(get_option('apex_principles_heading_' . $page_slug, 'What Sets Us Apart')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the principles section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_principles_cards">Principle Cards</label></th>
+                    <td>
+                        <textarea id="apex_principles_cards" name="apex_principles_cards" rows="30" class="large-text"
+                                  placeholder="users | Client-Centric Focus | Every decision we make is guided by what's best for our clients. We measure our success by your success, not by the number of features we ship.&#10;shield | Security First | Security isn't an afterthought—it's built into everything we do. From architecture to deployment, we follow industry best practices and regulatory requirements.&#10;clock | Speed to Value | We understand that time is money. Our proven methodology and pre-built components enable rapid deployment without sacrificing quality or customization."><?php 
+                            $principles = get_option('apex_principles_cards_' . $page_slug, "users | Client-Centric Focus | Every decision we make is guided by what's best for our clients. We measure our success by your success, not by the number of features we ship.\nshield | Security First | Security isn't an afterthought—it's built into everything we do. From architecture to deployment, we follow industry best practices and regulatory requirements.\nclock | Speed to Value | We understand that time is money. Our proven methodology and pre-built components enable rapid deployment without sacrificing quality or customization.\narrow-up | Scalable Architecture | Our solutions are designed to grow with you. Whether you're serving 1,000 or 1 million customers, our platform scales seamlessly to meet demand.\nwrench | Continuous Innovation | The financial industry never stands still, and neither do we. We continuously invest in R&D to bring you the latest technologies and capabilities.\nmessage-circle | Transparent Communication | We believe in open, honest communication. You'll always know where your project stands, what challenges we're facing, and how we're addressing them.");
+                            echo esc_textarea($principles);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Icon Name | Title | Description (one principle per line)</p>
+                        <p class="description"><strong>Available icons:</strong> users, shield, clock, arrow-up, wrench, message-circle, lightbulb, handshake, rocket, heart</p>
+                        <p class="description"><strong>Example:</strong> users | Client-Centric Focus | Every decision we make is guided by what's best for our clients...</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Each principle will be displayed as a card with an icon, title, and description. Choose icons that best represent each principle. You can add up to 6 principles.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Ongoing Partnership Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🤝 Ongoing Partnership Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your ongoing support and partnership commitment.</strong> It includes 4 support features with icons and descriptions, plus 3 key statistics demonstrating your service quality.</p>
+                <p><strong>Format for features:</strong> Enter each feature on a new line using this format:<br>
+                <code>Icon Name | Title | Description</code></p>
+                <p><strong>Format for statistics:</strong> Enter each stat on a new line using this format:<br>
+                <code>Value | Label</code></p>
+                <p><strong>Available icons:</strong> clock, edit-3, book-open, users, shield, heart, message-circle, rocket</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_support_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_support_badge" name="apex_support_badge" 
+                               value="<?php echo esc_attr(get_option('apex_support_badge_' . $page_slug, 'Ongoing Partnership')); ?>" 
+                               class="regular-text" placeholder="e.g., Ongoing Partnership">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_support_heading" name="apex_support_heading" 
+                               value="<?php echo esc_attr(get_option('apex_support_heading_' . $page_slug, 'Support That Never Sleeps')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the partnership section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_support_description" name="apex_support_description" rows="3" class="large-text"
+                                  placeholder="Section description"><?php 
+                            $support_desc = get_option('apex_support_description_' . $page_slug, 'Our relationship doesn\'t end at go-live. We provide comprehensive support and continuous improvement services to ensure your platform evolves with your business.');
+                            echo esc_textarea($support_desc);
+                        ?></textarea>
+                        <p class="description">Brief description of your partnership commitment</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_features">Support Features</label></th>
+                    <td>
+                        <textarea id="apex_support_features" name="apex_support_features" rows="20" class="large-text"
+                                  placeholder="clock | 24/7 Technical Support | Round-the-clock access to our expert support team via phone, email, and chat.&#10;edit-3 | Regular Updates | Quarterly platform updates with new features, security patches, and performance improvements.&#10;book-open | Knowledge Base | Comprehensive documentation, tutorials, and best practices at your fingertips.&#10;users | Dedicated Success Manager | A single point of contact who understands your business and advocates for your needs."><?php 
+                            $features = get_option('apex_support_features_' . $page_slug, "clock | 24/7 Technical Support | Round-the-clock access to our expert support team via phone, email, and chat.\nedit-3 | Regular Updates | Quarterly platform updates with new features, security patches, and performance improvements.\nbook-open | Knowledge Base | Comprehensive documentation, tutorials, and best practices at your fingertips.\nusers | Dedicated Success Manager | A single point of contact who understands your business and advocates for your needs.");
+                            echo esc_textarea($features);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Icon Name | Title | Description (one feature per line)</p>
+                        <p class="description"><strong>Available icons:</strong> clock, edit-3, book-open, users, shield, heart, message-circle, rocket</p>
+                        <p class="description"><strong>Example:</strong> clock | 24/7 Technical Support | Round-the-clock access to our expert support team...</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Each feature will be displayed with an icon, title, and description. These showcase your ongoing commitment to client success.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_stats">Support Statistics</label></th>
+                    <td>
+                        <textarea id="apex_support_stats" name="apex_support_stats" rows="8" class="large-text"
+                                  placeholder="<15min | Average Response Time&#10;95% | First Call Resolution&#10;4.9/5 | Customer Satisfaction"><?php 
+                            $stats = get_option('apex_support_stats_' . $page_slug, "<15min | Average Response Time\n95% | First Call Resolution\n4.9/5 | Customer Satisfaction");
+                            echo esc_textarea($stats);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Value | Label (one statistic per line)</p>
+                        <p class="description"><strong>Example:</strong> <15min | Average Response Time</p>
+                        <p class="description"><strong>Example:</strong> 95% | First Call Resolution</p>
+                        <p class="description"><strong>Example:</strong> 4.9/5 | Customer Satisfaction</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Statistics will be displayed in prominent cards. Use values that demonstrate your service quality and commitment to clients.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        }
+
+        <?php elseif ($page_slug === 'about-us-leadership-team'): ?>
+        <!-- Leadership Team Specific Sections -->
+
+        <!-- Executive Team Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>👔 Executive Team Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your executive leadership team with detailed profiles.</strong> Each executive member includes their photo, name, role, comprehensive bio, and social media links.</p>
+                <p><strong>Format for executive members:</strong> Enter each executive on a new line using this format:<br>
+                <code>Name | Role | Image URL | Bio Paragraph 1 | Bio Paragraph 2 | LinkedIn URL | Twitter URL</code></p>
+            </div>
+
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_executive_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_executive_badge" name="apex_executive_badge"
+                               value="<?php echo esc_attr(get_option('apex_executive_badge_' . $page_slug, 'Executive Team')); ?>"
+                               class="regular-text" placeholder="e.g., Executive Team">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_executive_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_executive_heading" name="apex_executive_heading"
+                               value="<?php echo esc_attr(get_option('apex_executive_heading_' . $page_slug, 'Executive Leadership')); ?>"
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the executive team section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_executive_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_executive_description" name="apex_executive_description" rows="3" class="large-text"
+                                  placeholder="Our executive team brings together visionary leaders with deep expertise in financial services, technology, and business transformation."><?php
+                            $exec_desc = get_option('apex_executive_description_' . $page_slug, 'Our executive team brings together visionary leaders with deep expertise in financial services, technology, and business transformation.');
+                            echo esc_textarea($exec_desc);
+                        ?></textarea>
+                        <p class="description">Brief description of your executive leadership team</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_executive_members">Executive Team Members</label></th>
+                    <td>
+                        <textarea id="apex_executive_members" name="apex_executive_members" rows="35" class="large-text"
+                                  placeholder="John Kamau | Chief Executive Officer | https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400 | John founded Apex Softwares in 2010 with a vision to democratize access to modern banking technology across Africa. With over 25 years of experience in financial services and technology, he has led the company from a small startup to a leading fintech provider serving 100+ institutions. | Prior to Apex, John held senior positions at Standard Chartered Bank and Accenture, where he led digital transformation initiatives across East Africa. | https://linkedin.com/in/johnkamau | https://twitter.com/johnkamau&#10;Sarah Ochieng | Chief Technology Officer | https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400 | Sarah leads our technology strategy and product innovation, overseeing a team of 80+ engineers. She is passionate about building scalable, secure systems that empower financial inclusion across Africa. | Before joining Apex, Sarah was VP of Engineering at Safaricom, where she led the development of M-Pesa's core platform. She holds a Master's in Computer Science from MIT. | https://linkedin.com/in/sarahochieng | https://twitter.com/sarahochieng"><?php
+                            $exec_members = get_option('apex_executive_members_' . $page_slug, "John Kamau | Chief Executive Officer | https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400 | John founded Apex Softwares in 2010 with a vision to democratize access to modern banking technology across Africa. With over 25 years of experience in financial services and technology, he has led the company from a small startup to a leading fintech provider serving 100+ institutions. | Prior to Apex, John held senior positions at Standard Chartered Bank and Accenture, where he led digital transformation initiatives across East Africa. | # | #\nSarah Ochieng | Chief Technology Officer | https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400 | Sarah leads our technology strategy and product innovation, overseeing a team of 80+ engineers. She is passionate about building scalable, secure systems that empower financial inclusion across Africa. | Before joining Apex, Sarah was VP of Engineering at Safaricom, where she led the development of M-Pesa's core platform. She holds a Master's in Computer Science from MIT. | # | #\nMichael Njoroge | Chief Operations Officer | https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400 | Michael ensures operational excellence across all client implementations and internal processes. He has successfully overseen 100+ core banking implementations across 15 African countries. | Michael previously served as Director of Operations at Temenos for Sub-Saharan Africa, managing a portfolio of 50+ banking clients. | # | #\nGrace Wanjiku | Chief Financial Officer | https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400 | Grace oversees financial strategy, investor relations, and sustainable growth initiatives. Under her leadership, Apex has achieved profitability while maintaining aggressive investment in R&D. | Grace is a CPA with 18 years of experience in financial management. She previously served as CFO at Cellulant and held senior finance roles at Deloitte East Africa. | # | #");
+                            echo esc_textarea($exec_members);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Name | Role | Image URL | Bio Paragraph 1 | Bio Paragraph 2 | LinkedIn URL | Twitter URL (one executive per line)</p>
+                        <p class="description"><strong>Example:</strong> John Kamau | Chief Executive Officer | https://image-url.jpg | First bio paragraph... | Second bio paragraph... | https://linkedin.com/profile | https://twitter.com/handle</p>
+                        <p class="description"><strong>Note:</strong> Use # for social links if you don't have them</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Executive profiles appear in a prominent grid layout. Use professional headshot photos (400x400px recommended). Write compelling bios that highlight experience, achievements, and previous roles.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Senior Leadership Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>👥 Senior Leadership Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your senior leadership team in a clean grid layout.</strong> Each senior leader includes their photo, name, and role title.</p>
+                <p><strong>Format for senior leaders:</strong> Enter each leader on a new line using this format:<br>
+                <code>Name | Role | Image URL</code></p>
+            </div>
+
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_senior_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_senior_heading" name="apex_senior_heading"
+                               value="<?php echo esc_attr(get_option('apex_senior_heading_' . $page_slug, 'Senior Leadership')); ?>"
+                               class="regular-text" placeholder="e.g., Senior Leadership">
+                        <p class="description">The main heading for the senior leadership section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_senior_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_senior_description" name="apex_senior_description" rows="2" class="large-text"
+                                  placeholder="Our senior leaders drive excellence across every function of the organization."><?php
+                            $senior_desc = get_option('apex_senior_description_' . $page_slug, 'Our senior leaders drive excellence across every function of the organization.');
+                            echo esc_textarea($senior_desc);
+                        ?></textarea>
+                        <p class="description">Brief description of your senior leadership team</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_senior_members">Senior Leadership Team</label></th>
+                    <td>
+                        <textarea id="apex_senior_members" name="apex_senior_members" rows="20" class="large-text"
+                                  placeholder="David Mutua | VP, Product Management | https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&#10;Amina Hassan | VP, Customer Success | https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=300&#10;Peter Otieno | VP, Engineering | https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&#10;Faith Mwende | VP, Human Resources | https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300"><?php
+                            $senior_members = get_option('apex_senior_members_' . $page_slug, "David Mutua | VP, Product Management | https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300\nAmina Hassan | VP, Customer Success | https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=300\nPeter Otieno | VP, Engineering | https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300\nFaith Mwende | VP, Human Resources | https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300\nJames Kariuki | VP, Sales & Partnerships | https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300\nLinda Achieng | VP, Marketing | https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=300\nSamuel Omondi | Director, Security & Compliance | https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=300\nChristine Wairimu | Director, Professional Services | https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=300");
+                            echo esc_textarea($senior_members);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Name | Role | Image URL (one leader per line)</p>
+                        <p class="description"><strong>Example:</strong> David Mutua | VP, Product Management | https://image-url.jpg</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Senior leaders appear in a clean grid layout. Use professional headshot photos (300x300px recommended). Keep roles clear and descriptive.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Our Culture Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🏢 Our Culture Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section promotes your company culture and career opportunities.</strong> It includes culture description, benefits list, call-to-action button, and hero image.</p>
+                <p><strong>Format for benefits:</strong> Enter each benefit on a new line using this format:<br>
+                <code>Icon Name | Benefit Description</code></p>
+                <p><strong>Available icons:</strong> check, users, book-open, heart, rocket, shield, message-circle</p>
+            </div>
+
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_culture_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_culture_badge" name="apex_culture_badge"
+                               value="<?php echo esc_attr(get_option('apex_culture_badge_' . $page_slug, 'Our Culture')); ?>"
+                               class="regular-text" placeholder="e.g., Our Culture">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_culture_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_culture_heading" name="apex_culture_heading"
+                               value="<?php echo esc_attr(get_option('apex_culture_heading_' . $page_slug, 'Join Our Team')); ?>"
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the culture section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_culture_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_culture_description" name="apex_culture_description" rows="3" class="large-text"
+                                  placeholder="We're always looking for talented individuals who share our passion for transforming financial services in Africa. At Apex, you'll work on challenging problems, learn from industry experts, and make a real impact."><?php
+                            $culture_desc = get_option('apex_culture_description_' . $page_slug, "We're always looking for talented individuals who share our passion for transforming financial services in Africa. At Apex, you'll work on challenging problems, learn from industry experts, and make a real impact.");
+                            echo esc_textarea($culture_desc);
+                        ?></textarea>
+                        <p class="description">Description of your company culture and career opportunities</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_culture_benefits">Culture Benefits</label></th>
+                    <td>
+                        <textarea id="apex_culture_benefits" name="apex_culture_benefits" rows="12" class="large-text"
+                                  placeholder="check | Competitive compensation & equity&#10;check | Flexible remote work options&#10;check | Learning & development budget&#10;check | Health insurance for you & family"><?php
+                            $benefits = get_option('apex_culture_benefits_' . $page_slug, "check | Competitive compensation & equity\ncheck | Flexible remote work options\ncheck | Learning & development budget\ncheck | Health insurance for you & family");
+                            echo esc_textarea($benefits);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Icon Name | Benefit Description (one benefit per line)</p>
+                        <p class="description"><strong>Available icons:</strong> check, users, book-open, heart, rocket, shield, message-circle</p>
+                        <p class="description"><strong>Example:</strong> check | Competitive compensation & equity</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Benefits appear with icons in a grid layout. Use the check icon for most benefits, or choose icons that best represent each benefit.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_culture_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_culture_cta_text" name="apex_culture_cta_text"
+                               value="<?php echo esc_attr(get_option('apex_culture_cta_text_' . $page_slug, 'View Open Positions')); ?>"
+                               class="regular-text" placeholder="e.g., View Open Positions">
+                        <p class="description">Text for the call-to-action button</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_culture_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_culture_cta_url" name="apex_culture_cta_url"
+                               value="<?php echo esc_attr(get_option('apex_culture_cta_url_' . $page_slug, home_url('/careers'))); ?>"
+                               class="large-text" placeholder="https://yoursite.com/careers">
+                        <p class="description">URL where the CTA button should link to</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_culture_image">Culture Section Image</label></th>
+                    <td>
+                        <input type="url" id="apex_culture_image" name="apex_culture_image"
+                               value="<?php echo esc_attr(get_option('apex_culture_image_' . $page_slug, 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600')); ?>"
+                               class="large-text" placeholder="https://example.com/culture-image.jpg">
+                        <p class="description">Hero image for the culture section (recommended size: 600x400px)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use a team photo or office image that represents your company culture. This image appears prominently alongside the culture content.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'about-us-news'): ?>
+        <!-- News & Updates Specific Sections -->
+        
+        <!-- Featured Story Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Featured Story Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays a featured news story prominently at the top of the news page.</strong> It includes an image, category badge, date, title, excerpt, and link to the full story.</p>
+                <p><strong>Best practices:</strong> Choose your most important or recent announcement. Use high-quality images and compelling copy that encourages readers to learn more.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_featured_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_featured_badge" name="apex_featured_badge" 
+                               value="<?php echo esc_attr(get_option('apex_featured_badge_' . $page_slug, 'Featured Story')); ?>" 
+                               class="regular-text" placeholder="e.g., Featured Story">
+                        <p class="description">The small badge text above the featured story</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_featured_image">Featured Story Image</label></th>
+                    <td>
+                        <input type="url" id="apex_featured_image" name="apex_featured_image" 
+                               value="<?php echo esc_attr(get_option('apex_featured_image_' . $page_slug, 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800')); ?>" 
+                               class="large-text" placeholder="https://example.com/featured-image.jpg">
+                        <p class="description">The featured story image URL (recommended size: 800x600px)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use a high-quality, relevant image that captures attention. This image appears prominently at the top of your news page and should represent your featured story well.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_featured_category">Category</label></th>
+                    <td>
+                        <input type="text" id="apex_featured_category" name="apex_featured_category" 
+                               value="<?php echo esc_attr(get_option('apex_featured_category_' . $page_slug, 'Product Launch')); ?>" 
+                               class="regular-text" placeholder="e.g., Product Launch">
+                        <p class="description">The category label for the featured story</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_featured_date">Publication Date</label></th>
+                    <td>
+                        <input type="text" id="apex_featured_date" name="apex_featured_date" 
+                               value="<?php echo esc_attr(get_option('apex_featured_date_' . $page_slug, 'January 15, 2026')); ?>" 
+                               class="regular-text" placeholder="e.g., January 15, 2026">
+                        <p class="description">The publication date of the featured story</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use the format "Month Day, Year" (e.g., "January 15, 2026"). This helps establish the recency and relevance of your announcement.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_featured_title">Story Title</label></th>
+                    <td>
+                        <input type="text" id="apex_featured_title" name="apex_featured_title" 
+                               value="<?php echo esc_attr(get_option('apex_featured_title_' . $page_slug, 'Apex Softwares Launches ApexCore 3.0: The Next Generation of Core Banking')); ?>" 
+                               class="large-text" placeholder="Featured story title">
+                        <p class="description">The main title of the featured story</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Write a compelling, descriptive title that clearly communicates the news. Keep it under 100 characters for best readability and SEO.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_featured_excerpt">Story Excerpt</label></th>
+                    <td>
+                        <textarea id="apex_featured_excerpt" name="apex_featured_excerpt" rows="6" class="large-text"
+                                  placeholder="We're excited to announce the launch of ApexCore 3.0, our most advanced core banking platform yet. This major release introduces cloud-native architecture, AI-powered analytics, and enhanced API capabilities."><?php 
+                            $excerpt = get_option('apex_featured_excerpt_' . $page_slug, "We're excited to announce the launch of ApexCore 3.0, our most advanced core banking platform yet. This major release introduces cloud-native architecture, AI-powered analytics, and enhanced API capabilities that will transform how financial institutions operate.\n\nKey highlights include 10x faster transaction processing, real-time fraud detection, and a completely redesigned user interface that reduces training time by 60%.");
+                            echo esc_textarea($excerpt);
+                        ?></textarea>
+                        <p class="description">The excerpt/content of the featured story</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Write 2-3 paragraphs that summarize the key points of your news. Include the most important information first. Use paragraph breaks (empty lines) to separate ideas.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_featured_link">Read More Link</label></th>
+                    <td>
+                        <input type="url" id="apex_featured_link" name="apex_featured_link" 
+                               value="<?php echo esc_attr(get_option('apex_featured_link_' . $page_slug, '#')); ?>" 
+                               class="large-text" placeholder="https://example.com/full-story">
+                        <p class="description">The URL for the full story (leave empty to disable link)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Link to the full press release, blog post, or external article. If you don't have a full article yet, use "#" to create a placeholder link.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- News Grid Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📰 News Grid Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays a grid of news items with filtering capabilities.</strong> Each item includes an image, category, date, title, excerpt, and link. Users can filter by category.</p>
+                <p><strong>Format for news items:</strong> Enter each news item on a new line using this format:<br>
+                <code>Image URL | Category | Filter | Date | Title | Excerpt | Link</code></p>
+                <p><strong>Filter categories:</strong> all, product, company, industry</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_news_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_news_heading" name="apex_news_heading" 
+                               value="<?php echo esc_attr(get_option('apex_news_heading_' . $page_slug, 'Recent News')); ?>" 
+                               class="regular-text" placeholder="e.g., Recent News">
+                        <p class="description">The heading for the news grid section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_news_filters">Filter Categories</label></th>
+                    <td>
+                        <textarea id="apex_news_filters" name="apex_news_filters" rows="4" class="large-text"
+                                  placeholder="All | all&#10;Product | product&#10;Company | company&#10;Industry | industry"><?php 
+                            $filters = get_option('apex_news_filters_' . $page_slug, "All | all\nProduct | product\nCompany | company\nIndustry | industry");
+                            echo esc_textarea($filters);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Display Name | Filter Value (one filter per line)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> These create the filter buttons above the news grid. The filter value should match the filter used in news items. Keep display names short and clear.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_news_items">News Items</label></th>
+                    <td>
+                        <textarea id="apex_news_items" name="apex_news_items" rows="20" class="large-text"
+                                  placeholder="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400 | Company News | company | January 8, 2026 | Apex Softwares Raises $25M Series B | Investment led by TLcom Capital will fuel expansion into West and Southern Africa. | #&#10;https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400 | Product Update | product | December 20, 2025 | New Mobile Banking Features | Our latest mobile banking update introduces biometric authentication. | #"><?php 
+                            $items = get_option('apex_news_items_' . $page_slug, "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400 | Company News | company | January 8, 2026 | Apex Softwares Raises $25M Series B to Accelerate Pan-African Expansion | Investment led by TLcom Capital will fuel expansion into West and Southern Africa, with plans to double the team by end of 2026. | #\nhttps://images.unsplash.com/photo-1563986768609-322da13575f3?w=400 | Product Update | product | December 20, 2025 | New Mobile Banking Features: Biometric Authentication and Instant Loans | Our latest mobile banking update introduces fingerprint and face ID authentication, plus instant loan disbursement in under 60 seconds. | #\nhttps://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400 | Industry Insight | industry | December 15, 2025 | 2025 African Financial Inclusion Report | Our annual report analyzes the state of financial inclusion across Africa. | #\nhttps://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400 | Awards | company | November 28, 2025 | Apex Softwares Wins Best Core Banking Provider | Recognition for innovation and impact in transforming financial services. | #\nhttps://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400 | Product Launch | product | November 15, 2025 | Introducing ApexConnect API Marketplace | Connect with 50+ pre-built integrations including payment gateways. | #\nhttps://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400 | Expansion | company | November 1, 2025 | Apex Softwares Opens New Office in Lagos | Strategic expansion to better serve our growing client base in West Africa. | #");
+                            echo esc_textarea($items);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Image URL | Category | Filter | Date | Title | Excerpt | Link (one item per line)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Each news item appears as a card in the grid. Use high-quality images (400x300px recommended). Keep titles concise and excerpts brief (1-2 sentences). Use "#" for links if you don't have full articles yet.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_news_load_more">Load More Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_news_load_more" name="apex_news_load_more" 
+                               value="<?php echo esc_attr(get_option('apex_news_load_more_' . $page_slug, 'Load More Articles')); ?>" 
+                               class="regular-text" placeholder="e.g., Load More Articles">
+                        <p class="description">The text for the load more button (links to insights/blog)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> This button automatically links to your insights/blog page. Use clear, action-oriented text that encourages users to explore more content.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Press Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📺 In the Press Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases media mentions and press coverage.</strong> Each item includes the publication name, a quote, and link to the full article.</p>
+                <p><strong>Format for press items:</strong> Enter each press mention on a new line using this format:<br>
+                <code>Publication Name | Quote | Link</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_press_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_press_heading" name="apex_press_heading" 
+                               value="<?php echo esc_attr(get_option('apex_press_heading_' . $page_slug, 'In the Press')); ?>" 
+                               class="regular-text" placeholder="e.g., In the Press">
+                        <p class="description">The heading for the press section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_press_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_press_description" name="apex_press_description" rows="2" class="large-text"
+                                  placeholder="What leading publications are saying about Apex Softwares"><?php 
+                            $press_desc = get_option('apex_press_description_' . $page_slug, "What leading publications are saying about Apex Softwares");
+                            echo esc_textarea($press_desc);
+                        ?></textarea>
+                        <p class="description">Brief description of the press section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_press_items">Press Items</label></th>
+                    <td>
+                        <textarea id="apex_press_items" name="apex_press_items" rows="12" class="large-text"
+                                  placeholder="TechCrunch | Apex Softwares is quietly becoming the Stripe of African banking infrastructure. | #&#10;Bloomberg | The Kenyan fintech is powering a digital banking revolution across the continent. | #"><?php 
+                            $press_items = get_option('apex_press_items_' . $page_slug, "TechCrunch | \"Apex Softwares is quietly becoming the Stripe of African banking infrastructure.\" | #\nBloomberg | \"The Kenyan fintech is powering a digital banking revolution across the continent.\" | #\nForbes Africa | \"One of Africa's most promising B2B fintech companies, enabling financial inclusion at scale.\" | #\nQuartz Africa | \"Apex's technology is helping SACCOs and MFIs compete with traditional banks.\" | #");
+                            echo esc_textarea($press_items);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Publication Name | Quote | Link (one item per line)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use exact quotes from publications when possible. Include well-known publications to build credibility. Use "#" for links if articles aren't available yet. Keep quotes concise and impactful.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📧 Newsletter Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section encourages visitors to subscribe to your newsletter.</strong> It includes a heading, description, signup form, and privacy note.</p>
+                <p><strong>Integration:</strong> Configure the form action URL to connect with your email marketing service (Mailchimp, ConvertKit, etc.).</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_newsletter_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_newsletter_heading" name="apex_newsletter_heading" 
+                               value="<?php echo esc_attr(get_option('apex_newsletter_heading_' . $page_slug, 'Stay Updated')); ?>" 
+                               class="regular-text" placeholder="e.g., Stay Updated">
+                        <p class="description">The heading for the newsletter section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_newsletter_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_newsletter_description" name="apex_newsletter_description" rows="3" class="large-text"
+                                  placeholder="Subscribe to our newsletter for the latest news, product updates, and industry insights."><?php 
+                            $newsletter_desc = get_option('apex_newsletter_description_' . $page_slug, "Subscribe to our newsletter for the latest news, product updates, and industry insights delivered to your inbox.");
+                            echo esc_textarea($newsletter_desc);
+                        ?></textarea>
+                        <p class="description">Description of the newsletter and its benefits</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_newsletter_form_action">Form Action URL</label></th>
+                    <td>
+                        <input type="url" id="apex_newsletter_form_action" name="apex_newsletter_form_action" 
+                               value="<?php echo esc_attr(get_option('apex_newsletter_form_action_' . $page_slug, '')); ?>" 
+                               class="large-text" placeholder="https://your-email-service.com/subscribe">
+                        <p class="description">The URL where the newsletter form submits (leave empty for demo)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Get this URL from your email marketing service (Mailchimp, ConvertKit, etc.). The form will POST to this URL with the email field. Leave empty for a non-functional demo form.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_newsletter_button_text">Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_newsletter_button_text" name="apex_newsletter_button_text" 
+                               value="<?php echo esc_attr(get_option('apex_newsletter_button_text_' . $page_slug, 'Subscribe')); ?>" 
+                               class="regular-text" placeholder="e.g., Subscribe">
+                        <p class="description">The text on the subscribe button</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_newsletter_note">Privacy Note</label></th>
+                    <td>
+                        <textarea id="apex_newsletter_note" name="apex_newsletter_note" rows="2" class="large-text"
+                                  placeholder="By subscribing, you agree to our Privacy Policy. Unsubscribe at any time."><?php 
+                            $note = get_option('apex_newsletter_note_' . $page_slug, "By subscribing, you agree to our Privacy Policy. Unsubscribe at any time.");
+                            echo esc_textarea($note);
+                        ?></textarea>
+                        <p class="description">Privacy policy note below the form</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Include privacy compliance information and mention that users can unsubscribe. This builds trust and ensures legal compliance.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Media Contact Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📞 Media Contact Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section provides contact information for media inquiries.</strong> Each item includes a type (email/phone/link), label, and value.</p>
+                <p><strong>Format for contact items:</strong> Enter each contact method on a new line using this format:<br>
+                <code>Type | Label | Value</code></p>
+                <p><strong>Available types:</strong> email, phone, link, text</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_contact_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_contact_heading" name="apex_contact_heading" 
+                               value="<?php echo esc_attr(get_option('apex_contact_heading_' . $page_slug, 'Media Inquiries')); ?>" 
+                               class="regular-text" placeholder="e.g., Media Inquiries">
+                        <p class="description">The heading for the contact section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_contact_description" name="apex_contact_description" rows="3" class="large-text"
+                                  placeholder="For press inquiries, interview requests, or media resources, please contact our communications team."><?php 
+                            $contact_desc = get_option('apex_contact_description_' . $page_slug, "For press inquiries, interview requests, or media resources, please contact our communications team.");
+                            echo esc_textarea($contact_desc);
+                        ?></textarea>
+                        <p class="description">Description of the contact section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_items">Contact Items</label></th>
+                    <td>
+                        <textarea id="apex_contact_items" name="apex_contact_items" rows="8" class="large-text"
+                                  placeholder="email | Email | press@apexsoftwares.com&#10;link | Press Kit | https://example.com/press-kit"><?php 
+                            $contact_items = get_option('apex_contact_items_' . $page_slug, "email | Email | press@apexsoftwares.com\nlink | Press Kit | #");
+                            echo esc_textarea($contact_items);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Type | Label | Value (one item per line)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use "email" for email addresses (creates mailto link), "link" for URLs, "phone" for phone numbers, and "text" for plain text. Include your press email and a link to downloadable media assets.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'contact'): ?>
+        <!-- Contact Us Specific Sections -->
+        
+        <!-- Contact Form Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📝 Contact Form Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section configures the main contact form on the page.</strong> It includes the form title, description, form action URL, and submission handling.</p>
+                <p><strong>Integration:</strong> Configure the form action URL to connect with your form processing service or CRM.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_contact_form_title">Form Title</label></th>
+                    <td>
+                        <input type="text" id="apex_contact_form_title" name="apex_contact_form_title" 
+                               value="<?php echo esc_attr(get_option('apex_contact_form_title_' . $page_slug, 'Send Us a Message')); ?>" 
+                               class="regular-text" placeholder="e.g., Send Us a Message">
+                        <p class="description">The heading for the contact form</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_form_description">Form Description</label></th>
+                    <td>
+                        <textarea id="apex_contact_form_description" name="apex_contact_form_description" rows="3" class="large-text"
+                                  placeholder="Fill out the form below and we'll get back to you within 24 hours."><?php 
+                            $form_desc = get_option('apex_contact_form_description_' . $page_slug, "Fill out the form below and we'll get back to you within 24 hours.");
+                            echo esc_textarea($form_desc);
+                        ?></textarea>
+                        <p class="description">Description text below the form title</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Set clear expectations about response time and what information users should provide. This helps reduce form abandonment and improves user experience.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_form_action">Form Action URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_form_action" name="apex_contact_form_action" 
+                               value="<?php echo esc_attr(get_option('apex_contact_form_action_' . $page_slug, '')); ?>" 
+                               class="large-text" placeholder="https://your-form-processor.com/submit">
+                        <p class="description">The URL where the form submits (leave empty for demo)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Get this URL from your form processing service (Formspree, Netlify Forms, etc.). The form will POST all fields with their names. Leave empty for a non-functional demo form.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_form_submit_text">Submit Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_contact_form_submit_text" name="apex_contact_form_submit_text" 
+                               value="<?php echo esc_attr(get_option('apex_contact_form_submit_text_' . $page_slug, 'Send Message')); ?>" 
+                               class="regular-text" placeholder="e.g., Send Message">
+                        <p class="description">The text on the submit button</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Contact Info Sidebar Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📞 Contact Information Sidebar</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays contact information cards in the sidebar.</strong> Each card includes an icon, title, description, and contact details.</p>
+                <p><strong>Format for contact cards:</strong> Enter each contact method on a new line using this format:<br>
+                <code>Type | Title | Description | Contact Info 1 | Contact Info 2 | Hours</code></p>
+                <p><strong>Available types:</strong> phone, email, hours, social</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_contact_sidebar_items">Contact Cards</label></th>
+                    <td>
+                        <textarea id="apex_contact_sidebar_items" name="apex_contact_sidebar_items" rows="12" class="large-text"
+                                  placeholder="phone | Call Us | Speak directly with our team | +254 700 000 000 | Mon - Fri: 8:00 AM - 6:00 PM EAT | &#10;email | Email Us | We'll respond within 24 hours | info@apex-softwares.com | sales@apex-softwares.com | &#10;hours | Support Hours | 24/7 for critical issues | Business Hours: Mon - Fri | 8:00 AM - 6:00 PM EAT | &#10;social | Follow Us | Stay updated with our latest news | LinkedIn | Twitter | Facebook | YouTube"><?php 
+                            $sidebar_items = get_option('apex_contact_sidebar_items_' . $page_slug, "phone | Call Us | Speak directly with our team | +254 700 000 000 | Mon - Fri: 8:00 AM - 6:00 PM EAT | \nemail | Email Us | We'll respond within 24 hours | info@apex-softwares.com | sales@apex-softwares.com | \nhours | Support Hours | 24/7 for critical issues | Business Hours: Mon - Fri | 8:00 AM - 6:00 PM EAT | \nsocial | Follow Us | Stay updated with our latest news | https://linkedin.com | https://twitter.com | https://facebook.com | https://youtube.com");
+                            echo esc_textarea($sidebar_items);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Type | Title | Description | Contact Info 1 | Contact Info 2 | Hours (one card per line)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> For phone cards: use phone number in Contact Info 1 and hours in Contact Info 2. For email cards: use email addresses in Contact Info 1 and 2. For social cards: use social media URLs in Contact Info fields 1-4. Leave empty fields unused.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Social Media Links for "Follow Us" Card -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔗 Social Media Links (Follow Us Card)</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>These URLs are used in the "Follow Us" card in the contact sidebar.</strong> All 7 social media platforms matching the footer settings.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_contact_social_linkedin">LinkedIn URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_social_linkedin" name="apex_contact_social_linkedin" 
+                               value="<?php echo esc_attr(get_option('apex_contact_social_linkedin_' . $page_slug, get_option('apex_footer_linkedin', 'https://linkedin.com'))); ?>" 
+                               class="large-text">
+                        <p class="description">Format: https://linkedin.com/company/yourcompany</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_social_twitter">Twitter/X URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_social_twitter" name="apex_contact_social_twitter" 
+                               value="<?php echo esc_attr(get_option('apex_contact_social_twitter_' . $page_slug, get_option('apex_footer_twitter', 'https://twitter.com'))); ?>" 
+                               class="large-text">
+                        <p class="description">Format: https://twitter.com/yourhandle</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_social_facebook">Facebook URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_social_facebook" name="apex_contact_social_facebook" 
+                               value="<?php echo esc_attr(get_option('apex_contact_social_facebook_' . $page_slug, get_option('apex_footer_facebook', 'https://facebook.com'))); ?>" 
+                               class="large-text">
+                        <p class="description">Format: https://facebook.com/yourcompany</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_social_instagram">Instagram URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_social_instagram" name="apex_contact_social_instagram" 
+                               value="<?php echo esc_attr(get_option('apex_contact_social_instagram_' . $page_slug, get_option('apex_footer_instagram', 'https://instagram.com'))); ?>" 
+                               class="large-text">
+                        <p class="description">Format: https://instagram.com/yourhandle</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_social_youtube">YouTube URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_social_youtube" name="apex_contact_social_youtube" 
+                               value="<?php echo esc_attr(get_option('apex_contact_social_youtube_' . $page_slug, get_option('apex_footer_youtube', 'https://youtube.com'))); ?>" 
+                               class="large-text">
+                        <p class="description">Format: https://youtube.com/@yourchannel</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_social_whatsapp">WhatsApp URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_social_whatsapp" name="apex_contact_social_whatsapp" 
+                               value="<?php echo esc_attr(get_option('apex_contact_social_whatsapp_' . $page_slug, get_option('apex_footer_whatsapp', 'https://wa.me/'))); ?>" 
+                               class="large-text">
+                        <p class="description">Format: https://wa.me/254700000000</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_contact_social_github">GitHub URL</label></th>
+                    <td>
+                        <input type="url" id="apex_contact_social_github" name="apex_contact_social_github" 
+                               value="<?php echo esc_attr(get_option('apex_contact_social_github_' . $page_slug, get_option('apex_footer_github', 'https://github.com'))); ?>" 
+                               class="large-text">
+                        <p class="description">Format: https://github.com/yourusername</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Offices Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🏢 Offices Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays office locations with interactive maps.</strong> Each office includes address, contact details, and a map embed URL.</p>
+                <p><strong>Format for offices:</strong> Enter each office on a new line using this format:<br>
+                <code>Office Name | Badge | Address | Phone | Email | Map URL | Is HQ</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_offices_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_offices_heading" name="apex_offices_heading" 
+                               value="<?php echo esc_attr(get_option('apex_offices_heading_' . $page_slug, 'Visit Us')); ?>" 
+                               class="regular-text" placeholder="e.g., Visit Us">
+                        <p class="description">The heading for the offices section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_offices_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_offices_description" name="apex_offices_description" rows="2" class="large-text"
+                                  placeholder="We have offices across Africa to serve you better."><?php 
+                            $offices_desc = get_option('apex_offices_description_' . $page_slug, "We have offices across Africa to serve you better.");
+                            echo esc_textarea($offices_desc);
+                        ?></textarea>
+                        <p class="description">Brief description of the offices section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_offices_items">Office Locations</label></th>
+                    <td>
+                        <textarea id="apex_offices_items" name="apex_offices_items" rows="16" class="large-text"
+                                  placeholder="Nairobi, Kenya | Headquarters | Apex Softwares Ltd<br>Westlands Business Park<br>Waiyaki Way, 4th Floor<br>P.O. Box 12345-00100<br>Nairobi, Kenya | +254 700 000 000 | nairobi@apex-softwares.com | https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.819708510148!2d36.80419731475395!3d-1.2641399990638045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f17366e5a8e8b%3A0x1234567890abcdef!2sWestlands%2C%20Nairobi%2C%20Kenya!5e0!3m2!1sen!2ske!4v1706659200000!5m2!1sen!2ske | yes"><?php 
+                            $offices_items = get_option('apex_offices_items_' . $page_slug, "Nairobi, Kenya | Headquarters | Apex Softwares Ltd<br>Westlands Business Park<br>Waiyaki Way, 4th Floor<br>P.O. Box 12345-00100<br>Nairobi, Kenya | +254 700 000 000 | nairobi@apex-softwares.com | https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.819708510148!2d36.80419731475395!3d-1.2641399990638045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f17366e5a8e8b%3A0x1234567890abcdef!2sWestlands%2C%20Nairobi%2C%20Kenya!5e0!3m2!1sen!2ske!4v1706659200000!5m2!1sen!2ske | yes\nLagos, Nigeria | | Apex Softwares Nigeria<br>Victoria Island<br>Adeola Odeku Street<br>Lagos, Nigeria | +234 123 456 7890 | lagos@apex-softwares.com | https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7286407648195!2d3.4226840147632847!3d6.428055295344566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf53aec4dd92d%3A0x5e34fe6b5f6e0a0a!2sVictoria%20Island%2C%20Lagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1706659200000!5m2!1sen!2sng | \nKampala, Uganda | | Apex Softwares Uganda<br>Nakasero Hill<br>Plot 45, Kampala Road<br>Kampala, Uganda | +256 700 000 000 | kampala@apex-softwares.com | https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7573456789012!2d32.58219731475395!3d0.3155030997654321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbc0f90c1234a%3A0xabcdef1234567890!2sNakasero%2C%20Kampala%2C%20Uganda!5e0!3m2!1sen!2sug!4v1706659200000!5m2!1sen!2sug | \nDar es Salaam, Tanzania | | Apex Softwares Tanzania<br>Oyster Bay<br>Haile Selassie Road<br>Dar es Salaam, Tanzania | +255 700 000 000 | dar@apex-softwares.com | https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.234567890123!2d39.28219731475395!3d-6.7923456789012345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4c1234567890%3A0xfedcba0987654321!2sOyster%20Bay%2C%20Dar%20es%20Salaam%2C%20Tanzania!5e0!3m2!1sen!2stz!4v1706659200000!5m2!1sen!2stz | ");
+                            echo esc_textarea($offices_items);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Office Name | Badge | Address | Phone | Email | Map URL | Is HQ (yes/no)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use <code>&lt;br&gt;</code> tags for line breaks in addresses. Get Google Maps embed URLs from Google Maps (Share > Embed a map). Mark headquarters with "yes" in the last field. The first office marked as HQ will be shown by default.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_offices_map_heading">Map Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_offices_map_heading" name="apex_offices_map_heading" 
+                               value="<?php echo esc_attr(get_option('apex_offices_map_heading_' . $page_slug, 'Find Us')); ?>" 
+                               class="regular-text" placeholder="e.g., Find Us">
+                        <p class="description">The heading for the interactive map section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_offices_map_hours">Default Office Hours</label></th>
+                    <td>
+                        <textarea id="apex_offices_map_hours" name="apex_offices_map_hours" rows="3" class="large-text"
+                                  placeholder="Monday - Friday&#10;8:00 AM - 6:00 PM EAT"><?php 
+                            $map_hours = get_option('apex_offices_map_hours_' . $page_slug, "Monday - Friday\n8:00 AM - 6:00 PM EAT");
+                            echo esc_textarea($map_hours);
+                        ?></textarea>
+                        <p class="description">Default office hours displayed in the map section</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use line breaks to separate hours information. This will be displayed in the map section for all offices unless overridden.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php endif; ?>
         
         <p class="submit">
             <input type="submit" name="apex_save_fallback" id="apex_save_fallback" class="button button-primary" value="Save Changes">
@@ -1766,50 +3280,542 @@ function apex_render_fallback_form($page_slug, $config) {
     if (isset($_POST['apex_save_fallback']) && check_admin_referer('apex_save_fallback_content', 'apex_fallback_nonce')) {
         $page_slug = sanitize_text_field($_POST['apex_page_slug']);
         
-        // Save Hero Section
+        // Save Hero Section (common to both pages)
         update_option('apex_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_hero_badge']));
         update_option('apex_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_hero_heading']));
         update_option('apex_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_description']));
         update_option('apex_hero_image_' . $page_slug, esc_url_raw($_POST['apex_hero_image']));
         update_option('apex_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_stats']));
         
-        // Save Story Section
-        update_option('apex_story_badge_' . $page_slug, sanitize_text_field($_POST['apex_story_badge']));
-        update_option('apex_story_heading_' . $page_slug, sanitize_text_field($_POST['apex_story_heading']));
-        update_option('apex_story_content_' . $page_slug, sanitize_textarea_field($_POST['apex_story_content']));
-        update_option('apex_story_milestones_' . $page_slug, sanitize_textarea_field($_POST['apex_story_milestones']));
-        
-        // Save Mission & Vision Section
-        update_option('apex_mission_title_' . $page_slug, sanitize_text_field($_POST['apex_mission_title']));
-        update_option('apex_mission_description_' . $page_slug, sanitize_textarea_field($_POST['apex_mission_description']));
-        update_option('apex_vision_title_' . $page_slug, sanitize_text_field($_POST['apex_vision_title']));
-        update_option('apex_vision_description_' . $page_slug, sanitize_textarea_field($_POST['apex_vision_description']));
-        
-        // Save Core Values Section
-        update_option('apex_values_' . $page_slug, sanitize_textarea_field($_POST['apex_values']));
-        
-        // Save Leadership Section
-        update_option('apex_leadership_badge_' . $page_slug, sanitize_text_field($_POST['apex_leadership_badge']));
-        update_option('apex_leadership_heading_' . $page_slug, sanitize_text_field($_POST['apex_leadership_heading']));
-        update_option('apex_leadership_description_' . $page_slug, sanitize_textarea_field($_POST['apex_leadership_description']));
-        update_option('apex_team_members_' . $page_slug, sanitize_textarea_field($_POST['apex_team_members']));
-        
-        // Save Reach Section
-        update_option('apex_reach_badge_' . $page_slug, sanitize_text_field($_POST['apex_reach_badge']));
-        update_option('apex_reach_heading_' . $page_slug, sanitize_text_field($_POST['apex_reach_heading']));
-        update_option('apex_reach_description_' . $page_slug, sanitize_textarea_field($_POST['apex_reach_description']));
-        update_option('apex_regions_' . $page_slug, sanitize_textarea_field($_POST['apex_regions']));
-        update_option('apex_headquarters_city_' . $page_slug, sanitize_text_field($_POST['apex_headquarters_city']));
-        update_option('apex_headquarters_country_' . $page_slug, sanitize_text_field($_POST['apex_headquarters_country']));
-        update_option('apex_headquarters_address_' . $page_slug, sanitize_text_field($_POST['apex_headquarters_address']));
-        
-        echo '<div class="notice notice-success is-dismissible"><p>All sections content saved successfully! Changes will appear on the frontend.</p></div>';
+        if ($page_slug === 'about-us-overview') {
+            // Save About Us Overview specific sections
+            update_option('apex_story_badge_' . $page_slug, sanitize_text_field($_POST['apex_story_badge']));
+            update_option('apex_story_heading_' . $page_slug, sanitize_text_field($_POST['apex_story_heading']));
+            update_option('apex_story_content_' . $page_slug, sanitize_textarea_field($_POST['apex_story_content']));
+            update_option('apex_story_milestones_' . $page_slug, sanitize_textarea_field($_POST['apex_story_milestones']));
+            
+            update_option('apex_mission_title_' . $page_slug, sanitize_text_field($_POST['apex_mission_title']));
+            update_option('apex_mission_description_' . $page_slug, sanitize_textarea_field($_POST['apex_mission_description']));
+            update_option('apex_vision_title_' . $page_slug, sanitize_text_field($_POST['apex_vision_title']));
+            update_option('apex_vision_description_' . $page_slug, sanitize_textarea_field($_POST['apex_vision_description']));
+            
+            update_option('apex_values_' . $page_slug, sanitize_textarea_field($_POST['apex_values']));
+            
+            update_option('apex_leadership_badge_' . $page_slug, sanitize_text_field($_POST['apex_leadership_badge']));
+            update_option('apex_leadership_heading_' . $page_slug, sanitize_text_field($_POST['apex_leadership_heading']));
+            update_option('apex_leadership_description_' . $page_slug, sanitize_textarea_field($_POST['apex_leadership_description']));
+            update_option('apex_team_members_' . $page_slug, sanitize_textarea_field($_POST['apex_team_members']));
+            
+            update_option('apex_reach_badge_' . $page_slug, sanitize_text_field($_POST['apex_reach_badge']));
+            update_option('apex_reach_heading_' . $page_slug, sanitize_text_field($_POST['apex_reach_heading']));
+            update_option('apex_reach_description_' . $page_slug, sanitize_textarea_field($_POST['apex_reach_description']));
+            update_option('apex_regions_' . $page_slug, sanitize_textarea_field($_POST['apex_regions']));
+            update_option('apex_headquarters_city_' . $page_slug, sanitize_text_field($_POST['apex_headquarters_city']));
+            update_option('apex_headquarters_country_' . $page_slug, sanitize_text_field($_POST['apex_headquarters_country']));
+            update_option('apex_headquarters_address_' . $page_slug, sanitize_text_field($_POST['apex_headquarters_address']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>About Us Overview content saved successfully! Changes will appear on the frontend.</p></div>';
+        } elseif ($page_slug === 'about-us-our-approach') {
+            // Save Our Approach specific sections
+            update_option('apex_methodology_badge_' . $page_slug, sanitize_text_field($_POST['apex_methodology_badge']));
+            update_option('apex_methodology_heading_' . $page_slug, sanitize_text_field($_POST['apex_methodology_heading']));
+            update_option('apex_methodology_description_' . $page_slug, sanitize_textarea_field($_POST['apex_methodology_description']));
+            update_option('apex_methodology_phases_' . $page_slug, sanitize_textarea_field($_POST['apex_methodology_phases']));
+            
+            update_option('apex_principles_badge_' . $page_slug, sanitize_text_field($_POST['apex_principles_badge']));
+            update_option('apex_principles_heading_' . $page_slug, sanitize_text_field($_POST['apex_principles_heading']));
+            update_option('apex_principles_cards_' . $page_slug, sanitize_textarea_field($_POST['apex_principles_cards']));
+            
+            update_option('apex_support_badge_' . $page_slug, sanitize_text_field($_POST['apex_support_badge']));
+            update_option('apex_support_heading_' . $page_slug, sanitize_text_field($_POST['apex_support_heading']));
+            update_option('apex_support_description_' . $page_slug, sanitize_textarea_field($_POST['apex_support_description']));
+            update_option('apex_support_features_' . $page_slug, sanitize_textarea_field($_POST['apex_support_features']));
+            update_option('apex_support_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_support_stats']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Our Approach content saved successfully! All sections with methodology phases, guiding principles, and support features have been updated.</p></div>';
+        } elseif ($page_slug === 'about-us-leadership-team') {
+            // Save Leadership Team specific sections
+            update_option('apex_executive_badge_' . $page_slug, sanitize_text_field($_POST['apex_executive_badge']));
+            update_option('apex_executive_heading_' . $page_slug, sanitize_text_field($_POST['apex_executive_heading']));
+            update_option('apex_executive_description_' . $page_slug, sanitize_textarea_field($_POST['apex_executive_description']));
+            update_option('apex_executive_members_' . $page_slug, sanitize_textarea_field($_POST['apex_executive_members']));
+            
+            update_option('apex_senior_heading_' . $page_slug, sanitize_text_field($_POST['apex_senior_heading']));
+            update_option('apex_senior_description_' . $page_slug, sanitize_textarea_field($_POST['apex_senior_description']));
+            update_option('apex_senior_members_' . $page_slug, sanitize_textarea_field($_POST['apex_senior_members']));
+            
+            update_option('apex_culture_badge_' . $page_slug, sanitize_text_field($_POST['apex_culture_badge']));
+            update_option('apex_culture_heading_' . $page_slug, sanitize_text_field($_POST['apex_culture_heading']));
+            update_option('apex_culture_description_' . $page_slug, sanitize_textarea_field($_POST['apex_culture_description']));
+            update_option('apex_culture_benefits_' . $page_slug, sanitize_textarea_field($_POST['apex_culture_benefits']));
+            update_option('apex_culture_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_culture_cta_text']));
+            update_option('apex_culture_cta_url_' . $page_slug, esc_url_raw($_POST['apex_culture_cta_url']));
+            update_option('apex_culture_image_' . $page_slug, esc_url_raw($_POST['apex_culture_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Leadership Team content saved successfully! All sections with executive team, senior leadership, and culture have been updated.</p></div>';
+        } elseif ($page_slug === 'about-us-news') {
+            // Save News & Updates specific sections
+            update_option('apex_featured_badge_' . $page_slug, sanitize_text_field($_POST['apex_featured_badge']));
+            update_option('apex_featured_image_' . $page_slug, esc_url_raw($_POST['apex_featured_image']));
+            update_option('apex_featured_category_' . $page_slug, sanitize_text_field($_POST['apex_featured_category']));
+            update_option('apex_featured_date_' . $page_slug, sanitize_text_field($_POST['apex_featured_date']));
+            update_option('apex_featured_title_' . $page_slug, sanitize_text_field($_POST['apex_featured_title']));
+            update_option('apex_featured_excerpt_' . $page_slug, sanitize_textarea_field($_POST['apex_featured_excerpt']));
+            update_option('apex_featured_link_' . $page_slug, esc_url_raw($_POST['apex_featured_link']));
+            
+            update_option('apex_news_heading_' . $page_slug, sanitize_text_field($_POST['apex_news_heading']));
+            update_option('apex_news_filters_' . $page_slug, sanitize_textarea_field($_POST['apex_news_filters']));
+            update_option('apex_news_items_' . $page_slug, sanitize_textarea_field($_POST['apex_news_items']));
+            update_option('apex_news_load_more_' . $page_slug, sanitize_text_field($_POST['apex_news_load_more']));
+            
+            update_option('apex_press_heading_' . $page_slug, sanitize_text_field($_POST['apex_press_heading']));
+            update_option('apex_press_description_' . $page_slug, sanitize_textarea_field($_POST['apex_press_description']));
+            update_option('apex_press_items_' . $page_slug, sanitize_textarea_field($_POST['apex_press_items']));
+            
+            update_option('apex_newsletter_heading_' . $page_slug, sanitize_text_field($_POST['apex_newsletter_heading']));
+            update_option('apex_newsletter_description_' . $page_slug, sanitize_textarea_field($_POST['apex_newsletter_description']));
+            update_option('apex_newsletter_form_action_' . $page_slug, esc_url_raw($_POST['apex_newsletter_form_action']));
+            update_option('apex_newsletter_button_text_' . $page_slug, sanitize_text_field($_POST['apex_newsletter_button_text']));
+            update_option('apex_newsletter_note_' . $page_slug, sanitize_textarea_field($_POST['apex_newsletter_note']));
+            
+            update_option('apex_contact_heading_' . $page_slug, sanitize_text_field($_POST['apex_contact_heading']));
+            update_option('apex_contact_description_' . $page_slug, sanitize_textarea_field($_POST['apex_contact_description']));
+            update_option('apex_contact_items_' . $page_slug, sanitize_textarea_field($_POST['apex_contact_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>News & Updates content saved successfully! All sections with featured story, news grid, press mentions, newsletter, and media contact have been updated.</p></div>';
+        } elseif ($page_slug === 'contact') {
+            // Save Contact Us specific sections
+            update_option('apex_contact_form_title_' . $page_slug, sanitize_text_field($_POST['apex_contact_form_title']));
+            update_option('apex_contact_form_description_' . $page_slug, sanitize_textarea_field($_POST['apex_contact_form_description']));
+            update_option('apex_contact_form_action_' . $page_slug, esc_url_raw($_POST['apex_contact_form_action']));
+            update_option('apex_contact_form_submit_text_' . $page_slug, sanitize_text_field($_POST['apex_contact_form_submit_text']));
+            
+            update_option('apex_contact_sidebar_items_' . $page_slug, sanitize_textarea_field($_POST['apex_contact_sidebar_items']));
+            
+            // Save social media URLs for "Follow Us" card
+            update_option('apex_contact_social_linkedin_' . $page_slug, esc_url_raw($_POST['apex_contact_social_linkedin']));
+            update_option('apex_contact_social_twitter_' . $page_slug, esc_url_raw($_POST['apex_contact_social_twitter']));
+            update_option('apex_contact_social_facebook_' . $page_slug, esc_url_raw($_POST['apex_contact_social_facebook']));
+            update_option('apex_contact_social_instagram_' . $page_slug, esc_url_raw($_POST['apex_contact_social_instagram']));
+            update_option('apex_contact_social_youtube_' . $page_slug, esc_url_raw($_POST['apex_contact_social_youtube']));
+            update_option('apex_contact_social_whatsapp_' . $page_slug, esc_url_raw($_POST['apex_contact_social_whatsapp']));
+            update_option('apex_contact_social_github_' . $page_slug, esc_url_raw($_POST['apex_contact_social_github']));
+            
+            update_option('apex_offices_heading_' . $page_slug, sanitize_text_field($_POST['apex_offices_heading']));
+            update_option('apex_offices_description_' . $page_slug, sanitize_textarea_field($_POST['apex_offices_description']));
+            update_option('apex_offices_items_' . $page_slug, sanitize_textarea_field($_POST['apex_offices_items']));
+            update_option('apex_offices_map_heading_' . $page_slug, sanitize_text_field($_POST['apex_offices_map_heading']));
+            update_option('apex_offices_map_hours_' . $page_slug, sanitize_textarea_field($_POST['apex_offices_map_hours']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Contact Us content saved successfully! All sections with contact form, sidebar information, and office locations have been updated.</p></div>';
+        }
     }
 }
 
 /**
- * Get fallback content data
+ * Render Footer Settings Page
  */
+function apex_render_footer_settings_page() {
+    ?>
+    <div class="wrap">
+        <h1>Footer Settings</h1>
+        <a href="<?php echo admin_url('admin.php?page=apex-website-settings'); ?>" class="button">← Back to Overview</a>
+        
+        <form method="post" action="" style="background: #f8f9fa; padding: 20px; border: 1px solid #dee2e6; border-radius: 6px; margin-top: 20px;">
+            <?php wp_nonce_field('apex_save_footer_settings', 'apex_footer_nonce'); ?>
+            
+            <h3>Edit Footer Content</h3>
+            <p class="description">Update the footer content. Changes will appear immediately on all pages.</p>
+            
+            <!-- Pre-Footer CTA Section -->
+            <div style="margin-bottom: 30px;">
+                <h4>🎯 Pre-Footer CTA Cards</h4>
+                <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                    <h5>📋 Section Overview</h5>
+                    <p><strong>This section displays two call-to-action cards above the main footer.</strong> Card 1 (primary/orange) and Card 2 (secondary/dark blue).</p>
+                </div>
+                
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta1_title">Card 1 Title</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_cta1_title" name="apex_footer_cta1_title" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_cta1_title', 'Ready to Transform Your Institution?')); ?>" 
+                                   class="regular-text">
+                            <p class="description">The title for the first CTA card (orange/primary)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta1_description">Card 1 Description</label></th>
+                        <td>
+                            <textarea id="apex_footer_cta1_description" name="apex_footer_cta1_description" rows="2" class="large-text"><?php echo esc_textarea(get_option('apex_footer_cta1_description', 'Get in touch to discuss a tailored banking or fintech strategy for your business.')); ?></textarea>
+                            <p class="description">Description text for the first card</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta1_button_text">Card 1 Button Text</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_cta1_button_text" name="apex_footer_cta1_button_text" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_cta1_button_text', 'Request a Demo')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Text displayed on the first card button</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta1_button_url">Card 1 Button URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_cta1_button_url" name="apex_footer_cta1_button_url" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_cta1_button_url', '/contact')); ?>" 
+                                   class="large-text">
+                            <p class="description">URL for the first card button (can be relative like /contact or absolute)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta2_title">Card 2 Title</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_cta2_title" name="apex_footer_cta2_title" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_cta2_title', 'Need Support?')); ?>" 
+                                   class="regular-text">
+                            <p class="description">The title for the second CTA card (dark blue/secondary)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta2_description">Card 2 Description</label></th>
+                        <td>
+                            <textarea id="apex_footer_cta2_description" name="apex_footer_cta2_description" rows="2" class="large-text"><?php echo esc_textarea(get_option('apex_footer_cta2_description', 'For existing customers, access our knowledge base and expert support team.')); ?></textarea>
+                            <p class="description">Description text for the second card</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta2_button_text">Card 2 Button Text</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_cta2_button_text" name="apex_footer_cta2_button_text" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_cta2_button_text', 'Get Support')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Text displayed on the second card button</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_cta2_button_url">Card 2 Button URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_cta2_button_url" name="apex_footer_cta2_button_url" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_cta2_button_url', '/contact')); ?>" 
+                                   class="large-text">
+                            <p class="description">URL for the second card button</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Brand Section -->
+            <div style="margin-bottom: 30px;">
+                <h4>🏢 Brand Section</h4>
+                <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                    <h5>📋 Section Overview</h5>
+                    <p><strong>This section displays your company logo, tagline, description, and newsletter signup.</strong></p>
+                </div>
+                
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><label for="apex_footer_logo_url">Logo Image URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_logo_url" name="apex_footer_logo_url" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_logo_url', 'https://web.archive.org/web/20220401202046im_/https://apex-softwares.com/wp-content/uploads/2017/08/newlogo3.png')); ?>" 
+                                   class="large-text">
+                            <p class="description">URL to your company logo image</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_company_name">Company Name</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_company_name" name="apex_footer_company_name" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_company_name', 'Apex Softwares')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Your company name displayed in the footer</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_tagline">Company Tagline</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_tagline" name="apex_footer_tagline" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_tagline', 'Microfinance & Banking Solutions')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Short tagline describing your business</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_description">Company Description</label></th>
+                        <td>
+                            <textarea id="apex_footer_description" name="apex_footer_description" rows="3" class="large-text"><?php echo esc_textarea(get_option('apex_footer_description', 'Comprehensive solutions for financial operations automation, covering retail banking, portfolio management, and deposit accounts across Africa.')); ?></textarea>
+                            <p class="description">Detailed company description for the footer</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Contact Information -->
+            <div style="margin-bottom: 30px;">
+                <h4>📞 Contact Information</h4>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><label for="apex_footer_email">Email Address</label></th>
+                        <td>
+                            <input type="email" id="apex_footer_email" name="apex_footer_email" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_email', 'info@apex-softwares.com')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Primary contact email address</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_phone">Phone Number</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_phone" name="apex_footer_phone" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_phone', '+254 700 000 000')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Main contact phone number with country code</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_city">City</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_city" name="apex_footer_city" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_city', 'Nairobi, Kenya')); ?>" 
+                                   class="regular-text">
+                            <p class="description">City and country for your location</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_address">Full Address</label></th>
+                        <td>
+                            <textarea id="apex_footer_address" name="apex_footer_address" rows="3" class="large-text"><?php echo esc_textarea(get_option('apex_footer_address', "Westlands Business Park\n3rd Floor, Suite 305\nWaiyaki Way, Westlands")); ?></textarea>
+                            <p class="description">Use line breaks for multi-line address</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_hours">Business Hours</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_hours" name="apex_footer_hours" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_hours', 'Mon - Fri: 8:00 AM - 6:00 PM')); ?>" 
+                                   class="large-text">
+                            <p class="description">Your business operating hours</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Social Media Links -->
+            <div style="margin-bottom: 30px;">
+                <h4>🔗 Social Media Links</h4>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><label for="apex_footer_linkedin">LinkedIn URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_linkedin" name="apex_footer_linkedin" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_linkedin', 'https://linkedin.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Format: https://linkedin.com/company/yourcompany</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_twitter">Twitter/X URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_twitter" name="apex_footer_twitter" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_twitter', 'https://twitter.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Format: https://twitter.com/yourhandle</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_facebook">Facebook URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_facebook" name="apex_footer_facebook" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_facebook', 'https://facebook.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Format: https://facebook.com/yourcompany</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_instagram">Instagram URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_instagram" name="apex_footer_instagram" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_instagram', 'https://instagram.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Format: https://instagram.com/yourhandle</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_youtube">YouTube URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_youtube" name="apex_footer_youtube" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_youtube', 'https://youtube.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Format: https://youtube.com/@yourchannel</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_whatsapp">WhatsApp URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_whatsapp" name="apex_footer_whatsapp" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_whatsapp', 'https://wa.me/')); ?>" 
+                                   class="large-text">
+                            <p class="description">Format: https://wa.me/254700000000</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_github">GitHub URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_github" name="apex_footer_github" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_github', 'https://github.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Format: https://github.com/yourusername</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- App Store Links -->
+            <div style="margin-bottom: 30px;">
+                <h4>📱 Mobile App Links</h4>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><label for="apex_footer_google_play">Google Play Store URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_google_play" name="apex_footer_google_play" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_google_play', 'https://play.google.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Link to your app on Google Play Store</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_app_store">Apple App Store URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_app_store" name="apex_footer_app_store" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_app_store', 'https://apps.apple.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">Link to your app on Apple App Store</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div style="margin-bottom: 30px;">
+                <h4>©️ Footer Bottom</h4>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><label for="apex_footer_copyright_text">Copyright Text</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_copyright_text" name="apex_footer_copyright_text" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_copyright_text', 'All rights reserved.')); ?>" 
+                                   class="large-text">
+                            <p class="description">The year and company name are added automatically</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_certification_image">Certification Badge URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_certification_image" name="apex_footer_certification_image" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_certification_image', 'https://www.continualengine.com/wp-content/uploads/2025/01/information-security-management-system-iso-27001_1-transformed.png')); ?>" 
+                                   class="large-text">
+                            <p class="description">URL to certification badge image (e.g., ISO 27001)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_certification_alt">Certification Badge Alt Text</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_certification_alt" name="apex_footer_certification_alt" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_certification_alt', 'ISO 27001 Certified')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Alternative text for the certification badge image</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_credit_text">Credit Text</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_credit_text" name="apex_footer_credit_text" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_credit_text', 'Built for performance, accessibility, and scale with')); ?>" 
+                                   class="large-text">
+                            <p class="description">Text before the credit link (e.g., "Built by")</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_credit_link_text">Credit Link Text</label></th>
+                        <td>
+                            <input type="text" id="apex_footer_credit_link_text" name="apex_footer_credit_link_text" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_credit_link_text', 'Wagura Maurice')); ?>" 
+                                   class="regular-text">
+                            <p class="description">Text for the credit link (developer/company name)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="apex_footer_credit_link_url">Credit Link URL</label></th>
+                        <td>
+                            <input type="url" id="apex_footer_credit_link_url" name="apex_footer_credit_link_url" 
+                                   value="<?php echo esc_attr(get_option('apex_footer_credit_link_url', 'https://waguramaurice.com')); ?>" 
+                                   class="large-text">
+                            <p class="description">URL for the credit link</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <p class="submit">
+                <input type="submit" name="apex_save_footer_settings" id="apex_save_footer_settings" class="button button-primary" value="Save Footer Settings">
+                <a href="<?php echo admin_url('admin.php?page=apex-website-settings'); ?>" class="button">← Back to Overview</a>
+            </p>
+        </form>
+    </div>
+    
+    <?php
+    // Handle form submission
+    if (isset($_POST['apex_save_footer_settings']) && check_admin_referer('apex_save_footer_settings', 'apex_footer_nonce')) {
+        // Save Pre-Footer CTA Cards
+        update_option('apex_footer_cta1_title', sanitize_text_field($_POST['apex_footer_cta1_title']));
+        update_option('apex_footer_cta1_description', sanitize_textarea_field($_POST['apex_footer_cta1_description']));
+        update_option('apex_footer_cta1_button_text', sanitize_text_field($_POST['apex_footer_cta1_button_text']));
+        update_option('apex_footer_cta1_button_url', sanitize_text_field($_POST['apex_footer_cta1_button_url']));
+        update_option('apex_footer_cta2_title', sanitize_text_field($_POST['apex_footer_cta2_title']));
+        update_option('apex_footer_cta2_description', sanitize_textarea_field($_POST['apex_footer_cta2_description']));
+        update_option('apex_footer_cta2_button_text', sanitize_text_field($_POST['apex_footer_cta2_button_text']));
+        update_option('apex_footer_cta2_button_url', sanitize_text_field($_POST['apex_footer_cta2_button_url']));
+        
+        // Save Brand Section
+        update_option('apex_footer_logo_url', esc_url_raw($_POST['apex_footer_logo_url']));
+        update_option('apex_footer_company_name', sanitize_text_field($_POST['apex_footer_company_name']));
+        update_option('apex_footer_tagline', sanitize_text_field($_POST['apex_footer_tagline']));
+        update_option('apex_footer_description', sanitize_textarea_field($_POST['apex_footer_description']));
+        
+        // Save Contact Information
+        update_option('apex_footer_email', sanitize_email($_POST['apex_footer_email']));
+        update_option('apex_footer_phone', sanitize_text_field($_POST['apex_footer_phone']));
+        update_option('apex_footer_city', sanitize_text_field($_POST['apex_footer_city']));
+        update_option('apex_footer_address', sanitize_textarea_field($_POST['apex_footer_address']));
+        update_option('apex_footer_hours', sanitize_text_field($_POST['apex_footer_hours']));
+        
+        // Save Social Media Links
+        update_option('apex_footer_linkedin', esc_url_raw($_POST['apex_footer_linkedin']));
+        update_option('apex_footer_twitter', esc_url_raw($_POST['apex_footer_twitter']));
+        update_option('apex_footer_facebook', esc_url_raw($_POST['apex_footer_facebook']));
+        update_option('apex_footer_instagram', esc_url_raw($_POST['apex_footer_instagram']));
+        update_option('apex_footer_youtube', esc_url_raw($_POST['apex_footer_youtube']));
+        update_option('apex_footer_whatsapp', esc_url_raw($_POST['apex_footer_whatsapp']));
+        update_option('apex_footer_github', esc_url_raw($_POST['apex_footer_github']));
+        
+        // Save App Store Links
+        update_option('apex_footer_google_play', esc_url_raw($_POST['apex_footer_google_play']));
+        update_option('apex_footer_app_store', esc_url_raw($_POST['apex_footer_app_store']));
+        
+        // Save Footer Bottom
+        update_option('apex_footer_copyright_text', sanitize_text_field($_POST['apex_footer_copyright_text']));
+        update_option('apex_footer_certification_image', esc_url_raw($_POST['apex_footer_certification_image']));
+        update_option('apex_footer_certification_alt', sanitize_text_field($_POST['apex_footer_certification_alt']));
+        update_option('apex_footer_credit_text', sanitize_text_field($_POST['apex_footer_credit_text']));
+        update_option('apex_footer_credit_link_text', sanitize_text_field($_POST['apex_footer_credit_link_text']));
+        update_option('apex_footer_credit_link_url', esc_url_raw($_POST['apex_footer_credit_link_url']));
+        
+        echo '<div class="notice notice-success is-dismissible"><p>Footer settings saved successfully! Changes will appear on all pages.</p></div>';
+    }
+}
 function apex_get_fallback_content($page_slug) {
     return [
         'badge' => get_option('apex_hero_badge_' . $page_slug, 'About Apex Softwares'),

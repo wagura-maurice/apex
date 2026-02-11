@@ -1,0 +1,499 @@
+[11-Feb-2026 02:54:00 UTC] Apex Mailtrap: Applying SMTP configuration
+[11-Feb-2026 02:54:00 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525
+[11-Feb-2026 02:54:01 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[11-Feb-2026 02:54:01 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO montanabay-pc
+
+[11-Feb-2026 02:54:01 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[11-Feb-2026 02:54:01 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[11-Feb-2026 02:54:01 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[11-Feb-2026 02:54:02 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO montanabay-pc
+
+[11-Feb-2026 02:54:03 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[11-Feb-2026 02:54:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[11-Feb-2026 02:54:03 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDc4OTQwOTIwOC4xNzcwNzc4NDQzQHNtdHAubWFpbHRyYXAuaW8+
+
+[11-Feb-2026 02:54:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[11-Feb-2026 02:54:04 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[11-Feb-2026 02:54:04 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[11-Feb-2026 02:54:04 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[11-Feb-2026 02:54:04 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<info@apex-softwares.com>
+
+[11-Feb-2026 02:54:04 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[11-Feb-2026 02:54:04 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Wed, 11 Feb 2026 02:54:00 +0000
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: info@apex-softwares.com
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: Direct Test Email - 2026-02-11 02:54:00
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <lbrTp9v7MT0PfeOyjuJeepxPX5gQVkp4L7ktNxuwA@montanabay-pc>
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: <h1>Test Email</h1><p>This email was sent directly via PHP script.</p><p>Time: 2026-02-11 02:54:00</p>
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[11-Feb-2026 02:54:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[11-Feb-2026 02:54:06 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[11-Feb-2026 03:06:46 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[11-Feb-2026 03:06:46 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [phone] => 123456789
+    [company] => Test Company
+    [institution_type] => mfi
+    [interest] => demo
+    [message] => This is a test message
+    [consent] => on
+    [apex_contact_nonce] => test
+)
+
+[11-Feb-2026 03:06:46 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[11-Feb-2026 03:06:46 UTC] Apex Contact Form: Nonce verification failed
+[11-Feb-2026 03:07:15 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[11-Feb-2026 03:07:15 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [phone] => 123456789
+    [company] => Test Company
+    [institution_type] => mfi
+    [interest] => demo
+    [message] => This is a test message
+    [consent] => on
+)
+
+[11-Feb-2026 03:07:15 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[11-Feb-2026 03:07:15 UTC] Apex Contact Form: Nonce verification failed
+[11-Feb-2026 03:08:29 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[11-Feb-2026 03:08:29 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [phone] => 123456789
+    [company] => Test Company
+    [institution_type] => mfi
+    [interest] => demo
+    [message] => This is a test message
+    [consent] => on
+)
+
+[11-Feb-2026 03:08:29 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[11-Feb-2026 03:08:29 UTC] Apex Contact Form: Nonce missing - continuing for testing
+[11-Feb-2026 03:08:29 UTC] Apex Contact Form: Processing submission from Test User <test@example.com>
+[11-Feb-2026 03:08:29 UTC] Apex Contact Form: Attempting to send email via direct PHPMailer
+[11-Feb-2026 03:08:29 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 03:08:34 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 03:08:34 UTC] Apex Contact Form: Direct email sending result: SUCCESS
+[11-Feb-2026 03:08:34 UTC] Apex Contact Form: Email sent successfully
+[11-Feb-2026 07:51:02 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[11-Feb-2026 07:51:02 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Jordan
+    [last_name] => Calderon
+    [email] => cazukobu@mailinator.com
+    [phone] => +1 (182) 691-8457
+    [company] => Clements and Cobb Co
+    [institution_type] => mfi
+    [interest] => pricing
+    [message] => Velit a illo in ut d
+    [consent] => on
+    [apex_contact_nonce] => b1634c7c09
+)
+
+[11-Feb-2026 07:51:02 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[11-Feb-2026 07:51:02 UTC] Apex Contact Form: Processing submission from Jordan Calderon <cazukobu@mailinator.com>
+[11-Feb-2026 07:51:02 UTC] Apex Contact Form: Attempting to send email via direct PHPMailer
+[11-Feb-2026 07:51:02 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 07:51:07 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 07:51:07 UTC] Apex Contact Form: Direct email sending result: SUCCESS
+[11-Feb-2026 07:51:07 UTC] Apex Contact Form: Email sent successfully
+[11-Feb-2026 07:51:07 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 07:51:07 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 07:51:34 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[11-Feb-2026 07:51:34 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Wanda
+    [last_name] => Pitts
+    [email] => lywiva@mailinator.com
+    [phone] => +1 (151) 354-3744
+    [company] => Dunn and Marsh Trading
+    [institution_type] => fintech
+    [interest] => careers
+    [message] => Et in qui exercitati
+    [consent] => on
+    [apex_contact_nonce] => b1634c7c09
+)
+
+[11-Feb-2026 07:51:34 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[11-Feb-2026 07:51:34 UTC] Apex Contact Form: Processing submission from Wanda Pitts <lywiva@mailinator.com>
+[11-Feb-2026 07:51:34 UTC] Apex Contact Form: Attempting to send email via direct PHPMailer
+[11-Feb-2026 07:51:34 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 07:51:41 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 07:51:41 UTC] Apex Contact Form: Direct email sending result: SUCCESS
+[11-Feb-2026 07:51:41 UTC] Apex Contact Form: Email sent successfully
+[11-Feb-2026 07:51:41 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 07:51:41 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:00:36 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:00:36 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:05:33 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:05:33 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:09:24 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:09:24 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:12:07 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:12:07 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:18:21 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:18:21 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:23:30 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:23:30 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:23:30 UTC] PHP Fatal error:  Uncaught Error: Object of class WP_Error could not be converted to string in /var/www/html/apex/wp-includes/general-template.php:5325
+Stack trace:
+#0 /var/www/html/apex/wp-includes/general-template.php(5261): __checked_selected_helper()
+#1 /var/www/html/apex/wp-includes/customize/class-wp-customize-nav-menu-location-control.php(80): selected()
+#2 /var/www/html/apex/wp-includes/class-wp-customize-control.php(435): WP_Customize_Nav_Menu_Location_Control->render_content()
+#3 /var/www/html/apex/wp-includes/class-wp-customize-control.php(422): WP_Customize_Control->render()
+#4 /var/www/html/apex/wp-includes/class-wp-customize-control.php(386): WP_Customize_Control->maybe_render()
+#5 /var/www/html/apex/wp-includes/class-wp-customize-control.php(324): WP_Customize_Control->get_content()
+#6 /var/www/html/apex/wp-includes/customize/class-wp-customize-nav-menu-location-control.php(45): WP_Customize_Control->to_json()
+#7 /var/www/html/apex/wp-includes/class-wp-customize-control.php(342): WP_Customize_Nav_Menu_Location_Control->to_json()
+#8 /var/www/html/apex/wp-includes/class-wp-customize-manager.php(5017): WP_Customize_Control->json()
+#9 /var/www/html/apex/wp-includes/class-wp-hook.php(341): WP_Customize_Manager->customize_pane_settings()
+#10 /var/www/html/apex/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters()
+#11 /var/www/html/apex/wp-includes/plugin.php(522): WP_Hook->do_action()
+#12 /var/www/html/apex/wp-admin/customize.php(306): do_action()
+#13 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#14 {main}
+  thrown in /var/www/html/apex/wp-includes/general-template.php on line 5325
+[11-Feb-2026 08:23:45 UTC] PHP Fatal error:  Uncaught Error: Object of class WP_Error could not be converted to string in /var/www/html/apex/wp-includes/general-template.php:5325
+Stack trace:
+#0 /var/www/html/apex/wp-includes/general-template.php(5261): __checked_selected_helper()
+#1 /var/www/html/apex/wp-includes/customize/class-wp-customize-nav-menu-location-control.php(80): selected()
+#2 /var/www/html/apex/wp-includes/class-wp-customize-control.php(435): WP_Customize_Nav_Menu_Location_Control->render_content()
+#3 /var/www/html/apex/wp-includes/class-wp-customize-control.php(422): WP_Customize_Control->render()
+#4 /var/www/html/apex/wp-includes/class-wp-customize-control.php(386): WP_Customize_Control->maybe_render()
+#5 /var/www/html/apex/wp-includes/class-wp-customize-control.php(324): WP_Customize_Control->get_content()
+#6 /var/www/html/apex/wp-includes/customize/class-wp-customize-nav-menu-location-control.php(45): WP_Customize_Control->to_json()
+#7 /var/www/html/apex/wp-includes/class-wp-customize-control.php(342): WP_Customize_Nav_Menu_Location_Control->to_json()
+#8 /var/www/html/apex/wp-includes/class-wp-customize-manager.php(5017): WP_Customize_Control->json()
+#9 /var/www/html/apex/wp-includes/class-wp-hook.php(341): WP_Customize_Manager->customize_pane_settings()
+#10 /var/www/html/apex/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters()
+#11 /var/www/html/apex/wp-includes/plugin.php(522): WP_Hook->do_action()
+#12 /var/www/html/apex/wp-admin/customize.php(306): do_action()
+#13 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#14 {main}
+  thrown in /var/www/html/apex/wp-includes/general-template.php on line 5325
+[11-Feb-2026 08:27:39 UTC] PHP Fatal error:  Uncaught Error: Object of class WP_Error could not be converted to string in /var/www/html/apex/wp-includes/general-template.php:5325
+Stack trace:
+#0 /var/www/html/apex/wp-includes/general-template.php(5261): __checked_selected_helper()
+#1 /var/www/html/apex/wp-includes/customize/class-wp-customize-nav-menu-location-control.php(80): selected()
+#2 /var/www/html/apex/wp-includes/class-wp-customize-control.php(435): WP_Customize_Nav_Menu_Location_Control->render_content()
+#3 /var/www/html/apex/wp-includes/class-wp-customize-control.php(422): WP_Customize_Control->render()
+#4 /var/www/html/apex/wp-includes/class-wp-customize-control.php(386): WP_Customize_Control->maybe_render()
+#5 /var/www/html/apex/wp-includes/class-wp-customize-control.php(324): WP_Customize_Control->get_content()
+#6 /var/www/html/apex/wp-includes/customize/class-wp-customize-nav-menu-location-control.php(45): WP_Customize_Control->to_json()
+#7 /var/www/html/apex/wp-includes/class-wp-customize-control.php(342): WP_Customize_Nav_Menu_Location_Control->to_json()
+#8 /var/www/html/apex/wp-includes/class-wp-customize-manager.php(5017): WP_Customize_Control->json()
+#9 /var/www/html/apex/wp-includes/class-wp-hook.php(341): WP_Customize_Manager->customize_pane_settings()
+#10 /var/www/html/apex/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters()
+#11 /var/www/html/apex/wp-includes/plugin.php(522): WP_Hook->do_action()
+#12 /var/www/html/apex/wp-admin/customize.php(306): do_action()
+#13 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#14 {main}
+  thrown in /var/www/html/apex/wp-includes/general-template.php on line 5325
+[11-Feb-2026 08:28:19 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:28:19 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:29:51 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:29:51 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 08:59:57 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 08:59:57 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:05:09 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:05:09 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:05:09 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_field() in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php:228
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/inc/footer-dynamic.php(11): apex_get_footer_social_urls()
+#1 /var/www/html/apex/wp-content/themes/apex-theme/footer.php(110): apex_generate_social_links_html()
+#2 /var/www/html/apex/wp-includes/template.php(814): require_once('...')
+#3 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#4 /var/www/html/apex/wp-includes/general-template.php(92): locate_template()
+#5 /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php(440): get_footer()
+#6 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(3480): include('...')
+#7 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_contact_template_redirect()
+#8 /var/www/html/apex/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters()
+#9 /var/www/html/apex/wp-includes/plugin.php(522): WP_Hook->do_action()
+#10 /var/www/html/apex/wp-includes/template-loader.php(23): do_action()
+#11 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#12 /var/www/html/apex/index.php(17): require('...')
+#13 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#14 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php on line 228
+[11-Feb-2026 09:10:17 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:10:17 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:10:17 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_field() in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php:228
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/inc/footer-dynamic.php(11): apex_get_footer_social_urls()
+#1 /var/www/html/apex/wp-content/themes/apex-theme/footer.php(110): apex_generate_social_links_html()
+#2 /var/www/html/apex/wp-includes/template.php(814): require_once('...')
+#3 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#4 /var/www/html/apex/wp-includes/general-template.php(92): locate_template()
+#5 /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php(440): get_footer()
+#6 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(3480): include('...')
+#7 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_contact_template_redirect()
+#8 /var/www/html/apex/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters()
+#9 /var/www/html/apex/wp-includes/plugin.php(522): WP_Hook->do_action()
+#10 /var/www/html/apex/wp-includes/template-loader.php(23): do_action()
+#11 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#12 /var/www/html/apex/index.php(17): require('...')
+#13 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#14 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php on line 228
+[11-Feb-2026 09:10:52 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_field() in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php:228
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/inc/footer-dynamic.php(11): apex_get_footer_social_urls()
+#1 /var/www/html/apex/wp-content/themes/apex-theme/footer.php(110): apex_generate_social_links_html()
+#2 /var/www/html/apex/wp-includes/template.php(814): require_once('...')
+#3 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#4 /var/www/html/apex/wp-includes/general-template.php(92): locate_template()
+#5 /var/www/html/apex/wp-content/themes/apex-theme/index.php(48): get_footer()
+#6 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#7 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#8 /var/www/html/apex/index.php(17): require('...')
+#9 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#10 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php on line 228
+[11-Feb-2026 09:11:58 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:11:58 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:17:00 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:17:00 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:17:00 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_field() in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php:227
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/inc/footer-dynamic.php(11): apex_get_footer_social_urls()
+#1 /var/www/html/apex/wp-content/themes/apex-theme/footer.php(110): apex_generate_social_links_html()
+#2 /var/www/html/apex/wp-includes/template.php(814): require_once('...')
+#3 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#4 /var/www/html/apex/wp-includes/general-template.php(92): locate_template()
+#5 /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php(440): get_footer()
+#6 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(3480): include('...')
+#7 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_contact_template_redirect()
+#8 /var/www/html/apex/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters()
+#9 /var/www/html/apex/wp-includes/plugin.php(522): WP_Hook->do_action()
+#10 /var/www/html/apex/wp-includes/template-loader.php(23): do_action()
+#11 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#12 /var/www/html/apex/index.php(17): require('...')
+#13 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#14 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php on line 227
+[11-Feb-2026 09:25:52 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:25:52 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:25:52 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_field() in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php:249
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/inc/footer-dynamic.php(11): apex_get_footer_social_urls()
+#1 /var/www/html/apex/wp-content/themes/apex-theme/footer.php(110): apex_generate_social_links_html()
+#2 /var/www/html/apex/wp-includes/template.php(814): require_once('...')
+#3 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#4 /var/www/html/apex/wp-includes/general-template.php(92): locate_template()
+#5 /var/www/html/apex/wp-content/themes/apex-theme/page-contact.php(440): get_footer()
+#6 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(3480): include('...')
+#7 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_contact_template_redirect()
+#8 /var/www/html/apex/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters()
+#9 /var/www/html/apex/wp-includes/plugin.php(522): WP_Hook->do_action()
+#10 /var/www/html/apex/wp-includes/template-loader.php(23): do_action()
+#11 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#12 /var/www/html/apex/index.php(17): require('...')
+#13 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#14 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/inc/acf-footer-settings.php on line 249
+[11-Feb-2026 09:30:05 UTC] Automatic updates starting...
+[11-Feb-2026 09:30:07 UTC] Automatic updates complete.
+[11-Feb-2026 09:31:15 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:31:15 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:31:59 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:31:59 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:52:21 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:52:21 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:52:53 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:52:53 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:54:19 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:54:19 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 09:54:56 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 09:54:56 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:00:10 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:00:10 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:01:23 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:01:23 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:07:21 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:07:21 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:07:27 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:07:27 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:07:51 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:07:51 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:09:18 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:09:18 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:09:21 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:09:21 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:09:26 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:09:26 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:09:34 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:09:34 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:09:38 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:09:38 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:09:43 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:09:43 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:14:52 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:14:52 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:15:46 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:15:46 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:18:17 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:18:17 UTC] Apex Contact Form: POST data: Array
+(
+)
+
