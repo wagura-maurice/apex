@@ -144,9 +144,20 @@
                         <div class="apex-footer-main__newsletter">
                             <h4>Stay Updated</h4>
                             <p>Get the latest insights and product updates.</p>
-                            <form class="apex-footer-main__newsletter-form" action="#" method="post">
-                                <input type="email" name="email" placeholder="Enter your email" required>
-                                <button type="submit">
+                            
+                            <!-- Notification Area -->
+                            <div id="newsletter-notification" class="apex-footer-main__newsletter-notification" style="display: none;">
+                                <div class="notification-content">
+                                    <span class="notification-icon"></span>
+                                    <span class="notification-message"></span>
+                                    <button type="button" class="notification-close" onclick="hideNewsletterNotification()">×</button>
+                                </div>
+                            </div>
+                            
+                            <form class="apex-footer-main__newsletter-form" action="#" method="post" id="newsletter-form">
+                                <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
+                                <input type="email" name="email" placeholder="Enter your email" required id="newsletter-email">
+                                <button type="submit" id="newsletter-submit">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                                 </button>
                             </form>
@@ -302,6 +313,207 @@
         </div>
     </footer>
 </div>
+
+<!-- Newsletter Notification Styles -->
+<style>
+.apex-footer-main__newsletter-notification {
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
+}
+
+.apex-footer-main__newsletter-notification.success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.apex-footer-main__newsletter-notification.error {
+    background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+    color: white;
+}
+
+.apex-footer-main__newsletter-notification .notification-content {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    gap: 10px;
+}
+
+.apex-footer-main__newsletter-notification .notification-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.apex-footer-main__newsletter-notification.success .notification-icon::before {
+    content: "✓";
+    font-weight: bold;
+}
+
+.apex-footer-main__newsletter-notification.error .notification-icon::before {
+    content: "✕";
+    font-weight: bold;
+}
+
+.apex-footer-main__newsletter-notification .notification-message {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.apex-footer-main__newsletter-notification .notification-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+
+.apex-footer-main__newsletter-notification .notification-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 100px;
+    }
+}
+
+.apex-footer-main__newsletter-form.loading button {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.apex-footer-main__newsletter-form.loading button svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
+
+<!-- Newsletter Notification JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('newsletter-email').value;
+            const submitBtn = document.getElementById('newsletter-submit');
+            
+            // Show loading state
+            newsletterForm.classList.add('loading');
+            
+            // Create form data
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('action', 'apex_newsletter_submit');
+            
+            // Get nonce from the form
+            const nonceField = newsletterForm.querySelector('input[name="apex_newsletter_nonce"]');
+            if (nonceField) {
+                formData.append('apex_newsletter_nonce', nonceField.value);
+            }
+            
+            // Send AJAX request
+            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                newsletterForm.classList.remove('loading');
+                
+                if (data.success) {
+                    showNewsletterNotification('success', data.data.message);
+                    newsletterForm.reset();
+                } else {
+                    showNewsletterNotification('error', data.data.message || 'An error occurred. Please try again.');
+                }
+            })
+            .catch(error => {
+                newsletterForm.classList.remove('loading');
+                showNewsletterNotification('error', 'An error occurred. Please try again.');
+                console.error('Newsletter submission error:', error);
+            });
+        });
+    }
+    
+    // Check for URL parameters and show notifications
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('newsletter_success') === '1') {
+        showNewsletterNotification('success', 'Thank you for subscribing! Check your email for confirmation.');
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (urlParams.get('newsletter_error')) {
+        const errorType = urlParams.get('newsletter_error');
+        let errorMessage = 'An error occurred. Please try again.';
+        
+        switch(errorType) {
+            case 'missing_email':
+                errorMessage = 'Please enter your email address.';
+                break;
+            case 'invalid_email':
+                errorMessage = 'Please enter a valid email address.';
+                break;
+            case 'send_failed':
+                errorMessage = 'Failed to subscribe. Please try again later.';
+                break;
+        }
+        
+        showNewsletterNotification('error', errorMessage);
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+
+function showNewsletterNotification(type, message) {
+    const notification = document.getElementById('newsletter-notification');
+    const icon = notification.querySelector('.notification-icon');
+    const messageElement = notification.querySelector('.notification-message');
+    
+    // Remove existing classes
+    notification.classList.remove('success', 'error');
+    
+    // Add new class and set message
+    notification.classList.add(type);
+    messageElement.textContent = message;
+    
+    // Show notification
+    notification.style.display = 'block';
+    
+    // Auto-hide after 5 seconds for success messages
+    if (type === 'success') {
+        setTimeout(hideNewsletterNotification, 5000);
+    }
+}
+
+function hideNewsletterNotification() {
+    const notification = document.getElementById('newsletter-notification');
+    notification.style.display = 'none';
+}
+</script>
+
 <?php wp_footer(); ?>
 </body>
 </html>

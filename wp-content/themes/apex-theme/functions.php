@@ -125,6 +125,120 @@ function apex_handle_contact_form_submission() {
         exit;
     }
 }
+
+/**
+ * Handle newsletter form submission
+ */
+function apex_handle_newsletter_form_submission() {
+    // Skip if this is an AJAX request - let the AJAX handler deal with it
+    if (defined('DOING_AJAX') && DOING_AJAX) {
+        return;
+    }
+    // Check if it's a POST request and our newsletter form was submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_POST['apex_newsletter_nonce']) && !isset($_POST['action'])) {
+        
+        error_log('Apex Newsletter Form: Newsletter submission detected - PROCESSING');
+
+        // Verify nonce for security
+        if (!wp_verify_nonce($_POST['apex_newsletter_nonce'], 'apex_newsletter_form')) {
+            error_log('Apex Newsletter Form: Nonce verification failed');
+            wp_die('Security check failed!');
+        }
+
+        // Sanitize and validate form data
+        $email = sanitize_email($_POST['email'] ?? '');
+
+        error_log("Apex Newsletter Form: Processing newsletter subscription from {$email}");
+
+        // Basic validation
+        if (empty($email)) {
+            error_log('Apex Newsletter Form: Validation failed - missing email');
+            wp_redirect(home_url('/?newsletter_error=missing_email'));
+            exit;
+        }
+
+        if (!is_email($email)) {
+            error_log('Apex Newsletter Form: Invalid email address: ' . $email);
+            wp_redirect(home_url('/?newsletter_error=invalid_email'));
+            exit;
+        }
+
+        // Send email notification using the same email system as contact form
+        error_log('Apex Newsletter Form: Attempting to send notification email');
+        
+        $email_sent = apex_send_email_direct([
+            'to' => 'info@apex-softwares.com',
+            'subject' => 'New Newsletter Subscription from ' . $email,
+            'html_content' => apex_create_newsletter_email_html([
+                'email' => $email,
+                'submission_date' => current_time('F j, Y, g:i a'),
+                'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'Unknown'
+            ])
+        ]);
+
+        error_log('Apex Newsletter Form: Notification email sending result: ' . ($email_sent ? 'SUCCESS' : 'FAILED'));
+
+        if ($email_sent) {
+            error_log('Apex Newsletter Form: Notification email sent successfully');
+            wp_redirect(home_url('/?newsletter_success=1'));
+        } else {
+            error_log('Apex Newsletter Form: Notification email sending failed');
+            wp_redirect(home_url('/?newsletter_error=send_failed'));
+        }
+        exit;
+    }
+}
+add_action('init', 'apex_handle_newsletter_form_submission');
+
+/**
+ * AJAX handler for newsletter form submission
+ */
+function apex_newsletter_ajax_handler() {
+    // Verify nonce for security
+    if (!isset($_POST['apex_newsletter_nonce']) || !wp_verify_nonce($_POST['apex_newsletter_nonce'], 'apex_newsletter_form')) {
+        wp_send_json_error(['message' => 'Security check failed!']);
+    }
+
+    // Sanitize and validate form data
+    $email = sanitize_email($_POST['email'] ?? '');
+
+    error_log("Apex Newsletter AJAX: Processing newsletter subscription from {$email}");
+
+    // Basic validation
+    if (empty($email)) {
+        wp_send_json_error(['message' => 'Please enter your email address.']);
+    }
+
+    if (!is_email($email)) {
+        wp_send_json_error(['message' => 'Please enter a valid email address.']);
+    }
+
+    // Send email notification using the same email system as contact form
+    error_log('Apex Newsletter AJAX: Attempting to send notification email');
+    
+    $email_sent = apex_send_email_direct([
+        'to' => 'info@apex-softwares.com',
+        'subject' => 'New Newsletter Subscription from ' . $email,
+        'html_content' => apex_create_newsletter_email_html([
+            'email' => $email,
+            'submission_date' => current_time('F j, Y, g:i a'),
+            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'Unknown'
+        ])
+    ]);
+
+    error_log('Apex Newsletter AJAX: Notification email sending result: ' . ($email_sent ? 'SUCCESS' : 'FAILED'));
+
+    if ($email_sent) {
+        error_log('Apex Newsletter AJAX: Notification email sent successfully');
+        wp_send_json_success(['message' => 'Thank you for subscribing! Check your email for confirmation.']);
+    } else {
+        error_log('Apex Newsletter AJAX: Notification email sending failed');
+        wp_send_json_error(['message' => 'Failed to subscribe. Please try again later.']);
+    }
+}
+add_action('wp_ajax_apex_newsletter_submit', 'apex_newsletter_ajax_handler');
+add_action('wp_ajax_nopriv_apex_newsletter_submit', 'apex_newsletter_ajax_handler');
+
 add_action('init', 'apex_handle_contact_form_submission');
 
 // Include PHPMailer classes at global scope
@@ -356,6 +470,143 @@ function apex_create_contact_email_html($data) {
         <div class="footer">
             <p>This email was sent from the Apex Softwares website contact form.</p>
             <p>Please respond to the inquiry within 24 hours.</p>
+        </div>
+    </body>
+    </html>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Create HTML email template for newsletter form submissions
+ */
+function apex_create_newsletter_email_html($data) {
+    ob_start();
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Newsletter Subscription</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f8f9fa;
+            }
+            .container {
+                background-color: #ffffff;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 600;
+            }
+            .header p {
+                margin: 10px 0 0 0;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+            }
+            .field-group {
+                margin-bottom: 25px;
+                padding: 20px;
+                background-color: #f8f9fa;
+                border-radius: 6px;
+                border-left: 4px solid #667eea;
+            }
+            .field-label {
+                font-weight: 600;
+                color: #667eea;
+                margin-bottom: 10px;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .field-value {
+                margin: 5px 0;
+                font-size: 16px;
+            }
+            .email-box {
+                background-color: #e3f2fd;
+                padding: 15px;
+                border-radius: 4px;
+                font-family: 'Courier New', monospace;
+                font-size: 16px;
+                text-align: center;
+                margin: 10px 0;
+            }
+            .footer {
+                background-color: #f8f9fa;
+                padding: 20px 30px;
+                text-align: center;
+                font-size: 14px;
+                color: #666;
+                border-top: 1px solid #e9ecef;
+            }
+            .success-badge {
+                display: inline-block;
+                background-color: #28a745;
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🎉 New Newsletter Subscription</h1>
+                <p>Someone wants to stay updated with your latest insights!</p>
+            </div>
+            
+            <div class="content">
+                <div class="field-group">
+                    <div class="field-label">Subscription Details</div>
+                    <p class="field-value"><strong>Status:</strong> <span class="success-badge">New Subscriber</span></p>
+                    <div class="email-box">
+                        📧 <?php echo esc_html($data['email']); ?>
+                    </div>
+                </div>
+                
+                <div class="field-group">
+                    <div class="field-label">Submission Information</div>
+                    <p class="field-value"><strong>Submitted:</strong> <?php echo esc_html($data['submission_date']); ?></p>
+                    <p class="field-value"><strong>IP Address:</strong> <?php echo esc_html($data['ip_address']); ?></p>
+                    <p class="field-value"><strong>Source:</strong> Apex Website Footer Newsletter Form</p>
+                </div>
+                
+                <div class="field-group">
+                    <div class="field-label">Next Steps</div>
+                    <p class="field-value">✅ This email has been added to your newsletter list</p>
+                    <p class="field-value">📧 Consider sending a welcome email to the subscriber</p>
+                    <p class="field-value">🔄 Add this contact to your email marketing platform</p>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>This email was sent from the Apex Softwares website newsletter form.</p>
+                <p>The subscriber has opted-in to receive your newsletter and updates.</p>
+            </div>
         </div>
     </body>
     </html>

@@ -497,3 +497,62 @@ Stack trace:
 (
 )
 
+[11-Feb-2026 10:20:18 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:20:18 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:21:04 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[11-Feb-2026 10:21:04 UTC] Apex Contact Form: POST data: Array
+(
+    [email] => business@waguramaurice.com
+)
+
+[11-Feb-2026 10:26:42 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:26:42 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:26:47 UTC] Apex Newsletter Form: Newsletter submission detected - PROCESSING
+[11-Feb-2026 10:26:47 UTC] Apex Newsletter Form: Processing newsletter subscription from business@waguramaurice.com
+[11-Feb-2026 10:26:47 UTC] Apex Newsletter Form: Attempting to send notification email
+[11-Feb-2026 10:26:47 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 10:26:56 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 10:26:56 UTC] Apex Newsletter Form: Notification email sending result: SUCCESS
+[11-Feb-2026 10:26:56 UTC] Apex Newsletter Form: Notification email sent successfully
+[11-Feb-2026 10:31:19 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:31:19 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:31:29 UTC] Apex Newsletter Form: Newsletter submission detected - PROCESSING
+[11-Feb-2026 10:31:29 UTC] Apex Newsletter Form: Processing newsletter subscription from business@waguramaurice.com
+[11-Feb-2026 10:31:29 UTC] Apex Newsletter Form: Attempting to send notification email
+[11-Feb-2026 10:31:29 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 10:31:34 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 10:31:34 UTC] Apex Newsletter Form: Notification email sending result: SUCCESS
+[11-Feb-2026 10:31:34 UTC] Apex Newsletter Form: Notification email sent successfully
+[11-Feb-2026 10:31:51 UTC] Apex Newsletter Form: Newsletter submission detected - PROCESSING
+[11-Feb-2026 10:31:51 UTC] Apex Newsletter Form: Processing newsletter subscription from wagura465@gmail.com
+[11-Feb-2026 10:31:51 UTC] Apex Newsletter Form: Attempting to send notification email
+[11-Feb-2026 10:31:51 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 10:31:56 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 10:31:56 UTC] Apex Newsletter Form: Notification email sending result: SUCCESS
+[11-Feb-2026 10:31:56 UTC] Apex Newsletter Form: Notification email sent successfully
+[11-Feb-2026 10:33:59 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[11-Feb-2026 10:33:59 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[11-Feb-2026 10:34:05 UTC] Apex Newsletter AJAX: Processing newsletter subscription from wagura465@gmail.com
+[11-Feb-2026 10:34:05 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[11-Feb-2026 10:34:05 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 10:34:10 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 10:34:10 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[11-Feb-2026 10:34:10 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[11-Feb-2026 10:34:27 UTC] Apex Newsletter AJAX: Processing newsletter subscription from business@waguramaurice.com
+[11-Feb-2026 10:34:27 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[11-Feb-2026 10:34:27 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[11-Feb-2026 10:34:31 UTC] Apex Direct Email: Email sent successfully
+[11-Feb-2026 10:34:31 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[11-Feb-2026 10:34:31 UTC] Apex Newsletter AJAX: Notification email sent successfully
