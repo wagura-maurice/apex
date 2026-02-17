@@ -1,62 +1,73 @@
 <?php 
 /**
  * Template Name: Insights Whitepapers Reports
- * Whitepapers & Reports Page Template
+ * Whitepapers & Reports Page Template - Dynamic Admin Controlled
  * 
  * @package ApexTheme
  */
 
 get_header(); 
-?>
 
-<?php 
-// Page Hero
+// Dynamic Hero Section - Admin Controlled
+$hero_stats = get_option('apex_reports_hero_stats_insights-whitepapers-reports', "30+ | Publications\n15K+ | Downloads\n10+ | Research Partners\n5 | Annual Reports");
+$stats_array = [];
+foreach (explode("\n", $hero_stats) as $stat_line) {
+    $parts = explode(' | ', $stat_line);
+    if (count($parts) >= 2) {
+        $stats_array[] = [
+            'value' => trim($parts[0]),
+            'label' => trim($parts[1])
+        ];
+    }
+}
+
 apex_render_about_hero([
-    'badge' => 'Research & Resources',
-    'heading' => 'Whitepapers & Reports',
-    'description' => 'In-depth research, industry analysis, and practical guides to help you make informed decisions about your digital transformation journey.',
-    'stats' => [
-        ['value' => '30+', 'label' => 'Publications'],
-        ['value' => '15K+', 'label' => 'Downloads'],
-        ['value' => '10+', 'label' => 'Research Partners'],
-        ['value' => '5', 'label' => 'Annual Reports']
-    ],
-    'image' => 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200'
+    'badge' => get_option('apex_reports_hero_badge_insights-whitepapers-reports', 'Research & Resources'),
+    'heading' => get_option('apex_reports_hero_heading_insights-whitepapers-reports', 'Whitepapers & Reports'),
+    'description' => get_option('apex_reports_hero_description_insights-whitepapers-reports', 'In-depth research, industry analysis, and practical guides to help you make informed decisions about your digital transformation journey.'),
+    'stats' => $stats_array,
+    'image' => get_option('apex_reports_hero_image_insights-whitepapers-reports', 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200')
 ]);
 ?>
 
 <section class="apex-reports-featured">
     <div class="apex-reports-featured__container">
         <div class="apex-reports-featured__header">
-            <span class="apex-reports-featured__badge">Featured Report</span>
+            <span class="apex-reports-featured__badge"><?php echo esc_html(get_option('apex_reports_featured_badge_insights-whitepapers-reports', 'Featured Report')); ?></span>
         </div>
         
         <div class="apex-reports-featured__card">
             <div class="apex-reports-featured__image">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600" alt="State of Digital Banking Report" loading="lazy">
-                <span class="apex-reports-featured__type">Annual Report</span>
+                <img src="<?php echo esc_url(get_option('apex_reports_featured_image_insights-whitepapers-reports', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600')); ?>" alt="<?php echo esc_attr(get_option('apex_reports_featured_title_insights-whitepapers-reports', 'Featured Report')); ?>" loading="lazy">
+                <span class="apex-reports-featured__type"><?php echo esc_html(get_option('apex_reports_featured_type_insights-whitepapers-reports', 'Annual Report')); ?></span>
             </div>
             <div class="apex-reports-featured__content">
-                <span class="apex-reports-featured__date">January 2026</span>
-                <h2 class="apex-reports-featured__title">The State of Digital Banking in Africa 2026</h2>
-                <p class="apex-reports-featured__excerpt">Our comprehensive annual report analyzing digital banking trends, adoption rates, and opportunities across 15 African markets. Based on surveys of 500+ financial institutions and analysis of 10 million+ transactions.</p>
+                <span class="apex-reports-featured__date"><?php echo esc_html(get_option('apex_reports_featured_date_insights-whitepapers-reports', 'January 2026')); ?></span>
+                <h2 class="apex-reports-featured__title"><?php echo esc_html(get_option('apex_reports_featured_title_insights-whitepapers-reports', 'The State of Digital Banking in Africa 2026')); ?></h2>
+                <p class="apex-reports-featured__excerpt"><?php echo esc_html(get_option('apex_reports_featured_excerpt_insights-whitepapers-reports', 'Our comprehensive annual report analyzing digital banking trends, adoption rates, and opportunities across 15 African markets. Based on surveys of 500+ financial institutions and analysis of 10 million+ transactions.')); ?></p>
                 
                 <div class="apex-reports-featured__highlights">
                     <h4>Key Findings:</h4>
                     <ul>
-                        <li>Mobile banking adoption grew 45% year-over-year</li>
-                        <li>AI-powered services now used by 60% of institutions</li>
-                        <li>Agent banking networks expanded to reach 50M+ users</li>
-                        <li>Cloud adoption accelerating with 70% planning migration</li>
+                        <?php
+                        $highlights = get_option('apex_reports_featured_highlights_insights-whitepapers-reports', 
+                            "Mobile banking adoption grew 45% year-over-year\nAI-powered services now used by 60% of institutions\nAgent banking networks expanded to reach 50M+ users\nCloud adoption accelerating with 70% planning migration"
+                        );
+                        foreach (explode("\n", $highlights) as $highlight) {
+                            if (trim($highlight)) {
+                                echo '<li>' . esc_html(trim($highlight)) . '</li>';
+                            }
+                        }
+                        ?>
                     </ul>
                 </div>
                 
                 <div class="apex-reports-featured__meta">
-                    <span><strong>Pages:</strong> 86</span>
-                    <span><strong>Format:</strong> PDF</span>
+                    <span><strong>Pages:</strong> <?php echo esc_html(get_option('apex_reports_featured_pages_insights-whitepapers-reports', '86')); ?></span>
+                    <span><strong>Format:</strong> <?php echo esc_html(get_option('apex_reports_featured_format_insights-whitepapers-reports', 'PDF')); ?></span>
                 </div>
                 
-                <a href="#" class="apex-reports-featured__cta">
+                <a href="<?php echo esc_url(get_option('apex_reports_featured_link_insights-whitepapers-reports', '#')); ?>" class="apex-reports-featured__cta">
                     Download Free Report
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                 </a>
@@ -67,28 +78,42 @@ apex_render_about_hero([
 
 <section class="apex-reports-categories">
     <div class="apex-reports-categories__container">
-        <h2 class="apex-reports-categories__heading">Browse by Category</h2>
+        <h2 class="apex-reports-categories__heading"><?php echo esc_html(get_option('apex_reports_categories_heading_insights-whitepapers-reports', 'Browse by Category')); ?></h2>
         <div class="apex-reports-categories__grid">
-            <a href="#" class="apex-reports-categories__item" data-category="industry-reports">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-                <span>Industry Reports</span>
-                <small>8 publications</small>
-            </a>
-            <a href="#" class="apex-reports-categories__item" data-category="whitepapers">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-                <span>Whitepapers</span>
-                <small>12 publications</small>
-            </a>
-            <a href="#" class="apex-reports-categories__item" data-category="guides">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                <span>Implementation Guides</span>
-                <small>6 publications</small>
-            </a>
-            <a href="#" class="apex-reports-categories__item" data-category="benchmarks">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-                <span>Benchmark Studies</span>
-                <small>4 publications</small>
-            </a>
+            <?php
+            // Category icons
+            $category_icons = [
+                'industry-reports' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>',
+                'whitepapers' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>',
+                'guides' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+                'benchmarks' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>'
+            ];
+            
+            $categories = get_option('apex_reports_categories_items_insights-whitepapers-reports', 
+                "industry-reports | Industry Reports | 8 publications\n" .
+                "whitepapers | Whitepapers | 12 publications\n" .
+                "guides | Implementation Guides | 6 publications\n" .
+                "benchmarks | Benchmark Studies | 4 publications"
+            );
+            
+            $category_lines = explode("\n", $categories);
+            foreach ($category_lines as $category_line) {
+                $parts = explode(' | ', $category_line);
+                if (count($parts) >= 3) {
+                    $id = trim($parts[0]);
+                    $title = trim($parts[1]);
+                    $count = trim($parts[2]);
+                    $icon = isset($category_icons[$id]) ? $category_icons[$id] : '';
+                    ?>
+                    <a href="#" class="apex-reports-categories__item" data-category="<?php echo esc_attr($id); ?>">
+                        <?php echo $icon; ?>
+                        <span><?php echo esc_html($title); ?></span>
+                        <small><?php echo esc_html($count); ?></small>
+                    </a>
+                    <?php
+                }
+            }
+            ?>
         </div>
     </div>
 </section>
@@ -281,38 +306,49 @@ apex_render_about_hero([
 <section class="apex-reports-custom">
     <div class="apex-reports-custom__container">
         <div class="apex-reports-custom__content">
-            <span class="apex-reports-custom__badge">Custom Research</span>
-            <h2 class="apex-reports-custom__heading">Need Custom Research?</h2>
-            <p class="apex-reports-custom__description">Our research team can conduct custom studies tailored to your specific needs, including market analysis, competitive benchmarking, and feasibility studies.</p>
+            <span class="apex-reports-custom__badge"><?php echo esc_html(get_option('apex_reports_custom_badge_insights-whitepapers-reports', 'Custom Research')); ?></span>
+            <h2 class="apex-reports-custom__heading"><?php echo esc_html(get_option('apex_reports_custom_heading_insights-whitepapers-reports', 'Need Custom Research?')); ?></h2>
+            <p class="apex-reports-custom__description"><?php echo esc_html(get_option('apex_reports_custom_description_insights-whitepapers-reports', 'Our research team can conduct custom studies tailored to your specific needs, including market analysis, competitive benchmarking, and feasibility studies.')); ?></p>
             
             <div class="apex-reports-custom__services">
-                <div class="apex-reports-custom__service">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                    <div>
-                        <strong>Market Analysis</strong>
-                        <span>Deep-dive into specific markets or segments</span>
-                    </div>
-                </div>
-                <div class="apex-reports-custom__service">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-                    <div>
-                        <strong>Competitive Benchmarking</strong>
-                        <span>Compare your performance against peers</span>
-                    </div>
-                </div>
-                <div class="apex-reports-custom__service">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-                    <div>
-                        <strong>Feasibility Studies</strong>
-                        <span>Assess viability of new initiatives</span>
-                    </div>
-                </div>
+                <?php
+                $services = get_option('apex_reports_custom_services_insights-whitepapers-reports', 
+                    "Market Analysis | Deep-dive into specific markets or segments\n" .
+                    "Competitive Benchmarking | Compare your performance against peers\n" .
+                    "Feasibility Studies | Assess viability of new initiatives"
+                );
+                $service_icons = [
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>',
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>',
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>'
+                ];
+                $service_lines = explode("\n", $services);
+                $icon_index = 0;
+                foreach ($service_lines as $service_line) {
+                    $parts = explode(' | ', $service_line);
+                    if (count($parts) >= 2) {
+                        $title = trim($parts[0]);
+                        $description = trim($parts[1]);
+                        $icon = isset($service_icons[$icon_index]) ? $service_icons[$icon_index] : '';
+                        ?>
+                        <div class="apex-reports-custom__service">
+                            <?php echo $icon; ?>
+                            <div>
+                                <strong><?php echo esc_html($title); ?></strong>
+                                <span><?php echo esc_html($description); ?></span>
+                            </div>
+                        </div>
+                        <?php
+                        $icon_index++;
+                    }
+                }
+                ?>
             </div>
             
-            <a href="<?php echo home_url('/contact'); ?>" class="apex-reports-custom__cta">Request Custom Research</a>
+            <a href="<?php echo esc_url(get_option('apex_reports_custom_link_insights-whitepapers-reports', home_url('/contact'))); ?>" class="apex-reports-custom__cta">Request Custom Research</a>
         </div>
         <div class="apex-reports-custom__image">
-            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500" alt="Research Team" loading="lazy">
+            <img src="<?php echo esc_url(get_option('apex_reports_custom_image_insights-whitepapers-reports', 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500')); ?>" alt="Research Team" loading="lazy">
         </div>
     </div>
 </section>
@@ -320,15 +356,15 @@ apex_render_about_hero([
 <section class="apex-reports-newsletter">
     <div class="apex-reports-newsletter__container">
         <div class="apex-reports-newsletter__content">
-            <h2 class="apex-reports-newsletter__heading">Get New Reports First</h2>
-            <p class="apex-reports-newsletter__description">Subscribe to be notified when we publish new research, whitepapers, and industry reports.</p>
+            <h2 class="apex-reports-newsletter__heading"><?php echo esc_html(get_option('apex_reports_newsletter_heading_insights-whitepapers-reports', 'Get New Reports First')); ?></h2>
+            <p class="apex-reports-newsletter__description"><?php echo esc_html(get_option('apex_reports_newsletter_description_insights-whitepapers-reports', 'Subscribe to be notified when we publish new research, whitepapers, and industry reports.')); ?></p>
             
             <form class="apex-reports-newsletter__form">
-                <input type="email" placeholder="Enter your email address" required>
-                <button type="submit">Subscribe</button>
+                <input type="email" placeholder="<?php echo esc_attr(get_option('apex_reports_newsletter_placeholder_insights-whitepapers-reports', 'Enter your email address')); ?>" required>
+                <button type="submit"><?php echo esc_html(get_option('apex_reports_newsletter_button_insights-whitepapers-reports', 'Subscribe')); ?></button>
             </form>
             
-            <p class="apex-reports-newsletter__note">Join 5,000+ subscribers. We respect your privacy.</p>
+            <p class="apex-reports-newsletter__note"><?php echo esc_html(get_option('apex_reports_newsletter_note_insights-whitepapers-reports', 'Join 5,000+ subscribers. We respect your privacy.')); ?></p>
         </div>
     </div>
 </section>

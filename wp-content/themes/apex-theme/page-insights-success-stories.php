@@ -1,64 +1,73 @@
 <?php 
 /**
  * Template Name: Insights Success Stories
- * Success Stories / Case Studies Page Template
+ * Success Stories / Case Studies Page Template - Dynamic Admin Controlled
  * 
  * @package ApexTheme
  */
 
 get_header(); 
-?>
 
-<?php 
-// Page Hero
+// Dynamic Hero Section - Admin Controlled
+$hero_stats = get_option('apex_stories_hero_stats_insights-success-stories', "100+ | Success Stories\n15+ | Countries\n40% | Avg. Cost Reduction\n3x | Customer Growth");
+$stats_array = [];
+foreach (explode("\n", $hero_stats) as $stat_line) {
+    $parts = explode(' | ', $stat_line);
+    if (count($parts) >= 2) {
+        $stats_array[] = [
+            'value' => trim($parts[0]),
+            'label' => trim($parts[1])
+        ];
+    }
+}
+
 apex_render_about_hero([
-    'badge' => 'Success Stories',
-    'heading' => 'Real Results, Real Impact',
-    'description' => 'Discover how financial institutions across Africa are transforming their operations, reaching more customers, and driving growth with Apex Softwares solutions.',
-    'stats' => [
-        ['value' => '100+', 'label' => 'Success Stories'],
-        ['value' => '15+', 'label' => 'Countries'],
-        ['value' => '40%', 'label' => 'Avg. Cost Reduction'],
-        ['value' => '3x', 'label' => 'Customer Growth']
-    ],
-    'image' => 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200'
+    'badge' => get_option('apex_stories_hero_badge_insights-success-stories', 'Success Stories'),
+    'heading' => get_option('apex_stories_hero_heading_insights-success-stories', 'Real Results, Real Impact'),
+    'description' => get_option('apex_stories_hero_description_insights-success-stories', 'Discover how financial institutions across Africa are transforming their operations, reaching more customers, and driving growth with Apex Softwares solutions.'),
+    'stats' => $stats_array,
+    'image' => get_option('apex_stories_hero_image_insights-success-stories', 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200')
 ]);
 ?>
 
 <section class="apex-stories-featured">
     <div class="apex-stories-featured__container">
         <div class="apex-stories-featured__header">
-            <span class="apex-stories-featured__badge">Featured Story</span>
+            <span class="apex-stories-featured__badge"><?php echo esc_html(get_option('apex_stories_featured_badge_insights-success-stories', 'Featured Story')); ?></span>
         </div>
         
         <div class="apex-stories-featured__card">
             <div class="apex-stories-featured__image">
-                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800" alt="Kenya National SACCO" loading="lazy">
+                <img src="<?php echo esc_url(get_option('apex_stories_featured_image_insights-success-stories', 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800')); ?>" alt="<?php echo esc_attr(get_option('apex_stories_featured_logo_insights-success-stories', 'Featured Company')); ?>" loading="lazy">
                 <div class="apex-stories-featured__logo">
-                    <span>Kenya National SACCO</span>
+                    <span><?php echo esc_html(get_option('apex_stories_featured_logo_insights-success-stories', 'Kenya National SACCO')); ?></span>
                 </div>
             </div>
             <div class="apex-stories-featured__content">
-                <span class="apex-stories-featured__category">SACCO</span>
-                <h2 class="apex-stories-featured__title">How Kenya National SACCO Grew Membership by 300% with Digital Transformation</h2>
-                <p class="apex-stories-featured__excerpt">Kenya National SACCO faced declining membership and high operational costs. By implementing ApexCore and our mobile banking solution, they transformed their member experience and achieved remarkable growth.</p>
+                <span class="apex-stories-featured__category"><?php echo esc_html(get_option('apex_stories_featured_category_insights-success-stories', 'SACCO')); ?></span>
+                <h2 class="apex-stories-featured__title"><?php echo esc_html(get_option('apex_stories_featured_title_insights-success-stories', 'How Kenya National SACCO Grew Membership by 300% with Digital Transformation')); ?></h2>
+                <p class="apex-stories-featured__excerpt"><?php echo esc_html(get_option('apex_stories_featured_excerpt_insights-success-stories', 'Kenya National SACCO faced declining membership and high operational costs. By implementing ApexCore and our mobile banking solution, they transformed their member experience and achieved remarkable growth.')); ?></p>
                 
                 <div class="apex-stories-featured__results">
-                    <div class="apex-stories-featured__result">
-                        <span class="apex-stories-featured__result-value">300%</span>
-                        <span class="apex-stories-featured__result-label">Membership Growth</span>
-                    </div>
-                    <div class="apex-stories-featured__result">
-                        <span class="apex-stories-featured__result-value">65%</span>
-                        <span class="apex-stories-featured__result-label">Cost Reduction</span>
-                    </div>
-                    <div class="apex-stories-featured__result">
-                        <span class="apex-stories-featured__result-value">4.8/5</span>
-                        <span class="apex-stories-featured__result-label">Member Satisfaction</span>
-                    </div>
+                    <?php
+                    $featured_results = get_option('apex_stories_featured_results_insights-success-stories', "300% | Membership Growth\n65% | Cost Reduction\n4.8/5 | Member Satisfaction");
+                    foreach (explode("\n", $featured_results) as $result_line) {
+                        $parts = explode(' | ', $result_line);
+                        if (count($parts) >= 2) {
+                            $value = trim($parts[0]);
+                            $label = trim($parts[1]);
+                            ?>
+                            <div class="apex-stories-featured__result">
+                                <span class="apex-stories-featured__result-value"><?php echo esc_html($value); ?></span>
+                                <span class="apex-stories-featured__result-label"><?php echo esc_html($label); ?></span>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
                 </div>
                 
-                <a href="#" class="apex-stories-featured__link">
+                <a href="<?php echo esc_url(get_option('apex_stories_featured_link_insights-success-stories', '#')); ?>" class="apex-stories-featured__link">
                     Read Full Case Study
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
@@ -324,28 +333,30 @@ apex_render_about_hero([
 <section class="apex-stories-impact">
     <div class="apex-stories-impact__container">
         <div class="apex-stories-impact__header">
-            <span class="apex-stories-impact__badge">Our Impact</span>
-            <h2 class="apex-stories-impact__heading">Driving Financial Inclusion Across Africa</h2>
-            <p class="apex-stories-impact__description">Together with our clients, we're making a measurable difference in communities across the continent.</p>
+            <span class="apex-stories-impact__badge"><?php echo esc_html(get_option('apex_stories_impact_badge_insights-success-stories', 'Our Impact')); ?></span>
+            <h2 class="apex-stories-impact__heading"><?php echo esc_html(get_option('apex_stories_impact_heading_insights-success-stories', 'Driving Financial Inclusion Across Africa')); ?></h2>
+            <p class="apex-stories-impact__description"><?php echo esc_html(get_option('apex_stories_impact_description_insights-success-stories', "Together with our clients, we're making a measurable difference in communities across the continent.")); ?></p>
         </div>
         
         <div class="apex-stories-impact__grid">
-            <div class="apex-stories-impact__item">
-                <span class="apex-stories-impact__value">10M+</span>
-                <span class="apex-stories-impact__label">End Users Served</span>
-            </div>
-            <div class="apex-stories-impact__item">
-                <span class="apex-stories-impact__value">$5B+</span>
-                <span class="apex-stories-impact__label">Transactions Processed</span>
-            </div>
-            <div class="apex-stories-impact__item">
-                <span class="apex-stories-impact__value">2M+</span>
-                <span class="apex-stories-impact__label">Previously Unbanked Reached</span>
-            </div>
-            <div class="apex-stories-impact__item">
-                <span class="apex-stories-impact__value">500K+</span>
-                <span class="apex-stories-impact__label">Small Businesses Empowered</span>
-            </div>
+            <?php
+            $impact_items = get_option('apex_stories_impact_items_insights-success-stories', 
+                "10M+ | End Users Served\n\$5B+ | Transactions Processed\n2M+ | Previously Unbanked Reached\n500K+ | Small Businesses Empowered"
+            );
+            foreach (explode("\n", $impact_items) as $item_line) {
+                $parts = explode(' | ', $item_line);
+                if (count($parts) >= 2) {
+                    $value = trim($parts[0]);
+                    $label = trim($parts[1]);
+                    ?>
+                    <div class="apex-stories-impact__item">
+                        <span class="apex-stories-impact__value"><?php echo esc_html($value); ?></span>
+                        <span class="apex-stories-impact__label"><?php echo esc_html($label); ?></span>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
         </div>
     </div>
 </section>

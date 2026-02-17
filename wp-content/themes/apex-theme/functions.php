@@ -398,7 +398,7 @@ function apex_demo_request_ajax_handler() {
             'country'          => $country,
             'solutions'        => $solutions,
             'message'          => $message,
-            'has_attachment'    => !empty($attachments),
+            'has_attachment'   => !empty($attachments),
             'attachment_name'  => !empty($attachments) ? $attachments[0]['name'] : '',
             'submission_date'  => current_time('F j, Y, g:i a'),
             'ip_address'       => $_SERVER['REMOTE_ADDR'] ?? 'Unknown',
@@ -1986,11 +1986,14 @@ function apex_register_website_settings_menu() {
         ['title' => 'Webinars & Events', 'slug' => 'insights-webinars', 'href' => home_url('/insights/webinars'), 'parent' => 'Insights'],
         ['title' => 'Whitepapers & Reports', 'slug' => 'insights-whitepapers-reports', 'href' => home_url('/insights/whitepapers-reports'), 'parent' => 'Insights'],
         
+        // Partners
+        ['title' => 'Partners', 'slug' => 'partners', 'href' => home_url('/partners')],
+        
         // Standalone items
         ['title' => 'Contact Us', 'slug' => 'contact', 'href' => home_url('/contact')],
         
         // Footer routes from footer.php
-        ['title' => 'Support', 'slug' => 'help-support', 'href' => home_url('/help-support')],
+        // ['title' => 'Support', 'slug' => 'help-support', 'href' => home_url('/help-support')],
         ['title' => 'Careers', 'slug' => 'careers', 'href' => home_url('/careers'), 'parent' => 'Support'],
         ['title' => 'Help & Support', 'slug' => 'help-support', 'href' => home_url('/help-support'), 'parent' => 'Support'],
         ['title' => 'FAQ', 'slug' => 'faq', 'href' => home_url('/faq'), 'parent' => 'Support'],
@@ -1999,7 +2002,7 @@ function apex_register_website_settings_menu() {
         ['title' => 'Partners', 'slug' => 'partners', 'href' => home_url('/partners'), 'parent' => 'Support'],
         ['title' => 'Request Demo', 'slug' => 'request-demo', 'href' => home_url('/request-demo'), 'parent' => 'Support'],
         
-        ['title' => 'Legal', 'slug' => 'privacy-policy', 'href' => home_url('/privacy-policy')],
+        // ['title' => 'Legal', 'slug' => 'privacy-policy', 'href' => home_url('/privacy-policy')],
         ['title' => 'Privacy Policy', 'slug' => 'privacy-policy', 'href' => home_url('/privacy-policy'), 'parent' => 'Legal'],
         ['title' => 'Terms and Conditions', 'slug' => 'terms-and-conditions', 'href' => home_url('/terms-and-conditions'), 'parent' => 'Legal'],
     ];
@@ -2565,6 +2568,30 @@ function apex_render_page_editor($page_slug, $page_title) {
             'title' => 'Whitepapers & Reports',
             'acf_group' => 'group_insights_whitepapers'
         ],
+        'partners' => [
+            'title' => 'Partners',
+            'acf_group' => ''
+        ],
+        'developers' => [
+            'title' => 'Developers',
+            'acf_group' => ''
+        ],
+        'knowledge-base' => [
+            'title' => 'Knowledge Base',
+            'acf_group' => ''
+        ],
+        'faq' => [
+            'title' => 'FAQ',
+            'acf_group' => ''
+        ],
+        'help-support' => [
+            'title' => 'Help & Support',
+            'acf_group' => ''
+        ],
+        'careers' => [
+            'title' => 'Careers',
+            'acf_group' => ''
+        ],
         'contact' => [
             'title' => 'Contact Us',
             'acf_group' => 'group_contact'
@@ -2630,7 +2657,8 @@ function apex_render_fallback_form($page_slug, $config) {
         <h3>Edit Content: <?php echo esc_html($config['title']); ?></h3>
         <p class="description">Update the content for this page. Changes will appear immediately on the frontend.</p>
         
-        <!-- Hero Section (Common to both pages) -->
+        <?php if ($page_slug !== 'home' && $page_slug !== 'solutions-overview' && $page_slug !== 'solutions-core-banking-microfinance' && $page_slug !== 'solutions-mobile-wallet-app' && $page_slug !== 'solutions-agency-branch-banking' && $page_slug !== 'solutions-internet-mobile-banking' && $page_slug !== 'solutions-loan-origination-workflows' && $page_slug !== 'solutions-digital-field-agent' && $page_slug !== 'solutions-enterprise-integration' && $page_slug !== 'solutions-payment-switch-ledger' && $page_slug !== 'solutions-reporting-analytics' && $page_slug !== 'industry-overview' && $page_slug !== 'industry-mfis' && $page_slug !== 'industry-credit-unions' && $page_slug !== 'industry-banks-microfinance' && $page_slug !== 'industry-digital-government' && $page_slug !== 'insights-blog' && $page_slug !== 'request-demo' && $page_slug !== 'insights-success-stories' && $page_slug !== 'insights-webinars' && $page_slug !== 'insights-whitepapers-reports' && $page_slug !== 'partners' && $page_slug !== 'developers' && $page_slug !== 'knowledge-base' && $page_slug !== 'faq' && $page_slug !== 'help-support' && $page_slug !== 'careers'): ?>
+        <!-- Hero Section (Common to other pages, not home or solutions pages) -->
         <div style="margin-bottom: 30px;">
             <h4>🚀 Hero Section</h4>
             <table class="form-table">
@@ -2682,7 +2710,820 @@ function apex_render_fallback_form($page_slug, $config) {
                 </tr>
             </table>
         </div>
+        <?php endif; ?>
 
+        <?php if ($page_slug === 'home'): ?>
+        <!-- Home Page Specific Sections -->
+        
+        <!-- Hero Slides Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🎯 Hero Slides Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This controls the main hero carousel with multiple slides.</strong> Each slide has an image, heading, subheading, and alt text.</p>
+                <p><strong>Format for slides:</strong> Enter each slide on a new line using this format:<br>
+                <code>Image URL | Heading | Subheading | Alt Text</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_hero_slides">Hero Slides</label></th>
+                    <td>
+                        <textarea id="apex_hero_slides" name="apex_hero_slides" rows="20" class="large-text"
+                                  placeholder="https://images.unsplash.com/photo-1551434678-e076c223a692?w=1920 | Launch Your Digital Bank of the Future | Power your winning neobank strategy with ApexCore – the web-based, multi-tenant core banking platform built for MFIs, SACCOs, and banks. | Digital Core Banking Platform&#10;https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920 | Omnichannel Banking Made Simple | Deliver mobile apps, USSD, and web banking experiences that share workflows, limits, and risk rules across every touchpoint. | Omnichannel Banking Solutions&#10;https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1920 | Extend Your Reach with Agent Banking | Equip staff and agents with offline-ready apps for onboarding, KYC, collections, and monitoring—safely synced into your core. | Agent Banking Solutions"><?php 
+                            $slides = get_option('apex_hero_slides_' . $page_slug, "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1920 | Launch Your Digital Bank of the Future | Power your winning neobank strategy with ApexCore – the web-based, multi-tenant core banking platform built for MFIs, SACCOs, and banks. | Digital Core Banking Platform\nhttps://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920 | Omnichannel Banking Made Simple | Deliver mobile apps, USSD, and web banking experiences that share workflows, limits, and risk rules across every touchpoint. | Omnichannel Banking Solutions\nhttps://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1920 | Extend Your Reach with Agent Banking | Equip staff and agents with offline-ready apps for onboarding, KYC, collections, and monitoring—safely synced into your core. | Agent Banking Solutions");
+                            echo esc_textarea($slides);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Image URL | Heading | Subheading | Alt Text (one slide per line)</p>
+                        <div style="background: #f8f9fa; padding: 10px; margin-top: 10px; border-left: 3px solid #007cba;">
+                            <strong>💡 Tip:</strong> Use high-quality images (1920x1080px recommended). The first slide is shown by default.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_tagline">Hero Tagline</label></th>
+                    <td>
+                        <input type="text" id="apex_hero_tagline" name="apex_hero_tagline" 
+                               value="<?php echo esc_attr(get_option('apex_hero_tagline_' . $page_slug, 'ApexCore Platform')); ?>" 
+                               class="regular-text" placeholder="e.g., ApexCore Platform">
+                        <p class="description">The tagline displayed below hero slides</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_cta_primary">Primary CTA Text</label></th>
+                    <td>
+                        <input type="text" id="apex_hero_cta_primary" name="apex_hero_cta_primary" 
+                               value="<?php echo esc_attr(get_option('apex_hero_cta_primary_' . $page_slug, 'Explore the Platform')); ?>" 
+                               class="regular-text" placeholder="e.g., Explore the Platform">
+                        <p class="description">Primary call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_cta_primary_url">Primary CTA URL</label></th>
+                    <td>
+                        <input type="url" id="apex_hero_cta_primary_url" name="apex_hero_cta_primary_url" 
+                               value="<?php echo esc_attr(get_option('apex_hero_cta_primary_url_' . $page_slug, home_url('/request-demo'))); ?>" 
+                               class="regular-text" placeholder="/request-demo">
+                        <p class="description">Primary call-to-action button URL</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_cta_secondary">Secondary CTA Text</label></th>
+                    <td>
+                        <input type="text" id="apex_hero_cta_secondary" name="apex_hero_cta_secondary" 
+                               value="<?php echo esc_attr(get_option('apex_hero_cta_secondary_' . $page_slug, 'View Solutions')); ?>" 
+                               class="regular-text" placeholder="e.g., View Solutions">
+                        <p class="description">Secondary call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_cta_secondary_url">Secondary CTA URL</label></th>
+                    <td>
+                        <input type="url" id="apex_hero_cta_secondary_url" name="apex_hero_cta_secondary_url" 
+                               value="<?php echo esc_attr(get_option('apex_hero_cta_secondary_url_' . $page_slug, home_url('/solutions'))); ?>" 
+                               class="regular-text" placeholder="/solutions">
+                        <p class="description">Secondary call-to-action button URL</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_banner_text">Banner Text</label></th>
+                    <td>
+                        <input type="text" id="apex_hero_banner_text" name="apex_hero_banner_text" 
+                               value="<?php echo esc_attr(get_option('apex_hero_banner_text_' . $page_slug, 'Apex Softwares\' technology solutions impact <strong>100+ financial institutions</strong> across Africa.')); ?>" 
+                               class="regular-text" placeholder="Banner text below hero">
+                        <p class="description">Banner text below hero (HTML allowed)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_banner_link_text">Banner Link Text</label></th>
+                    <td>
+                        <input type="text" id="apex_hero_banner_link_text" name="apex_hero_banner_link_text" 
+                               value="<?php echo esc_attr(get_option('apex_hero_banner_link_text_' . $page_slug, 'Learn More')); ?>" 
+                               class="regular-text" placeholder="e.g., Learn More">
+                        <p class="description">Banner link text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_hero_banner_link_url">Banner Link URL</label></th>
+                    <td>
+                        <input type="url" id="apex_hero_banner_link_url" name="apex_hero_banner_link_url" 
+                               value="<?php echo esc_attr(get_option('apex_hero_banner_link_url_' . $page_slug, home_url('/about-us'))); ?>" 
+                               class="regular-text" placeholder="/about-us">
+                        <p class="description">Banner link URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Who We Are Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🏢 Who We Are Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section introduces your company with key features and statistics.</strong> Includes badge, heading, description, feature cards with icons, and an image.</p>
+                <p><strong>Format for features:</strong> Enter each feature on a new line using this format:<br>
+                <code>Icon Name | Title | Text</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_who_we_are_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_who_we_are_badge" name="apex_who_we_are_badge" 
+                               value="<?php echo esc_attr(get_option('apex_who_we_are_badge_' . $page_slug, 'Who We Are')); ?>" 
+                               class="regular-text" placeholder="e.g., Who We Are">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_who_we_are_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_who_we_are_heading" name="apex_who_we_are_heading" 
+                               value="<?php echo esc_attr(get_option('apex_who_we_are_heading_' . $page_slug, 'Pioneering Digital Financial Solutions Across Africa')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the who we are section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_who_we_are_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_who_we_are_description" name="apex_who_we_are_description" rows="4" class="large-text"
+                                  placeholder="Company description"><?php 
+                            echo esc_textarea(get_option('apex_who_we_are_description_' . $page_slug, 'Apex Softwares is a leading financial technology company dedicated to transforming how financial institutions operate. With over a decade of experience, we deliver innovative, scalable, and secure solutions that empower banks, MFIs, and SACCOs to thrive in the digital age.'));
+                        ?></textarea>
+                        <p class="description">Company description paragraph</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_who_we_are_features">Feature Cards</label></th>
+                    <td>
+                        <textarea id="apex_who_we_are_features" name="apex_who_we_are_features" rows="12" class="large-text"
+                                  placeholder="shield | Trusted Partner | 100+ financial institutions rely on our platform&#10;globe | Pan-African Reach | Operating across 15+ countries in Africa&#10;award | Industry Leader | Award-winning fintech solutions since 2010"><?php 
+                            $features = get_option('apex_who_we_are_features_' . $page_slug, "shield | Trusted Partner | 100+ financial institutions rely on our platform\nglobe | Pan-African Reach | Operating across 15+ countries in Africa\naward | Industry Leader | Award-winning fintech solutions since 2010");
+                            echo esc_textarea($features);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Icon Name | Title | Text (one feature per line)</p>
+                        <p class="description"><strong>Available icons:</strong> shield, globe, award, users, building, etc.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_who_we_are_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_who_we_are_image" name="apex_who_we_are_image" 
+                               value="<?php echo esc_attr(get_option('apex_who_we_are_image_' . $page_slug, 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                        <p class="description">Image URL for the who we are section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_who_we_are_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_who_we_are_cta_text" name="apex_who_we_are_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_who_we_are_cta_text_' . $page_slug, 'Learn More About Us')); ?>" 
+                               class="regular-text" placeholder="e.g., Learn More About Us">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_who_we_are_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_who_we_are_cta_url" name="apex_who_we_are_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_who_we_are_cta_url_' . $page_slug, home_url('/about-us'))); ?>" 
+                               class="regular-text" placeholder="/about-us">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- What We Do Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⚙️ What We Do Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your services/solutions.</strong> Each service includes an icon, title, description, link, and color theme.</p>
+                <p><strong>Format for services:</strong> Enter each service on a new line using this format:<br>
+                <code>Icon | Title | Description | Link | Color</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_what_we_do_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_what_we_do_badge" name="apex_what_we_do_badge" 
+                               value="<?php echo esc_attr(get_option('apex_what_we_do_badge_' . $page_slug, 'What We Do')); ?>" 
+                               class="regular-text" placeholder="e.g., What We Do">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_what_we_do_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_what_we_do_heading" name="apex_what_we_do_heading" 
+                               value="<?php echo esc_attr(get_option('apex_what_we_do_heading_' . $page_slug, 'Comprehensive Financial Technology Solutions')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the what we do section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_what_we_do_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_what_we_do_description" name="apex_what_we_do_description" rows="3" class="large-text"
+                                  placeholder="Services description"><?php 
+                            echo esc_textarea(get_option('apex_what_we_do_description_' . $page_slug, 'We provide end-to-end digital banking solutions that transform how financial institutions serve their customers.'));
+                        ?></textarea>
+                        <p class="description">Brief description of your services</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_what_we_do_services">Services List</label></th>
+                    <td>
+                        <textarea id="apex_what_we_do_services" name="apex_what_we_do_services" rows="25" class="large-text"
+                                  placeholder="database | Core Banking System | A robust, scalable core banking platform that handles deposits, loans, payments, and accounting with real-time processing. | /solutions/core-banking | blue&#10;smartphone | Mobile Banking | Native mobile applications for iOS and Android with biometric authentication, instant transfers, and bill payments. | /solutions/mobile-banking | orange"><?php 
+                            $services = get_option('apex_what_we_do_services_' . $page_slug, "database | Core Banking System | A robust, scalable core banking platform that handles deposits, loans, payments, and accounting with real-time processing. | /solutions/core-banking | blue\nsmartphone | Mobile Banking | Native mobile applications for iOS and Android with biometric authentication, instant transfers, and bill payments. | /solutions/mobile-banking | orange\nusers | Agent Banking | Extend your reach with agent networks. Enable cash-in, cash-out, account opening, and loan collections. | /solutions/agent-banking | green\ncredit-card | Payment Gateway | Secure payment processing with support for cards, mobile money, bank transfers, and QR payments. | /solutions/payments | purple\nbar-chart | Analytics & Reporting | Real-time dashboards, regulatory reports, and business intelligence tools for data-driven decisions. | /solutions/analytics | cyan\nshield | Risk & Compliance | AML/KYC compliance, fraud detection, credit scoring, and regulatory reporting automation. | /solutions/compliance | red");
+                            echo esc_textarea($services);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Icon | Title | Description | Link | Color (one service per line)</p>
+                        <p class="description"><strong>Available colors:</strong> blue, orange, green, purple, cyan, red</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_what_we_do_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_what_we_do_cta_text" name="apex_what_we_do_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_what_we_do_cta_text_' . $page_slug, 'Explore All Solutions')); ?>" 
+                               class="regular-text" placeholder="e.g., Explore All Solutions">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_what_we_do_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_what_we_do_cta_url" name="apex_what_we_do_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_what_we_do_cta_url_' . $page_slug, home_url('/solutions'))); ?>" 
+                               class="regular-text" placeholder="/solutions">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- How We Do It Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔄 How We Do It Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section explains your implementation process.</strong> Each step includes a number, title, description, icon, and duration.</p>
+                <p><strong>Format for steps:</strong> Enter each step on a new line using this format:<br>
+                <code>Number | Title | Description | Icon | Duration</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_how_we_do_it_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_how_we_do_it_badge" name="apex_how_we_do_it_badge" 
+                               value="<?php echo esc_attr(get_option('apex_how_we_do_it_badge_' . $page_slug, 'How We Do It')); ?>" 
+                               class="regular-text" placeholder="e.g., How We Do It">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_how_we_do_it_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_how_we_do_it_heading" name="apex_how_we_do_it_heading" 
+                               value="<?php echo esc_attr(get_option('apex_how_we_do_it_heading_' . $page_slug, 'Our Proven Implementation Approach')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the how we do it section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_how_we_do_it_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_how_we_do_it_description" name="apex_how_we_do_it_description" rows="3" class="large-text"
+                                  placeholder="Process description"><?php 
+                            echo esc_textarea(get_option('apex_how_we_do_it_description_' . $page_slug, 'We follow a structured methodology that ensures successful deployments, minimal disruption, and maximum value for your institution.'));
+                        ?></textarea>
+                        <p class="description">Brief description of your implementation approach</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_how_we_do_it_steps">Implementation Steps</label></th>
+                    <td>
+                        <textarea id="apex_how_we_do_it_steps" name="apex_how_we_do_it_steps" rows="20" class="large-text"
+                                  placeholder="01 | Discovery & Assessment | We analyze your current systems, processes, and requirements to create a tailored implementation roadmap. | search | 2-4 Weeks&#10;02 | Solution Design | Our architects design a customized solution that integrates seamlessly with your existing infrastructure. | layout | 3-6 Weeks"><?php 
+                            $steps = get_option('apex_how_we_do_it_steps_' . $page_slug, "01 | Discovery & Assessment | We analyze your current systems, processes, and requirements to create a tailored implementation roadmap. | search | 2-4 Weeks\n02 | Solution Design | Our architects design a customized solution that integrates seamlessly with your existing infrastructure. | layout | 3-6 Weeks\n03 | Development & Configuration | We configure the platform to your specifications and develop any custom modules required. | code | 6-12 Weeks\n04 | Testing & Training | Rigorous testing ensures quality while comprehensive training prepares your team for success. | check-circle | 4-6 Weeks\n05 | Go-Live & Support | We ensure a smooth launch with dedicated support and continuous optimization post-deployment. | rocket | Ongoing");
+                            echo esc_textarea($steps);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Number | Title | Description | Icon | Duration (one step per line)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_how_we_do_it_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_how_we_do_it_cta_text" name="apex_how_we_do_it_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_how_we_do_it_cta_text_' . $page_slug, 'Start Your Journey')); ?>" 
+                               class="regular-text" placeholder="e.g., Start Your Journey">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_how_we_do_it_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_how_we_do_it_cta_url" name="apex_how_we_do_it_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_how_we_do_it_cta_url_' . $page_slug, home_url('/contact'))); ?>" 
+                               class="regular-text" placeholder="/contact">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Statistics Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Statistics Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays key statistics with icons and values.</strong> Each stat includes a value, suffix, label, and icon.</p>
+                <p><strong>Format for statistics:</strong> Enter each stat on a new line using this format:<br>
+                <code>Value | Suffix | Label | Icon</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_statistics_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_statistics_heading" name="apex_statistics_heading" 
+                               value="<?php echo esc_attr(get_option('apex_statistics_heading_' . $page_slug, 'Powering Financial Institutions Across Africa')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the statistics section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_statistics_subheading">Section Subheading</label></th>
+                    <td>
+                        <textarea id="apex_statistics_subheading" name="apex_statistics_subheading" rows="2" class="large-text"
+                                  placeholder="Section subheading"><?php 
+                            echo esc_textarea(get_option('apex_statistics_subheading_' . $page_slug, 'Our platform processes millions of transactions daily, serving customers across the continent.'));
+                        ?></textarea>
+                        <p class="description">Brief description below the heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_statistics_stats">Statistics List</label></th>
+                    <td>
+                        <textarea id="apex_statistics_stats" name="apex_statistics_stats" rows="12" class="large-text"
+                                  placeholder="100 | + | Financial Institutions | building&#10;15 | + | Countries Served | globe&#10;5 | M+ | Active Users | users&#10;99.9 | % | Uptime SLA | shield"><?php 
+                            $stats = get_option('apex_statistics_stats_' . $page_slug, "100 | + | Financial Institutions | building\n15 | + | Countries Served | globe\n5 | M+ | Active Users | users\n99.9 | % | Uptime SLA | shield");
+                            echo esc_textarea($stats);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Value | Suffix | Label | Icon (one stat per line)</p>
+                        <p class="description"><strong>Example:</strong> 100 | + | Financial Institutions | building</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_statistics_background_image">Background Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_statistics_background_image" name="apex_statistics_background_image" 
+                               value="<?php echo esc_attr(get_option('apex_statistics_background_image_' . $page_slug, 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                        <p class="description">Background image for statistics section</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Testimonials Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💬 Testimonials Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays client testimonials.</strong> Each testimonial includes quote, author, position, company, image, and rating.</p>
+                <p><strong>Format for testimonials:</strong> Enter each testimonial on a new line using this format:<br>
+                <code>Quote | Author | Position | Company | Image URL | Rating (1-5)</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_testimonials_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_testimonials_badge" name="apex_testimonials_badge" 
+                               value="<?php echo esc_attr(get_option('apex_testimonials_badge_' . $page_slug, 'Client Success Stories')); ?>" 
+                               class="regular-text" placeholder="e.g., Client Success Stories">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_testimonials_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_testimonials_heading" name="apex_testimonials_heading" 
+                               value="<?php echo esc_attr(get_option('apex_testimonials_heading_' . $page_slug, 'Trusted by Leading Financial Institutions')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the testimonials section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_testimonials_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_testimonials_description" name="apex_testimonials_description" rows="3" class="large-text"
+                                  placeholder="Section description"><?php 
+                            echo esc_textarea(get_option('apex_testimonials_description_' . $page_slug, 'See what our clients say about transforming their operations with ApexCore.'));
+                        ?></textarea>
+                        <p class="description">Brief description of the testimonials section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_testimonials_list">Testimonials List</label></th>
+                    <td>
+                        <textarea id="apex_testimonials_list" name="apex_testimonials_list" rows="20" class="large-text"
+                                  placeholder="ApexCore has revolutionized our operations. We've seen a 40% increase in efficiency and our customers love the new mobile banking experience. | James Mwangi | CEO | Unity SACCO | https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150 | 5"><?php 
+                            $testimonials = get_option('apex_testimonials_list_' . $page_slug, "ApexCore has revolutionized our operations. We've seen a 40% increase in efficiency and our customers love the new mobile banking experience. | James Mwangi | CEO | Unity SACCO | https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150 | 5\nThe implementation was smooth and the support team is exceptional. We went live in just 12 weeks with zero downtime. | Sarah Ochieng | CTO | Premier MFI | https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150 | 5\nThe agent banking module has helped us reach rural communities we couldn't serve before. Our customer base has grown by 60%. | David Kimani | Operations Director | Heritage Bank | https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150 | 5\nReal-time reporting and analytics have transformed how we make decisions. We now have complete visibility into our operations. | Grace Wanjiku | Finance Manager | Faulu Microfinance | https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150 | 5");
+                            echo esc_textarea($testimonials);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Quote | Author | Position | Company | Image URL | Rating (one testimonial per line)</p>
+                        <p class="description"><strong>Rating:</strong> Use 1-5 for star rating</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Partners Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🤝 Partners Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your technology and integration partners.</strong> Includes badge, heading, description, and call-to-action.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_partners_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_badge" name="apex_partners_badge" 
+                               value="<?php echo esc_attr(get_option('apex_partners_badge_' . $page_slug, 'Our Partners')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Partners">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_heading" name="apex_partners_heading" 
+                               value="<?php echo esc_attr(get_option('apex_partners_heading_' . $page_slug, 'Trusted Technology & Integration Partners')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the partners section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_partners_description" name="apex_partners_description" rows="3" class="large-text"
+                                  placeholder="Partners description"><?php 
+                            echo esc_textarea(get_option('apex_partners_description_' . $page_slug, 'We collaborate with leading technology providers to deliver comprehensive solutions.'));
+                        ?></textarea>
+                        <p class="description">Brief description of your partnerships</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_cta_text" name="apex_partners_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_partners_cta_text_' . $page_slug, 'Become a Partner')); ?>" 
+                               class="regular-text" placeholder="e.g., Become a Partner">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_partners_cta_url" name="apex_partners_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_partners_cta_url_' . $page_slug, home_url('/partners'))); ?>" 
+                               class="regular-text" placeholder="/partners">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ROI Calculator Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💰 ROI Calculator Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section provides an interactive ROI calculator.</strong> Includes badge, heading, description, and call-to-action.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_roi_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_roi_badge" name="apex_roi_badge" 
+                               value="<?php echo esc_attr(get_option('apex_roi_badge_' . $page_slug, 'ROI Calculator')); ?>" 
+                               class="regular-text" placeholder="e.g., ROI Calculator">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_roi_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_roi_heading" name="apex_roi_heading" 
+                               value="<?php echo esc_attr(get_option('apex_roi_heading_' . $page_slug, 'Calculate Your Return on Investment')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the ROI calculator section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_roi_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_roi_description" name="apex_roi_description" rows="3" class="large-text"
+                                  placeholder="ROI description"><?php 
+                            echo esc_textarea(get_option('apex_roi_description_' . $page_slug, 'See how ApexCore can transform your financial institution\'s efficiency and profitability.'));
+                        ?></textarea>
+                        <p class="description">Brief description of the ROI calculator</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_roi_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_roi_cta_text" name="apex_roi_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_roi_cta_text_' . $page_slug, 'Get Detailed Analysis')); ?>" 
+                               class="regular-text" placeholder="e.g., Get Detailed Analysis">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_roi_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_roi_cta_url" name="apex_roi_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_roi_cta_url_' . $page_slug, home_url('/contact'))); ?>" 
+                               class="regular-text" placeholder="/contact">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Case Studies Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📚 Case Studies Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases client success stories and case studies.</strong> Includes badge, heading, description, and call-to-action.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_case_studies_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_case_studies_badge" name="apex_case_studies_badge" 
+                               value="<?php echo esc_attr(get_option('apex_case_studies_badge_' . $page_slug, 'Case Studies')); ?>" 
+                               class="regular-text" placeholder="e.g., Case Studies">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_case_studies_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_case_studies_heading" name="apex_case_studies_heading" 
+                               value="<?php echo esc_attr(get_option('apex_case_studies_heading_' . $page_slug, 'Real Results from Real Clients')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the case studies section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_case_studies_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_case_studies_description" name="apex_case_studies_description" rows="3" class="large-text"
+                                  placeholder="Case studies description"><?php 
+                            echo esc_textarea(get_option('apex_case_studies_description_' . $page_slug, 'Discover how financial institutions across Africa have transformed their operations with ApexCore.'));
+                        ?></textarea>
+                        <p class="description">Brief description of the case studies</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_case_studies_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_case_studies_cta_text" name="apex_case_studies_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_case_studies_cta_text_' . $page_slug, 'View All Case Studies')); ?>" 
+                               class="regular-text" placeholder="e.g., View All Case Studies">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_case_studies_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_case_studies_cta_url" name="apex_case_studies_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_case_studies_cta_url_' . $page_slug, home_url('/case-studies'))); ?>" 
+                               class="regular-text" placeholder="/case-studies">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- API Integration Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔌 API Integration Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases your developer platform and API capabilities.</strong> Includes badge, heading, description, and dual call-to-action buttons.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_api_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_api_badge" name="apex_api_badge" 
+                               value="<?php echo esc_attr(get_option('apex_api_badge_' . $page_slug, 'Developer Platform')); ?>" 
+                               class="regular-text" placeholder="e.g., Developer Platform">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_api_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_api_heading" name="apex_api_heading" 
+                               value="<?php echo esc_attr(get_option('apex_api_heading_' . $page_slug, 'Powerful API & Integration Capabilities')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the API section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_api_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_api_description" name="apex_api_description" rows="3" class="large-text"
+                                  placeholder="API description"><?php 
+                            echo esc_textarea(get_option('apex_api_description_' . $page_slug, 'Build custom solutions with our comprehensive REST APIs, webhooks, and SDKs. Connect ApexCore to your existing systems seamlessly.'));
+                        ?></textarea>
+                        <p class="description">Brief description of your API capabilities</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_api_primary_cta_text">Primary CTA Text</label></th>
+                    <td>
+                        <input type="text" id="apex_api_primary_cta_text" name="apex_api_primary_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_api_primary_cta_text_' . $page_slug, 'View API Documentation')); ?>" 
+                               class="regular-text" placeholder="e.g., View API Documentation">
+                        <p class="description">Primary call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_api_primary_cta_url">Primary CTA URL</label></th>
+                    <td>
+                        <input type="url" id="apex_api_primary_cta_url" name="apex_api_primary_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_api_primary_cta_url_' . $page_slug, home_url('/developers/api-docs'))); ?>" 
+                               class="regular-text" placeholder="/developers/api-docs">
+                        <p class="description">Primary call-to-action button URL</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_api_secondary_cta_text">Secondary CTA Text</label></th>
+                    <td>
+                        <input type="text" id="apex_api_secondary_cta_text" name="apex_api_secondary_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_api_secondary_cta_text_' . $page_slug, 'Get API Keys')); ?>" 
+                               class="regular-text" placeholder="e.g., Get API Keys">
+                        <p class="description">Secondary call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_api_secondary_cta_url">Secondary CTA URL</label></th>
+                    <td>
+                        <input type="url" id="apex_api_secondary_cta_url" name="apex_api_secondary_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_api_secondary_cta_url_' . $page_slug, home_url('/developers/register'))); ?>" 
+                               class="regular-text" placeholder="/developers/register">
+                        <p class="description">Secondary call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Compliance & Security Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔒 Compliance & Security Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section highlights your security and compliance certifications.</strong> Includes badge, heading, description, and call-to-action.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_compliance_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_compliance_badge" name="apex_compliance_badge" 
+                               value="<?php echo esc_attr(get_option('apex_compliance_badge_' . $page_slug, 'Security & Compliance')); ?>" 
+                               class="regular-text" placeholder="e.g., Security & Compliance">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_compliance_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_compliance_heading" name="apex_compliance_heading" 
+                               value="<?php echo esc_attr(get_option('apex_compliance_heading_' . $page_slug, 'Enterprise-Grade Security You Can Trust')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the compliance section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_compliance_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_compliance_description" name="apex_compliance_description" rows="3" class="large-text"
+                                  placeholder="Compliance description"><?php 
+                            echo esc_textarea(get_option('apex_compliance_description_' . $page_slug, 'ApexCore meets the highest standards of security, privacy, and regulatory compliance required by financial institutions worldwide.'));
+                        ?></textarea>
+                        <p class="description">Brief description of your compliance standards</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_compliance_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_compliance_cta_text" name="apex_compliance_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_compliance_cta_text_' . $page_slug, 'Download Security Whitepaper')); ?>" 
+                               class="regular-text" placeholder="e.g., Download Security Whitepaper">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_compliance_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_compliance_cta_url" name="apex_compliance_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_compliance_cta_url_' . $page_slug, home_url('/resources/security-whitepaper'))); ?>" 
+                               class="regular-text" placeholder="/resources/security-whitepaper">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- What's New Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📰 What's New Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays latest news and blog posts.</strong> Includes badge, heading, description, posts per page setting, and call-to-action.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_whats_new_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_whats_new_badge" name="apex_whats_new_badge" 
+                               value="<?php echo esc_attr(get_option('apex_whats_new_badge_' . $page_slug, "What's New")); ?>" 
+                               class="regular-text" placeholder="e.g., What's New">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_whats_new_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_whats_new_heading" name="apex_whats_new_heading" 
+                               value="<?php echo esc_attr(get_option('apex_whats_new_heading_' . $page_slug, 'Latest News & Insights')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the what's new section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_whats_new_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_whats_new_description" name="apex_whats_new_description" rows="3" class="large-text"
+                                  placeholder="News description"><?php 
+                            echo esc_textarea(get_option('apex_whats_new_description_' . $page_slug, 'Stay updated with the latest developments in financial technology and Apex Softwares.'));
+                        ?></textarea>
+                        <p class="description">Brief description of the news section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_whats_new_posts_per_page">Posts Per Page</label></th>
+                    <td>
+                        <input type="number" id="apex_whats_new_posts_per_page" name="apex_whats_new_posts_per_page" 
+                               value="<?php echo esc_attr(get_option('apex_whats_new_posts_per_page_' . $page_slug, '3')); ?>" 
+                               class="regular-text" placeholder="3" min="1" max="10">
+                        <p class="description">Number of posts to display (1-10)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_whats_new_cta_text">CTA Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_whats_new_cta_text" name="apex_whats_new_cta_text" 
+                               value="<?php echo esc_attr(get_option('apex_whats_new_cta_text_' . $page_slug, 'View All Articles')); ?>" 
+                               class="regular-text" placeholder="e.g., View All Articles">
+                        <p class="description">Call-to-action button text</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_whats_new_cta_url">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="apex_whats_new_cta_url" name="apex_whats_new_cta_url" 
+                               value="<?php echo esc_attr(get_option('apex_whats_new_cta_url_' . $page_slug, home_url('/blog'))); ?>" 
+                               class="regular-text" placeholder="/blog">
+                        <p class="description">Call-to-action button URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php endif; ?>
+        
         <?php if ($page_slug === 'about-us-overview'): ?>
         <!-- About Us Overview Specific Sections -->
         
@@ -3984,6 +4825,4903 @@ function apex_render_fallback_form($page_slug, $config) {
             </table>
         </div>
 
+        <?php elseif ($page_slug === 'solutions-overview'): ?>
+        <!-- Solutions Overview Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_solutions_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_hero_badge" name="apex_solutions_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_hero_badge_' . $page_slug, 'Our Solutions')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Solutions">
+                        <p class="description">The small badge text above the heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_hero_heading" name="apex_solutions_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_hero_heading_' . $page_slug, 'Complete Digital Banking Suite')); ?>" 
+                               class="regular-text" placeholder="Main hero heading">
+                        <p class="description">The main heading for the hero section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_solutions_hero_description" name="apex_solutions_hero_description" rows="4" class="large-text"
+                                  placeholder="Hero section description"><?php echo esc_textarea(get_option('apex_solutions_hero_description_' . $page_slug, 'From core banking to mobile wallets, we provide end-to-end solutions that help financial institutions digitize operations, reach more customers, and drive growth.')); ?></textarea>
+                        <p class="description">The description text below the heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_solutions_hero_image" name="apex_solutions_hero_image" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                        <p class="description">The main hero image URL (recommended size: 1200x800px)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_hero_stats">Statistics</label></th>
+                    <td>
+                        <textarea id="apex_solutions_hero_stats" name="apex_solutions_hero_stats" rows="6" class="large-text"
+                                  placeholder="10+ | Product Modules&#10;100+ | Institutions&#10;99.9% | Uptime&#10;24/7 | Support"><?php 
+                            $stats = get_option('apex_solutions_hero_stats_' . $page_slug, "10+ | Product Modules\n100+ | Institutions\n99.9% | Uptime\n24/7 | Support");
+                            echo esc_textarea($stats);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Value | Label (one stat per line)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Solutions Grid Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⚙️ Solutions Grid Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the grid of solution cards.</strong> Each card has an icon, title, description, and link.</p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_solutions_grid_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_grid_badge" name="apex_solutions_grid_badge" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_grid_badge_' . $page_slug, 'Product Suite')); ?>" 
+                               class="regular-text" placeholder="e.g., Product Suite">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_grid_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_grid_heading" name="apex_solutions_grid_heading" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_grid_heading_' . $page_slug, 'Everything You Need to Succeed')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the solutions grid</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_grid_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_solutions_grid_description" name="apex_solutions_grid_description" rows="3" class="large-text"
+                                  placeholder="Section description"><?php echo esc_textarea(get_option('apex_solutions_grid_description_' . $page_slug, 'Our modular platform lets you start with what you need and add capabilities as you grow.')); ?></textarea>
+                        <p class="description">Brief description below the heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_grid_items">Solution Cards</label></th>
+                    <td>
+                        <textarea id="apex_solutions_grid_items" name="apex_solutions_grid_items" rows="30" class="large-text"
+                                  placeholder="Core Banking & Microfinance | The foundation of your digital banking infrastructure. Manage accounts, transactions, and products with enterprise-grade reliability. | /solutions/core-banking-microfinance | featured&#10;Mobile Wallet App | White-label mobile banking app with offline-first design for seamless customer experience. | /solutions/mobile-wallet-app |"><?php 
+                            $items = get_option('apex_solutions_grid_items_' . $page_slug, "Core Banking & Microfinance | The foundation of your digital banking infrastructure. Manage accounts, transactions, and products with enterprise-grade reliability. | /solutions/core-banking-microfinance | featured\nMobile Wallet App | White-label mobile banking app with offline-first design for seamless customer experience. | /solutions/mobile-wallet-app |\nAgency & Branch Banking | Extend your reach through agent networks and modernize branch operations. | /solutions/agency-branch-banking |\nInternet & Mobile Banking | Responsive web banking and USSD channels for complete customer coverage. | /solutions/internet-mobile-banking |\nLoan Origination & Workflows | Automate the entire loan lifecycle from application to disbursement and collection. | /solutions/loan-origination-workflows |\nDigital Field Agent | Empower field officers with mobile tools for customer onboarding and collections. | /solutions/digital-field-agent |\nEnterprise Integration | Connect with third-party systems, payment networks, and credit bureaus seamlessly. | /solutions/enterprise-integration |\nPayment Switch & General Ledger | Process payments across all channels with real-time settlement and accounting. | /solutions/payment-switch-ledger |\nReporting & Analytics | Real-time dashboards, regulatory reports, and business intelligence tools. | /solutions/reporting-analytics |");
+                            echo esc_textarea($items);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Title | Description | Link | featured (optional)</p>
+                        <p class="description">Add "featured" at the end to highlight the card. SVG icons are auto-matched by title.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Benefits Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✨ Benefits Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases the key benefits of choosing Apex.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_solutions_benefits_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_benefits_badge" name="apex_solutions_benefits_badge" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_benefits_badge_' . $page_slug, 'Why Apex')); ?>" 
+                               class="regular-text" placeholder="e.g., Why Apex">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_benefits_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_benefits_heading" name="apex_solutions_benefits_heading" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_benefits_heading_' . $page_slug, 'Built for African Financial Services')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the benefits section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_benefits_items">Benefit Items</label></th>
+                    <td>
+                        <textarea id="apex_solutions_benefits_items" name="apex_solutions_benefits_items" rows="20" class="large-text"
+                                  placeholder="Modular Architecture | Start with what you need and add modules as you grow. No need to pay for features you don't use.&#10;Offline-First Design | Our mobile solutions work seamlessly in low-connectivity environments common in rural areas."><?php 
+                            $benefits = get_option('apex_solutions_benefits_items_' . $page_slug, "Modular Architecture | Start with what you need and add modules as you grow. No need to pay for features you don't use.\nOffline-First Design | Our mobile solutions work seamlessly in low-connectivity environments common in rural areas.\nRegulatory Compliance | Built-in compliance with Central Bank regulations across multiple African jurisdictions.\nRapid Deployment | Go live in weeks, not months. Our experienced team ensures smooth implementation.\nProven Track Record | Trusted by 100+ financial institutions across 15+ African countries.\n24/7 Local Support | Round-the-clock support from teams based in Africa who understand your context.");
+                            echo esc_textarea($benefits);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Title | Description (one benefit per line)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Integration Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔌 Integration Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section showcases integration capabilities with third-party services.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_solutions_integration_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_integration_badge" name="apex_solutions_integration_badge" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_integration_badge_' . $page_slug, 'Integrations')); ?>" 
+                               class="regular-text" placeholder="e.g., Integrations">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_integration_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_solutions_integration_heading" name="apex_solutions_integration_heading" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_integration_heading_' . $page_slug, 'Connect With Your Ecosystem')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the integration section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_integration_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_solutions_integration_description" name="apex_solutions_integration_description" rows="3" class="large-text"
+                                  placeholder="Integration description"><?php echo esc_textarea(get_option('apex_solutions_integration_description_' . $page_slug, 'Our platform integrates seamlessly with the services and systems you already use.')); ?></textarea>
+                        <p class="description">Description text below the heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_integration_categories">Integration Categories</label></th>
+                    <td>
+                        <textarea id="apex_solutions_integration_categories" name="apex_solutions_integration_categories" rows="12" class="large-text"
+                                  placeholder="Payment Networks | M-Pesa, Airtel Money, MTN Mobile Money, Visa, Mastercard, RTGS, EFT&#10;Credit Bureaus | TransUnion, Metropol, CRB Africa, First Central"><?php 
+                            $categories = get_option('apex_solutions_integration_categories_' . $page_slug, "Payment Networks | M-Pesa, Airtel Money, MTN Mobile Money, Visa, Mastercard, RTGS, EFT\nCredit Bureaus | TransUnion, Metropol, CRB Africa, First Central\nIdentity Verification | IPRS, NIRA, National ID systems, Smile Identity\nAccounting Systems | SAP, Oracle, QuickBooks, Sage, custom ERPs");
+                            echo esc_textarea($categories);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Category Name | Items (comma separated)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_solutions_integration_image">Integration Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_solutions_integration_image" name="apex_solutions_integration_image" 
+                               value="<?php echo esc_attr(get_option('apex_solutions_integration_image_' . $page_slug, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                        <p class="description">The integration section image URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-core-banking-microfinance'): ?>
+        <!-- Core Banking & Microfinance Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_corebank_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_corebank_hero_badge" name="apex_corebank_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_hero_badge_' . $page_slug, 'Core Banking & Microfinance')); ?>" 
+                               class="regular-text" placeholder="e.g., Core Banking & Microfinance">
+                        <p class="description">The small badge text above the heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_corebank_hero_heading" name="apex_corebank_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_hero_heading_' . $page_slug, 'The Foundation of Your Digital Banking')); ?>" 
+                               class="regular-text" placeholder="Main hero heading">
+                        <p class="description">The main heading for the hero section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_corebank_hero_description" name="apex_corebank_hero_description" rows="4" class="large-text"
+                                  placeholder="Hero section description"><?php echo esc_textarea(get_option('apex_corebank_hero_description_' . $page_slug, 'A modern, cloud-native core banking system designed for African financial institutions. Handle millions of transactions with enterprise-grade reliability and flexibility.')); ?></textarea>
+                        <p class="description">The description text below the heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_corebank_hero_image" name="apex_corebank_hero_image" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                        <p class="description">The main hero image URL (recommended size: 1200x800px)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_hero_stats">Statistics</label></th>
+                    <td>
+                        <textarea id="apex_corebank_hero_stats" name="apex_corebank_hero_stats" rows="6" class="large-text"
+                                  placeholder="100+ | Institutions&#10;10M+ | Accounts&#10;99.99% | Uptime&#10;<100ms | Response Time"><?php 
+                            $stats = get_option('apex_corebank_hero_stats_' . $page_slug, "100+ | Institutions\n10M+ | Accounts\n99.99% | Uptime\n<100ms | Response Time");
+                            echo esc_textarea($stats);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Value | Label (one stat per line)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⚙️ Key Features Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the key features of the core banking system.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_corebank_features_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_corebank_features_badge" name="apex_corebank_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_corebank_features_heading" name="apex_corebank_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_features_heading_' . $page_slug, 'Everything You Need in a Core Banking System')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the features section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_corebank_features_items" name="apex_corebank_features_items" rows="20" class="large-text"
+                                  placeholder="Account Management | Flexible account structures supporting savings, current, fixed deposits, and custom account types with configurable interest calculations."><?php 
+                            $features = get_option('apex_corebank_features_items_' . $page_slug, "Account Management | Flexible account structures supporting savings, current, fixed deposits, and custom account types with configurable interest calculations.\nTransaction Processing | Real-time transaction processing with support for deposits, withdrawals, transfers, and complex multi-leg transactions.\nLoan Management | Complete loan lifecycle management from origination to settlement with support for multiple loan products and repayment schedules.\nEnd-of-Day Processing | Automated EOD processing for interest accrual, fee charges, and account maintenance with detailed audit trails.\nCustomer Management | 360-degree customer view with KYC management, document storage, and relationship tracking.\nSecurity & Compliance | Role-based access control, maker-checker workflows, and comprehensive audit logging for regulatory compliance.");
+                            echo esc_textarea($features);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Title | Description (one feature per line). SVG icons auto-matched by title.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Technical Specifications Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔧 Technical Specifications Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays technical specifications with an accompanying image.</strong></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_corebank_specs_badge">Section Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_corebank_specs_badge" name="apex_corebank_specs_badge" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_specs_badge_' . $page_slug, 'Technical Specifications')); ?>" 
+                               class="regular-text" placeholder="e.g., Technical Specifications">
+                        <p class="description">The small badge text above the section heading</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_specs_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_corebank_specs_heading" name="apex_corebank_specs_heading" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_specs_heading_' . $page_slug, 'Built for Scale and Performance')); ?>" 
+                               class="regular-text" placeholder="Section heading">
+                        <p class="description">The main heading for the specifications section</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_specs_items">Specification Items</label></th>
+                    <td>
+                        <textarea id="apex_corebank_specs_items" name="apex_corebank_specs_items" rows="12" class="large-text"
+                                  placeholder="Architecture | Cloud-native microservices architecture with horizontal scaling capabilities&#10;Database | PostgreSQL with read replicas for high availability and performance"><?php 
+                            $specs = get_option('apex_corebank_specs_items_' . $page_slug, "Architecture | Cloud-native microservices architecture with horizontal scaling capabilities\nDatabase | PostgreSQL with read replicas for high availability and performance\nAPI | RESTful APIs with OpenAPI documentation for easy integration\nSecurity | TLS 1.3, AES-256 encryption, OAuth 2.0, and PCI-DSS compliance\nDeployment | On-premise, private cloud, or fully managed SaaS options available");
+                            echo esc_textarea($specs);
+                        ?></textarea>
+                        <p class="description"><strong>Format:</strong> Title | Description (one spec per line)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_corebank_specs_image">Specifications Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_corebank_specs_image" name="apex_corebank_specs_image" 
+                               value="<?php echo esc_attr(get_option('apex_corebank_specs_image_' . $page_slug, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                        <p class="description">The technical specifications section image URL</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-mobile-wallet-app'): ?>
+        <!-- Mobile Wallet App Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_wallet_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_wallet_hero_badge" name="apex_wallet_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_wallet_hero_badge_' . $page_slug, 'Mobile Wallet App')); ?>" 
+                               class="regular-text" placeholder="e.g., Mobile Wallet App">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_wallet_hero_heading" name="apex_wallet_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_wallet_hero_heading_' . $page_slug, 'Banking in Every Pocket')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_wallet_hero_description" name="apex_wallet_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_wallet_hero_description_' . $page_slug, 'A white-label mobile banking app designed for African markets. Offline-first architecture ensures your customers can bank anywhere, anytime.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_wallet_hero_image" name="apex_wallet_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_wallet_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_wallet_hero_stats" name="apex_wallet_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_wallet_hero_stats_' . $page_slug, "5M+ | App Users\n4.7★ | App Rating\n60% | Offline Usage\n<3s | Load Time")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>5M+ | App Users</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Features Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the key features grid displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_wallet_features_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_wallet_features_badge" name="apex_wallet_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_wallet_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_wallet_features_heading" name="apex_wallet_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_wallet_features_heading_' . $page_slug, 'Complete Mobile Banking Experience')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_wallet_features_items" name="apex_wallet_features_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_wallet_features_items_' . $page_slug, "Offline-First Design | Queue transactions when offline and sync automatically when connectivity returns. Perfect for rural areas.\nBiometric Security | Fingerprint and face recognition for secure, convenient authentication.\nMoney Transfers | Send money to bank accounts, mobile money, and other app users instantly.\nBill Payments | Pay utilities, airtime, and other bills directly from the app.\nLoan Applications | Apply for loans, track status, and manage repayments from your phone.\nPush Notifications | Real-time alerts for transactions, payments due, and promotional offers.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- White-Label Solution Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📱 White-Label Solution Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the white-label capabilities and app store features displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_wallet_whitelabel_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_wallet_whitelabel_badge" name="apex_wallet_whitelabel_badge" 
+                               value="<?php echo esc_attr(get_option('apex_wallet_whitelabel_badge_' . $page_slug, 'White-Label Solution')); ?>" 
+                               class="regular-text" placeholder="e.g., White-Label Solution">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_whitelabel_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_wallet_whitelabel_heading" name="apex_wallet_whitelabel_heading" 
+                               value="<?php echo esc_attr(get_option('apex_wallet_whitelabel_heading_' . $page_slug, 'Your Brand, Our Technology')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_whitelabel_items">White-Label Items</label></th>
+                    <td>
+                        <textarea id="apex_wallet_whitelabel_items" name="apex_wallet_whitelabel_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_wallet_whitelabel_items_' . $page_slug, "Custom Branding | Your logo, colors, and brand identity throughout the app\nPlatform Support | Native iOS and Android apps with shared codebase\nApp Store Publishing | We handle submission to Apple App Store and Google Play\nOTA Updates | Push updates without requiring app store approval")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_wallet_whitelabel_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_wallet_whitelabel_image" name="apex_wallet_whitelabel_image" 
+                               value="<?php echo esc_url(get_option('apex_wallet_whitelabel_image_' . $page_slug, 'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-agency-branch-banking'): ?>
+        <!-- Agency & Branch Banking Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_agency_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_agency_hero_badge" name="apex_agency_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_agency_hero_badge_' . $page_slug, 'Agency & Branch Banking')); ?>" 
+                               class="regular-text" placeholder="e.g., Agency & Branch Banking">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_agency_hero_heading" name="apex_agency_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_agency_hero_heading_' . $page_slug, 'Extend Your Reach Without Building Branches')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_agency_hero_description" name="apex_agency_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_agency_hero_description_' . $page_slug, 'Transform local shops into banking points and modernize your branch operations. Serve customers where they are with our comprehensive agent and branch banking platform.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_agency_hero_image" name="apex_agency_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_agency_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_agency_hero_stats" name="apex_agency_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_agency_hero_stats_' . $page_slug, "50K+ | Active Agents\n85% | Cost Reduction\n10x | Reach Expansion\n24/7 | Service Availability")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50K+ | Active Agents</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Features Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the key features grid displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_agency_features_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_agency_features_badge" name="apex_agency_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_agency_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_agency_features_heading" name="apex_agency_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_agency_features_heading_' . $page_slug, 'Complete Agent & Branch Solution')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_agency_features_items" name="apex_agency_features_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_agency_features_items_' . $page_slug, "Agent Onboarding | Digital agent recruitment with KYC verification, training modules, and automated activation.\nFloat Management | Real-time float monitoring, automated rebalancing alerts, and super-agent hierarchy support.\nPOS Integration | Support for Android POS devices, mPOS, and traditional terminals with offline capability.\nCommission Management | Flexible commission structures with real-time calculation and automated payouts.\nPerformance Analytics | Agent performance dashboards, territory analytics, and productivity tracking.\nBranch Teller System | Modern teller interface with queue management and customer service tools.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Agent Network Models Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🌐 Agent Network Models Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the deployment options and agent network models displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_agency_models_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_agency_models_badge" name="apex_agency_models_badge" 
+                               value="<?php echo esc_attr(get_option('apex_agency_models_badge_' . $page_slug, 'Agent Network Models')); ?>" 
+                               class="regular-text" placeholder="e.g., Agent Network Models">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_models_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_agency_models_heading" name="apex_agency_models_heading" 
+                               value="<?php echo esc_attr(get_option('apex_agency_models_heading_' . $page_slug, 'Flexible Deployment Options')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_models_items">Network Model Items</label></th>
+                    <td>
+                        <textarea id="apex_agency_models_items" name="apex_agency_models_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_agency_models_items_' . $page_slug, "Retail Agent Model | Partner with existing shops, pharmacies, and retail outlets to offer banking services\nSuper-Agent Hierarchy | Multi-tier agent structure with master agents managing sub-agent networks\nBank-Led Model | Direct agent recruitment and management by your institution\nHybrid Approach | Combine branch, agent, and digital channels for maximum coverage")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_agency_models_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_agency_models_image" name="apex_agency_models_image" 
+                               value="<?php echo esc_url(get_option('apex_agency_models_image_' . $page_slug, 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-internet-mobile-banking'): ?>
+        <!-- Internet & Mobile Banking Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_internet_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_internet_hero_badge" name="apex_internet_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_internet_hero_badge_' . $page_slug, 'Internet & Mobile Banking')); ?>" 
+                               class="regular-text" placeholder="e.g., Internet & Mobile Banking">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_internet_hero_heading" name="apex_internet_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_internet_hero_heading_' . $page_slug, 'Digital Channels for Every Customer')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_internet_hero_description" name="apex_internet_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_internet_hero_description_' . $page_slug, 'Responsive web banking and USSD channels ensure every customer can access your services, regardless of their device or connectivity.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_internet_hero_image" name="apex_internet_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_internet_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_internet_hero_stats" name="apex_internet_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_internet_hero_stats_' . $page_slug, "3M+ | Active Users\n70% | Self-Service\n40% | Cost Savings\n99.9% | Uptime")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>3M+ | Active Users</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Features Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the key features grid displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_internet_features_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_internet_features_badge" name="apex_internet_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_internet_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_internet_features_heading" name="apex_internet_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_internet_features_heading_' . $page_slug, 'Complete Digital Channel Suite')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_internet_features_items" name="apex_internet_features_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_internet_features_items_' . $page_slug, "Internet Banking Portal | Responsive web application for account management, transfers, and self-service operations.\nUSSD Banking | Feature phone banking via USSD codes for customers without smartphones or data.\nChatbot Integration | AI-powered chatbot for customer support and transaction assistance.\nTwo-Factor Authentication | SMS OTP, email verification, and authenticator app support for secure access.\nStatement Downloads | Generate and download account statements in PDF and Excel formats.\nBill Payments | Integrated bill payment for utilities, airtime, and other services.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Channel Accessibility Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📱 Channel Accessibility Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the customer segment accessibility information displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_internet_accessibility_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_internet_accessibility_badge" name="apex_internet_accessibility_badge" 
+                               value="<?php echo esc_attr(get_option('apex_internet_accessibility_badge_' . $page_slug, 'Channel Accessibility')); ?>" 
+                               class="regular-text" placeholder="e.g., Channel Accessibility">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_accessibility_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_internet_accessibility_heading" name="apex_internet_accessibility_heading" 
+                               value="<?php echo esc_attr(get_option('apex_internet_accessibility_heading_' . $page_slug, 'Banking for Every Customer Segment')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_accessibility_items">Accessibility Items</label></th>
+                    <td>
+                        <textarea id="apex_internet_accessibility_items" name="apex_internet_accessibility_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_internet_accessibility_items_' . $page_slug, "Smartphone Users | Full-featured responsive web app optimized for mobile browsers\nFeature Phone Users | USSD banking with simple menu navigation for basic phones\nDesktop Users | Comprehensive internet banking portal for corporate and power users\nLow-Bandwidth Areas | Lightweight interfaces optimized for 2G/3G connections")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_internet_accessibility_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_internet_accessibility_image" name="apex_internet_accessibility_image" 
+                               value="<?php echo esc_url(get_option('apex_internet_accessibility_image_' . $page_slug, 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-loan-origination-workflows'): ?>
+        <!-- Loan Origination & Workflows Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_loan_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_loan_hero_badge" name="apex_loan_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_loan_hero_badge_' . $page_slug, 'Loan Origination & Workflows')); ?>" 
+                               class="regular-text" placeholder="e.g., Loan Origination & Workflows">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_loan_hero_heading" name="apex_loan_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_loan_hero_heading_' . $page_slug, 'From Application to Disbursement in Minutes')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_loan_hero_description" name="apex_loan_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_loan_hero_description_' . $page_slug, 'Automate your entire loan lifecycle with digital applications, automated credit scoring, and streamlined approval workflows.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_loan_hero_image" name="apex_loan_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_loan_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_loan_hero_stats" name="apex_loan_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_loan_hero_stats_' . $page_slug, "90% | Faster Processing\n\$2B+ | Loans Processed\n50% | Cost Reduction\n95% | Approval Rate")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>90% | Faster Processing</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Features Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the key features grid displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_loan_features_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_loan_features_badge" name="apex_loan_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_loan_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_loan_features_heading" name="apex_loan_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_loan_features_heading_' . $page_slug, 'End-to-End Loan Management')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_loan_features_items" name="apex_loan_features_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_loan_features_items_' . $page_slug, "Digital Applications | Mobile and web loan applications with document upload and e-signature support.\nAutomated Credit Scoring | AI-powered credit scoring with bureau integration and alternative data sources.\nApproval Workflows | Configurable multi-level approval workflows with delegation and escalation rules.\nInstant Disbursement | Automated disbursement to bank accounts or mobile money upon approval.\nRepayment Management | Flexible repayment schedules with automated reminders and collection workflows.\nDocument Management | Digital document collection, verification, and secure storage.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Loan Product Types Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📋 Loan Product Types Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the loan product types and lending models displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_loan_products_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_loan_products_badge" name="apex_loan_products_badge" 
+                               value="<?php echo esc_attr(get_option('apex_loan_products_badge_' . $page_slug, 'Loan Product Types')); ?>" 
+                               class="regular-text" placeholder="e.g., Loan Product Types">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_products_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_loan_products_heading" name="apex_loan_products_heading" 
+                               value="<?php echo esc_attr(get_option('apex_loan_products_heading_' . $page_slug, 'Support for All Lending Models')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_products_items">Loan Product Items</label></th>
+                    <td>
+                        <textarea id="apex_loan_products_items" name="apex_loan_products_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_loan_products_items_' . $page_slug, "Individual Loans | Personal, salary, emergency, and asset financing with flexible terms\nGroup Lending | Chama loans, group guarantees, and solidarity lending models\nSME & Business Loans | Working capital, trade finance, and equipment financing\nAgricultural Loans | Seasonal lending with harvest-based repayment schedules\nDigital Nano-Loans | Instant mobile loans with automated scoring and disbursement")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_loan_products_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_loan_products_image" name="apex_loan_products_image" 
+                               value="<?php echo esc_url(get_option('apex_loan_products_image_' . $page_slug, 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-digital-field-agent'): ?>
+        <!-- Digital Field Agent Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_field_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_field_hero_badge" name="apex_field_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_field_hero_badge_' . $page_slug, 'Digital Field Agent')); ?>" 
+                               class="regular-text" placeholder="e.g., Digital Field Agent">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_field_hero_heading" name="apex_field_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_field_hero_heading_' . $page_slug, 'Empower Your Field Teams')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_field_hero_description" name="apex_field_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_field_hero_description_' . $page_slug, 'Mobile tools for loan officers, field agents, and collection teams. Work offline, sync when connected, and serve customers anywhere.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_field_hero_image" name="apex_field_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_field_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_field_hero_stats" name="apex_field_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_field_hero_stats_' . $page_slug, "10K+ | Field Agents\n3x | Productivity\n80% | Offline Usage\n95% | Collection Rate")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>10K+ | Field Agents</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Features Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the key features grid displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_field_features_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_field_features_badge" name="apex_field_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_field_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_field_features_heading" name="apex_field_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_field_features_heading_' . $page_slug, 'Complete Field Operations Platform')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_field_features_items" name="apex_field_features_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_field_features_items_' . $page_slug, "Customer Onboarding | Digital KYC with photo capture, ID scanning, and biometric enrollment in the field.\nGPS Tracking | Location tracking for visit verification and route optimization.\nCollection Management | Daily collection lists, receipt generation, and real-time payment posting.\nOffline Capability | Full functionality without internet. Sync automatically when connected.\nLoan Applications | Complete loan applications in the field with document capture.\nPerformance Dashboards | Real-time visibility into field team performance and productivity.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Field Operations Use Cases Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🎯 Field Operations Use Cases Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the field operations use cases and roles displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_field_usecases_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_field_usecases_badge" name="apex_field_usecases_badge" 
+                               value="<?php echo esc_attr(get_option('apex_field_usecases_badge_' . $page_slug, 'Field Operations Use Cases')); ?>" 
+                               class="regular-text" placeholder="e.g., Field Operations Use Cases">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_usecases_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_field_usecases_heading" name="apex_field_usecases_heading" 
+                               value="<?php echo esc_attr(get_option('apex_field_usecases_heading_' . $page_slug, 'Tools for Every Field Role')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_usecases_items">Use Case Items</label></th>
+                    <td>
+                        <textarea id="apex_field_usecases_items" name="apex_field_usecases_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_field_usecases_items_' . $page_slug, "Loan Officers | Client visits, loan applications, credit assessments, and document collection\nCollection Agents | Daily collection routes, payment receipts, and arrears management\nCustomer Acquisition | New member registration, KYC verification, and account opening\nGroup Coordinators | Chama meetings, group savings collection, and member management\nSupervisors | Team monitoring, performance tracking, and field visit verification")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_field_usecases_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_field_usecases_image" name="apex_field_usecases_image" 
+                               value="<?php echo esc_url(get_option('apex_field_usecases_image_' . $page_slug, 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-enterprise-integration'): ?>
+        <!-- Enterprise Integration Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_integration_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_integration_hero_badge" name="apex_integration_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_integration_hero_badge_' . $page_slug, 'Enterprise Integration')); ?>" 
+                               class="regular-text" placeholder="e.g., Enterprise Integration">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_integration_hero_heading" name="apex_integration_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_integration_hero_heading_' . $page_slug, 'Connect Your Entire Ecosystem')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_integration_hero_description" name="apex_integration_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_integration_hero_description_' . $page_slug, 'Seamlessly integrate with payment networks, credit bureaus, government systems, and third-party services through our comprehensive API platform.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_integration_hero_image" name="apex_integration_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_integration_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_integration_hero_stats" name="apex_integration_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_integration_hero_stats_' . $page_slug, "50+ | Pre-Built Integrations\n99.9% | API Uptime\n<200ms | Response Time\n24/7 | Monitoring")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50+ | Pre-Built Integrations</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Integration Categories Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔗 Integration Categories Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the integration categories displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_integration_categories_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_integration_categories_badge" name="apex_integration_categories_badge" 
+                               value="<?php echo esc_attr(get_option('apex_integration_categories_badge_' . $page_slug, 'Integration Categories')); ?>" 
+                               class="regular-text" placeholder="e.g., Integration Categories">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_categories_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_integration_categories_heading" name="apex_integration_categories_heading" 
+                               value="<?php echo esc_attr(get_option('apex_integration_categories_heading_' . $page_slug, 'Connect With Everything You Need')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_categories_items">Integration Categories</label></th>
+                    <td>
+                        <textarea id="apex_integration_categories_items" name="apex_integration_categories_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_integration_categories_items_' . $page_slug, "Payment Networks | M-Pesa, Airtel Money, MTN Mobile Money, Visa, Mastercard, RTGS, EFT, and more.\nCredit Bureaus | TransUnion, Metropol, CRB Africa, First Central for credit checks and reporting.\nIdentity Verification | National ID systems, IPRS, NIRA, Smile Identity for KYC verification.\nAccounting Systems | SAP, Oracle, QuickBooks, Sage, and custom ERP integrations.\nCommunication | SMS gateways, email services, WhatsApp Business API for notifications.\nCustom APIs | RESTful APIs with OpenAPI documentation for custom integrations.")); ?></textarea>
+                        <p class="description">Enter one integration per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Integration Architecture Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🏗️ Integration Architecture Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the integration architecture features displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_integration_arch_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_integration_arch_badge" name="apex_integration_arch_badge" 
+                               value="<?php echo esc_attr(get_option('apex_integration_arch_badge_' . $page_slug, 'Integration Architecture')); ?>" 
+                               class="regular-text" placeholder="e.g., Integration Architecture">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_arch_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_integration_arch_heading" name="apex_integration_arch_heading" 
+                               value="<?php echo esc_attr(get_option('apex_integration_arch_heading_' . $page_slug, 'Enterprise-Grade Connectivity')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_arch_items">Architecture Features</label></th>
+                    <td>
+                        <textarea id="apex_integration_arch_items" name="apex_integration_arch_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_integration_arch_items_' . $page_slug, "API Gateway | Centralized API management with rate limiting, authentication, and monitoring\nMessage Queue | Asynchronous processing for high-volume transactions and event-driven workflows\nData Transformation | Built-in ETL capabilities for format conversion between systems\nWebhook Support | Real-time event notifications to external systems\nSandbox Environment | Test integrations safely before deploying to production")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_integration_arch_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_integration_arch_image" name="apex_integration_arch_image" 
+                               value="<?php echo esc_url(get_option('apex_integration_arch_image_' . $page_slug, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-payment-switch-ledger'): ?>
+        <!-- Payment Switch & General Ledger Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_payment_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_payment_hero_badge" name="apex_payment_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_payment_hero_badge_' . $page_slug, 'Payment Switch & General Ledger')); ?>" 
+                               class="regular-text" placeholder="e.g., Payment Switch & General Ledger">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_payment_hero_heading" name="apex_payment_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_payment_hero_heading_' . $page_slug, 'Process Payments, Balance Books')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_payment_hero_description" name="apex_payment_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_payment_hero_description_' . $page_slug, 'A unified payment processing platform with integrated general ledger for real-time settlement and accurate financial reporting.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_payment_hero_image" name="apex_payment_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_payment_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_payment_hero_stats" name="apex_payment_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_payment_hero_stats_' . $page_slug, "\$5B+ | Annual Volume\n10M+ | Transactions/Month\n<1s | Settlement Time\n100% | Reconciliation")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>$5B+ | Annual Volume</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Features Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the key features grid displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_payment_features_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_payment_features_badge" name="apex_payment_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_payment_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_payment_features_heading" name="apex_payment_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_payment_features_heading_' . $page_slug, 'Complete Payment & Accounting Solution')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_payment_features_items" name="apex_payment_features_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_payment_features_items_' . $page_slug, "Multi-Channel Payments | Process payments from mobile, web, POS, ATM, and agent channels through a single switch.\nReal-Time Settlement | Instant settlement with automatic posting to the general ledger.\nChart of Accounts | Flexible chart of accounts supporting multiple currencies and reporting hierarchies.\nAuto-Reconciliation | Automated reconciliation with external systems and exception handling workflows.\nFinancial Reports | Balance sheets, income statements, trial balance, and custom financial reports.\nFraud Detection | Real-time transaction monitoring with rule-based and ML-powered fraud detection.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Supported Payment Rails Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💳 Supported Payment Rails Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the payment rails information displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_payment_rails_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_payment_rails_badge" name="apex_payment_rails_badge" 
+                               value="<?php echo esc_attr(get_option('apex_payment_rails_badge_' . $page_slug, 'Supported Payment Rails')); ?>" 
+                               class="regular-text" placeholder="e.g., Supported Payment Rails">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_rails_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_payment_rails_heading" name="apex_payment_rails_heading" 
+                               value="<?php echo esc_attr(get_option('apex_payment_rails_heading_' . $page_slug, 'Connect to Every Payment Network')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_rails_items">Payment Rails Items</label></th>
+                    <td>
+                        <textarea id="apex_payment_rails_items" name="apex_payment_rails_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_payment_rails_items_' . $page_slug, "Mobile Money | M-Pesa, Airtel Money, MTN MoMo, Orange Money, and regional wallets\nCard Networks | Visa, Mastercard, UnionPay, and local card schemes\nBank Transfers | RTGS, EFT, SWIFT, and domestic clearing systems\nQR Payments | Static and dynamic QR codes for merchant payments\nBill Aggregators | Utility payments, government services, and merchant collections")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_payment_rails_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_payment_rails_image" name="apex_payment_rails_image" 
+                               value="<?php echo esc_url(get_option('apex_payment_rails_image_' . $page_slug, 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'solutions-reporting-analytics'): ?>
+        <!-- Reporting & Analytics Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reporting_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reporting_hero_badge" name="apex_reporting_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_reporting_hero_badge_' . $page_slug, 'Reporting & Analytics')); ?>" 
+                               class="regular-text" placeholder="e.g., Reporting & Analytics">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_reporting_hero_heading" name="apex_reporting_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_reporting_hero_heading_' . $page_slug, 'Data-Driven Decision Making')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_reporting_hero_description" name="apex_reporting_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_reporting_hero_description_' . $page_slug, 'Real-time dashboards, regulatory reports, and business intelligence tools to help you understand your business and make informed decisions.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_reporting_hero_image" name="apex_reporting_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_reporting_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_reporting_hero_stats" name="apex_reporting_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_reporting_hero_stats_' . $page_slug, "100+ | Report Templates\nReal-Time | Data Updates\n50+ | KPI Metrics\n1-Click | Regulatory Reports")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>100+ | Report Templates</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Features Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the key features grid displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reporting_features_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reporting_features_badge" name="apex_reporting_features_badge" 
+                               value="<?php echo esc_attr(get_option('apex_reporting_features_badge_' . $page_slug, 'Key Features')); ?>" 
+                               class="regular-text" placeholder="e.g., Key Features">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_features_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_reporting_features_heading" name="apex_reporting_features_heading" 
+                               value="<?php echo esc_attr(get_option('apex_reporting_features_heading_' . $page_slug, 'Complete Business Intelligence Suite')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_features_items">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_reporting_features_items" name="apex_reporting_features_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_reporting_features_items_' . $page_slug, "Executive Dashboards | Real-time KPI dashboards for management with drill-down capabilities.\nRegulatory Reports | Pre-built Central Bank reports, SASRA returns, and compliance reports.\nPortfolio Analytics | Loan portfolio analysis, PAR tracking, and risk concentration reports.\nCustomer Insights | Customer segmentation, behavior analysis, and lifetime value tracking.\nCustom Report Builder | Drag-and-drop report builder for creating custom reports without IT help.\nScheduled Reports | Automated report generation and email delivery on your schedule.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Regulatory Compliance Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Regulatory Compliance Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the regulatory compliance information displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reporting_compliance_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reporting_compliance_badge" name="apex_reporting_compliance_badge" 
+                               value="<?php echo esc_attr(get_option('apex_reporting_compliance_badge_' . $page_slug, 'Regulatory Compliance')); ?>" 
+                               class="regular-text" placeholder="e.g., Regulatory Compliance">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_compliance_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_reporting_compliance_heading" name="apex_reporting_compliance_heading" 
+                               value="<?php echo esc_attr(get_option('apex_reporting_compliance_heading_' . $page_slug, 'Meet Every Reporting Requirement')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_compliance_items">Compliance Items</label></th>
+                    <td>
+                        <textarea id="apex_reporting_compliance_items" name="apex_reporting_compliance_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_reporting_compliance_items_' . $page_slug, "Central Bank Returns | Automated CBK, BOU, BOT, and other central bank regulatory submissions\nSASRA Compliance | SACCO-specific reports including prudential returns and financial statements\nAML/CFT Reports | Suspicious transaction reports, CTRs, and compliance monitoring\nIFRS 9 Reporting | Expected credit loss calculations and impairment reporting\nTax Compliance | Withholding tax reports, excise duty, and tax authority submissions")); ?></textarea>
+                        <p class="description">Enter one item per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reporting_compliance_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_reporting_compliance_image" name="apex_reporting_compliance_image" 
+                               value="<?php echo esc_url(get_option('apex_reporting_compliance_image_' . $page_slug, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'industry-overview'): ?>
+        <!-- Industry Overview Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_industry_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_hero_badge" name="apex_industry_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_industry_hero_badge_' . $page_slug, 'Industries We Serve')); ?>" 
+                               class="regular-text" placeholder="e.g., Industries We Serve">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_hero_heading" name="apex_industry_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_industry_hero_heading_' . $page_slug, 'Tailored Solutions for Every Financial Institution')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_industry_hero_description" name="apex_industry_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_industry_hero_description_' . $page_slug, 'From microfinance institutions to commercial banks, we understand the unique challenges each sector faces. Our solutions are designed to meet your specific needs.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_industry_hero_image" name="apex_industry_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_industry_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_industry_hero_stats" name="apex_industry_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_industry_hero_stats_' . $page_slug, "100+ | Institutions Served\n5 | Industry Verticals\n15+ | Countries\n10M+ | End Users")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>100+ | Institutions Served</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Sectors Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🏢 Industry Sectors Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the industry sectors cards displayed on the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_industry_sectors_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_sectors_badge" name="apex_industry_sectors_badge" 
+                               value="<?php echo esc_attr(get_option('apex_industry_sectors_badge_' . $page_slug, 'Our Expertise')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Expertise">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_sectors_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_sectors_heading" name="apex_industry_sectors_heading" 
+                               value="<?php echo esc_attr(get_option('apex_industry_sectors_heading_' . $page_slug, 'Industries We Specialize In')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_sectors_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_industry_sectors_description" name="apex_industry_sectors_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_industry_sectors_description_' . $page_slug, "We've built deep expertise across the financial services landscape, enabling us to deliver solutions that truly understand your business.")); ?></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Sector Cards -->
+        <div style="margin-bottom: 30px;">
+            <h4>📋 Industry Sector Cards</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 4 industry sector cards (MFI, SACCOs, Banks, Government).</strong></p>
+            </div>
+            <table class="form-table">
+                <!-- MFI Card -->
+                <tr>
+                    <th scope="row"><label for="apex_industry_card1_title">Card 1 - Title</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card1_title" name="apex_industry_card1_title" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card1_title_' . $page_slug, 'Microfinance Institutions')); ?>" 
+                               class="large-text" placeholder="Card title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card1_desc">Card 1 - Description</label></th>
+                    <td>
+                        <textarea id="apex_industry_card1_desc" name="apex_industry_card1_desc" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Card description"><?php echo esc_textarea(get_option('apex_industry_card1_desc_' . $page_slug, 'Empower underserved communities with digital-first microfinance solutions that reduce costs and expand reach.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card1_stats">Card 1 - Stats</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card1_stats" name="apex_industry_card1_stats" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card1_stats_' . $page_slug, '50+ | MFI Clients,5M+ | Borrowers Served')); ?>" 
+                               class="large-text" placeholder="Format: Value | Label,Value | Label">
+                        <p class="description">Format: <code>Value | Label,Value | Label</code> (comma-separated pairs)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card1_link">Card 1 - Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card1_link" name="apex_industry_card1_link" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card1_link_' . $page_slug, '/industry/mfis')); ?>" 
+                               class="large-text" placeholder="/industry/mfis">
+                    </td>
+                </tr>
+                
+                <!-- SACCO Card -->
+                <tr>
+                    <th scope="row"><label for="apex_industry_card2_title">Card 2 - Title</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card2_title" name="apex_industry_card2_title" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card2_title_' . $page_slug, 'SACCOs & Credit Unions')); ?>" 
+                               class="large-text" placeholder="Card title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card2_desc">Card 2 - Description</label></th>
+                    <td>
+                        <textarea id="apex_industry_card2_desc" name="apex_industry_card2_desc" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Card description"><?php echo esc_textarea(get_option('apex_industry_card2_desc_' . $page_slug, 'Modern member management and savings solutions designed for cooperative financial institutions.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card2_stats">Card 2 - Stats</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card2_stats" name="apex_industry_card2_stats" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card2_stats_' . $page_slug, '40+ | SACCOs,2M+ | Members')); ?>" 
+                               class="large-text" placeholder="Format: Value | Label,Value | Label">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card2_link">Card 2 - Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card2_link" name="apex_industry_card2_link" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card2_link_' . $page_slug, '/industry/credit-unions')); ?>" 
+                               class="large-text" placeholder="/industry/credit-unions">
+                    </td>
+                </tr>
+                
+                <!-- Banks Card -->
+                <tr>
+                    <th scope="row"><label for="apex_industry_card3_title">Card 3 - Title</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card3_title" name="apex_industry_card3_title" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card3_title_' . $page_slug, 'Commercial Banks')); ?>" 
+                               class="large-text" placeholder="Card title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card3_desc">Card 3 - Description</label></th>
+                    <td>
+                        <textarea id="apex_industry_card3_desc" name="apex_industry_card3_desc" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Card description"><?php echo esc_textarea(get_option('apex_industry_card3_desc_' . $page_slug, 'Enterprise-grade core banking and digital channel solutions for banks of all sizes.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card3_stats">Card 3 - Stats</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card3_stats" name="apex_industry_card3_stats" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card3_stats_' . $page_slug, '15+ | Banks,3M+ | Customers')); ?>" 
+                               class="large-text" placeholder="Format: Value | Label,Value | Label">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card3_link">Card 3 - Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card3_link" name="apex_industry_card3_link" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card3_link_' . $page_slug, '/industry/banks-microfinance')); ?>" 
+                               class="large-text" placeholder="/industry/banks-microfinance">
+                    </td>
+                </tr>
+                
+                <!-- Government Card -->
+                <tr>
+                    <th scope="row"><label for="apex_industry_card4_title">Card 4 - Title</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card4_title" name="apex_industry_card4_title" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card4_title_' . $page_slug, 'Digital Government & NGOs')); ?>" 
+                               class="large-text" placeholder="Card title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card4_desc">Card 4 - Description</label></th>
+                    <td>
+                        <textarea id="apex_industry_card4_desc" name="apex_industry_card4_desc" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Card description"><?php echo esc_textarea(get_option('apex_industry_card4_desc_' . $page_slug, 'Secure disbursement and collection platforms for government programs and development organizations.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card4_stats">Card 4 - Stats</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card4_stats" name="apex_industry_card4_stats" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card4_stats_' . $page_slug, '10+ | Programs,$500M+ | Disbursed')); ?>" 
+                               class="large-text" placeholder="Format: Value | Label,Value | Label">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_card4_link">Card 4 - Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_card4_link" name="apex_industry_card4_link" 
+                               value="<?php echo esc_attr(get_option('apex_industry_card4_link_' . $page_slug, '/industry/digital-government')); ?>" 
+                               class="large-text" placeholder="/industry/digital-government">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Why Choose Us Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✨ Why Choose Us Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the "Why Choose Us" content with features and image.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_industry_why_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_why_badge" name="apex_industry_why_badge" 
+                               value="<?php echo esc_attr(get_option('apex_industry_why_badge_' . $page_slug, 'Why Choose Us')); ?>" 
+                               class="regular-text" placeholder="e.g., Why Choose Us">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_why_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_why_heading" name="apex_industry_why_heading" 
+                               value="<?php echo esc_attr(get_option('apex_industry_why_heading_' . $page_slug, 'Built for African Financial Services')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_why_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_industry_why_description" name="apex_industry_why_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_industry_why_description_' . $page_slug, "We understand the unique challenges of operating in African markets—from infrastructure limitations to regulatory complexity. Our solutions are designed from the ground up to address these realities.")); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_why_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_industry_why_image" name="apex_industry_why_image" 
+                               value="<?php echo esc_url(get_option('apex_industry_why_image_' . $page_slug, 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_why_features">Feature Items</label></th>
+                    <td>
+                        <textarea id="apex_industry_why_features" name="apex_industry_why_features" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (one per line)"><?php echo esc_textarea(get_option('apex_industry_why_features_' . $page_slug, "Modular Architecture | Start with what you need and add capabilities as you grow. No need to pay for features you don't use.\nRegulatory Compliance | Built-in compliance with Central Bank regulations across multiple African jurisdictions.\nOffline-First Design | Our mobile solutions work seamlessly in low-connectivity environments common in rural areas.\n24/7 Local Support | Round-the-clock support from teams based in Africa who understand your context.")); ?></textarea>
+                        <p class="description">Enter one feature per line. Format: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Stats Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Stats Section</h4>
+            <div style="background: #e0f7fa; padding: 15px; margin-bottom: 20px; border: 1px solid #00bcd4; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the platform statistics displayed at the bottom.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_industry_stats_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_stats_heading" name="apex_industry_stats_heading" 
+                               value="<?php echo esc_attr(get_option('apex_industry_stats_heading_' . $page_slug, 'Trusted Across the Continent')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_stats_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_stats_description" name="apex_industry_stats_description" 
+                               value="<?php echo esc_attr(get_option('apex_industry_stats_description_' . $page_slug, 'Our track record speaks for itself.')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_stats_items">Stats Items</label></th>
+                    <td>
+                        <textarea id="apex_industry_stats_items" name="apex_industry_stats_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_industry_stats_items_' . $page_slug, "$5B+ | Transactions Processed Annually\n99.9% | Platform Uptime\n40% | Average Cost Reduction\n3x | Customer Growth Rate")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Testimonial Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💬 Testimonial Section</h4>
+            <div style="background: #fce4ec; padding: 15px; margin-bottom: 20px; border: 1px solid #e91e63; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the testimonial quote and author information.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_industry_testimonial_quote">Testimonial Quote</label></th>
+                    <td>
+                        <textarea id="apex_industry_testimonial_quote" name="apex_industry_testimonial_quote" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Enter the testimonial quote"><?php echo esc_textarea(get_option('apex_industry_testimonial_quote_' . $page_slug, "Apex Softwares truly understands the African financial services landscape. Their solutions have helped us reach customers we never thought possible while dramatically reducing our operational costs.")); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_testimonial_author">Author Name</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_testimonial_author" name="apex_industry_testimonial_author" 
+                               value="<?php echo esc_attr(get_option('apex_industry_testimonial_author_' . $page_slug, 'James Mwangi')); ?>" 
+                               class="regular-text" placeholder="Author name">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_testimonial_title">Author Title</label></th>
+                    <td>
+                        <input type="text" id="apex_industry_testimonial_title" name="apex_industry_testimonial_title" 
+                               value="<?php echo esc_attr(get_option('apex_industry_testimonial_title_' . $page_slug, 'CEO, Kenya National SACCO')); ?>" 
+                               class="regular-text" placeholder="e.g., CEO, Company Name">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_industry_testimonial_image">Author Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_industry_testimonial_image" name="apex_industry_testimonial_image" 
+                               value="<?php echo esc_url(get_option('apex_industry_testimonial_image_' . $page_slug, 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'industry-mfis'): ?>
+        <!-- Industry MFIs Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_mfi_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_hero_badge" name="apex_mfi_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_hero_badge_' . $page_slug, 'Microfinance Institutions')); ?>" 
+                               class="regular-text" placeholder="e.g., Microfinance Institutions">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_hero_heading" name="apex_mfi_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_hero_heading_' . $page_slug, 'Empowering MFIs to Reach More, Serve Better')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_mfi_hero_description" name="apex_mfi_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_mfi_hero_description_' . $page_slug, 'Digital-first solutions designed specifically for microfinance institutions. Reduce operational costs, expand your reach, and deliver exceptional service to underserved communities.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_mfi_hero_image" name="apex_mfi_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_mfi_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_mfi_hero_stats" name="apex_mfi_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_mfi_hero_stats_' . $page_slug, "50+ | MFI Clients\n5M+ | Borrowers Served\n90% | Faster Processing\n45% | Cost Reduction")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50+ | MFI Clients</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Challenges Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⚠️ Industry Challenges Section</h4>
+            <div style="background: #ffebee; padding: 15px; margin-bottom: 20px; border: 1px solid #e53935; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the challenges MFIs face. Enter 4 challenges below.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_mfi_challenges_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_challenges_badge" name="apex_mfi_challenges_badge" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_challenges_badge_' . $page_slug, 'Your Challenges')); ?>" 
+                               class="regular-text" placeholder="e.g., Your Challenges">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_challenges_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_challenges_heading" name="apex_mfi_challenges_heading" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_challenges_heading_' . $page_slug, 'We Understand MFI Challenges')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_challenges_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_mfi_challenges_description" name="apex_mfi_challenges_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_mfi_challenges_description_' . $page_slug, 'Microfinance institutions face unique operational challenges. Our solutions are designed to address each one.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_challenges_items">Challenges List</label></th>
+                    <td>
+                        <textarea id="apex_mfi_challenges_items" name="apex_mfi_challenges_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (one per line, 4 items)"><?php echo esc_textarea(get_option('apex_mfi_challenges_items_' . $page_slug, "Slow Loan Processing | Manual processes delay disbursements and frustrate borrowers who need quick access to funds.\nHigh Operating Costs | Paper-based operations and manual data entry drive up costs and reduce profitability.\nLimited Geographic Reach | Serving remote communities is expensive with traditional branch-based models.\nCredit Risk Management | Assessing creditworthiness without traditional credit history is challenging.")); ?></textarea>
+                        <p class="description">Enter 4 challenges. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Solutions Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✅ Industry Solutions Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays 4 MFI solutions with features lists.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_mfi_solutions_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_solutions_badge" name="apex_mfi_solutions_badge" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_solutions_badge_' . $page_slug, 'Our Solutions')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Solutions">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_solutions_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_solutions_heading" name="apex_mfi_solutions_heading" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_solutions_heading_' . $page_slug, 'Purpose-Built for Microfinance')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_solutions_items">Solutions List</label></th>
+                    <td>
+                        <textarea id="apex_mfi_solutions_items" name="apex_mfi_solutions_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4 (4 solutions)"><?php echo esc_textarea(get_option('apex_mfi_solutions_items_' . $page_slug, "01 | Digital Loan Origination | Automate the entire loan lifecycle from application to disbursement. Reduce processing time from days to minutes with digital workflows and automated credit scoring. | Mobile loan applications, Automated credit scoring, Digital document collection, Instant disbursement to mobile money\n02 | Agent Banking Network | Extend your reach without building branches. Our agent banking platform lets you serve customers through a network of local agents in their communities. | Agent onboarding and management, Real-time transaction processing, Commission management, Agent performance analytics\n03 | Mobile Banking App | Give your customers 24/7 access to their accounts. Our mobile app works even in low-connectivity areas with offline-first design. | Account management, Loan repayments, Mobile money integration, Push notifications\n04 | Group Lending Management | Manage group loans efficiently with tools designed for solidarity lending models popular in microfinance. | Group formation and management, Meeting scheduling, Group savings tracking, Peer guarantee management")); ?></textarea>
+                        <p class="description">Enter 4 solutions. Format per line: <code>Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Case Study Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Case Study Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays a success story case study with results.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_mfi_case_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_case_badge" name="apex_mfi_case_badge" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_case_badge_' . $page_slug, 'Success Story')); ?>" 
+                               class="regular-text" placeholder="e.g., Success Story">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_case_heading">Case Study Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_case_heading" name="apex_mfi_case_heading" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_case_heading_' . $page_slug, 'How Umoja MFI Scaled to 500,000 Customers')); ?>" 
+                               class="large-text" placeholder="Enter the case study heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_case_description">Case Study Description</label></th>
+                    <td>
+                        <textarea id="apex_mfi_case_description" name="apex_mfi_case_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the case study description"><?php echo esc_textarea(get_option('apex_mfi_case_description_' . $page_slug, 'Umoja Microfinance was struggling with manual processes that limited their growth. After implementing our digital lending platform, they transformed their operations.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_case_results">Case Study Results</label></th>
+                    <td>
+                        <textarea id="apex_mfi_case_results" name="apex_mfi_case_results" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (3 results, one per line)"><?php echo esc_textarea(get_option('apex_mfi_case_results_' . $page_slug, "500K | Active Borrowers\n90% | Faster Processing\n60% | Cost Reduction")); ?></textarea>
+                        <p class="description">Enter 3 results. Format per line: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_case_image">Case Study Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_mfi_case_image" name="apex_mfi_case_image" 
+                               value="<?php echo esc_url(get_option('apex_mfi_case_image_' . $page_slug, 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_mfi_case_link">Case Study Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_mfi_case_link" name="apex_mfi_case_link" 
+                               value="<?php echo esc_attr(get_option('apex_mfi_case_link_' . $page_slug, '/insights/success-stories')); ?>" 
+                               class="large-text" placeholder="/insights/success-stories">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'industry-credit-unions'): ?>
+        <!-- Industry Credit Unions Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_credit_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_hero_badge" name="apex_credit_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_credit_hero_badge_' . $page_slug, 'SACCOs & Credit Unions')); ?>" 
+                               class="regular-text" placeholder="e.g., SACCOs & Credit Unions">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_hero_heading" name="apex_credit_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_credit_hero_heading_' . $page_slug, 'Modern Solutions for Member-Owned Institutions')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_credit_hero_description" name="apex_credit_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_credit_hero_description_' . $page_slug, 'Empower your members with digital services while preserving the cooperative values that make SACCOs special. Our solutions are designed for the unique needs of member-owned financial institutions.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_credit_hero_image" name="apex_credit_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_credit_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_credit_hero_stats" name="apex_credit_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_credit_hero_stats_' . $page_slug, "40+ | SACCO Clients\n2M+ | Members Served\n300% | Avg. Growth\n4.8/5 | Satisfaction")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>40+ | SACCO Clients</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Challenges Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⚠️ Industry Challenges Section</h4>
+            <div style="background: #ffebee; padding: 15px; margin-bottom: 20px; border: 1px solid #e53935; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the challenges SACCOs face. Enter 4 challenges below.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_credit_challenges_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_challenges_badge" name="apex_credit_challenges_badge" 
+                               value="<?php echo esc_attr(get_option('apex_credit_challenges_badge_' . $page_slug, 'Your Challenges')); ?>" 
+                               class="regular-text" placeholder="e.g., Your Challenges">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_challenges_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_challenges_heading" name="apex_credit_challenges_heading" 
+                               value="<?php echo esc_attr(get_option('apex_credit_challenges_heading_' . $page_slug, 'We Understand SACCO Challenges')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_challenges_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_credit_challenges_description" name="apex_credit_challenges_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_credit_challenges_description_' . $page_slug, "SACCOs face unique challenges balancing member service with operational efficiency. We've built solutions that address each one.")); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_challenges_items">Challenges List</label></th>
+                    <td>
+                        <textarea id="apex_credit_challenges_items" name="apex_credit_challenges_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (one per line, 4 items)"><?php echo esc_textarea(get_option('apex_credit_challenges_items_' . $page_slug, "Member Expectations | Members expect digital services comparable to commercial banks while maintaining personal relationships.\nRegulatory Compliance | Keeping up with evolving SASRA and Central Bank regulations requires constant system updates.\nDividend Management | Complex dividend calculations and distribution across different share classes is time-consuming.\nLegacy Systems | Outdated systems limit growth and make it difficult to offer modern digital services.")); ?></textarea>
+                        <p class="description">Enter 4 challenges. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Solutions Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✅ Industry Solutions Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays 4 SACCO solutions with features lists.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_credit_solutions_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_solutions_badge" name="apex_credit_solutions_badge" 
+                               value="<?php echo esc_attr(get_option('apex_credit_solutions_badge_' . $page_slug, 'Our Solutions')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Solutions">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_solutions_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_solutions_heading" name="apex_credit_solutions_heading" 
+                               value="<?php echo esc_attr(get_option('apex_credit_solutions_heading_' . $page_slug, 'Purpose-Built for SACCOs')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_solutions_items">Solutions List</label></th>
+                    <td>
+                        <textarea id="apex_credit_solutions_items" name="apex_credit_solutions_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4 (4 solutions)"><?php echo esc_textarea(get_option('apex_credit_solutions_items_' . $page_slug, "01 | Member Management | Complete member lifecycle management from registration to exit. Track shares, savings, loans, and guarantees in one unified system. | Digital member onboarding, Share capital management, Guarantor tracking, Member portal access\n02 | Savings Products | Flexible savings product configuration to match your SACCO's unique offerings, from regular savings to fixed deposits. | Multiple savings accounts, Interest calculation automation, Standing orders, Goal-based savings\n03 | Loan Management | Streamline loan processing with automated eligibility checks, approval workflows, and disbursement. | Multiple loan products, Guarantor management, Automated eligibility, Check-off integration\n04 | Mobile & USSD Banking | Give members 24/7 access to their accounts through mobile app and USSD for feature phones. | Balance inquiries, Mini statements, Loan applications, Fund transfers")); ?></textarea>
+                        <p class="description">Enter 4 solutions. Format per line: <code>Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Case Study Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Case Study Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays a success story case study with results.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_credit_case_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_case_badge" name="apex_credit_case_badge" 
+                               value="<?php echo esc_attr(get_option('apex_credit_case_badge_' . $page_slug, 'Success Story')); ?>" 
+                               class="regular-text" placeholder="e.g., Success Story">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_case_heading">Case Study Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_case_heading" name="apex_credit_case_heading" 
+                               value="<?php echo esc_attr(get_option('apex_credit_case_heading_' . $page_slug, "Kenya National SACCO's Digital Transformation")); ?>" 
+                               class="large-text" placeholder="Enter the case study heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_case_description">Case Study Description</label></th>
+                    <td>
+                        <textarea id="apex_credit_case_description" name="apex_credit_case_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the case study description"><?php echo esc_textarea(get_option('apex_credit_case_description_' . $page_slug, 'Kenya National SACCO was losing members to commercial banks offering digital services. After implementing our platform, they became a digital leader in the SACCO sector.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_case_results">Case Study Results</label></th>
+                    <td>
+                        <textarea id="apex_credit_case_results" name="apex_credit_case_results" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (3 results, one per line)"><?php echo esc_textarea(get_option('apex_credit_case_results_' . $page_slug, "300% | Membership Growth\n65% | Cost Reduction\n4.8/5 | Member Satisfaction")); ?></textarea>
+                        <p class="description">Enter 3 results. Format per line: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_case_image">Case Study Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_credit_case_image" name="apex_credit_case_image" 
+                               value="<?php echo esc_url(get_option('apex_credit_case_image_' . $page_slug, 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_credit_case_link">Case Study Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_credit_case_link" name="apex_credit_case_link" 
+                               value="<?php echo esc_attr(get_option('apex_credit_case_link_' . $page_slug, '/insights/success-stories')); ?>" 
+                               class="large-text" placeholder="/insights/success-stories">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'industry-banks-microfinance'): ?>
+        <!-- Industry Banks Microfinance Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_bank_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_hero_badge" name="apex_bank_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_bank_hero_badge_' . $page_slug, 'Commercial Banks')); ?>" 
+                               class="regular-text" placeholder="e.g., Commercial Banks">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_hero_heading" name="apex_bank_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_bank_hero_heading_' . $page_slug, 'Enterprise-Grade Banking Technology')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_bank_hero_description" name="apex_bank_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_bank_hero_description_' . $page_slug, 'Modernize your core banking infrastructure and deliver exceptional digital experiences. Our solutions help banks compete effectively in an increasingly digital landscape.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_bank_hero_image" name="apex_bank_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_bank_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_bank_hero_stats" name="apex_bank_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_bank_hero_stats_' . $page_slug, "15+ | Bank Clients\n3M+ | Customers Served\n99.99% | Uptime SLA\n10x | Faster Transactions")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>15+ | Bank Clients</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Challenges Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⚠️ Industry Challenges Section</h4>
+            <div style="background: #ffebee; padding: 15px; margin-bottom: 20px; border: 1px solid #e53935; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the challenges Banks face. Enter 4 challenges below.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_bank_challenges_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_challenges_badge" name="apex_bank_challenges_badge" 
+                               value="<?php echo esc_attr(get_option('apex_bank_challenges_badge_' . $page_slug, 'Your Challenges')); ?>" 
+                               class="regular-text" placeholder="e.g., Your Challenges">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_challenges_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_challenges_heading" name="apex_bank_challenges_heading" 
+                               value="<?php echo esc_attr(get_option('apex_bank_challenges_heading_' . $page_slug, 'We Understand Banking Challenges')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_challenges_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_bank_challenges_description" name="apex_bank_challenges_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_bank_challenges_description_' . $page_slug, 'Commercial banks face intense competition and rapidly evolving customer expectations. Our solutions address these challenges head-on.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_challenges_items">Challenges List</label></th>
+                    <td>
+                        <textarea id="apex_bank_challenges_items" name="apex_bank_challenges_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (one per line, 4 items)"><?php echo esc_textarea(get_option('apex_bank_challenges_items_' . $page_slug, "Legacy System Constraints | Aging core banking systems limit agility and make it difficult to launch new products quickly.\nFintech Competition | Agile fintechs are capturing market share with superior digital experiences.\nRegulatory Pressure | Increasing regulatory requirements demand robust compliance and reporting capabilities.\nCost Optimization | Pressure to reduce cost-to-income ratios while maintaining service quality.")); ?></textarea>
+                        <p class="description">Enter 4 challenges. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Solutions Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✅ Industry Solutions Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays 4 Banking solutions with features lists.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_bank_solutions_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_solutions_badge" name="apex_bank_solutions_badge" 
+                               value="<?php echo esc_attr(get_option('apex_bank_solutions_badge_' . $page_slug, 'Our Solutions')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Solutions">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_solutions_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_solutions_heading" name="apex_bank_solutions_heading" 
+                               value="<?php echo esc_attr(get_option('apex_bank_solutions_heading_' . $page_slug, 'Enterprise Banking Platform')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_solutions_items">Solutions List</label></th>
+                    <td>
+                        <textarea id="apex_bank_solutions_items" name="apex_bank_solutions_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4 (4 solutions)"><?php echo esc_textarea(get_option('apex_bank_solutions_items_' . $page_slug, "01 | Modern Core Banking | Cloud-native core banking system designed for high transaction volumes, real-time processing, and rapid product innovation. | Real-time transaction processing, Multi-currency support, Flexible product configuration, API-first architecture\n02 | Digital Channels | Comprehensive digital banking suite including mobile app, internet banking, and USSD for complete customer coverage. | White-label mobile app, Responsive internet banking, USSD banking, Chatbot integration\n03 | Payment Hub | Unified payment processing platform supporting all payment types and channels with real-time settlement. | RTGS/EFT integration, Card processing, Mobile money interoperability, Bill payments\n04 | Analytics & Reporting | Real-time business intelligence and regulatory reporting to drive decisions and ensure compliance. | Real-time dashboards, Regulatory reports, Customer analytics, Risk monitoring")); ?></textarea>
+                        <p class="description">Enter 4 solutions. Format per line: <code>Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Case Study Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Case Study Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays a success story case study with results.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_bank_case_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_case_badge" name="apex_bank_case_badge" 
+                               value="<?php echo esc_attr(get_option('apex_bank_case_badge_' . $page_slug, 'Success Story')); ?>" 
+                               class="regular-text" placeholder="e.g., Success Story">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_case_heading">Case Study Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_case_heading" name="apex_bank_case_heading" 
+                               value="<?php echo esc_attr(get_option('apex_bank_case_heading_' . $page_slug, "Unity Bank's Core Banking Transformation")); ?>" 
+                               class="large-text" placeholder="Enter the case study heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_case_description">Case Study Description</label></th>
+                    <td>
+                        <textarea id="apex_bank_case_description" name="apex_bank_case_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the case study description"><?php echo esc_textarea(get_option('apex_bank_case_description_' . $page_slug, 'Unity Bank Nigeria replaced their 15-year-old legacy core with ApexCore, achieving seamless migration and dramatically improved performance.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_case_results">Case Study Results</label></th>
+                    <td>
+                        <textarea id="apex_bank_case_results" name="apex_bank_case_results" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (3 results, one per line)"><?php echo esc_textarea(get_option('apex_bank_case_results_' . $page_slug, "Zero | Downtime Migration\n10x | Faster Transactions\n50% | Cost Reduction")); ?></textarea>
+                        <p class="description">Enter 3 results. Format per line: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_case_image">Case Study Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_bank_case_image" name="apex_bank_case_image" 
+                               value="<?php echo esc_url(get_option('apex_bank_case_image_' . $page_slug, 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_bank_case_link">Case Study Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_bank_case_link" name="apex_bank_case_link" 
+                               value="<?php echo esc_attr(get_option('apex_bank_case_link_' . $page_slug, '/insights/success-stories')); ?>" 
+                               class="large-text" placeholder="/insights/success-stories">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'industry-digital-government'): ?>
+        <!-- Industry Digital Government Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_gov_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_hero_badge" name="apex_gov_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_gov_hero_badge_' . $page_slug, 'Digital Government & NGOs')); ?>" 
+                               class="regular-text" placeholder="e.g., Digital Government & NGOs">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_hero_heading" name="apex_gov_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_gov_hero_heading_' . $page_slug, 'Secure Financial Solutions for Public Programs')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_gov_hero_description" name="apex_gov_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_gov_hero_description_' . $page_slug, 'Enable efficient, transparent, and accountable financial operations for government programs and development organizations. Our platforms ensure funds reach beneficiaries quickly and securely.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_gov_hero_image" name="apex_gov_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_gov_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_gov_hero_stats" name="apex_gov_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_gov_hero_stats_' . $page_slug, "10+ | Programs Supported\n\$500M+ | Funds Disbursed\n1M+ | Beneficiaries\n100% | Audit Trail")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>10+ | Programs Supported</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Challenges Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⚠️ Industry Challenges Section</h4>
+            <div style="background: #ffebee; padding: 15px; margin-bottom: 20px; border: 1px solid #e53935; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the challenges Government/NGO programs face. Enter 4 challenges below.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_gov_challenges_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_challenges_badge" name="apex_gov_challenges_badge" 
+                               value="<?php echo esc_attr(get_option('apex_gov_challenges_badge_' . $page_slug, 'Your Challenges')); ?>" 
+                               class="regular-text" placeholder="e.g., Your Challenges">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_challenges_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_challenges_heading" name="apex_gov_challenges_heading" 
+                               value="<?php echo esc_attr(get_option('apex_gov_challenges_heading_' . $page_slug, 'We Understand Public Sector Challenges')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_challenges_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_gov_challenges_description" name="apex_gov_challenges_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_gov_challenges_description_' . $page_slug, 'Government programs and NGOs face unique challenges in financial management. Our solutions address these with purpose-built features.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_challenges_items">Challenges List</label></th>
+                    <td>
+                        <textarea id="apex_gov_challenges_items" name="apex_gov_challenges_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (one per line, 4 items)"><?php echo esc_textarea(get_option('apex_gov_challenges_items_' . $page_slug, "Accountability & Transparency | Donors and stakeholders demand complete visibility into how funds are used.\nBeneficiary Identification | Ensuring funds reach intended beneficiaries without fraud or duplication.\nLast-Mile Delivery | Reaching beneficiaries in remote areas with limited banking infrastructure.\nReporting Requirements | Complex reporting requirements from multiple stakeholders and donors.")); ?></textarea>
+                        <p class="description">Enter 4 challenges. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Industry Solutions Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✅ Industry Solutions Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays 4 Government solutions with features lists.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_gov_solutions_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_solutions_badge" name="apex_gov_solutions_badge" 
+                               value="<?php echo esc_attr(get_option('apex_gov_solutions_badge_' . $page_slug, 'Our Solutions')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Solutions">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_solutions_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_solutions_heading" name="apex_gov_solutions_heading" 
+                               value="<?php echo esc_attr(get_option('apex_gov_solutions_heading_' . $page_slug, 'Purpose-Built for Public Programs')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_solutions_items">Solutions List</label></th>
+                    <td>
+                        <textarea id="apex_gov_solutions_items" name="apex_gov_solutions_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4 (4 solutions)"><?php echo esc_textarea(get_option('apex_gov_solutions_items_' . $page_slug, "01 | Beneficiary Management | Comprehensive beneficiary registration and verification system with biometric integration to prevent fraud and duplication. | Biometric registration, Deduplication checks, Eligibility verification, Beneficiary portal\n02 | Disbursement Platform | Multi-channel disbursement supporting mobile money, bank transfers, and cash through agent networks. | Bulk disbursements, Mobile money integration, Agent cash-out, Real-time tracking\n03 | Collection Management | Efficient collection of taxes, fees, and contributions with multiple payment channels and reconciliation. | Multi-channel collection, Automated reconciliation, Receipt generation, Arrears management\n04 | Audit & Reporting | Complete audit trail and customizable reporting for donors, government, and internal stakeholders. | Complete audit trail, Donor reports, Real-time dashboards, Custom report builder")); ?></textarea>
+                        <p class="description">Enter 4 solutions. Format per line: <code>Number | Title | Description | Feature 1, Feature 2, Feature 3, Feature 4</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Use Cases Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🎯 Use Cases Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays 6 use cases for Government/NGO programs.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_gov_usecases_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_usecases_badge" name="apex_gov_usecases_badge" 
+                               value="<?php echo esc_attr(get_option('apex_gov_usecases_badge_' . $page_slug, 'Use Cases')); ?>" 
+                               class="regular-text" placeholder="e.g., Use Cases">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_usecases_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_usecases_heading" name="apex_gov_usecases_heading" 
+                               value="<?php echo esc_attr(get_option('apex_gov_usecases_heading_' . $page_slug, 'Programs We Support')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_usecases_items">Use Cases List</label></th>
+                    <td>
+                        <textarea id="apex_gov_usecases_items" name="apex_gov_usecases_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (6 use cases)"><?php echo esc_textarea(get_option('apex_gov_usecases_items_' . $page_slug, "Social Protection Programs | Cash transfer programs, pension disbursements, and social safety net payments.\nAgricultural Subsidies | Farmer registration, input subsidy distribution, and crop payment programs.\nEducation Grants | Scholarship disbursements, school fee payments, and education stipends.\nHealth Programs | Community health worker payments, patient support, and health insurance.\nRevenue Collection | Tax collection, license fees, and utility payments for government agencies.\nHumanitarian Aid | Emergency cash transfers, refugee assistance, and disaster relief programs.")); ?></textarea>
+                        <p class="description">Enter 6 use cases. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Case Study Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Case Study Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays a success story case study with results.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_gov_case_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_case_badge" name="apex_gov_case_badge" 
+                               value="<?php echo esc_attr(get_option('apex_gov_case_badge_' . $page_slug, 'Success Story')); ?>" 
+                               class="regular-text" placeholder="e.g., Success Story">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_case_heading">Case Study Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_case_heading" name="apex_gov_case_heading" 
+                               value="<?php echo esc_attr(get_option('apex_gov_case_heading_' . $page_slug, 'National Social Protection Program')); ?>" 
+                               class="large-text" placeholder="Enter the case study heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_case_description">Case Study Description</label></th>
+                    <td>
+                        <textarea id="apex_gov_case_description" name="apex_gov_case_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the case study description"><?php echo esc_textarea(get_option('apex_gov_case_description_' . $page_slug, 'A national government partnered with us to digitize their social protection program, reaching over 500,000 vulnerable households with monthly cash transfers.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_case_results">Case Study Results</label></th>
+                    <td>
+                        <textarea id="apex_gov_case_results" name="apex_gov_case_results" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (3 results, one per line)"><?php echo esc_textarea(get_option('apex_gov_case_results_' . $page_slug, "500K | Households Reached\n98% | Successful Disbursement\n70% | Cost Reduction")); ?></textarea>
+                        <p class="description">Enter 3 results. Format per line: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_case_image">Case Study Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_gov_case_image" name="apex_gov_case_image" 
+                               value="<?php echo esc_url(get_option('apex_gov_case_image_' . $page_slug, 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_gov_case_link">Case Study Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_gov_case_link" name="apex_gov_case_link" 
+                               value="<?php echo esc_attr(get_option('apex_gov_case_link_' . $page_slug, '/insights/success-stories')); ?>" 
+                               class="large-text" placeholder="/insights/success-stories">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'insights-blog'): ?>
+        <!-- Insights Blog Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_blog_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_hero_badge" name="apex_blog_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_blog_hero_badge_' . $page_slug, 'Insights & Thought Leadership')); ?>" 
+                               class="regular-text" placeholder="e.g., Insights & Thought Leadership">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_hero_heading" name="apex_blog_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_blog_hero_heading_' . $page_slug, 'The Apex Blog')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_blog_hero_description" name="apex_blog_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_blog_hero_description_' . $page_slug, 'Expert insights, industry trends, and practical guides on digital banking, financial technology, and driving innovation in African financial services.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_blog_hero_image" name="apex_blog_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_blog_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_blog_hero_stats" name="apex_blog_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_blog_hero_stats_' . $page_slug, "200+ | Articles Published\n50K+ | Monthly Readers\n15+ | Expert Contributors\n8 | Topic Categories")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>200+ | Articles Published</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Featured Article Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Featured Article Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the featured article card (Editor's Pick).</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_badge" name="apex_blog_featured_badge" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_badge_' . $page_slug, "Editor's Pick")); ?>" 
+                               class="regular-text" placeholder="e.g., Editor's Pick">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_image">Featured Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_blog_featured_image" name="apex_blog_featured_image" 
+                               value="<?php echo esc_url(get_option('apex_blog_featured_image_' . $page_slug, 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_category">Category</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_category" name="apex_blog_featured_category" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_category_' . $page_slug, 'Digital Banking')); ?>" 
+                               class="regular-text" placeholder="e.g., Digital Banking">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_date">Date</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_date" name="apex_blog_featured_date" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_date_' . $page_slug, 'January 25, 2026')); ?>" 
+                               class="regular-text" placeholder="e.g., January 25, 2026">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_readtime">Read Time</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_readtime" name="apex_blog_featured_readtime" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_readtime_' . $page_slug, '8 min read')); ?>" 
+                               class="regular-text" placeholder="e.g., 8 min read">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_title">Article Title</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_title" name="apex_blog_featured_title" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_title_' . $page_slug, 'The Future of Digital Banking in Africa: 5 Trends Shaping 2026 and Beyond')); ?>" 
+                               class="large-text" placeholder="Enter the article title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_excerpt">Article Excerpt</label></th>
+                    <td>
+                        <textarea id="apex_blog_featured_excerpt" name="apex_blog_featured_excerpt" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the article excerpt"><?php echo esc_textarea(get_option('apex_blog_featured_excerpt_' . $page_slug, 'As we enter 2026, the African banking landscape continues to evolve at an unprecedented pace. From embedded finance to AI-driven personalization, discover the key trends that will define the next era of financial services across the continent.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_author_image">Author Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_blog_featured_author_image" name="apex_blog_featured_author_image" 
+                               value="<?php echo esc_url(get_option('apex_blog_featured_author_image_' . $page_slug, 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100')); ?>" 
+                               class="large-text" placeholder="https://example.com/author.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_author_name">Author Name</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_author_name" name="apex_blog_featured_author_name" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_author_name_' . $page_slug, 'Sarah Ochieng')); ?>" 
+                               class="regular-text" placeholder="e.g., Sarah Ochieng">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_author_title">Author Title</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_author_title" name="apex_blog_featured_author_title" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_author_title_' . $page_slug, 'Chief Technology Officer')); ?>" 
+                               class="regular-text" placeholder="e.g., Chief Technology Officer">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_featured_link">Article Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_featured_link" name="apex_blog_featured_link" 
+                               value="<?php echo esc_attr(get_option('apex_blog_featured_link_' . $page_slug, '#')); ?>" 
+                               class="large-text" placeholder="#">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Categories Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📚 Categories Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the blog categories. Enter 8 categories below.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_blog_categories_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_categories_heading" name="apex_blog_categories_heading" 
+                               value="<?php echo esc_attr(get_option('apex_blog_categories_heading_' . $page_slug, 'Browse by Topic')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_categories_items">Categories List</label></th>
+                    <td>
+                        <textarea id="apex_blog_categories_items" name="apex_blog_categories_items" 
+                                  class="large-text" rows="16" 
+                                  placeholder="Format: ID | Title | Article Count (8 categories)"><?php echo esc_textarea(get_option('apex_blog_categories_items_' . $page_slug, "digital-banking | Digital Banking | 42 articles\nmobile-banking | Mobile Banking | 38 articles\nfinancial-inclusion | Financial Inclusion | 31 articles\nsecurity | Security & Compliance | 28 articles\nai-analytics | AI & Analytics | 24 articles\napi-integration | API & Integration | 19 articles\nsacco-mfi | SACCO & MFI | 35 articles\nproduct-updates | Product Updates | 22 articles")); ?></textarea>
+                        <p class="description">Enter 8 categories. Format per line: <code>ID | Title | Article Count</code> (e.g., <code>digital-banking | Digital Banking | 42 articles</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📧 Newsletter Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the newsletter signup form.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_blog_newsletter_heading">Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_newsletter_heading" name="apex_blog_newsletter_heading" 
+                               value="<?php echo esc_attr(get_option('apex_blog_newsletter_heading_' . $page_slug, 'Get Insights Delivered')); ?>" 
+                               class="large-text" placeholder="Enter the newsletter heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_newsletter_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_blog_newsletter_description" name="apex_blog_newsletter_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the newsletter description"><?php echo esc_textarea(get_option('apex_blog_newsletter_description_' . $page_slug, 'Subscribe to our weekly newsletter for the latest articles, industry news, and exclusive insights from our team of experts.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_newsletter_placeholder">Email Placeholder</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_newsletter_placeholder" name="apex_blog_newsletter_placeholder" 
+                               value="<?php echo esc_attr(get_option('apex_blog_newsletter_placeholder_' . $page_slug, 'Enter your email address')); ?>" 
+                               class="large-text" placeholder="e.g., Enter your email address">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_newsletter_button">Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_newsletter_button" name="apex_blog_newsletter_button" 
+                               value="<?php echo esc_attr(get_option('apex_blog_newsletter_button_' . $page_slug, 'Subscribe')); ?>" 
+                               class="regular-text" placeholder="e.g., Subscribe">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_blog_newsletter_note">Note Text</label></th>
+                    <td>
+                        <input type="text" id="apex_blog_newsletter_note" name="apex_blog_newsletter_note" 
+                               value="<?php echo esc_attr(get_option('apex_blog_newsletter_note_' . $page_slug, 'Join 10,000+ subscribers. Unsubscribe at any time.')); ?>" 
+                               class="large-text" placeholder="e.g., Join 10,000+ subscribers. Unsubscribe at any time.">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'insights-whitepapers-reports'): ?>
+        <!-- Insights Whitepapers & Reports Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reports_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_hero_badge" name="apex_reports_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_reports_hero_badge_' . $page_slug, 'Research & Resources')); ?>" 
+                               class="regular-text" placeholder="e.g., Research & Resources">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_hero_heading" name="apex_reports_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_reports_hero_heading_' . $page_slug, 'Whitepapers & Reports')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_reports_hero_description" name="apex_reports_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_reports_hero_description_' . $page_slug, 'In-depth research, industry analysis, and practical guides to help you make informed decisions about your digital transformation journey.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_reports_hero_image" name="apex_reports_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_reports_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_reports_hero_stats" name="apex_reports_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_reports_hero_stats_' . $page_slug, "30+ | Publications\n15K+ | Downloads\n10+ | Research Partners\n5 | Annual Reports")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>30+ | Publications</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Featured Report Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Featured Report Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the featured report card.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_featured_badge" name="apex_reports_featured_badge" 
+                               value="<?php echo esc_attr(get_option('apex_reports_featured_badge_' . $page_slug, 'Featured Report')); ?>" 
+                               class="regular-text" placeholder="e.g., Featured Report">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_image">Report Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_reports_featured_image" name="apex_reports_featured_image" 
+                               value="<?php echo esc_url(get_option('apex_reports_featured_image_' . $page_slug, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_type">Report Type</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_featured_type" name="apex_reports_featured_type" 
+                               value="<?php echo esc_attr(get_option('apex_reports_featured_type_' . $page_slug, 'Annual Report')); ?>" 
+                               class="regular-text" placeholder="e.g., Annual Report">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_date">Date</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_featured_date" name="apex_reports_featured_date" 
+                               value="<?php echo esc_attr(get_option('apex_reports_featured_date_' . $page_slug, 'January 2026')); ?>" 
+                               class="regular-text" placeholder="e.g., January 2026">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_title">Report Title</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_featured_title" name="apex_reports_featured_title" 
+                               value="<?php echo esc_attr(get_option('apex_reports_featured_title_' . $page_slug, 'The State of Digital Banking in Africa 2026')); ?>" 
+                               class="large-text" placeholder="Enter the report title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_excerpt">Report Excerpt</label></th>
+                    <td>
+                        <textarea id="apex_reports_featured_excerpt" name="apex_reports_featured_excerpt" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the report excerpt"><?php echo esc_textarea(get_option('apex_reports_featured_excerpt_' . $page_slug, 'Our comprehensive annual report analyzing digital banking trends, adoption rates, and opportunities across 15 African markets. Based on surveys of 500+ financial institutions and analysis of 10 million+ transactions.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_highlights">Key Findings (4 items)</label></th>
+                    <td>
+                        <textarea id="apex_reports_featured_highlights" name="apex_reports_featured_highlights" 
+                                  class="large-text" rows="6" 
+                                  placeholder="Enter one highlight per line"><?php echo esc_textarea(get_option('apex_reports_featured_highlights_' . $page_slug, "Mobile banking adoption grew 45% year-over-year\nAI-powered services now used by 60% of institutions\nAgent banking networks expanded to reach 50M+ users\nCloud adoption accelerating with 70% planning migration")); ?></textarea>
+                        <p class="description">Enter 4 key findings. One per line.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_pages">Pages</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_featured_pages" name="apex_reports_featured_pages" 
+                               value="<?php echo esc_attr(get_option('apex_reports_featured_pages_' . $page_slug, '86')); ?>" 
+                               class="regular-text" placeholder="e.g., 86">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_format">Format</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_featured_format" name="apex_reports_featured_format" 
+                               value="<?php echo esc_attr(get_option('apex_reports_featured_format_' . $page_slug, 'PDF')); ?>" 
+                               class="regular-text" placeholder="e.g., PDF">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_featured_link">Download Link</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_featured_link" name="apex_reports_featured_link" 
+                               value="<?php echo esc_attr(get_option('apex_reports_featured_link_' . $page_slug, '#')); ?>" 
+                               class="large-text" placeholder="#">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Categories Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📚 Categories Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays the report categories.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reports_categories_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_categories_heading" name="apex_reports_categories_heading" 
+                               value="<?php echo esc_attr(get_option('apex_reports_categories_heading_' . $page_slug, 'Browse by Category')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_categories_items">Categories List</label></th>
+                    <td>
+                        <textarea id="apex_reports_categories_items" name="apex_reports_categories_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: ID | Title | Count (4 categories)"><?php echo esc_textarea(get_option('apex_reports_categories_items_' . $page_slug, "industry-reports | Industry Reports | 8 publications\nwhitepapers | Whitepapers | 12 publications\nguides | Implementation Guides | 6 publications\nbenchmarks | Benchmark Studies | 4 publications")); ?></textarea>
+                        <p class="description">Enter 4 categories. Format per line: <code>ID | Title | Count</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Custom Research Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔬 Custom Research Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the custom research CTA.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reports_custom_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_custom_badge" name="apex_reports_custom_badge" 
+                               value="<?php echo esc_attr(get_option('apex_reports_custom_badge_' . $page_slug, 'Custom Research')); ?>" 
+                               class="regular-text" placeholder="e.g., Custom Research">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_custom_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_custom_heading" name="apex_reports_custom_heading" 
+                               value="<?php echo esc_attr(get_option('apex_reports_custom_heading_' . $page_slug, 'Need Custom Research?')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_custom_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_reports_custom_description" name="apex_reports_custom_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_reports_custom_description_' . $page_slug, 'Our research team can conduct custom studies tailored to your specific needs, including market analysis, competitive benchmarking, and feasibility studies.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_custom_services">Services (3 items)</label></th>
+                    <td>
+                        <textarea id="apex_reports_custom_services" name="apex_reports_custom_services" 
+                                  class="large-text" rows="6" 
+                                  placeholder="Format: Title | Description (3 services)"><?php echo esc_textarea(get_option('apex_reports_custom_services_' . $page_slug, "Market Analysis | Deep-dive into specific markets or segments\nCompetitive Benchmarking | Compare your performance against peers\nFeasibility Studies | Assess viability of new initiatives")); ?></textarea>
+                        <p class="description">Enter 3 services. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_custom_image">Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_reports_custom_image" name="apex_reports_custom_image" 
+                               value="<?php echo esc_url(get_option('apex_reports_custom_image_' . $page_slug, 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_custom_link">CTA Link</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_custom_link" name="apex_reports_custom_link" 
+                               value="<?php echo esc_attr(get_option('apex_reports_custom_link_' . $page_slug, '/contact')); ?>" 
+                               class="large-text" placeholder="/contact">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📧 Newsletter Section</h4>
+            <div style="background: #fce4ec; padding: 15px; margin-bottom: 20px; border: 1px solid #e91e63; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the newsletter signup form.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_reports_newsletter_heading">Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_newsletter_heading" name="apex_reports_newsletter_heading" 
+                               value="<?php echo esc_attr(get_option('apex_reports_newsletter_heading_' . $page_slug, 'Get New Reports First')); ?>" 
+                               class="large-text" placeholder="Enter the newsletter heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_newsletter_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_reports_newsletter_description" name="apex_reports_newsletter_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the newsletter description"><?php echo esc_textarea(get_option('apex_reports_newsletter_description_' . $page_slug, 'Subscribe to be notified when we publish new research, whitepapers, and industry reports.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_newsletter_placeholder">Email Placeholder</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_newsletter_placeholder" name="apex_reports_newsletter_placeholder" 
+                               value="<?php echo esc_attr(get_option('apex_reports_newsletter_placeholder_' . $page_slug, 'Enter your email address')); ?>" 
+                               class="large-text" placeholder="e.g., Enter your email address">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_newsletter_button">Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_newsletter_button" name="apex_reports_newsletter_button" 
+                               value="<?php echo esc_attr(get_option('apex_reports_newsletter_button_' . $page_slug, 'Subscribe')); ?>" 
+                               class="regular-text" placeholder="e.g., Subscribe">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_reports_newsletter_note">Note Text</label></th>
+                    <td>
+                        <input type="text" id="apex_reports_newsletter_note" name="apex_reports_newsletter_note" 
+                               value="<?php echo esc_attr(get_option('apex_reports_newsletter_note_' . $page_slug, 'Join 5,000+ subscribers. We respect your privacy.')); ?>" 
+                               class="large-text" placeholder="e.g., Join 5,000+ subscribers. We respect your privacy.">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'partners'): ?>
+        <!-- Partners Page Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_partners_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_hero_badge" name="apex_partners_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_partners_hero_badge_' . $page_slug, 'Partners')); ?>" 
+                               class="regular-text" placeholder="e.g., Partners">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_hero_heading" name="apex_partners_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_partners_hero_heading_' . $page_slug, 'Partner with Us to Transform African Fintech')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_partners_hero_description" name="apex_partners_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_partners_hero_description_' . $page_slug, 'Join our growing ecosystem of partners and help drive financial inclusion across Africa. We offer flexible partnership models tailored to your business.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_partners_hero_image" name="apex_partners_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_partners_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_partners_hero_stats" name="apex_partners_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_partners_hero_stats_' . $page_slug, "50+ | Partners\n15+ | Countries\n100+ | Joint Projects\n$1B+ | Transactions Processed")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50+ | Partners</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Benefits Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>✨ Benefits Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the "Why Partner with Apex?" benefits grid.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_partners_benefits_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_benefits_heading" name="apex_partners_benefits_heading" 
+                               value="<?php echo esc_attr(get_option('apex_partners_benefits_heading_' . $page_slug, 'Why Partner with Apex?')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_benefits_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_benefits_description" name="apex_partners_benefits_description" 
+                               value="<?php echo esc_attr(get_option('apex_partners_benefits_description_' . $page_slug, "We're committed to mutual growth and success")); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_benefits_items">Benefits (4 items)</label></th>
+                    <td>
+                        <textarea id="apex_partners_benefits_items" name="apex_partners_benefits_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (4 items)"><?php echo esc_textarea(get_option('apex_partners_benefits_items_' . $page_slug, "Market Leadership | Partner with Africa's leading fintech company serving 50+ financial institutions across 15 countries.\nRevenue Sharing | Attractive revenue models with competitive commissions and flexible terms designed for mutual benefit.\nDedicated Support | Access to our dedicated partner support team, training programs, and marketing resources.\nTechnical Integration | Comprehensive APIs, SDKs, and integration support to ensure seamless deployment.")); ?></textarea>
+                        <p class="description">Enter 4 benefits. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Partnership Models Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🤝 Partnership Models Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 4 partnership model cards.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_partners_models_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_models_heading" name="apex_partners_models_heading" 
+                               value="<?php echo esc_attr(get_option('apex_partners_models_heading_' . $page_slug, 'Partnership Models')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_models_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_models_description" name="apex_partners_models_description" 
+                               value="<?php echo esc_attr(get_option('apex_partners_models_description_' . $page_slug, 'Choose the partnership model that fits your business')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_models_items">Partnership Models (4 cards)</label></th>
+                    <td>
+                        <textarea id="apex_partners_models_items" name="apex_partners_models_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description | Feature 1 | Feature 2 | Feature 3 | Feature 4 (4 models)"><?php echo esc_textarea(get_option('apex_partners_models_items_' . $page_slug, "Reseller Partner | Sell our solutions to your clients and earn attractive commissions. Ideal for IT consultants, system integrators, and VARs. | Competitive commission rates | Marketing support | Training and certification | Lead generation support\nTechnology Partner | Integrate our solutions with your technology stack and create comprehensive offerings for your customers. | API access and documentation | Joint go-to-market | Co-marketing opportunities | Technical collaboration\nReferral Partner | Refer clients to us and earn referral fees. Low commitment with high rewards for qualified referrals. | Referral commissions | Easy onboarding | Tracking and reporting | No sales commitment\nStrategic Partner | Deep integration and collaboration for long-term strategic partnerships. For large enterprises and institutions. | Custom integration | Revenue sharing | Co-development | Priority support")); ?></textarea>
+                        <p class="description">Enter 4 partnership models. Format per line: <code>Title | Description | Feature 1 | Feature 2 | Feature 3 | Feature 4</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Onboarding Process Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📋 Onboarding Process Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 5-step onboarding process.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_partners_process_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_process_heading" name="apex_partners_process_heading" 
+                               value="<?php echo esc_attr(get_option('apex_partners_process_heading_' . $page_slug, 'Partner Onboarding Process')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_process_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_process_description" name="apex_partners_process_description" 
+                               value="<?php echo esc_attr(get_option('apex_partners_process_description_' . $page_slug, 'Simple, transparent, and efficient')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_process_steps">Process Steps (5 steps)</label></th>
+                    <td>
+                        <textarea id="apex_partners_process_steps" name="apex_partners_process_steps" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (5 steps)"><?php echo esc_textarea(get_option('apex_partners_process_steps_' . $page_slug, "Apply Online | Submit your partnership application through our online portal with your business details.\nReview & Approval | Our team reviews your application and contacts you within 5 business days.\nAgreement Signing | Review and sign the partnership agreement tailored to your chosen model.\nOnboarding & Training | Complete onboarding training and access partner resources and tools.\nStart Selling | Begin selling and earning with full support from our partner team.")); ?></textarea>
+                        <p class="description">Enter 5 process steps. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Partner Logos Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🏢 Partner Logos Section</h4>
+            <div style="background: #e0f2f1; padding: 15px; margin-bottom: 20px; border: 1px solid #009688; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the partner logos grid.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_partners_logos_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_logos_heading" name="apex_partners_logos_heading" 
+                               value="<?php echo esc_attr(get_option('apex_partners_logos_heading_' . $page_slug, 'Our Partners')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_logos_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_logos_description" name="apex_partners_logos_description" 
+                               value="<?php echo esc_attr(get_option('apex_partners_logos_description_' . $page_slug, 'Trusted by leading organizations across Africa')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_logos_items">Partner Logos (8 logos)</label></th>
+                    <td>
+                        <textarea id="apex_partners_logos_items" name="apex_partners_logos_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: URL | Name (8 logos)"><?php echo esc_textarea(get_option('apex_partners_logos_items_' . $page_slug, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/150px-Microsoft_Azure.svg.png | Microsoft Azure\nhttps://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/150px-Amazon_Web_Services_Logo.svg.png | Amazon Web Services\nhttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/150px-Visa_Inc._logo.svg.png | Visa\nhttps://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/150px-Mastercard-logo.svg.png | Mastercard\nhttps://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg | M-Pesa (Safaricom)\nhttps://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/150px-Oracle_logo.svg.png | Oracle\nhttps://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/150px-IBM_logo.svg.png | IBM\nhttps://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Google_Cloud_logo.svg/150px-Google_Cloud_logo.svg.png | Google Cloud")); ?></textarea>
+                        <p class="description">Enter 8 partner logos. Format per line: <code>Image URL | Partner Name</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Testimonial Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💬 Testimonial Section</h4>
+            <div style="background: #fce4ec; padding: 15px; margin-bottom: 20px; border: 1px solid #e91e63; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the partner success story testimonial.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_partners_testimonial_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_testimonial_badge" name="apex_partners_testimonial_badge" 
+                               value="<?php echo esc_attr(get_option('apex_partners_testimonial_badge_' . $page_slug, 'Partner Success Story')); ?>" 
+                               class="regular-text" placeholder="e.g., Partner Success Story">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_testimonial_heading">Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_testimonial_heading" name="apex_partners_testimonial_heading" 
+                               value="<?php echo esc_attr(get_option('apex_partners_testimonial_heading_' . $page_slug, 'How TechCorp Africa Grew Revenue by 300%')); ?>" 
+                               class="large-text" placeholder="Enter the testimonial heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_testimonial_quote">Testimonial Quote</label></th>
+                    <td>
+                        <textarea id="apex_partners_testimonial_quote" name="apex_partners_testimonial_quote" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Enter the testimonial quote"><?php echo esc_textarea(get_option('apex_partners_testimonial_quote_' . $page_slug, '"Partnering with Apex has been transformative for our business. Their comprehensive solutions, excellent support, and attractive revenue model helped us expand our client base and triple our revenue in just two years."')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_testimonial_author_name">Author Name</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_testimonial_author_name" name="apex_partners_testimonial_author_name" 
+                               value="<?php echo esc_attr(get_option('apex_partners_testimonial_author_name_' . $page_slug, 'John Kamau')); ?>" 
+                               class="large-text" placeholder="Enter the author name">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_testimonial_author_title">Author Title</label></th>
+                    <td>
+                        <input type="text" id="apex_partners_testimonial_author_title" name="apex_partners_testimonial_author_title" 
+                               value="<?php echo esc_attr(get_option('apex_partners_testimonial_author_title_' . $page_slug, 'CEO, TechCorp Africa')); ?>" 
+                               class="large-text" placeholder="Enter the author title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_partners_testimonial_author_image">Author Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_partners_testimonial_author_image" name="apex_partners_testimonial_author_image" 
+                               value="<?php echo esc_url(get_option('apex_partners_testimonial_author_image_' . $page_slug, 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100')); ?>" 
+                               class="large-text" placeholder="https://example.com/author.jpg">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'developers'): ?>
+        <!-- Developers Page Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_dev_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_hero_badge" name="apex_dev_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_dev_hero_badge_' . $page_slug, 'Developers')); ?>" 
+                               class="regular-text" placeholder="e.g., Developers">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_hero_heading" name="apex_dev_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_dev_hero_heading_' . $page_slug, 'Build with Our APIs')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_dev_hero_description" name="apex_dev_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_dev_hero_description_' . $page_slug, 'Integrate our powerful APIs to build custom solutions. Comprehensive documentation, SDKs, and developer tools to help you succeed.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_dev_hero_image" name="apex_dev_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_dev_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_dev_hero_stats" name="apex_dev_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_dev_hero_stats_' . $page_slug, "50+ | API Endpoints\n5 | SDKs Available\n99.9% | Uptime SLA\n24/7 | API Support")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50+ | API Endpoints</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- APIs Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔌 Our APIs Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 6 API cards displayed.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_dev_apis_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_apis_heading" name="apex_dev_apis_heading" 
+                               value="<?php echo esc_attr(get_option('apex_dev_apis_heading_' . $page_slug, 'Our APIs')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_apis_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_apis_description" name="apex_dev_apis_description" 
+                               value="<?php echo esc_attr(get_option('apex_dev_apis_description_' . $page_slug, 'RESTful APIs designed for developers')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_apis_items">API Items (6 items)</label></th>
+                    <td>
+                        <textarea id="apex_dev_apis_items" name="apex_dev_apis_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description (6 items)"><?php echo esc_textarea(get_option('apex_dev_apis_items_' . $page_slug, "Core Banking API | Full access to core banking functionality including accounts, transactions, loans, and customer management.\nMobile Banking API | Build custom mobile apps with our comprehensive mobile banking API for iOS and Android.\nAgent Banking API | Manage agent networks, process transactions, and monitor agent performance programmatically.\nAuthentication API | Secure authentication and authorization with OAuth 2.0 and JWT token support.\nWebhooks API | Subscribe to real-time events and build automated workflows with our webhook system.\nReports API | Generate custom reports, export data, and access analytics programmatically.")); ?></textarea>
+                        <p class="description">Enter 6 APIs. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SDKs Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📦 Official SDKs Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 5 SDK cards displayed.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_dev_sdks_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_sdks_heading" name="apex_dev_sdks_heading" 
+                               value="<?php echo esc_attr(get_option('apex_dev_sdks_heading_' . $page_slug, 'Official SDKs')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_sdks_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_sdks_description" name="apex_dev_sdks_description" 
+                               value="<?php echo esc_attr(get_option('apex_dev_sdks_description_' . $page_slug, 'Get started quickly with our official SDKs')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_sdks_items">SDK Items (5 items)</label></th>
+                    <td>
+                        <textarea id="apex_dev_sdks_items" name="apex_dev_sdks_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description | Install Command (5 items)"><?php echo esc_textarea(get_option('apex_dev_sdks_items_' . $page_slug, "JavaScript SDK | For web applications and Node.js backend development | npm install @apex-softwares/sdk\nPython SDK | For Python applications and Django integration | pip install apex-softwares-sdk\nPHP SDK | For PHP applications and Laravel integration | composer require apex-softwares/sdk\nJava SDK | For Java applications and Spring Boot integration | implementation 'com.apex:sdk'\nGo SDK | For Go applications and microservices | go get github.com/apex-softwares/sdk")); ?></textarea>
+                        <p class="description">Enter 5 SDKs. Format per line: <code>Title | Description | Install Command</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Quick Start Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Quick Start Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the quick start steps and code example.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_dev_quick_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_quick_heading" name="apex_dev_quick_heading" 
+                               value="<?php echo esc_attr(get_option('apex_dev_quick_heading_' . $page_slug, 'Quick Start')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_quick_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_quick_description" name="apex_dev_quick_description" 
+                               value="<?php echo esc_attr(get_option('apex_dev_quick_description_' . $page_slug, 'Get up and running in minutes')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_quick_steps">Quick Start Steps (4 steps)</label></th>
+                    <td>
+                        <textarea id="apex_dev_quick_steps" name="apex_dev_quick_steps" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description (4 steps)"><?php echo esc_textarea(get_option('apex_dev_quick_steps_' . $page_slug, "Create an Account | Sign up for a developer account to get your API credentials\nGet Your API Keys | Generate API keys from your developer dashboard\nInstall an SDK | Install our SDK for your preferred programming language\nMake Your First Call | Start making API calls with our quick start examples")); ?></textarea>
+                        <p class="description">Enter 4 steps. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_quick_code">Code Example</label></th>
+                    <td>
+                        <textarea id="apex_dev_quick_code" name="apex_dev_quick_code" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Enter the code example"><?php echo esc_textarea(get_option('apex_dev_quick_code_' . $page_slug, "// Install SDK\nnpm install @apex-softwares/sdk\n\n// Initialize\nconst Apex = require('@apex-softwares/sdk');\nconst client = new Apex({\n  apiKey: 'your-api-key',\n  environment: 'sandbox'\n});\n\n// Make your first call\nconst accounts = await client.accounts.list();\nconsole.log(accounts);")); ?></textarea>
+                        <p class="description">Enter the code example shown in the Quick Start section</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Developer Support Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🛠️ Developer Support Section</h4>
+            <div style="background: #e0f2f1; padding: 15px; margin-bottom: 20px; border: 1px solid #009688; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 4 developer support cards.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_dev_support_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_support_heading" name="apex_dev_support_heading" 
+                               value="<?php echo esc_attr(get_option('apex_dev_support_heading_' . $page_slug, 'Developer Support')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_support_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_dev_support_description" name="apex_dev_support_description" 
+                               value="<?php echo esc_attr(get_option('apex_dev_support_description_' . $page_slug, "We're here to help you succeed")); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_dev_support_items">Support Items (4 items)</label></th>
+                    <td>
+                        <textarea id="apex_dev_support_items" name="apex_dev_support_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Format: Title | Description | Link Text (4 items)"><?php echo esc_textarea(get_option('apex_dev_support_items_' . $page_slug, "Documentation | Comprehensive API documentation with examples and use cases | Read Docs →\nCommunity Forum | Connect with other developers and share solutions | Join Forum →\nGitHub | Open source SDKs, examples, and integration templates | View on GitHub →\nContact Support | Direct access to our developer support team | Get Help →")); ?></textarea>
+                        <p class="description">Enter 4 support items. Format per line: <code>Title | Description | Link Text</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'knowledge-base'): ?>
+        <!-- Knowledge Base Page Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_kb_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_hero_badge" name="apex_kb_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_kb_hero_badge_' . $page_slug, 'Knowledge Base')); ?>" 
+                               class="regular-text" placeholder="e.g., Knowledge Base">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_hero_heading" name="apex_kb_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_kb_hero_heading_' . $page_slug, 'Comprehensive Documentation & Guides')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_kb_hero_description" name="apex_kb_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_kb_hero_description_' . $page_slug, 'Find detailed guides, tutorials, and documentation to help you get the most out of our products.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_kb_hero_image" name="apex_kb_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_kb_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_kb_hero_stats" name="apex_kb_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_kb_hero_stats_' . $page_slug, "200+ | Articles\n50+ | Video Tutorials\n100% | Searchable\n24/7 | Access")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>200+ | Articles</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Search Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔍 Search Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the search form and popular searches.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_kb_search_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_search_heading" name="apex_kb_search_heading" 
+                               value="<?php echo esc_attr(get_option('apex_kb_search_heading_' . $page_slug, 'Search Our Knowledge Base')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_search_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_search_description" name="apex_kb_search_description" 
+                               value="<?php echo esc_attr(get_option('apex_kb_search_description_' . $page_slug, 'Find answers to your questions quickly')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_search_placeholder">Search Input Placeholder</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_search_placeholder" name="apex_kb_search_placeholder" 
+                               value="<?php echo esc_attr(get_option('apex_kb_search_placeholder_' . $page_slug, 'Search for articles, guides, tutorials...')); ?>" 
+                               class="large-text" placeholder="Enter placeholder text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_search_button">Search Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_search_button" name="apex_kb_search_button" 
+                               value="<?php echo esc_attr(get_option('apex_kb_search_button_' . $page_slug, 'Search')); ?>" 
+                               class="regular-text" placeholder="Enter button text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_search_suggestions">Popular Searches (4 items)</label></th>
+                    <td>
+                        <textarea id="apex_kb_search_suggestions" name="apex_kb_search_suggestions" 
+                                  class="large-text" rows="5" 
+                                  placeholder="Enter 4 popular search terms, one per line"><?php echo esc_textarea(get_option('apex_kb_search_suggestions_' . $page_slug, "Getting started\nMobile banking setup\nAPI integration\nSecurity settings")); ?></textarea>
+                        <p class="description">Enter 4 popular search terms, one per line</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Categories Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📁 Categories Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 8 category cards displayed.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_kb_categories_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_categories_heading" name="apex_kb_categories_heading" 
+                               value="<?php echo esc_attr(get_option('apex_kb_categories_heading_' . $page_slug, 'Browse by Category')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_categories_items">Category Items (8 items)</label></th>
+                    <td>
+                        <textarea id="apex_kb_categories_items" name="apex_kb_categories_items" 
+                                  class="large-text" rows="16" 
+                                  placeholder="Format: Title | Description | Article Count (8 items)"><?php echo esc_textarea(get_option('apex_kb_categories_items_' . $page_slug, "Getting Started | Quick start guides and onboarding documentation | 25 articles\nCore Banking | Comprehensive guides for ApexCore platform | 45 articles\nMobile Banking | Mobile app setup and configuration guides | 38 articles\nAgent Banking | Agent network setup and management | 22 articles\nSecurity | Security configuration and best practices | 18 articles\nIntegrations | API documentation and integration guides | 32 articles\nReports | Reporting and analytics configuration | 15 articles\nBilling | Account management and billing guides | 8 articles")); ?></textarea>
+                        <p class="description">Enter 8 categories. Format per line: <code>Title | Description | Article Count</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Popular Articles Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📄 Popular Articles Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 6 popular article items displayed.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_kb_articles_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_articles_heading" name="apex_kb_articles_heading" 
+                               value="<?php echo esc_attr(get_option('apex_kb_articles_heading_' . $page_slug, 'Popular Articles')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_articles_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_articles_description" name="apex_kb_articles_description" 
+                               value="<?php echo esc_attr(get_option('apex_kb_articles_description_' . $page_slug, 'Most viewed articles this week')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_articles_items">Article Items (6 items)</label></th>
+                    <td>
+                        <textarea id="apex_kb_articles_items" name="apex_kb_articles_items" 
+                                  class="large-text" rows="14" 
+                                  placeholder="Format: Title | Description | Category | Read Time (6 items)"><?php echo esc_textarea(get_option('apex_kb_articles_items_' . $page_slug, "Getting Started with ApexCore | A comprehensive guide to setting up your core banking platform | Getting Started • 15 min read\nConfiguring Mobile Banking App | Step-by-step guide to customize your mobile banking experience | Mobile Banking • 12 min read\nSecurity Best Practices | Essential security configurations for your platform | Security • 10 min read\nAPI Integration Guide | How to integrate your systems with our APIs | Integrations • 20 min read\nSetting Up Agent Banking | Complete guide to deploying your agent network | Agent Banking • 18 min read\nCreating Custom Reports | Build custom reports to meet your regulatory requirements | Reports • 14 min read")); ?></textarea>
+                        <p class="description">Enter 6 articles. Format per line: <code>Title | Description | Category • Read Time</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Video Tutorials Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🎥 Video Tutorials Section</h4>
+            <div style="background: #e0f2f1; padding: 15px; margin-bottom: 20px; border: 1px solid #009688; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the 4 video tutorial items displayed.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_kb_videos_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_videos_heading" name="apex_kb_videos_heading" 
+                               value="<?php echo esc_attr(get_option('apex_kb_videos_heading_' . $page_slug, 'Video Tutorials')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_videos_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_kb_videos_description" name="apex_kb_videos_description" 
+                               value="<?php echo esc_attr(get_option('apex_kb_videos_description_' . $page_slug, 'Learn visually with our video guides')); ?>" 
+                               class="large-text" placeholder="Enter the section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_kb_videos_items">Video Items (4 items)</label></th>
+                    <td>
+                        <textarea id="apex_kb_videos_items" name="apex_kb_videos_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Duration | Thumbnail URL (4 items)"><?php echo esc_textarea(get_option('apex_kb_videos_items_' . $page_slug, "Platform Overview | 5:32 | https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400\nUser Management | 8:15 | https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400\nProduct Configuration | 12:45 | https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400\nReporting Dashboard | 6:20 | https://images.unsplash.com/photo-1551434678-e076c223a692?w=400")); ?></textarea>
+                        <p class="description">Enter 4 videos. Format per line: <code>Title | Duration | Thumbnail URL</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'faq'): ?>
+        <!-- FAQ Page Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_faq_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_faq_hero_badge" name="apex_faq_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_faq_hero_badge_' . $page_slug, 'FAQ')); ?>" 
+                               class="regular-text" placeholder="e.g., FAQ">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_faq_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_faq_hero_heading" name="apex_faq_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_faq_hero_heading_' . $page_slug, 'Frequently Asked Questions')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_faq_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_faq_hero_description" name="apex_faq_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_faq_hero_description_' . $page_slug, 'Find answers to common questions about our products, services, and company.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_faq_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_faq_hero_image" name="apex_faq_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_faq_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_faq_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_faq_hero_stats" name="apex_faq_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_faq_hero_stats_' . $page_slug, "50+ | Questions Answered\n24/7 | Support Available\n5min | Avg. Read Time\n100% | Coverage")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50+ | Questions Answered</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- General Questions Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>❓ General Questions (4 items)</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the General Questions FAQ items.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_faq_general_items">General FAQ Items</label></th>
+                    <td>
+                        <textarea id="apex_faq_general_items" name="apex_faq_general_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Question | Answer (4 items)"><?php echo esc_textarea(get_option('apex_faq_general_items_' . $page_slug, "What is Apex Softwares? | Apex Softwares is a leading African fintech company providing core banking, mobile banking, and financial technology solutions to financial institutions across 15+ African countries. We help SACCOs, MFIs, and commercial banks modernize their operations and reach more customers.\nWhich countries do you operate in? | We currently operate in Kenya, Uganda, Tanzania, Nigeria, Ghana, Rwanda, South Africa, and 8 other African countries. We're continuously expanding our presence across the continent.\nHow long have you been in business? | Apex Softwares was founded in 2010. We have over 14 years of experience serving financial institutions across Africa, with a proven track record of successful implementations and satisfied clients.\nHow do I get started with Apex? | Getting started is easy! Simply contact our sales team to schedule a demo. We'll discuss your specific needs and provide a customized proposal. Implementation typically takes 3-6 months depending on the scope of the project.")); ?></textarea>
+                        <p class="description">Enter 4 FAQ items. Format per line: <code>Question | Answer</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Products & Services Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🛠️ Products & Services (4 items)</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the Products & Services FAQ items.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_faq_products_items">Products & Services FAQ Items</label></th>
+                    <td>
+                        <textarea id="apex_faq_products_items" name="apex_faq_products_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Question | Answer (4 items)"><?php echo esc_textarea(get_option('apex_faq_products_items_' . $page_slug, "What products do you offer? | We offer a comprehensive suite of financial technology solutions including: Core Banking (ApexCore), Mobile Banking, Agent Banking, Internet Banking, Payment Switch, Loan Origination, Digital Field Agent, and Enterprise Integration platforms.\nCan your solutions integrate with existing systems? | Yes! Our solutions are designed with integration in mind. We support standard APIs and can build custom integrations with your existing core banking, payment, and third-party systems. Our enterprise integration platform handles complex integration scenarios.\nDo you offer cloud or on-premise deployment? | We offer both cloud and on-premise deployment options. Cloud deployment offers faster implementation and lower upfront costs, while on-premise gives you complete control over your infrastructure. We'll help you choose the best option for your needs.\nWhat about mobile app support? | Our mobile banking apps work on both iOS and Android. We also offer USSD banking for feature phones and offline-first design that works in low-connectivity areas common in rural Africa.")); ?></textarea>
+                        <p class="description">Enter 4 FAQ items. Format per line: <code>Question | Answer</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Pricing Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💰 Pricing (4 items)</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the Pricing FAQ items.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_faq_pricing_items">Pricing FAQ Items</label></th>
+                    <td>
+                        <textarea id="apex_faq_pricing_items" name="apex_faq_pricing_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Question | Answer (4 items)"><?php echo esc_textarea(get_option('apex_faq_pricing_items_' . $page_slug, "How is your pricing structured? | We offer flexible pricing models including licensing, subscription, and transaction-based options. Pricing depends on the products you need, your institution size, and deployment preference. Contact our sales team for a customized quote.\nAre there any hidden fees? | No, we believe in transparent pricing. All fees are clearly outlined in your proposal and contract. There are no hidden charges or surprise fees.\nWhat's included in the pricing? | Our pricing includes software licenses, implementation, training, ongoing support, and regular updates. We also provide access to our knowledge base, documentation, and customer portal.\nDo you offer discounts for smaller institutions? | Yes! We have special pricing for smaller institutions and startups. Our modular approach allows you to start with what you need and add capabilities as you grow.")); ?></textarea>
+                        <p class="description">Enter 4 FAQ items. Format per line: <code>Question | Answer</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Technical Support Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔧 Technical Support (4 items)</h4>
+            <div style="background: #e0f2f1; padding: 15px; margin-bottom: 20px; border: 1px solid #009688; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the Technical Support FAQ items.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_faq_technical_items">Technical Support FAQ Items</label></th>
+                    <td>
+                        <textarea id="apex_faq_technical_items" name="apex_faq_technical_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Question | Answer (4 items)"><?php echo esc_textarea(get_option('apex_faq_technical_items_' . $page_slug, "What support options do you offer? | We offer 24/7 support for critical issues, business hours support for non-critical issues, and dedicated account managers for enterprise clients. Support is available via phone, email, live chat, and our customer portal.\nWhat's your response time? | We respond to all support inquiries within 2 hours during business hours. Critical issues are addressed immediately with 24/7 availability. Our average resolution time is under 4 hours for most issues.\nDo you provide training? | Yes! We provide comprehensive training during implementation including hands-on sessions, documentation, and train-the-trainer programs. We also offer ongoing training sessions and webinars.\nHow do you handle software updates? | We regularly release updates with new features, improvements, and security patches. Updates are included in your subscription and can be scheduled at your convenience. We provide advance notice for major releases.")); ?></textarea>
+                        <p class="description">Enter 4 FAQ items. Format per line: <code>Question | Answer</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Security Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🔒 Security (4 items)</h4>
+            <div style="background: #ffebee; padding: 15px; margin-bottom: 20px; border: 1px solid #f44336; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the Security FAQ items.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_faq_security_items">Security FAQ Items</label></th>
+                    <td>
+                        <textarea id="apex_faq_security_items" name="apex_faq_security_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Question | Answer (4 items)"><?php echo esc_textarea(get_option('apex_faq_security_items_' . $page_slug, "How secure is your platform? | Security is our top priority. We use industry-standard encryption, regular security audits, penetration testing, and comply with Central Bank regulations across all our operating countries. Our platform is ISO 27001 certified.\nWhere is my data stored? | Data storage location depends on your deployment preference. For cloud deployments, we offer data residency options within Africa. We comply with all local data protection regulations including GDPR where applicable.\nWhat happens in case of a security incident? | We have a comprehensive incident response plan. In case of a security incident, we will notify affected parties within 24 hours, provide regular updates, and work with regulatory authorities as required. We maintain cyber insurance for additional protection.\nDo you offer disaster recovery? | Yes, we offer comprehensive disaster recovery with automated backups, geo-redundancy, and business continuity planning. Our cloud platform offers 99.99% uptime SLA.")); ?></textarea>
+                        <p class="description">Enter 4 FAQ items. Format per line: <code>Question | Answer</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Billing Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💳 Billing (4 items)</h4>
+            <div style="background: #e3f2fd; padding: 15px; margin-bottom: 20px; border: 1px solid #2196f3; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the Billing FAQ items.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_faq_billing_items">Billing FAQ Items</label></th>
+                    <td>
+                        <textarea id="apex_faq_billing_items" name="apex_faq_billing_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Question | Answer (4 items)"><?php echo esc_textarea(get_option('apex_faq_billing_items_' . $page_slug, "What payment methods do you accept? | We accept bank transfers, mobile money (M-Pesa, Airtel Money), and international wire transfers. For enterprise clients, we can set up net-30 payment terms.\nWhen are invoices sent? | Invoices are sent monthly for subscription-based pricing and upon project milestones for implementation projects. All invoices include detailed breakdown of charges.\nCan I cancel my subscription? | Yes, you can cancel your subscription with 30 days notice. We'll help you export your data and ensure a smooth transition. Early termination fees may apply depending on your contract terms.\nWhat's your refund policy? | Refunds are handled on a case-by-case basis. If you're not satisfied with our service, please contact our customer success team and we'll work to resolve any issues.")); ?></textarea>
+                        <p class="description">Enter 4 FAQ items. Format per line: <code>Question | Answer</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'help-support'): ?>
+        <!-- Help & Support Page Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_support_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_support_hero_badge" name="apex_support_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_support_hero_badge_' . $page_slug, 'Help & Support')); ?>" 
+                               class="regular-text" placeholder="e.g., Help & Support">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_support_hero_heading" name="apex_support_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_support_hero_heading_' . $page_slug, "We're Here to Help")); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_support_hero_description" name="apex_support_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_support_hero_description_' . $page_slug, 'Get the support you need with our comprehensive help resources and dedicated support team available 24/7.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_support_hero_image" name="apex_support_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_support_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_support_hero_stats" name="apex_support_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_support_hero_stats_' . $page_slug, "24/7 | Support Available\n<2hrs | Response Time\n99.9% | Satisfaction\n15+ | Countries")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>24/7 | Support Available</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Support Channels Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📞 Support Channels (4 items)</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the support channels grid with icons, titles, descriptions, and links.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_support_channels_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_support_channels_heading" name="apex_support_channels_heading" 
+                               value="<?php echo esc_attr(get_option('apex_support_channels_heading_' . $page_slug, 'How Can We Help?')); ?>" 
+                               class="large-text" placeholder="e.g., How Can We Help?">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_channels_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_support_channels_description" name="apex_support_channels_description" 
+                               value="<?php echo esc_attr(get_option('apex_support_channels_description_' . $page_slug, 'Choose the support channel that works best for you')); ?>" 
+                               class="large-text" placeholder="Enter section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_channels_items">Support Channel Items</label></th>
+                    <td>
+                        <textarea id="apex_support_channels_items" name="apex_support_channels_items" 
+                                  class="large-text" rows="12" 
+                                  placeholder="Format: Title | Description | Link Text | URL | Icon (4 items)"><?php echo esc_textarea(get_option('apex_support_channels_items_' . $page_slug, "Knowledge Base | Find answers in our comprehensive documentation and guides. | Browse Articles → | #knowledge-base | book\nFAQ | Quick answers to common questions about our products and services. | View FAQ → | #faq | help-circle\nContact Support | Get personalized help from our support team via phone, email, or chat. | Contact Us → | #contact | phone\nDeveloper Resources | API documentation, SDKs, and integration guides for developers. | Explore APIs → | #developers | code")); ?></textarea>
+                        <p class="description">Enter 4 support channels. Format per line: <code>Title | Description | Link Text | URL | Icon</code>. Icons: book, help-circle, phone, code, mail, message-circle, file-text</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Contact Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📧 Contact Methods (3 items)</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the contact methods with phone, email, and live chat.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_support_contact_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_support_contact_heading" name="apex_support_contact_heading" 
+                               value="<?php echo esc_attr(get_option('apex_support_contact_heading_' . $page_slug, 'Contact Our Support Team')); ?>" 
+                               class="large-text" placeholder="e.g., Contact Our Support Team">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_contact_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_support_contact_description" name="apex_support_contact_description" 
+                               value="<?php echo esc_attr(get_option('apex_support_contact_description_' . $page_slug, "We're here to help you succeed")); ?>" 
+                               class="large-text" placeholder="Enter section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_contact_items">Contact Items</label></th>
+                    <td>
+                        <textarea id="apex_support_contact_items" name="apex_support_contact_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description | Contact Value | Hours | Icon | Type (3 items)"><?php echo esc_textarea(get_option('apex_support_contact_items_' . $page_slug, "Phone Support | Speak directly with our support team | +254 700 000 000 | 24/7 for critical issues | phone | tel\nEmail Support | Send us your questions and we'll respond within 2 hours | support@apex-softwares.com | Response time: <2 hours | mail | mailto\nLive Chat | Chat with our support team in real-time | Start Live Chat | Available 24/7 | message-circle | button")); ?></textarea>
+                        <p class="description">Enter 3 contact methods. Format per line: <code>Title | Description | Contact Value | Hours | Icon | Type</code>. Type: tel, mailto, button</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Popular Resources Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📚 Popular Resources (4 items)</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the popular resources grid.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_support_resources_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_support_resources_heading" name="apex_support_resources_heading" 
+                               value="<?php echo esc_attr(get_option('apex_support_resources_heading_' . $page_slug, 'Popular Resources')); ?>" 
+                               class="large-text" placeholder="e.g., Popular Resources">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_resources_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_support_resources_description" name="apex_support_resources_description" 
+                               value="<?php echo esc_attr(get_option('apex_support_resources_description_' . $page_slug, 'Quick access to our most helpful resources')); ?>" 
+                               class="large-text" placeholder="Enter section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_support_resources_items">Resource Items</label></th>
+                    <td>
+                        <textarea id="apex_support_resources_items" name="apex_support_resources_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description | Link Text (4 items)"><?php echo esc_textarea(get_option('apex_support_resources_items_' . $page_slug, "Getting Started Guide | Learn the basics of using our platform with our step-by-step guide. | Read Guide →\nVideo Tutorials | Watch our video tutorials to learn how to use specific features. | Watch Videos →\nSystem Status | Check the current status of all our services and any ongoing incidents. | Check Status →\nRelease Notes | Stay updated with the latest features and improvements. | View Updates →")); ?></textarea>
+                        <p class="description">Enter 4 resources. Format per line: <code>Title | Description | Link Text</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'careers'): ?>
+        <!-- Careers Page Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_careers_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_hero_badge" name="apex_careers_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_careers_hero_badge_' . $page_slug, 'Join Our Team')); ?>" 
+                               class="regular-text" placeholder="e.g., Join Our Team">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_hero_heading" name="apex_careers_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_careers_hero_heading_' . $page_slug, 'Build the Future of African Fintech')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_careers_hero_description" name="apex_careers_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_careers_hero_description_' . $page_slug, "Join a team of passionate innovators transforming financial services across Africa. We're looking for talented individuals who want to make an impact.")); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_careers_hero_image" name="apex_careers_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_careers_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_careers_hero_stats" name="apex_careers_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_careers_hero_stats_' . $page_slug, "50+ | Team Members\n15+ | Countries\n4.5/5 | Glassdoor Rating\n100% | Remote Options")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50+ | Team Members</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Why Work at Apex Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Why Work at Apex? (4 items)</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the benefits grid with icons and descriptions.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_careers_why_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_why_heading" name="apex_careers_why_heading" 
+                               value="<?php echo esc_attr(get_option('apex_careers_why_heading_' . $page_slug, 'Why Work at Apex?')); ?>" 
+                               class="large-text" placeholder="e.g., Why Work at Apex?">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_why_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_why_description" name="apex_careers_why_description" 
+                               value="<?php echo esc_attr(get_option('apex_careers_why_description_' . $page_slug, "We're not just building software—we're building the future of financial services in Africa.")); ?>" 
+                               class="large-text" placeholder="Enter section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_why_items">Benefits Items</label></th>
+                    <td>
+                        <textarea id="apex_careers_why_items" name="apex_careers_why_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description | Icon (4 items)"><?php echo esc_textarea(get_option('apex_careers_why_items_' . $page_slug, "Impactful Work | Build solutions that help millions access financial services and improve lives across Africa. | shield\nGlobal Impact | Work with clients across 15+ African countries and see your work make a real difference. | globe\nGrowth & Learning | Continuous learning opportunities, mentorship, and career growth paths. | users\nCompetitive Benefits | Competitive salary, equity, health insurance, and flexible work arrangements. | check-shield")); ?></textarea>
+                        <p class="description">Enter 4 benefit items. Format per line: <code>Title | Description | Icon</code>. Icons: shield, globe, users, check-shield, heart, star, award, briefcase</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Open Positions Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💼 Open Positions (4 items)</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the job listings with location, type, and tags.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_careers_openings_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_openings_heading" name="apex_careers_openings_heading" 
+                               value="<?php echo esc_attr(get_option('apex_careers_openings_heading_' . $page_slug, 'Open Positions')); ?>" 
+                               class="large-text" placeholder="e.g., Open Positions">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_openings_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_openings_description" name="apex_careers_openings_description" 
+                               value="<?php echo esc_attr(get_option('apex_careers_openings_description_' . $page_slug, 'Find your next opportunity')); ?>" 
+                               class="large-text" placeholder="Enter section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_openings_items">Job Listings</label></th>
+                    <td>
+                        <textarea id="apex_careers_openings_items" name="apex_careers_openings_items" 
+                                  class="large-text" rows="16" 
+                                  placeholder="Format: Title | Location | Type | Description | Tags (comma-separated) (4 items)"><?php echo esc_textarea(get_option('apex_careers_openings_items_' . $page_slug, "Senior Full-Stack Developer | Nairobi, Kenya (Remote) | Full-time | We're looking for an experienced developer to help build our next-generation core banking platform. | PHP, React, PostgreSQL\nMobile Developer (iOS/Android) | Lagos, Nigeria (Remote) | Full-time | Build beautiful mobile banking experiences that work even in low-connectivity areas. | React Native, TypeScript, Mobile\nProduct Manager | Nairobi, Kenya | Full-time | Drive product strategy and work with cross-functional teams to deliver exceptional fintech products. | Product, Strategy, Agile\nDevOps Engineer | Remote | Full-time | Build and maintain our cloud infrastructure ensuring 99.99% uptime for critical banking systems. | AWS, Kubernetes, CI/CD")); ?></textarea>
+                        <p class="description">Enter 4 job listings. Format per line: <code>Title | Location | Type | Description | Tags</code> (Tags comma-separated)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Our Culture Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🌟 Our Culture (4 items)</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the culture values grid.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_careers_culture_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_culture_heading" name="apex_careers_culture_heading" 
+                               value="<?php echo esc_attr(get_option('apex_careers_culture_heading_' . $page_slug, 'Our Culture')); ?>" 
+                               class="large-text" placeholder="e.g., Our Culture">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_culture_description">Section Description</label></th>
+                    <td>
+                        <input type="text" id="apex_careers_culture_description" name="apex_careers_culture_description" 
+                               value="<?php echo esc_attr(get_option('apex_careers_culture_description_' . $page_slug, 'We believe in creating an environment where everyone can thrive')); ?>" 
+                               class="large-text" placeholder="Enter section description">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_careers_culture_items">Culture Values</label></th>
+                    <td>
+                        <textarea id="apex_careers_culture_items" name="apex_careers_culture_items" 
+                                  class="large-text" rows="10" 
+                                  placeholder="Format: Title | Description (4 items)"><?php echo esc_textarea(get_option('apex_careers_culture_items_' . $page_slug, "Diversity & Inclusion | We celebrate diverse backgrounds and perspectives. Our team represents 10+ African countries.\nWork-Life Balance | Flexible hours, remote work options, and generous time off policies.\nContinuous Learning | Learning budget, conference attendance, and internal knowledge sharing sessions.\nTransparency | Open communication, regular town halls, and access to leadership.")); ?></textarea>
+                        <p class="description">Enter 4 culture values. Format per line: <code>Title | Description</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'insights-webinars'): ?>
+        <!-- Insights Webinars Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinars_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_hero_badge" name="apex_webinars_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_hero_badge_' . $page_slug, 'Webinars & Events')); ?>" 
+                               class="regular-text" placeholder="e.g., Webinars & Events">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_hero_heading" name="apex_webinars_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_hero_heading_' . $page_slug, 'Learn from Industry Experts')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_webinars_hero_description" name="apex_webinars_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_webinars_hero_description_' . $page_slug, 'Join our webinars, workshops, and events to stay ahead of the curve in financial technology. Connect with peers and learn from industry leaders.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_webinars_hero_image" name="apex_webinars_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_webinars_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_webinars_hero_stats" name="apex_webinars_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_webinars_hero_stats_' . $page_slug, "50+ | Webinars Hosted\n10K+ | Attendees\n25+ | Expert Speakers\n12 | Annual Events")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>50+ | Webinars Hosted</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Upcoming Events Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📅 Upcoming Events Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the upcoming events header and the featured webinar.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinars_upcoming_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_upcoming_badge" name="apex_webinars_upcoming_badge" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_upcoming_badge_' . $page_slug, 'Upcoming Events')); ?>" 
+                               class="regular-text" placeholder="e.g., Upcoming Events">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_upcoming_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_upcoming_heading" name="apex_webinars_upcoming_heading" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_upcoming_heading_' . $page_slug, "Don't Miss Out")); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_upcoming_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_webinars_upcoming_description" name="apex_webinars_upcoming_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_webinars_upcoming_description_' . $page_slug, 'Register for our upcoming webinars and events to learn from industry experts and connect with peers.')); ?></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Featured Webinar Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Featured Webinar</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the featured webinar card.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_badge">Featured Badge</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_badge" name="apex_webinars_featured_badge" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_badge_' . $page_slug, 'Featured Webinar')); ?>" 
+                               class="regular-text" placeholder="e.g., Featured Webinar">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_day">Day</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_day" name="apex_webinars_featured_day" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_day_' . $page_slug, '15')); ?>" 
+                               class="regular-text" placeholder="e.g., 15">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_month">Month</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_month" name="apex_webinars_featured_month" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_month_' . $page_slug, 'FEB')); ?>" 
+                               class="regular-text" placeholder="e.g., FEB">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_type">Type</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_type" name="apex_webinars_featured_type" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_type_' . $page_slug, 'Live Webinar')); ?>" 
+                               class="regular-text" placeholder="e.g., Live Webinar">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_title">Title</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_title" name="apex_webinars_featured_title" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_title_' . $page_slug, 'The Future of Core Banking: Cloud-Native Architecture in 2026')); ?>" 
+                               class="large-text" placeholder="Enter the webinar title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_webinars_featured_description" name="apex_webinars_featured_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the webinar description"><?php echo esc_textarea(get_option('apex_webinars_featured_description_' . $page_slug, 'Explore how cloud-native core banking systems are revolutionizing the financial services industry. Learn about scalability, security, and cost benefits.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_time">Time</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_time" name="apex_webinars_featured_time" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_time_' . $page_slug, '2:00 PM EAT')); ?>" 
+                               class="regular-text" placeholder="e.g., 2:00 PM EAT">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_duration">Duration</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_duration" name="apex_webinars_featured_duration" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_duration_' . $page_slug, '60 minutes')); ?>" 
+                               class="regular-text" placeholder="e.g., 60 minutes">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_speakers">Speakers</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_speakers" name="apex_webinars_featured_speakers" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_speakers_' . $page_slug, 'Sarah Ochieng, John Kamau')); ?>" 
+                               class="large-text" placeholder="e.g., Sarah Ochieng, John Kamau">
+                        <p class="description">Comma-separated list of speaker names</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_image">Webinar Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_webinars_featured_image" name="apex_webinars_featured_image" 
+                               value="<?php echo esc_url(get_option('apex_webinars_featured_image_' . $page_slug, 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_featured_link">Registration Link</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_featured_link" name="apex_webinars_featured_link" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_featured_link_' . $page_slug, '#')); ?>" 
+                               class="large-text" placeholder="#">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Conference Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🎪 Conference Section</h4>
+            <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the annual conference display.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_conf_badge" name="apex_webinars_conf_badge" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_conf_badge_' . $page_slug, 'Annual Conference')); ?>" 
+                               class="regular-text" placeholder="e.g., Annual Conference">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_heading">Conference Name</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_conf_heading" name="apex_webinars_conf_heading" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_conf_heading_' . $page_slug, 'Apex Summit 2026')); ?>" 
+                               class="large-text" placeholder="Enter conference name">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_webinars_conf_description" name="apex_webinars_conf_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the conference description"><?php echo esc_textarea(get_option('apex_webinars_conf_description_' . $page_slug, 'Join us for our flagship annual conference bringing together 500+ financial technology leaders, innovators, and practitioners from across Africa.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_date">Date</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_conf_date" name="apex_webinars_conf_date" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_conf_date_' . $page_slug, 'June 15-17, 2026')); ?>" 
+                               class="regular-text" placeholder="e.g., June 15-17, 2026">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_location">Location</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_conf_location" name="apex_webinars_conf_location" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_conf_location_' . $page_slug, 'Kenyatta International Convention Centre, Nairobi')); ?>" 
+                               class="large-text" placeholder="Enter location">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_attendees">Attendees Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_conf_attendees" name="apex_webinars_conf_attendees" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_conf_attendees_' . $page_slug, '500+ Industry Leaders')); ?>" 
+                               class="regular-text" placeholder="e.g., 500+ Industry Leaders">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_highlights">Highlights List</label></th>
+                    <td>
+                        <textarea id="apex_webinars_conf_highlights" name="apex_webinars_conf_highlights" 
+                                  class="large-text" rows="6" 
+                                  placeholder="Enter one highlight per line"><?php echo esc_textarea(get_option('apex_webinars_conf_highlights_' . $page_slug, "50+ Sessions across 5 tracks\nKeynotes from industry visionaries\nHands-on product workshops\nNetworking events and awards dinner\nExhibition hall with 30+ vendors")); ?></textarea>
+                        <p class="description">Enter one highlight per line</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_image">Conference Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_webinars_conf_image" name="apex_webinars_conf_image" 
+                               value="<?php echo esc_url(get_option('apex_webinars_conf_image_' . $page_slug, 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_register_link">Register Link</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_conf_register_link" name="apex_webinars_conf_register_link" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_conf_register_link_' . $page_slug, '#')); ?>" 
+                               class="large-text" placeholder="#">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_conf_agenda_link">Agenda Link</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_conf_agenda_link" name="apex_webinars_conf_agenda_link" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_conf_agenda_link_' . $page_slug, '#')); ?>" 
+                               class="large-text" placeholder="#">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- On-Demand Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📺 On-Demand Library Section</h4>
+            <div style="background: #e3f2fd; padding: 15px; margin-bottom: 20px; border: 1px solid #2196f3; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the on-demand library header.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinars_ondemand_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_ondemand_badge" name="apex_webinars_ondemand_badge" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_ondemand_badge_' . $page_slug, 'On-Demand Library')); ?>" 
+                               class="regular-text" placeholder="e.g., On-Demand Library">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_ondemand_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_ondemand_heading" name="apex_webinars_ondemand_heading" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_ondemand_heading_' . $page_slug, 'Watch Anytime')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_ondemand_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_webinars_ondemand_description" name="apex_webinars_ondemand_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_webinars_ondemand_description_' . $page_slug, 'Missed a webinar? Catch up with our library of recorded sessions covering a wide range of topics.')); ?></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Speakers Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🎤 Expert Speakers Section</h4>
+            <div style="background: #fff8e1; padding: 15px; margin-bottom: 20px; border: 1px solid #ffc107; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the speakers display.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinars_speakers_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_speakers_badge" name="apex_webinars_speakers_badge" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_speakers_badge_' . $page_slug, 'Expert Speakers')); ?>" 
+                               class="regular-text" placeholder="e.g., Expert Speakers">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_speakers_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_speakers_heading" name="apex_webinars_speakers_heading" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_speakers_heading_' . $page_slug, 'Learn from the Best')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_speakers_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_webinars_speakers_description" name="apex_webinars_speakers_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_webinars_speakers_description_' . $page_slug, 'Our webinars feature industry experts, thought leaders, and practitioners with deep experience in financial technology.')); ?></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📧 Newsletter Section</h4>
+            <div style="background: #fce4ec; padding: 15px; margin-bottom: 20px; border: 1px solid #e91e63; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the newsletter signup form.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinars_newsletter_heading">Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_newsletter_heading" name="apex_webinars_newsletter_heading" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_newsletter_heading_' . $page_slug, 'Never Miss an Event')); ?>" 
+                               class="large-text" placeholder="Enter the newsletter heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_newsletter_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_webinars_newsletter_description" name="apex_webinars_newsletter_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the newsletter description"><?php echo esc_textarea(get_option('apex_webinars_newsletter_description_' . $page_slug, 'Subscribe to get notified about upcoming webinars, workshops, and events.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_newsletter_placeholder">Email Placeholder</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_newsletter_placeholder" name="apex_webinars_newsletter_placeholder" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_newsletter_placeholder_' . $page_slug, 'Enter your email address')); ?>" 
+                               class="large-text" placeholder="e.g., Enter your email address">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_newsletter_button">Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_newsletter_button" name="apex_webinars_newsletter_button" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_newsletter_button_' . $page_slug, 'Subscribe')); ?>" 
+                               class="regular-text" placeholder="e.g., Subscribe">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_webinars_newsletter_note">Note Text</label></th>
+                    <td>
+                        <input type="text" id="apex_webinars_newsletter_note" name="apex_webinars_newsletter_note" 
+                               value="<?php echo esc_attr(get_option('apex_webinars_newsletter_note_' . $page_slug, 'We respect your privacy. Unsubscribe at any time.')); ?>" 
+                               class="large-text" placeholder="e.g., We respect your privacy. Unsubscribe at any time.">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <?php elseif ($page_slug === 'insights-success-stories'): ?>
+        <!-- Insights Success Stories Specific Sections -->
+        
+        <!-- Hero Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>🚀 Hero Section</h4>
+            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the main hero banner with badge, heading, description, and stats.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_stories_hero_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_hero_badge" name="apex_stories_hero_badge" 
+                               value="<?php echo esc_attr(get_option('apex_stories_hero_badge_' . $page_slug, 'Success Stories')); ?>" 
+                               class="regular-text" placeholder="e.g., Success Stories">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_hero_heading">Main Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_hero_heading" name="apex_stories_hero_heading" 
+                               value="<?php echo esc_attr(get_option('apex_stories_hero_heading_' . $page_slug, 'Real Results, Real Impact')); ?>" 
+                               class="large-text" placeholder="Enter the main heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_hero_description">Description</label></th>
+                    <td>
+                        <textarea id="apex_stories_hero_description" name="apex_stories_hero_description" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the description"><?php echo esc_textarea(get_option('apex_stories_hero_description_' . $page_slug, 'Discover how financial institutions across Africa are transforming their operations, reaching more customers, and driving growth with Apex Softwares solutions.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_hero_image">Hero Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_stories_hero_image" name="apex_stories_hero_image" 
+                               value="<?php echo esc_url(get_option('apex_stories_hero_image_' . $page_slug, 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_hero_stats">Hero Stats</label></th>
+                    <td>
+                        <textarea id="apex_stories_hero_stats" name="apex_stories_hero_stats" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (one per line)"><?php echo esc_textarea(get_option('apex_stories_hero_stats_' . $page_slug, "100+ | Success Stories\n15+ | Countries\n40% | Avg. Cost Reduction\n3x | Customer Growth")); ?></textarea>
+                        <p class="description">Enter one stat per line. Format: <code>Value | Label</code> (e.g., <code>100+ | Success Stories</code>)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Featured Story Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>⭐ Featured Story Section</h4>
+            <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section controls the featured success story card.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_featured_badge" name="apex_stories_featured_badge" 
+                               value="<?php echo esc_attr(get_option('apex_stories_featured_badge_' . $page_slug, 'Featured Story')); ?>" 
+                               class="regular-text" placeholder="e.g., Featured Story">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_image">Story Image URL</label></th>
+                    <td>
+                        <input type="url" id="apex_stories_featured_image" name="apex_stories_featured_image" 
+                               value="<?php echo esc_url(get_option('apex_stories_featured_image_' . $page_slug, 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800')); ?>" 
+                               class="large-text" placeholder="https://example.com/image.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_logo">Company Logo Text</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_featured_logo" name="apex_stories_featured_logo" 
+                               value="<?php echo esc_attr(get_option('apex_stories_featured_logo_' . $page_slug, 'Kenya National SACCO')); ?>" 
+                               class="regular-text" placeholder="e.g., Kenya National SACCO">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_category">Category</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_featured_category" name="apex_stories_featured_category" 
+                               value="<?php echo esc_attr(get_option('apex_stories_featured_category_' . $page_slug, 'SACCO')); ?>" 
+                               class="regular-text" placeholder="e.g., SACCO">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_title">Story Title</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_featured_title" name="apex_stories_featured_title" 
+                               value="<?php echo esc_attr(get_option('apex_stories_featured_title_' . $page_slug, 'How Kenya National SACCO Grew Membership by 300% with Digital Transformation')); ?>" 
+                               class="large-text" placeholder="Enter the story title">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_excerpt">Story Excerpt</label></th>
+                    <td>
+                        <textarea id="apex_stories_featured_excerpt" name="apex_stories_featured_excerpt" 
+                                  class="large-text" rows="3" 
+                                  placeholder="Enter the story excerpt"><?php echo esc_textarea(get_option('apex_stories_featured_excerpt_' . $page_slug, 'Kenya National SACCO faced declining membership and high operational costs. By implementing ApexCore and our mobile banking solution, they transformed their member experience and achieved remarkable growth.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_results">Results (3 items)</label></th>
+                    <td>
+                        <textarea id="apex_stories_featured_results" name="apex_stories_featured_results" 
+                                  class="large-text" rows="4" 
+                                  placeholder="Format: Value | Label (3 results, one per line)"><?php echo esc_textarea(get_option('apex_stories_featured_results_' . $page_slug, "300% | Membership Growth\n65% | Cost Reduction\n4.8/5 | Member Satisfaction")); ?></textarea>
+                        <p class="description">Enter 3 results. Format per line: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_featured_link">Story Link URL</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_featured_link" name="apex_stories_featured_link" 
+                               value="<?php echo esc_attr(get_option('apex_stories_featured_link_' . $page_slug, '#')); ?>" 
+                               class="large-text" placeholder="#">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Impact Stats Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📊 Impact Stats Section</h4>
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays impact statistics at the bottom of the page.</strong></p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_stories_impact_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_impact_badge" name="apex_stories_impact_badge" 
+                               value="<?php echo esc_attr(get_option('apex_stories_impact_badge_' . $page_slug, 'Our Impact')); ?>" 
+                               class="regular-text" placeholder="e.g., Our Impact">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_impact_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_impact_heading" name="apex_stories_impact_heading" 
+                               value="<?php echo esc_attr(get_option('apex_stories_impact_heading_' . $page_slug, 'Driving Financial Inclusion Across Africa')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_impact_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_stories_impact_description" name="apex_stories_impact_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_stories_impact_description_' . $page_slug, "Together with our clients, we're making a measurable difference in communities across the continent.")); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_impact_items">Impact Stats (4 items)</label></th>
+                    <td>
+                        <textarea id="apex_stories_impact_items" name="apex_stories_impact_items" 
+                                  class="large-text" rows="6" 
+                                  placeholder="Format: Value | Label (4 items)"><?php echo esc_textarea(get_option('apex_stories_impact_items_' . $page_slug, "10M+ | End Users Served\n\$5B+ | Transactions Processed\n2M+ | Previously Unbanked Reached\n500K+ | Small Businesses Empowered")); ?></textarea>
+                        <p class="description">Enter 4 impact stats. Format per line: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <?php elseif ($page_slug === 'request-demo'): ?>
         <!-- Request Demo Specific Sections -->
 
@@ -4202,14 +9940,113 @@ function apex_render_fallback_form($page_slug, $config) {
     if (isset($_POST['apex_save_fallback']) && check_admin_referer('apex_save_fallback_content', 'apex_fallback_nonce')) {
         $page_slug = sanitize_text_field($_POST['apex_page_slug']);
         
-        // Save Hero Section (common to both pages)
-        update_option('apex_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_hero_badge']));
-        update_option('apex_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_hero_heading']));
-        update_option('apex_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_description']));
-        update_option('apex_hero_image_' . $page_slug, esc_url_raw($_POST['apex_hero_image']));
-        update_option('apex_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_stats']));
+        // Save Hero Section (common to other pages, not home or solutions pages)
+        if ($page_slug !== 'home' && $page_slug !== 'solutions-overview' && $page_slug !== 'solutions-core-banking-microfinance' && $page_slug !== 'solutions-mobile-wallet-app' && $page_slug !== 'solutions-agency-branch-banking' && $page_slug !== 'solutions-internet-mobile-banking' && $page_slug !== 'solutions-loan-origination-workflows' && $page_slug !== 'solutions-digital-field-agent' && $page_slug !== 'solutions-enterprise-integration' && $page_slug !== 'solutions-payment-switch-ledger' && $page_slug !== 'solutions-reporting-analytics' && $page_slug !== 'industry-overview' && $page_slug !== 'industry-mfis' && $page_slug !== 'industry-credit-unions' && $page_slug !== 'industry-banks-microfinance' && $page_slug !== 'industry-digital-government' && $page_slug !== 'insights-blog' && $page_slug !== 'request-demo' && $page_slug !== 'insights-success-stories' && $page_slug !== 'insights-webinars' && $page_slug !== 'insights-whitepapers-reports' && $page_slug !== 'partners' && $page_slug !== 'developers' && $page_slug !== 'knowledge-base' && $page_slug !== 'faq' && $page_slug !== 'help-support' && $page_slug !== 'careers') {
+            update_option('apex_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_hero_badge']));
+            update_option('apex_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_hero_heading']));
+            update_option('apex_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_description']));
+            update_option('apex_hero_image_' . $page_slug, esc_url_raw($_POST['apex_hero_image']));
+            update_option('apex_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_stats']));
+        }
         
-        if ($page_slug === 'about-us-overview') {
+        if ($page_slug === 'home') {
+            // Save Home Page specific sections
+            
+            // Hero Slides Section
+            update_option('apex_hero_slides_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_slides']));
+            update_option('apex_hero_tagline_' . $page_slug, sanitize_text_field($_POST['apex_hero_tagline']));
+            update_option('apex_hero_cta_primary_' . $page_slug, sanitize_text_field($_POST['apex_hero_cta_primary']));
+            update_option('apex_hero_cta_primary_url_' . $page_slug, esc_url_raw($_POST['apex_hero_cta_primary_url']));
+            update_option('apex_hero_cta_secondary_' . $page_slug, sanitize_text_field($_POST['apex_hero_cta_secondary']));
+            update_option('apex_hero_cta_secondary_url_' . $page_slug, esc_url_raw($_POST['apex_hero_cta_secondary_url']));
+            update_option('apex_hero_banner_text_' . $page_slug, sanitize_textarea_field($_POST['apex_hero_banner_text']));
+            update_option('apex_hero_banner_link_text_' . $page_slug, sanitize_text_field($_POST['apex_hero_banner_link_text']));
+            update_option('apex_hero_banner_link_url_' . $page_slug, esc_url_raw($_POST['apex_hero_banner_link_url']));
+            
+            // Who We Are Section
+            update_option('apex_who_we_are_badge_' . $page_slug, sanitize_text_field($_POST['apex_who_we_are_badge']));
+            update_option('apex_who_we_are_heading_' . $page_slug, sanitize_text_field($_POST['apex_who_we_are_heading']));
+            update_option('apex_who_we_are_description_' . $page_slug, sanitize_textarea_field($_POST['apex_who_we_are_description']));
+            update_option('apex_who_we_are_features_' . $page_slug, sanitize_textarea_field($_POST['apex_who_we_are_features']));
+            update_option('apex_who_we_are_image_' . $page_slug, esc_url_raw($_POST['apex_who_we_are_image']));
+            update_option('apex_who_we_are_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_who_we_are_cta_text']));
+            update_option('apex_who_we_are_cta_url_' . $page_slug, esc_url_raw($_POST['apex_who_we_are_cta_url']));
+            
+            // What We Do Section
+            update_option('apex_what_we_do_badge_' . $page_slug, sanitize_text_field($_POST['apex_what_we_do_badge']));
+            update_option('apex_what_we_do_heading_' . $page_slug, sanitize_text_field($_POST['apex_what_we_do_heading']));
+            update_option('apex_what_we_do_description_' . $page_slug, sanitize_textarea_field($_POST['apex_what_we_do_description']));
+            update_option('apex_what_we_do_services_' . $page_slug, sanitize_textarea_field($_POST['apex_what_we_do_services']));
+            update_option('apex_what_we_do_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_what_we_do_cta_text']));
+            update_option('apex_what_we_do_cta_url_' . $page_slug, esc_url_raw($_POST['apex_what_we_do_cta_url']));
+            
+            // How We Do It Section
+            update_option('apex_how_we_do_it_badge_' . $page_slug, sanitize_text_field($_POST['apex_how_we_do_it_badge']));
+            update_option('apex_how_we_do_it_heading_' . $page_slug, sanitize_text_field($_POST['apex_how_we_do_it_heading']));
+            update_option('apex_how_we_do_it_description_' . $page_slug, sanitize_textarea_field($_POST['apex_how_we_do_it_description']));
+            update_option('apex_how_we_do_it_steps_' . $page_slug, sanitize_textarea_field($_POST['apex_how_we_do_it_steps']));
+            update_option('apex_how_we_do_it_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_how_we_do_it_cta_text']));
+            update_option('apex_how_we_do_it_cta_url_' . $page_slug, esc_url_raw($_POST['apex_how_we_do_it_cta_url']));
+            
+            // Statistics Section
+            update_option('apex_statistics_heading_' . $page_slug, sanitize_text_field($_POST['apex_statistics_heading']));
+            update_option('apex_statistics_subheading_' . $page_slug, sanitize_textarea_field($_POST['apex_statistics_subheading']));
+            update_option('apex_statistics_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_statistics_stats']));
+            update_option('apex_statistics_background_image_' . $page_slug, esc_url_raw($_POST['apex_statistics_background_image']));
+            
+            // Testimonials Section
+            update_option('apex_testimonials_badge_' . $page_slug, sanitize_text_field($_POST['apex_testimonials_badge']));
+            update_option('apex_testimonials_heading_' . $page_slug, sanitize_text_field($_POST['apex_testimonials_heading']));
+            update_option('apex_testimonials_description_' . $page_slug, sanitize_textarea_field($_POST['apex_testimonials_description']));
+            update_option('apex_testimonials_list_' . $page_slug, sanitize_textarea_field($_POST['apex_testimonials_list']));
+            
+            // Partners Section
+            update_option('apex_partners_badge_' . $page_slug, sanitize_text_field($_POST['apex_partners_badge']));
+            update_option('apex_partners_heading_' . $page_slug, sanitize_text_field($_POST['apex_partners_heading']));
+            update_option('apex_partners_description_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_description']));
+            update_option('apex_partners_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_partners_cta_text']));
+            update_option('apex_partners_cta_url_' . $page_slug, esc_url_raw($_POST['apex_partners_cta_url']));
+            
+            // ROI Calculator Section
+            update_option('apex_roi_badge_' . $page_slug, sanitize_text_field($_POST['apex_roi_badge']));
+            update_option('apex_roi_heading_' . $page_slug, sanitize_text_field($_POST['apex_roi_heading']));
+            update_option('apex_roi_description_' . $page_slug, sanitize_textarea_field($_POST['apex_roi_description']));
+            update_option('apex_roi_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_roi_cta_text']));
+            update_option('apex_roi_cta_url_' . $page_slug, esc_url_raw($_POST['apex_roi_cta_url']));
+            
+            // Case Studies Section
+            update_option('apex_case_studies_badge_' . $page_slug, sanitize_text_field($_POST['apex_case_studies_badge']));
+            update_option('apex_case_studies_heading_' . $page_slug, sanitize_text_field($_POST['apex_case_studies_heading']));
+            update_option('apex_case_studies_description_' . $page_slug, sanitize_textarea_field($_POST['apex_case_studies_description']));
+            update_option('apex_case_studies_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_case_studies_cta_text']));
+            update_option('apex_case_studies_cta_url_' . $page_slug, esc_url_raw($_POST['apex_case_studies_cta_url']));
+            
+            // API Integration Section
+            update_option('apex_api_badge_' . $page_slug, sanitize_text_field($_POST['apex_api_badge']));
+            update_option('apex_api_heading_' . $page_slug, sanitize_text_field($_POST['apex_api_heading']));
+            update_option('apex_api_description_' . $page_slug, sanitize_textarea_field($_POST['apex_api_description']));
+            update_option('apex_api_primary_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_api_primary_cta_text']));
+            update_option('apex_api_primary_cta_url_' . $page_slug, esc_url_raw($_POST['apex_api_primary_cta_url']));
+            update_option('apex_api_secondary_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_api_secondary_cta_text']));
+            update_option('apex_api_secondary_cta_url_' . $page_slug, esc_url_raw($_POST['apex_api_secondary_cta_url']));
+            
+            // Compliance & Security Section
+            update_option('apex_compliance_badge_' . $page_slug, sanitize_text_field($_POST['apex_compliance_badge']));
+            update_option('apex_compliance_heading_' . $page_slug, sanitize_text_field($_POST['apex_compliance_heading']));
+            update_option('apex_compliance_description_' . $page_slug, sanitize_textarea_field($_POST['apex_compliance_description']));
+            update_option('apex_compliance_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_compliance_cta_text']));
+            update_option('apex_compliance_cta_url_' . $page_slug, esc_url_raw($_POST['apex_compliance_cta_url']));
+            
+            // What's New Section
+            update_option('apex_whats_new_badge_' . $page_slug, sanitize_text_field($_POST['apex_whats_new_badge']));
+            update_option('apex_whats_new_heading_' . $page_slug, sanitize_text_field($_POST['apex_whats_new_heading']));
+            update_option('apex_whats_new_description_' . $page_slug, sanitize_textarea_field($_POST['apex_whats_new_description']));
+            update_option('apex_whats_new_posts_per_page_' . $page_slug, sanitize_text_field($_POST['apex_whats_new_posts_per_page']));
+            update_option('apex_whats_new_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_whats_new_cta_text']));
+            update_option('apex_whats_new_cta_url_' . $page_slug, esc_url_raw($_POST['apex_whats_new_cta_url']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Home page content saved successfully! All sections including hero slides, company information, services, testimonials, and more have been updated.</p></div>';
+        } elseif ($page_slug === 'about-us-overview') {
             // Save About Us Overview specific sections
             update_option('apex_story_badge_' . $page_slug, sanitize_text_field($_POST['apex_story_badge']));
             update_option('apex_story_heading_' . $page_slug, sanitize_text_field($_POST['apex_story_heading']));
@@ -4340,6 +10177,736 @@ function apex_render_fallback_form($page_slug, $config) {
             update_option('apex_offices_sunday_holiday_status_' . $page_slug, sanitize_text_field($_POST['apex_offices_sunday_holiday_status']));
             
             echo '<div class="notice notice-success is-dismissible"><p>Contact Us content saved successfully! All sections with contact form, sidebar information, and office locations have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-overview') {
+            // Save Solutions Overview specific sections
+            
+            // Hero Section
+            update_option('apex_solutions_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_solutions_hero_badge']));
+            update_option('apex_solutions_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_solutions_hero_heading']));
+            update_option('apex_solutions_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_solutions_hero_description']));
+            update_option('apex_solutions_hero_image_' . $page_slug, esc_url_raw($_POST['apex_solutions_hero_image']));
+            update_option('apex_solutions_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_solutions_hero_stats']));
+            
+            // Solutions Grid Section
+            update_option('apex_solutions_grid_badge_' . $page_slug, sanitize_text_field($_POST['apex_solutions_grid_badge']));
+            update_option('apex_solutions_grid_heading_' . $page_slug, sanitize_text_field($_POST['apex_solutions_grid_heading']));
+            update_option('apex_solutions_grid_description_' . $page_slug, sanitize_textarea_field($_POST['apex_solutions_grid_description']));
+            update_option('apex_solutions_grid_items_' . $page_slug, sanitize_textarea_field($_POST['apex_solutions_grid_items']));
+            
+            // Benefits Section
+            update_option('apex_solutions_benefits_badge_' . $page_slug, sanitize_text_field($_POST['apex_solutions_benefits_badge']));
+            update_option('apex_solutions_benefits_heading_' . $page_slug, sanitize_text_field($_POST['apex_solutions_benefits_heading']));
+            update_option('apex_solutions_benefits_items_' . $page_slug, sanitize_textarea_field($_POST['apex_solutions_benefits_items']));
+            
+            // Integration Section
+            update_option('apex_solutions_integration_badge_' . $page_slug, sanitize_text_field($_POST['apex_solutions_integration_badge']));
+            update_option('apex_solutions_integration_heading_' . $page_slug, sanitize_text_field($_POST['apex_solutions_integration_heading']));
+            update_option('apex_solutions_integration_description_' . $page_slug, sanitize_textarea_field($_POST['apex_solutions_integration_description']));
+            update_option('apex_solutions_integration_categories_' . $page_slug, sanitize_textarea_field($_POST['apex_solutions_integration_categories']));
+            update_option('apex_solutions_integration_image_' . $page_slug, esc_url_raw($_POST['apex_solutions_integration_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Solutions Overview content saved successfully! All sections with hero, solutions grid, benefits, and integrations have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-core-banking-microfinance') {
+            // Save Core Banking & Microfinance specific sections
+            
+            // Hero Section
+            update_option('apex_corebank_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_corebank_hero_badge']));
+            update_option('apex_corebank_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_corebank_hero_heading']));
+            update_option('apex_corebank_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_corebank_hero_description']));
+            update_option('apex_corebank_hero_image_' . $page_slug, esc_url_raw($_POST['apex_corebank_hero_image']));
+            update_option('apex_corebank_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_corebank_hero_stats']));
+            
+            // Features Section
+            update_option('apex_corebank_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_corebank_features_badge']));
+            update_option('apex_corebank_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_corebank_features_heading']));
+            update_option('apex_corebank_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_corebank_features_items']));
+            
+            // Technical Specifications Section
+            update_option('apex_corebank_specs_badge_' . $page_slug, sanitize_text_field($_POST['apex_corebank_specs_badge']));
+            update_option('apex_corebank_specs_heading_' . $page_slug, sanitize_text_field($_POST['apex_corebank_specs_heading']));
+            update_option('apex_corebank_specs_items_' . $page_slug, sanitize_textarea_field($_POST['apex_corebank_specs_items']));
+            update_option('apex_corebank_specs_image_' . $page_slug, esc_url_raw($_POST['apex_corebank_specs_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Core Banking & Microfinance content saved successfully! All sections with hero, features, and technical specifications have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-mobile-wallet-app') {
+            // Save Mobile Wallet App specific sections
+            
+            // Hero Section
+            update_option('apex_wallet_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_wallet_hero_badge']));
+            update_option('apex_wallet_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_wallet_hero_heading']));
+            update_option('apex_wallet_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_wallet_hero_description']));
+            update_option('apex_wallet_hero_image_' . $page_slug, esc_url_raw($_POST['apex_wallet_hero_image']));
+            update_option('apex_wallet_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_wallet_hero_stats']));
+            
+            // Features Section
+            update_option('apex_wallet_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_wallet_features_badge']));
+            update_option('apex_wallet_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_wallet_features_heading']));
+            update_option('apex_wallet_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_wallet_features_items']));
+            
+            // White-Label Solution Section
+            update_option('apex_wallet_whitelabel_badge_' . $page_slug, sanitize_text_field($_POST['apex_wallet_whitelabel_badge']));
+            update_option('apex_wallet_whitelabel_heading_' . $page_slug, sanitize_text_field($_POST['apex_wallet_whitelabel_heading']));
+            update_option('apex_wallet_whitelabel_items_' . $page_slug, sanitize_textarea_field($_POST['apex_wallet_whitelabel_items']));
+            update_option('apex_wallet_whitelabel_image_' . $page_slug, esc_url_raw($_POST['apex_wallet_whitelabel_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Mobile Wallet App content saved successfully! All sections with hero, features, and white-label information have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-agency-branch-banking') {
+            // Save Agency & Branch Banking specific sections
+            
+            // Hero Section
+            update_option('apex_agency_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_agency_hero_badge']));
+            update_option('apex_agency_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_agency_hero_heading']));
+            update_option('apex_agency_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_agency_hero_description']));
+            update_option('apex_agency_hero_image_' . $page_slug, esc_url_raw($_POST['apex_agency_hero_image']));
+            update_option('apex_agency_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_agency_hero_stats']));
+            
+            // Features Section
+            update_option('apex_agency_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_agency_features_badge']));
+            update_option('apex_agency_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_agency_features_heading']));
+            update_option('apex_agency_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_agency_features_items']));
+            
+            // Agent Network Models Section
+            update_option('apex_agency_models_badge_' . $page_slug, sanitize_text_field($_POST['apex_agency_models_badge']));
+            update_option('apex_agency_models_heading_' . $page_slug, sanitize_text_field($_POST['apex_agency_models_heading']));
+            update_option('apex_agency_models_items_' . $page_slug, sanitize_textarea_field($_POST['apex_agency_models_items']));
+            update_option('apex_agency_models_image_' . $page_slug, esc_url_raw($_POST['apex_agency_models_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Agency & Branch Banking content saved successfully! All sections with hero, features, and agent network models have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-internet-mobile-banking') {
+            // Save Internet & Mobile Banking specific sections
+            
+            // Hero Section
+            update_option('apex_internet_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_internet_hero_badge']));
+            update_option('apex_internet_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_internet_hero_heading']));
+            update_option('apex_internet_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_internet_hero_description']));
+            update_option('apex_internet_hero_image_' . $page_slug, esc_url_raw($_POST['apex_internet_hero_image']));
+            update_option('apex_internet_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_internet_hero_stats']));
+            
+            // Features Section
+            update_option('apex_internet_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_internet_features_badge']));
+            update_option('apex_internet_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_internet_features_heading']));
+            update_option('apex_internet_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_internet_features_items']));
+            
+            // Channel Accessibility Section
+            update_option('apex_internet_accessibility_badge_' . $page_slug, sanitize_text_field($_POST['apex_internet_accessibility_badge']));
+            update_option('apex_internet_accessibility_heading_' . $page_slug, sanitize_text_field($_POST['apex_internet_accessibility_heading']));
+            update_option('apex_internet_accessibility_items_' . $page_slug, sanitize_textarea_field($_POST['apex_internet_accessibility_items']));
+            update_option('apex_internet_accessibility_image_' . $page_slug, esc_url_raw($_POST['apex_internet_accessibility_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Internet & Mobile Banking content saved successfully! All sections with hero, features, and channel accessibility have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-loan-origination-workflows') {
+            // Save Loan Origination & Workflows specific sections
+            
+            // Hero Section
+            update_option('apex_loan_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_loan_hero_badge']));
+            update_option('apex_loan_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_loan_hero_heading']));
+            update_option('apex_loan_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_loan_hero_description']));
+            update_option('apex_loan_hero_image_' . $page_slug, esc_url_raw($_POST['apex_loan_hero_image']));
+            update_option('apex_loan_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_loan_hero_stats']));
+            
+            // Features Section
+            update_option('apex_loan_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_loan_features_badge']));
+            update_option('apex_loan_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_loan_features_heading']));
+            update_option('apex_loan_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_loan_features_items']));
+            
+            // Loan Product Types Section
+            update_option('apex_loan_products_badge_' . $page_slug, sanitize_text_field($_POST['apex_loan_products_badge']));
+            update_option('apex_loan_products_heading_' . $page_slug, sanitize_text_field($_POST['apex_loan_products_heading']));
+            update_option('apex_loan_products_items_' . $page_slug, sanitize_textarea_field($_POST['apex_loan_products_items']));
+            update_option('apex_loan_products_image_' . $page_slug, esc_url_raw($_POST['apex_loan_products_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Loan Origination & Workflows content saved successfully! All sections with hero, features, and loan product types have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-digital-field-agent') {
+            // Save Digital Field Agent specific sections
+            
+            // Hero Section
+            update_option('apex_field_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_field_hero_badge']));
+            update_option('apex_field_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_field_hero_heading']));
+            update_option('apex_field_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_field_hero_description']));
+            update_option('apex_field_hero_image_' . $page_slug, esc_url_raw($_POST['apex_field_hero_image']));
+            update_option('apex_field_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_field_hero_stats']));
+            
+            // Features Section
+            update_option('apex_field_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_field_features_badge']));
+            update_option('apex_field_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_field_features_heading']));
+            update_option('apex_field_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_field_features_items']));
+            
+            // Field Operations Use Cases Section
+            update_option('apex_field_usecases_badge_' . $page_slug, sanitize_text_field($_POST['apex_field_usecases_badge']));
+            update_option('apex_field_usecases_heading_' . $page_slug, sanitize_text_field($_POST['apex_field_usecases_heading']));
+            update_option('apex_field_usecases_items_' . $page_slug, sanitize_textarea_field($_POST['apex_field_usecases_items']));
+            update_option('apex_field_usecases_image_' . $page_slug, esc_url_raw($_POST['apex_field_usecases_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Digital Field Agent content saved successfully! All sections with hero, features, and field operations use cases have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-enterprise-integration') {
+            // Save Enterprise Integration specific sections
+            
+            // Hero Section
+            update_option('apex_integration_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_integration_hero_badge']));
+            update_option('apex_integration_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_integration_hero_heading']));
+            update_option('apex_integration_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_integration_hero_description']));
+            update_option('apex_integration_hero_image_' . $page_slug, esc_url_raw($_POST['apex_integration_hero_image']));
+            update_option('apex_integration_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_integration_hero_stats']));
+            
+            // Integration Categories Section
+            update_option('apex_integration_categories_badge_' . $page_slug, sanitize_text_field($_POST['apex_integration_categories_badge']));
+            update_option('apex_integration_categories_heading_' . $page_slug, sanitize_text_field($_POST['apex_integration_categories_heading']));
+            update_option('apex_integration_categories_items_' . $page_slug, sanitize_textarea_field($_POST['apex_integration_categories_items']));
+            
+            // Integration Architecture Section
+            update_option('apex_integration_arch_badge_' . $page_slug, sanitize_text_field($_POST['apex_integration_arch_badge']));
+            update_option('apex_integration_arch_heading_' . $page_slug, sanitize_text_field($_POST['apex_integration_arch_heading']));
+            update_option('apex_integration_arch_items_' . $page_slug, sanitize_textarea_field($_POST['apex_integration_arch_items']));
+            update_option('apex_integration_arch_image_' . $page_slug, esc_url_raw($_POST['apex_integration_arch_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Enterprise Integration content saved successfully! All sections with hero, integration categories, and architecture have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-payment-switch-ledger') {
+            // Save Payment Switch & General Ledger specific sections
+            
+            // Hero Section
+            update_option('apex_payment_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_payment_hero_badge']));
+            update_option('apex_payment_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_payment_hero_heading']));
+            update_option('apex_payment_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_payment_hero_description']));
+            update_option('apex_payment_hero_image_' . $page_slug, esc_url_raw($_POST['apex_payment_hero_image']));
+            update_option('apex_payment_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_payment_hero_stats']));
+            
+            // Features Section
+            update_option('apex_payment_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_payment_features_badge']));
+            update_option('apex_payment_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_payment_features_heading']));
+            update_option('apex_payment_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_payment_features_items']));
+            
+            // Supported Payment Rails Section
+            update_option('apex_payment_rails_badge_' . $page_slug, sanitize_text_field($_POST['apex_payment_rails_badge']));
+            update_option('apex_payment_rails_heading_' . $page_slug, sanitize_text_field($_POST['apex_payment_rails_heading']));
+            update_option('apex_payment_rails_items_' . $page_slug, sanitize_textarea_field($_POST['apex_payment_rails_items']));
+            update_option('apex_payment_rails_image_' . $page_slug, esc_url_raw($_POST['apex_payment_rails_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Payment Switch & General Ledger content saved successfully! All sections with hero, features, and payment rails have been updated.</p></div>';
+        } elseif ($page_slug === 'solutions-reporting-analytics') {
+            // Save Reporting & Analytics specific sections
+            
+            // Hero Section
+            update_option('apex_reporting_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_reporting_hero_badge']));
+            update_option('apex_reporting_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_reporting_hero_heading']));
+            update_option('apex_reporting_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_reporting_hero_description']));
+            update_option('apex_reporting_hero_image_' . $page_slug, esc_url_raw($_POST['apex_reporting_hero_image']));
+            update_option('apex_reporting_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_reporting_hero_stats']));
+            
+            // Features Section
+            update_option('apex_reporting_features_badge_' . $page_slug, sanitize_text_field($_POST['apex_reporting_features_badge']));
+            update_option('apex_reporting_features_heading_' . $page_slug, sanitize_text_field($_POST['apex_reporting_features_heading']));
+            update_option('apex_reporting_features_items_' . $page_slug, sanitize_textarea_field($_POST['apex_reporting_features_items']));
+            
+            // Regulatory Compliance Section
+            update_option('apex_reporting_compliance_badge_' . $page_slug, sanitize_text_field($_POST['apex_reporting_compliance_badge']));
+            update_option('apex_reporting_compliance_heading_' . $page_slug, sanitize_text_field($_POST['apex_reporting_compliance_heading']));
+            update_option('apex_reporting_compliance_items_' . $page_slug, sanitize_textarea_field($_POST['apex_reporting_compliance_items']));
+            update_option('apex_reporting_compliance_image_' . $page_slug, esc_url_raw($_POST['apex_reporting_compliance_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Reporting & Analytics content saved successfully! All sections with hero, features, and regulatory compliance have been updated.</p></div>';
+        } elseif ($page_slug === 'industry-overview') {
+            // Save Industry Overview specific sections
+            
+            // Hero Section
+            update_option('apex_industry_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_industry_hero_badge']));
+            update_option('apex_industry_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_industry_hero_heading']));
+            update_option('apex_industry_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_hero_description']));
+            update_option('apex_industry_hero_image_' . $page_slug, esc_url_raw($_POST['apex_industry_hero_image']));
+            update_option('apex_industry_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_hero_stats']));
+            
+            // Industry Sectors Section
+            update_option('apex_industry_sectors_badge_' . $page_slug, sanitize_text_field($_POST['apex_industry_sectors_badge']));
+            update_option('apex_industry_sectors_heading_' . $page_slug, sanitize_text_field($_POST['apex_industry_sectors_heading']));
+            update_option('apex_industry_sectors_description_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_sectors_description']));
+            
+            // Industry Sector Cards
+            for ($i = 1; $i <= 4; $i++) {
+                update_option('apex_industry_card' . $i . '_title_' . $page_slug, sanitize_text_field($_POST['apex_industry_card' . $i . '_title']));
+                update_option('apex_industry_card' . $i . '_desc_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_card' . $i . '_desc']));
+                update_option('apex_industry_card' . $i . '_stats_' . $page_slug, sanitize_text_field($_POST['apex_industry_card' . $i . '_stats']));
+                update_option('apex_industry_card' . $i . '_link_' . $page_slug, sanitize_text_field($_POST['apex_industry_card' . $i . '_link']));
+            }
+            
+            // Why Choose Us Section
+            update_option('apex_industry_why_badge_' . $page_slug, sanitize_text_field($_POST['apex_industry_why_badge']));
+            update_option('apex_industry_why_heading_' . $page_slug, sanitize_text_field($_POST['apex_industry_why_heading']));
+            update_option('apex_industry_why_description_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_why_description']));
+            update_option('apex_industry_why_image_' . $page_slug, esc_url_raw($_POST['apex_industry_why_image']));
+            update_option('apex_industry_why_features_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_why_features']));
+            
+            // Stats Section
+            update_option('apex_industry_stats_heading_' . $page_slug, sanitize_text_field($_POST['apex_industry_stats_heading']));
+            update_option('apex_industry_stats_description_' . $page_slug, sanitize_text_field($_POST['apex_industry_stats_description']));
+            update_option('apex_industry_stats_items_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_stats_items']));
+            
+            // Testimonial Section
+            update_option('apex_industry_testimonial_quote_' . $page_slug, sanitize_textarea_field($_POST['apex_industry_testimonial_quote']));
+            update_option('apex_industry_testimonial_author_' . $page_slug, sanitize_text_field($_POST['apex_industry_testimonial_author']));
+            update_option('apex_industry_testimonial_title_' . $page_slug, sanitize_text_field($_POST['apex_industry_testimonial_title']));
+            update_option('apex_industry_testimonial_image_' . $page_slug, esc_url_raw($_POST['apex_industry_testimonial_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Industry Overview content saved successfully! All sections including hero, sectors, features, stats, and testimonial have been updated.</p></div>';
+        } elseif ($page_slug === 'industry-mfis') {
+            // Save Industry MFIs specific sections
+            
+            // Hero Section
+            update_option('apex_mfi_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_mfi_hero_badge']));
+            update_option('apex_mfi_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_mfi_hero_heading']));
+            update_option('apex_mfi_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_mfi_hero_description']));
+            update_option('apex_mfi_hero_image_' . $page_slug, esc_url_raw($_POST['apex_mfi_hero_image']));
+            update_option('apex_mfi_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_mfi_hero_stats']));
+            
+            // Challenges Section
+            update_option('apex_mfi_challenges_badge_' . $page_slug, sanitize_text_field($_POST['apex_mfi_challenges_badge']));
+            update_option('apex_mfi_challenges_heading_' . $page_slug, sanitize_text_field($_POST['apex_mfi_challenges_heading']));
+            update_option('apex_mfi_challenges_description_' . $page_slug, sanitize_textarea_field($_POST['apex_mfi_challenges_description']));
+            update_option('apex_mfi_challenges_items_' . $page_slug, sanitize_textarea_field($_POST['apex_mfi_challenges_items']));
+            
+            // Solutions Section
+            update_option('apex_mfi_solutions_badge_' . $page_slug, sanitize_text_field($_POST['apex_mfi_solutions_badge']));
+            update_option('apex_mfi_solutions_heading_' . $page_slug, sanitize_text_field($_POST['apex_mfi_solutions_heading']));
+            update_option('apex_mfi_solutions_items_' . $page_slug, sanitize_textarea_field($_POST['apex_mfi_solutions_items']));
+            
+            // Case Study Section
+            update_option('apex_mfi_case_badge_' . $page_slug, sanitize_text_field($_POST['apex_mfi_case_badge']));
+            update_option('apex_mfi_case_heading_' . $page_slug, sanitize_text_field($_POST['apex_mfi_case_heading']));
+            update_option('apex_mfi_case_description_' . $page_slug, sanitize_textarea_field($_POST['apex_mfi_case_description']));
+            update_option('apex_mfi_case_results_' . $page_slug, sanitize_textarea_field($_POST['apex_mfi_case_results']));
+            update_option('apex_mfi_case_image_' . $page_slug, esc_url_raw($_POST['apex_mfi_case_image']));
+            update_option('apex_mfi_case_link_' . $page_slug, sanitize_text_field($_POST['apex_mfi_case_link']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Microfinance Institutions (MFIs) content saved successfully! All sections including hero, challenges, solutions, and case study have been updated.</p></div>';
+        } elseif ($page_slug === 'industry-credit-unions') {
+            // Save Industry Credit Unions specific sections
+            
+            // Hero Section
+            update_option('apex_credit_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_credit_hero_badge']));
+            update_option('apex_credit_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_credit_hero_heading']));
+            update_option('apex_credit_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_credit_hero_description']));
+            update_option('apex_credit_hero_image_' . $page_slug, esc_url_raw($_POST['apex_credit_hero_image']));
+            update_option('apex_credit_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_credit_hero_stats']));
+            
+            // Challenges Section
+            update_option('apex_credit_challenges_badge_' . $page_slug, sanitize_text_field($_POST['apex_credit_challenges_badge']));
+            update_option('apex_credit_challenges_heading_' . $page_slug, sanitize_text_field($_POST['apex_credit_challenges_heading']));
+            update_option('apex_credit_challenges_description_' . $page_slug, sanitize_textarea_field($_POST['apex_credit_challenges_description']));
+            update_option('apex_credit_challenges_items_' . $page_slug, sanitize_textarea_field($_POST['apex_credit_challenges_items']));
+            
+            // Solutions Section
+            update_option('apex_credit_solutions_badge_' . $page_slug, sanitize_text_field($_POST['apex_credit_solutions_badge']));
+            update_option('apex_credit_solutions_heading_' . $page_slug, sanitize_text_field($_POST['apex_credit_solutions_heading']));
+            update_option('apex_credit_solutions_items_' . $page_slug, sanitize_textarea_field($_POST['apex_credit_solutions_items']));
+            
+            // Case Study Section
+            update_option('apex_credit_case_badge_' . $page_slug, sanitize_text_field($_POST['apex_credit_case_badge']));
+            update_option('apex_credit_case_heading_' . $page_slug, sanitize_text_field($_POST['apex_credit_case_heading']));
+            update_option('apex_credit_case_description_' . $page_slug, sanitize_textarea_field($_POST['apex_credit_case_description']));
+            update_option('apex_credit_case_results_' . $page_slug, sanitize_textarea_field($_POST['apex_credit_case_results']));
+            update_option('apex_credit_case_image_' . $page_slug, esc_url_raw($_POST['apex_credit_case_image']));
+            update_option('apex_credit_case_link_' . $page_slug, sanitize_text_field($_POST['apex_credit_case_link']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>SACCOs & Credit Unions content saved successfully! All sections including hero, challenges, solutions, and case study have been updated.</p></div>';
+        } elseif ($page_slug === 'industry-banks-microfinance') {
+            // Save Industry Banks specific sections
+            
+            // Hero Section
+            update_option('apex_bank_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_bank_hero_badge']));
+            update_option('apex_bank_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_bank_hero_heading']));
+            update_option('apex_bank_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_bank_hero_description']));
+            update_option('apex_bank_hero_image_' . $page_slug, esc_url_raw($_POST['apex_bank_hero_image']));
+            update_option('apex_bank_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_bank_hero_stats']));
+            
+            // Challenges Section
+            update_option('apex_bank_challenges_badge_' . $page_slug, sanitize_text_field($_POST['apex_bank_challenges_badge']));
+            update_option('apex_bank_challenges_heading_' . $page_slug, sanitize_text_field($_POST['apex_bank_challenges_heading']));
+            update_option('apex_bank_challenges_description_' . $page_slug, sanitize_textarea_field($_POST['apex_bank_challenges_description']));
+            update_option('apex_bank_challenges_items_' . $page_slug, sanitize_textarea_field($_POST['apex_bank_challenges_items']));
+            
+            // Solutions Section
+            update_option('apex_bank_solutions_badge_' . $page_slug, sanitize_text_field($_POST['apex_bank_solutions_badge']));
+            update_option('apex_bank_solutions_heading_' . $page_slug, sanitize_text_field($_POST['apex_bank_solutions_heading']));
+            update_option('apex_bank_solutions_items_' . $page_slug, sanitize_textarea_field($_POST['apex_bank_solutions_items']));
+            
+            // Case Study Section
+            update_option('apex_bank_case_badge_' . $page_slug, sanitize_text_field($_POST['apex_bank_case_badge']));
+            update_option('apex_bank_case_heading_' . $page_slug, sanitize_text_field($_POST['apex_bank_case_heading']));
+            update_option('apex_bank_case_description_' . $page_slug, sanitize_textarea_field($_POST['apex_bank_case_description']));
+            update_option('apex_bank_case_results_' . $page_slug, sanitize_textarea_field($_POST['apex_bank_case_results']));
+            update_option('apex_bank_case_image_' . $page_slug, esc_url_raw($_POST['apex_bank_case_image']));
+            update_option('apex_bank_case_link_' . $page_slug, sanitize_text_field($_POST['apex_bank_case_link']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Commercial Banks content saved successfully! All sections including hero, challenges, solutions, and case study have been updated.</p></div>';
+        } elseif ($page_slug === 'industry-digital-government') {
+            // Save Industry Digital Government specific sections
+            
+            // Hero Section
+            update_option('apex_gov_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_gov_hero_badge']));
+            update_option('apex_gov_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_gov_hero_heading']));
+            update_option('apex_gov_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_hero_description']));
+            update_option('apex_gov_hero_image_' . $page_slug, esc_url_raw($_POST['apex_gov_hero_image']));
+            update_option('apex_gov_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_hero_stats']));
+            
+            // Challenges Section
+            update_option('apex_gov_challenges_badge_' . $page_slug, sanitize_text_field($_POST['apex_gov_challenges_badge']));
+            update_option('apex_gov_challenges_heading_' . $page_slug, sanitize_text_field($_POST['apex_gov_challenges_heading']));
+            update_option('apex_gov_challenges_description_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_challenges_description']));
+            update_option('apex_gov_challenges_items_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_challenges_items']));
+            
+            // Solutions Section
+            update_option('apex_gov_solutions_badge_' . $page_slug, sanitize_text_field($_POST['apex_gov_solutions_badge']));
+            update_option('apex_gov_solutions_heading_' . $page_slug, sanitize_text_field($_POST['apex_gov_solutions_heading']));
+            update_option('apex_gov_solutions_items_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_solutions_items']));
+            
+            // Use Cases Section
+            update_option('apex_gov_usecases_badge_' . $page_slug, sanitize_text_field($_POST['apex_gov_usecases_badge']));
+            update_option('apex_gov_usecases_heading_' . $page_slug, sanitize_text_field($_POST['apex_gov_usecases_heading']));
+            update_option('apex_gov_usecases_items_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_usecases_items']));
+            
+            // Case Study Section
+            update_option('apex_gov_case_badge_' . $page_slug, sanitize_text_field($_POST['apex_gov_case_badge']));
+            update_option('apex_gov_case_heading_' . $page_slug, sanitize_text_field($_POST['apex_gov_case_heading']));
+            update_option('apex_gov_case_description_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_case_description']));
+            update_option('apex_gov_case_results_' . $page_slug, sanitize_textarea_field($_POST['apex_gov_case_results']));
+            update_option('apex_gov_case_image_' . $page_slug, esc_url_raw($_POST['apex_gov_case_image']));
+            update_option('apex_gov_case_link_' . $page_slug, sanitize_text_field($_POST['apex_gov_case_link']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Digital Government & NGOs content saved successfully! All sections including hero, challenges, solutions, use cases, and case study have been updated.</p></div>';
+        } elseif ($page_slug === 'insights-blog') {
+            // Save Insights Blog specific sections
+            
+            // Hero Section
+            update_option('apex_blog_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_blog_hero_badge']));
+            update_option('apex_blog_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_blog_hero_heading']));
+            update_option('apex_blog_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_blog_hero_description']));
+            update_option('apex_blog_hero_image_' . $page_slug, esc_url_raw($_POST['apex_blog_hero_image']));
+            update_option('apex_blog_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_blog_hero_stats']));
+            
+            // Featured Article Section
+            update_option('apex_blog_featured_badge_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_badge']));
+            update_option('apex_blog_featured_image_' . $page_slug, esc_url_raw($_POST['apex_blog_featured_image']));
+            update_option('apex_blog_featured_category_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_category']));
+            update_option('apex_blog_featured_date_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_date']));
+            update_option('apex_blog_featured_readtime_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_readtime']));
+            update_option('apex_blog_featured_title_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_title']));
+            update_option('apex_blog_featured_excerpt_' . $page_slug, sanitize_textarea_field($_POST['apex_blog_featured_excerpt']));
+            update_option('apex_blog_featured_author_image_' . $page_slug, esc_url_raw($_POST['apex_blog_featured_author_image']));
+            update_option('apex_blog_featured_author_name_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_author_name']));
+            update_option('apex_blog_featured_author_title_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_author_title']));
+            update_option('apex_blog_featured_link_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_link']));
+            
+            // Categories Section
+            update_option('apex_blog_categories_heading_' . $page_slug, sanitize_text_field($_POST['apex_blog_categories_heading']));
+            update_option('apex_blog_categories_items_' . $page_slug, sanitize_textarea_field($_POST['apex_blog_categories_items']));
+            
+            // Newsletter Section
+            update_option('apex_blog_newsletter_heading_' . $page_slug, sanitize_text_field($_POST['apex_blog_newsletter_heading']));
+            update_option('apex_blog_newsletter_description_' . $page_slug, sanitize_textarea_field($_POST['apex_blog_newsletter_description']));
+            update_option('apex_blog_newsletter_placeholder_' . $page_slug, sanitize_text_field($_POST['apex_blog_newsletter_placeholder']));
+            update_option('apex_blog_newsletter_button_' . $page_slug, sanitize_text_field($_POST['apex_blog_newsletter_button']));
+            update_option('apex_blog_newsletter_note_' . $page_slug, sanitize_text_field($_POST['apex_blog_newsletter_note']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Blog content saved successfully! All sections including hero, featured article, categories, and newsletter have been updated.</p></div>';
+        } elseif ($page_slug === 'insights-whitepapers-reports') {
+            // Save Insights Whitepapers & Reports specific sections
+            
+            // Hero Section
+            update_option('apex_reports_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_reports_hero_badge']));
+            update_option('apex_reports_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_reports_hero_heading']));
+            update_option('apex_reports_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_hero_description']));
+            update_option('apex_reports_hero_image_' . $page_slug, esc_url_raw($_POST['apex_reports_hero_image']));
+            update_option('apex_reports_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_hero_stats']));
+            
+            // Featured Report Section
+            update_option('apex_reports_featured_badge_' . $page_slug, sanitize_text_field($_POST['apex_reports_featured_badge']));
+            update_option('apex_reports_featured_image_' . $page_slug, esc_url_raw($_POST['apex_reports_featured_image']));
+            update_option('apex_reports_featured_type_' . $page_slug, sanitize_text_field($_POST['apex_reports_featured_type']));
+            update_option('apex_reports_featured_date_' . $page_slug, sanitize_text_field($_POST['apex_reports_featured_date']));
+            update_option('apex_reports_featured_title_' . $page_slug, sanitize_text_field($_POST['apex_reports_featured_title']));
+            update_option('apex_reports_featured_excerpt_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_featured_excerpt']));
+            update_option('apex_reports_featured_highlights_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_featured_highlights']));
+            update_option('apex_reports_featured_pages_' . $page_slug, sanitize_text_field($_POST['apex_reports_featured_pages']));
+            update_option('apex_reports_featured_format_' . $page_slug, sanitize_text_field($_POST['apex_reports_featured_format']));
+            update_option('apex_reports_featured_link_' . $page_slug, sanitize_text_field($_POST['apex_reports_featured_link']));
+            
+            // Categories Section
+            update_option('apex_reports_categories_heading_' . $page_slug, sanitize_text_field($_POST['apex_reports_categories_heading']));
+            update_option('apex_reports_categories_items_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_categories_items']));
+            
+            // Custom Research Section
+            update_option('apex_reports_custom_badge_' . $page_slug, sanitize_text_field($_POST['apex_reports_custom_badge']));
+            update_option('apex_reports_custom_heading_' . $page_slug, sanitize_text_field($_POST['apex_reports_custom_heading']));
+            update_option('apex_reports_custom_description_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_custom_description']));
+            update_option('apex_reports_custom_services_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_custom_services']));
+            update_option('apex_reports_custom_image_' . $page_slug, esc_url_raw($_POST['apex_reports_custom_image']));
+            update_option('apex_reports_custom_link_' . $page_slug, sanitize_text_field($_POST['apex_reports_custom_link']));
+            
+            // Newsletter Section
+            update_option('apex_reports_newsletter_heading_' . $page_slug, sanitize_text_field($_POST['apex_reports_newsletter_heading']));
+            update_option('apex_reports_newsletter_description_' . $page_slug, sanitize_textarea_field($_POST['apex_reports_newsletter_description']));
+            update_option('apex_reports_newsletter_placeholder_' . $page_slug, sanitize_text_field($_POST['apex_reports_newsletter_placeholder']));
+            update_option('apex_reports_newsletter_button_' . $page_slug, sanitize_text_field($_POST['apex_reports_newsletter_button']));
+            update_option('apex_reports_newsletter_note_' . $page_slug, sanitize_text_field($_POST['apex_reports_newsletter_note']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Whitepapers & Reports content saved successfully! All sections including hero, featured report, categories, and newsletter have been updated.</p></div>';
+        } elseif ($page_slug === 'partners') {
+            // Save Partners Page specific sections
+            
+            // Hero Section
+            update_option('apex_partners_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_partners_hero_badge']));
+            update_option('apex_partners_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_partners_hero_heading']));
+            update_option('apex_partners_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_hero_description']));
+            update_option('apex_partners_hero_image_' . $page_slug, esc_url_raw($_POST['apex_partners_hero_image']));
+            update_option('apex_partners_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_hero_stats']));
+            
+            // Benefits Section
+            update_option('apex_partners_benefits_heading_' . $page_slug, sanitize_text_field($_POST['apex_partners_benefits_heading']));
+            update_option('apex_partners_benefits_description_' . $page_slug, sanitize_text_field($_POST['apex_partners_benefits_description']));
+            update_option('apex_partners_benefits_items_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_benefits_items']));
+            
+            // Partnership Models Section
+            update_option('apex_partners_models_heading_' . $page_slug, sanitize_text_field($_POST['apex_partners_models_heading']));
+            update_option('apex_partners_models_description_' . $page_slug, sanitize_text_field($_POST['apex_partners_models_description']));
+            update_option('apex_partners_models_items_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_models_items']));
+            
+            // Onboarding Process Section
+            update_option('apex_partners_process_heading_' . $page_slug, sanitize_text_field($_POST['apex_partners_process_heading']));
+            update_option('apex_partners_process_description_' . $page_slug, sanitize_text_field($_POST['apex_partners_process_description']));
+            update_option('apex_partners_process_steps_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_process_steps']));
+            
+            // Partner Logos Section
+            update_option('apex_partners_logos_heading_' . $page_slug, sanitize_text_field($_POST['apex_partners_logos_heading']));
+            update_option('apex_partners_logos_description_' . $page_slug, sanitize_text_field($_POST['apex_partners_logos_description']));
+            update_option('apex_partners_logos_items_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_logos_items']));
+            
+            // Testimonial Section
+            update_option('apex_partners_testimonial_badge_' . $page_slug, sanitize_text_field($_POST['apex_partners_testimonial_badge']));
+            update_option('apex_partners_testimonial_heading_' . $page_slug, sanitize_text_field($_POST['apex_partners_testimonial_heading']));
+            update_option('apex_partners_testimonial_quote_' . $page_slug, sanitize_textarea_field($_POST['apex_partners_testimonial_quote']));
+            update_option('apex_partners_testimonial_author_name_' . $page_slug, sanitize_text_field($_POST['apex_partners_testimonial_author_name']));
+            update_option('apex_partners_testimonial_author_title_' . $page_slug, sanitize_text_field($_POST['apex_partners_testimonial_author_title']));
+            update_option('apex_partners_testimonial_author_image_' . $page_slug, esc_url_raw($_POST['apex_partners_testimonial_author_image']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Partners content saved successfully! All sections including hero, benefits, partnership models, and testimonial have been updated.</p></div>';
+        } elseif ($page_slug === 'developers') {
+            // Save Developers Page specific sections
+            
+            // Hero Section
+            update_option('apex_dev_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_dev_hero_badge']));
+            update_option('apex_dev_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_dev_hero_heading']));
+            update_option('apex_dev_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_dev_hero_description']));
+            update_option('apex_dev_hero_image_' . $page_slug, esc_url_raw($_POST['apex_dev_hero_image']));
+            update_option('apex_dev_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_dev_hero_stats']));
+            
+            // APIs Section
+            update_option('apex_dev_apis_heading_' . $page_slug, sanitize_text_field($_POST['apex_dev_apis_heading']));
+            update_option('apex_dev_apis_description_' . $page_slug, sanitize_text_field($_POST['apex_dev_apis_description']));
+            update_option('apex_dev_apis_items_' . $page_slug, sanitize_textarea_field($_POST['apex_dev_apis_items']));
+            
+            // SDKs Section
+            update_option('apex_dev_sdks_heading_' . $page_slug, sanitize_text_field($_POST['apex_dev_sdks_heading']));
+            update_option('apex_dev_sdks_description_' . $page_slug, sanitize_text_field($_POST['apex_dev_sdks_description']));
+            update_option('apex_dev_sdks_items_' . $page_slug, sanitize_textarea_field($_POST['apex_dev_sdks_items']));
+            
+            // Quick Start Section
+            update_option('apex_dev_quick_heading_' . $page_slug, sanitize_text_field($_POST['apex_dev_quick_heading']));
+            update_option('apex_dev_quick_description_' . $page_slug, sanitize_text_field($_POST['apex_dev_quick_description']));
+            update_option('apex_dev_quick_steps_' . $page_slug, sanitize_textarea_field($_POST['apex_dev_quick_steps']));
+            update_option('apex_dev_quick_code_' . $page_slug, sanitize_textarea_field($_POST['apex_dev_quick_code']));
+            
+            // Developer Support Section
+            update_option('apex_dev_support_heading_' . $page_slug, sanitize_text_field($_POST['apex_dev_support_heading']));
+            update_option('apex_dev_support_description_' . $page_slug, sanitize_text_field($_POST['apex_dev_support_description']));
+            update_option('apex_dev_support_items_' . $page_slug, sanitize_textarea_field($_POST['apex_dev_support_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Developers content saved successfully! All sections including hero, APIs, SDKs, quick start, and support have been updated.</p></div>';
+        } elseif ($page_slug === 'knowledge-base') {
+            // Save Knowledge Base Page specific sections
+            
+            // Hero Section
+            update_option('apex_kb_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_kb_hero_badge']));
+            update_option('apex_kb_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_kb_hero_heading']));
+            update_option('apex_kb_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_kb_hero_description']));
+            update_option('apex_kb_hero_image_' . $page_slug, esc_url_raw($_POST['apex_kb_hero_image']));
+            update_option('apex_kb_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_kb_hero_stats']));
+            
+            // Search Section
+            update_option('apex_kb_search_heading_' . $page_slug, sanitize_text_field($_POST['apex_kb_search_heading']));
+            update_option('apex_kb_search_description_' . $page_slug, sanitize_text_field($_POST['apex_kb_search_description']));
+            update_option('apex_kb_search_placeholder_' . $page_slug, sanitize_text_field($_POST['apex_kb_search_placeholder']));
+            update_option('apex_kb_search_button_' . $page_slug, sanitize_text_field($_POST['apex_kb_search_button']));
+            update_option('apex_kb_search_suggestions_' . $page_slug, sanitize_textarea_field($_POST['apex_kb_search_suggestions']));
+            
+            // Categories Section
+            update_option('apex_kb_categories_heading_' . $page_slug, sanitize_text_field($_POST['apex_kb_categories_heading']));
+            update_option('apex_kb_categories_items_' . $page_slug, sanitize_textarea_field($_POST['apex_kb_categories_items']));
+            
+            // Popular Articles Section
+            update_option('apex_kb_articles_heading_' . $page_slug, sanitize_text_field($_POST['apex_kb_articles_heading']));
+            update_option('apex_kb_articles_description_' . $page_slug, sanitize_text_field($_POST['apex_kb_articles_description']));
+            update_option('apex_kb_articles_items_' . $page_slug, sanitize_textarea_field($_POST['apex_kb_articles_items']));
+            
+            // Video Tutorials Section
+            update_option('apex_kb_videos_heading_' . $page_slug, sanitize_text_field($_POST['apex_kb_videos_heading']));
+            update_option('apex_kb_videos_description_' . $page_slug, sanitize_text_field($_POST['apex_kb_videos_description']));
+            update_option('apex_kb_videos_items_' . $page_slug, sanitize_textarea_field($_POST['apex_kb_videos_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Knowledge Base content saved successfully! All sections including hero, search, categories, articles, and videos have been updated.</p></div>';
+        } elseif ($page_slug === 'faq') {
+            // Save FAQ Page specific sections
+            
+            // Hero Section
+            update_option('apex_faq_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_faq_hero_badge']));
+            update_option('apex_faq_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_faq_hero_heading']));
+            update_option('apex_faq_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_hero_description']));
+            update_option('apex_faq_hero_image_' . $page_slug, esc_url_raw($_POST['apex_faq_hero_image']));
+            update_option('apex_faq_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_hero_stats']));
+            
+            // FAQ Section Items
+            update_option('apex_faq_general_items_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_general_items']));
+            update_option('apex_faq_products_items_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_products_items']));
+            update_option('apex_faq_pricing_items_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_pricing_items']));
+            update_option('apex_faq_technical_items_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_technical_items']));
+            update_option('apex_faq_security_items_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_security_items']));
+            update_option('apex_faq_billing_items_' . $page_slug, sanitize_textarea_field($_POST['apex_faq_billing_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>FAQ content saved successfully! All sections including hero and 6 FAQ categories have been updated.</p></div>';
+        } elseif ($page_slug === 'help-support') {
+            // Save Help & Support Page specific sections
+            
+            // Hero Section
+            update_option('apex_support_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_support_hero_badge']));
+            update_option('apex_support_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_support_hero_heading']));
+            update_option('apex_support_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_support_hero_description']));
+            update_option('apex_support_hero_image_' . $page_slug, esc_url_raw($_POST['apex_support_hero_image']));
+            update_option('apex_support_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_support_hero_stats']));
+            
+            // Support Channels Section
+            update_option('apex_support_channels_heading_' . $page_slug, sanitize_text_field($_POST['apex_support_channels_heading']));
+            update_option('apex_support_channels_description_' . $page_slug, sanitize_text_field($_POST['apex_support_channels_description']));
+            update_option('apex_support_channels_items_' . $page_slug, sanitize_textarea_field($_POST['apex_support_channels_items']));
+            
+            // Contact Section
+            update_option('apex_support_contact_heading_' . $page_slug, sanitize_text_field($_POST['apex_support_contact_heading']));
+            update_option('apex_support_contact_description_' . $page_slug, sanitize_text_field($_POST['apex_support_contact_description']));
+            update_option('apex_support_contact_items_' . $page_slug, sanitize_textarea_field($_POST['apex_support_contact_items']));
+            
+            // Resources Section
+            update_option('apex_support_resources_heading_' . $page_slug, sanitize_text_field($_POST['apex_support_resources_heading']));
+            update_option('apex_support_resources_description_' . $page_slug, sanitize_text_field($_POST['apex_support_resources_description']));
+            update_option('apex_support_resources_items_' . $page_slug, sanitize_textarea_field($_POST['apex_support_resources_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Help & Support content saved successfully! All sections including hero, channels, contact, and resources have been updated.</p></div>';
+        } elseif ($page_slug === 'careers') {
+            // Save Careers Page specific sections
+            
+            // Hero Section
+            update_option('apex_careers_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_careers_hero_badge']));
+            update_option('apex_careers_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_careers_hero_heading']));
+            update_option('apex_careers_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_careers_hero_description']));
+            update_option('apex_careers_hero_image_' . $page_slug, esc_url_raw($_POST['apex_careers_hero_image']));
+            update_option('apex_careers_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_careers_hero_stats']));
+            
+            // Why Work at Apex Section
+            update_option('apex_careers_why_heading_' . $page_slug, sanitize_text_field($_POST['apex_careers_why_heading']));
+            update_option('apex_careers_why_description_' . $page_slug, sanitize_text_field($_POST['apex_careers_why_description']));
+            update_option('apex_careers_why_items_' . $page_slug, sanitize_textarea_field($_POST['apex_careers_why_items']));
+            
+            // Open Positions Section
+            update_option('apex_careers_openings_heading_' . $page_slug, sanitize_text_field($_POST['apex_careers_openings_heading']));
+            update_option('apex_careers_openings_description_' . $page_slug, sanitize_text_field($_POST['apex_careers_openings_description']));
+            update_option('apex_careers_openings_items_' . $page_slug, sanitize_textarea_field($_POST['apex_careers_openings_items']));
+            
+            // Our Culture Section
+            update_option('apex_careers_culture_heading_' . $page_slug, sanitize_text_field($_POST['apex_careers_culture_heading']));
+            update_option('apex_careers_culture_description_' . $page_slug, sanitize_text_field($_POST['apex_careers_culture_description']));
+            update_option('apex_careers_culture_items_' . $page_slug, sanitize_textarea_field($_POST['apex_careers_culture_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Careers content saved successfully! All sections including hero, benefits, openings, and culture have been updated.</p></div>';
+        } elseif ($page_slug === 'insights-webinars') {
+            // Save Insights Webinars specific sections
+            
+            // Hero Section
+            update_option('apex_webinars_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_webinars_hero_badge']));
+            update_option('apex_webinars_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_webinars_hero_heading']));
+            update_option('apex_webinars_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_hero_description']));
+            update_option('apex_webinars_hero_image_' . $page_slug, esc_url_raw($_POST['apex_webinars_hero_image']));
+            update_option('apex_webinars_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_hero_stats']));
+            
+            // Upcoming Events Section
+            update_option('apex_webinars_upcoming_badge_' . $page_slug, sanitize_text_field($_POST['apex_webinars_upcoming_badge']));
+            update_option('apex_webinars_upcoming_heading_' . $page_slug, sanitize_text_field($_POST['apex_webinars_upcoming_heading']));
+            update_option('apex_webinars_upcoming_description_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_upcoming_description']));
+            
+            // Featured Webinar Section
+            update_option('apex_webinars_featured_badge_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_badge']));
+            update_option('apex_webinars_featured_day_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_day']));
+            update_option('apex_webinars_featured_month_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_month']));
+            update_option('apex_webinars_featured_type_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_type']));
+            update_option('apex_webinars_featured_title_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_title']));
+            update_option('apex_webinars_featured_description_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_featured_description']));
+            update_option('apex_webinars_featured_time_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_time']));
+            update_option('apex_webinars_featured_duration_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_duration']));
+            update_option('apex_webinars_featured_speakers_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_speakers']));
+            update_option('apex_webinars_featured_image_' . $page_slug, esc_url_raw($_POST['apex_webinars_featured_image']));
+            update_option('apex_webinars_featured_link_' . $page_slug, sanitize_text_field($_POST['apex_webinars_featured_link']));
+            
+            // Conference Section
+            update_option('apex_webinars_conf_badge_' . $page_slug, sanitize_text_field($_POST['apex_webinars_conf_badge']));
+            update_option('apex_webinars_conf_heading_' . $page_slug, sanitize_text_field($_POST['apex_webinars_conf_heading']));
+            update_option('apex_webinars_conf_description_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_conf_description']));
+            update_option('apex_webinars_conf_date_' . $page_slug, sanitize_text_field($_POST['apex_webinars_conf_date']));
+            update_option('apex_webinars_conf_location_' . $page_slug, sanitize_text_field($_POST['apex_webinars_conf_location']));
+            update_option('apex_webinars_conf_attendees_' . $page_slug, sanitize_text_field($_POST['apex_webinars_conf_attendees']));
+            update_option('apex_webinars_conf_highlights_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_conf_highlights']));
+            update_option('apex_webinars_conf_image_' . $page_slug, esc_url_raw($_POST['apex_webinars_conf_image']));
+            update_option('apex_webinars_conf_register_link_' . $page_slug, sanitize_text_field($_POST['apex_webinars_conf_register_link']));
+            update_option('apex_webinars_conf_agenda_link_' . $page_slug, sanitize_text_field($_POST['apex_webinars_conf_agenda_link']));
+            
+            // On-Demand Section
+            update_option('apex_webinars_ondemand_badge_' . $page_slug, sanitize_text_field($_POST['apex_webinars_ondemand_badge']));
+            update_option('apex_webinars_ondemand_heading_' . $page_slug, sanitize_text_field($_POST['apex_webinars_ondemand_heading']));
+            update_option('apex_webinars_ondemand_description_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_ondemand_description']));
+            
+            // Speakers Section
+            update_option('apex_webinars_speakers_badge_' . $page_slug, sanitize_text_field($_POST['apex_webinars_speakers_badge']));
+            update_option('apex_webinars_speakers_heading_' . $page_slug, sanitize_text_field($_POST['apex_webinars_speakers_heading']));
+            update_option('apex_webinars_speakers_description_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_speakers_description']));
+            
+            // Newsletter Section
+            update_option('apex_webinars_newsletter_heading_' . $page_slug, sanitize_text_field($_POST['apex_webinars_newsletter_heading']));
+            update_option('apex_webinars_newsletter_description_' . $page_slug, sanitize_textarea_field($_POST['apex_webinars_newsletter_description']));
+            update_option('apex_webinars_newsletter_placeholder_' . $page_slug, sanitize_text_field($_POST['apex_webinars_newsletter_placeholder']));
+            update_option('apex_webinars_newsletter_button_' . $page_slug, sanitize_text_field($_POST['apex_webinars_newsletter_button']));
+            update_option('apex_webinars_newsletter_note_' . $page_slug, sanitize_text_field($_POST['apex_webinars_newsletter_note']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Webinars content saved successfully! All sections including hero, upcoming events, conference, and speakers have been updated.</p></div>';
+        } elseif ($page_slug === 'insights-success-stories') {
+            // Save Insights Success Stories specific sections
+            
+            // Hero Section
+            update_option('apex_stories_hero_badge_' . $page_slug, sanitize_text_field($_POST['apex_stories_hero_badge']));
+            update_option('apex_stories_hero_heading_' . $page_slug, sanitize_text_field($_POST['apex_stories_hero_heading']));
+            update_option('apex_stories_hero_description_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_hero_description']));
+            update_option('apex_stories_hero_image_' . $page_slug, esc_url_raw($_POST['apex_stories_hero_image']));
+            update_option('apex_stories_hero_stats_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_hero_stats']));
+            
+            // Featured Story Section
+            update_option('apex_stories_featured_badge_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_badge']));
+            update_option('apex_stories_featured_image_' . $page_slug, esc_url_raw($_POST['apex_stories_featured_image']));
+            update_option('apex_stories_featured_logo_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_logo']));
+            update_option('apex_stories_featured_category_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_category']));
+            update_option('apex_stories_featured_title_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_title']));
+            update_option('apex_stories_featured_excerpt_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_featured_excerpt']));
+            update_option('apex_stories_featured_results_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_featured_results']));
+            update_option('apex_stories_featured_link_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_link']));
+            
+            // Impact Stats Section
+            update_option('apex_stories_impact_badge_' . $page_slug, sanitize_text_field($_POST['apex_stories_impact_badge']));
+            update_option('apex_stories_impact_heading_' . $page_slug, sanitize_text_field($_POST['apex_stories_impact_heading']));
+            update_option('apex_stories_impact_description_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_impact_description']));
+            update_option('apex_stories_impact_items_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_impact_items']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Success Stories content saved successfully! All sections including hero, featured story, and impact stats have been updated.</p></div>';
         } elseif ($page_slug === 'request-demo') {
             // Save Request Demo specific sections
             update_option('apex_demo_form_heading_' . $page_slug, sanitize_text_field($_POST['apex_demo_form_heading']));

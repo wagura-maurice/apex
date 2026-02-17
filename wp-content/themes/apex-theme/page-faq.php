@@ -1,27 +1,32 @@
 <?php 
 /**
  * Template Name: FAQ
- * FAQ Page Template
+ * FAQ Page Template - Dynamic Admin Controlled
  * 
  * @package ApexTheme
  */
 
 get_header(); 
-?>
 
-<?php 
-// Page Hero
+// Dynamic Hero Section - Admin Controlled
+$hero_stats = get_option('apex_faq_hero_stats_faq', "50+ | Questions Answered\n24/7 | Support Available\n5min | Avg. Read Time\n100% | Coverage");
+$stats_array = [];
+foreach (explode("\n", $hero_stats) as $stat_line) {
+    $parts = explode(' | ', $stat_line);
+    if (count($parts) >= 2) {
+        $stats_array[] = [
+            'value' => trim($parts[0]),
+            'label' => trim($parts[1])
+        ];
+    }
+}
+
 apex_render_about_hero([
-    'badge' => 'FAQ',
-    'heading' => 'Frequently Asked Questions',
-    'description' => 'Find answers to common questions about our products, services, and company.',
-    'stats' => [
-        ['value' => '50+', 'label' => 'Questions Answered'],
-        ['value' => '24/7', 'label' => 'Support Available'],
-        ['value' => '5min', 'label' => 'Avg. Read Time'],
-        ['value' => '100%', 'label' => 'Coverage']
-    ],
-    'image' => 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200'
+    'badge' => get_option('apex_faq_hero_badge_faq', 'FAQ'),
+    'heading' => get_option('apex_faq_hero_heading_faq', 'Frequently Asked Questions'),
+    'description' => get_option('apex_faq_hero_description_faq', 'Find answers to common questions about our products, services, and company.'),
+    'stats' => $stats_array,
+    'image' => get_option('apex_faq_hero_image_faq', 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200')
 ]);
 ?>
 
@@ -40,149 +45,42 @@ apex_render_about_hero([
         </div>
         
         <div class="apex-faq-content__main">
-            <section id="general" class="apex-faq-content__section">
-                <h2>General Questions</h2>
+            <?php
+            // Helper function to render FAQ section
+            function render_faq_section($section_id, $section_title, $option_key) {
+                $items = get_option($option_key, '');
+                if (empty($items)) return;
                 
-                <div class="apex-faq-content__item">
-                    <h3>What is Apex Softwares?</h3>
-                    <p>Apex Softwares is a leading African fintech company providing core banking, mobile banking, and financial technology solutions to financial institutions across 15+ African countries. We help SACCOs, MFIs, and commercial banks modernize their operations and reach more customers.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Which countries do you operate in?</h3>
-                    <p>We currently operate in Kenya, Uganda, Tanzania, Nigeria, Ghana, Rwanda, South Africa, and 8 other African countries. We're continuously expanding our presence across the continent.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>How long have you been in business?</h3>
-                    <p>Apex Softwares was founded in 2010. We have over 14 years of experience serving financial institutions across Africa, with a proven track record of successful implementations and satisfied clients.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>How do I get started with Apex?</h3>
-                    <p>Getting started is easy! Simply contact our sales team to schedule a demo. We'll discuss your specific needs and provide a customized proposal. Implementation typically takes 3-6 months depending on the scope of the project.</p>
-                </div>
-            </section>
+                $lines = explode("\n", $items);
+                ?>
+                <section id="<?php echo esc_attr($section_id); ?>" class="apex-faq-content__section">
+                    <h2><?php echo esc_html($section_title); ?></h2>
+                    <?php
+                    foreach ($lines as $line) {
+                        $parts = explode(' | ', $line);
+                        if (count($parts) >= 2) {
+                            $question = trim($parts[0]);
+                            $answer = trim($parts[1]);
+                            ?>
+                            <div class="apex-faq-content__item">
+                                <h3><?php echo esc_html($question); ?></h3>
+                                <p><?php echo esc_html($answer); ?></p>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
+                </section>
+                <?php
+            }
             
-            <section id="products" class="apex-faq-content__section">
-                <h2>Products & Services</h2>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What products do you offer?</h3>
-                    <p>We offer a comprehensive suite of financial technology solutions including: Core Banking (ApexCore), Mobile Banking, Agent Banking, Internet Banking, Payment Switch, Loan Origination, Digital Field Agent, and Enterprise Integration platforms.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Can your solutions integrate with existing systems?</h3>
-                    <p>Yes! Our solutions are designed with integration in mind. We support standard APIs and can build custom integrations with your existing core banking, payment, and third-party systems. Our enterprise integration platform handles complex integration scenarios.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Do you offer cloud or on-premise deployment?</h3>
-                    <p>We offer both cloud and on-premise deployment options. Cloud deployment offers faster implementation and lower upfront costs, while on-premise gives you complete control over your infrastructure. We'll help you choose the best option for your needs.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What about mobile app support?</h3>
-                    <p>Our mobile banking apps work on both iOS and Android. We also offer USSD banking for feature phones and offline-first design that works in low-connectivity areas common in rural Africa.</p>
-                </div>
-            </section>
-            
-            <section id="pricing" class="apex-faq-content__section">
-                <h2>Pricing</h2>
-                
-                <div class="apex-faq-content__item">
-                    <h3>How is your pricing structured?</h3>
-                    <p>We offer flexible pricing models including licensing, subscription, and transaction-based options. Pricing depends on the products you need, your institution size, and deployment preference. Contact our sales team for a customized quote.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Are there any hidden fees?</h3>
-                    <p>No, we believe in transparent pricing. All fees are clearly outlined in your proposal and contract. There are no hidden charges or surprise fees.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What's included in the pricing?</h3>
-                    <p>Our pricing includes software licenses, implementation, training, ongoing support, and regular updates. We also provide access to our knowledge base, documentation, and customer portal.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Do you offer discounts for smaller institutions?</h3>
-                    <p>Yes! We have special pricing for smaller institutions and startups. Our modular approach allows you to start with what you need and add capabilities as you grow.</p>
-                </div>
-            </section>
-            
-            <section id="technical" class="apex-faq-content__section">
-                <h2>Technical Support</h2>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What support options do you offer?</h3>
-                    <p>We offer 24/7 support for critical issues, business hours support for non-critical issues, and dedicated account managers for enterprise clients. Support is available via phone, email, live chat, and our customer portal.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What's your response time?</h3>
-                    <p>We respond to all support inquiries within 2 hours during business hours. Critical issues are addressed immediately with 24/7 availability. Our average resolution time is under 4 hours for most issues.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Do you provide training?</h3>
-                    <p>Yes! We provide comprehensive training during implementation including hands-on sessions, documentation, and train-the-trainer programs. We also offer ongoing training sessions and webinars.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>How do you handle software updates?</h3>
-                    <p>We regularly release updates with new features, improvements, and security patches. Updates are included in your subscription and can be scheduled at your convenience. We provide advance notice for major releases.</p>
-                </div>
-            </section>
-            
-            <section id="security" class="apex-faq-content__section">
-                <h2>Security</h2>
-                
-                <div class="apex-faq-content__item">
-                    <h3>How secure is your platform?</h3>
-                    <p>Security is our top priority. We use industry-standard encryption, regular security audits, penetration testing, and comply with Central Bank regulations across all our operating countries. Our platform is ISO 27001 certified.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Where is my data stored?</h3>
-                    <p>Data storage location depends on your deployment preference. For cloud deployments, we offer data residency options within Africa. We comply with all local data protection regulations including GDPR where applicable.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What happens in case of a security incident?</h3>
-                    <p>We have a comprehensive incident response plan. In case of a security incident, we will notify affected parties within 24 hours, provide regular updates, and work with regulatory authorities as required. We maintain cyber insurance for additional protection.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Do you offer disaster recovery?</h3>
-                    <p>Yes, we offer comprehensive disaster recovery with automated backups, geo-redundancy, and business continuity planning. Our cloud platform offers 99.99% uptime SLA.</p>
-                </div>
-            </section>
-            
-            <section id="billing" class="apex-faq-content__section">
-                <h2>Billing</h2>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What payment methods do you accept?</h3>
-                    <p>We accept bank transfers, mobile money (M-Pesa, Airtel Money), and international wire transfers. For enterprise clients, we can set up net-30 payment terms.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>When are invoices sent?</h3>
-                    <p>Invoices are sent monthly for subscription-based pricing and upon project milestones for implementation projects. All invoices include detailed breakdown of charges.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>Can I cancel my subscription?</h3>
-                    <p>Yes, you can cancel your subscription with 30 days notice. We'll help you export your data and ensure a smooth transition. Early termination fees may apply depending on your contract terms.</p>
-                </div>
-                
-                <div class="apex-faq-content__item">
-                    <h3>What's your refund policy?</h3>
-                    <p>Refunds are handled on a case-by-case basis. If you're not satisfied with our service, please contact our customer success team and we'll work to resolve any issues.</p>
-                </div>
-            </section>
+            render_faq_section('general', 'General Questions', 'apex_faq_general_items_faq');
+            render_faq_section('products', 'Products & Services', 'apex_faq_products_items_faq');
+            render_faq_section('pricing', 'Pricing', 'apex_faq_pricing_items_faq');
+            render_faq_section('technical', 'Technical Support', 'apex_faq_technical_items_faq');
+            render_faq_section('security', 'Security', 'apex_faq_security_items_faq');
+            render_faq_section('billing', 'Billing', 'apex_faq_billing_items_faq');
+            ?>
         </div>
     </div>
 </section>
