@@ -66,11 +66,22 @@ apex_render_about_hero([
 
 <section class="apex-blog-categories">
     <div class="apex-blog-categories__container">
-        <h2 class="apex-blog-categories__heading"><?php echo esc_html(get_option('apex_blog_categories_heading_insights-blog', 'Browse by Topic')); ?></h2>
+        <h2 class="apex-blog-categories__heading">Browse by Topic</h2>
         <div class="apex-blog-categories__grid">
             <?php
-            // Category icons
+            // Dynamic categories from WordPress taxonomy
+            $wp_categories = get_categories([
+                'orderby' => 'count',
+                'order' => 'DESC',
+                'hide_empty' => false,
+            ]);
+
+            // Default SVG icon for categories
+            $default_icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>';
+
+            // Map category slugs to custom icons (optional visual enhancement)
             $category_icons = [
+                'uncategorized' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
                 'digital-banking' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
                 'mobile-banking' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>',
                 'financial-inclusion' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
@@ -78,38 +89,20 @@ apex_render_about_hero([
                 'ai-analytics' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>',
                 'api-integration' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>',
                 'sacco-mfi' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>',
-                'product-updates' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>'
+                'product-updates' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>',
             ];
-            
-            $categories = get_option('apex_blog_categories_items_insights-blog', 
-                "digital-banking | Digital Banking | 42 articles\n" .
-                "mobile-banking | Mobile Banking | 38 articles\n" .
-                "financial-inclusion | Financial Inclusion | 31 articles\n" .
-                "security | Security & Compliance | 28 articles\n" .
-                "ai-analytics | AI & Analytics | 24 articles\n" .
-                "api-integration | API & Integration | 19 articles\n" .
-                "sacco-mfi | SACCO & MFI | 35 articles\n" .
-                "product-updates | Product Updates | 22 articles"
-            );
-            
-            $category_lines = explode("\n", $categories);
-            foreach ($category_lines as $category_line) {
-                $parts = explode(' | ', $category_line);
-                if (count($parts) >= 3) {
-                    $id = trim($parts[0]);
-                    $title = trim($parts[1]);
-                    $count = trim($parts[2]);
-                    $icon = isset($category_icons[$id]) ? $category_icons[$id] : '';
-                    ?>
-                    <a href="#" class="apex-blog-categories__item" data-category="<?php echo esc_attr($id); ?>">
-                        <?php echo $icon; ?>
-                        <span><?php echo esc_html($title); ?></span>
-                        <small><?php echo esc_html($count); ?></small>
-                    </a>
-                    <?php
-                }
-            }
+
+            foreach ($wp_categories as $cat) :
+                $icon = isset($category_icons[$cat->slug]) ? $category_icons[$cat->slug] : $default_icon;
+                $article_count = $cat->count . ' ' . _n('article', 'articles', $cat->count);
+                $cat_link = get_category_link($cat->term_id);
             ?>
+                <a href="<?php echo esc_url($cat_link); ?>" class="apex-blog-categories__item" data-category="<?php echo esc_attr($cat->slug); ?>">
+                    <?php echo $icon; ?>
+                    <span><?php echo esc_html($cat->name); ?></span>
+                    <small><?php echo esc_html($article_count); ?></small>
+                </a>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
@@ -125,109 +118,115 @@ apex_render_about_hero([
         </div>
         
         <div class="apex-blog-grid__items">
-            <article class="apex-blog-grid__item">
-                <div class="apex-blog-grid__item-image">
-                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400" alt="Open Banking APIs" loading="lazy">
-                </div>
-                <div class="apex-blog-grid__item-content">
-                    <span class="apex-blog-grid__item-category">API & Integration</span>
-                    <h3>How Open Banking APIs Are Transforming Financial Services in East Africa</h3>
-                    <p>Explore how open banking initiatives are creating new opportunities for innovation and collaboration in the East African financial ecosystem.</p>
-                    <div class="apex-blog-grid__item-meta">
-                        <span>January 20, 2026</span>
-                        <span>6 min read</span>
-                    </div>
-                    <a href="#">Read Article →</a>
-                </div>
-            </article>
+            <?php
+            // Pagination setup - paged is set by apex_insights_template_redirect in functions.php
+            $paged = max(1, intval(get_query_var('paged', 1)));
             
-            <article class="apex-blog-grid__item">
-                <div class="apex-blog-grid__item-image">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="AI in Banking" loading="lazy">
-                </div>
-                <div class="apex-blog-grid__item-content">
-                    <span class="apex-blog-grid__item-category">AI & Analytics</span>
-                    <h3>5 Ways AI Is Revolutionizing Credit Scoring for Underserved Markets</h3>
-                    <p>Traditional credit scoring leaves millions unbanked. Learn how AI-powered alternative data analysis is changing the game.</p>
-                    <div class="apex-blog-grid__item-meta">
-                        <span>January 18, 2026</span>
-                        <span>7 min read</span>
-                    </div>
-                    <a href="#">Read Article →</a>
-                </div>
-            </article>
+            $posts_per_page = 6;
             
-            <article class="apex-blog-grid__item">
-                <div class="apex-blog-grid__item-image">
-                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400" alt="Mobile Money" loading="lazy">
-                </div>
-                <div class="apex-blog-grid__item-content">
-                    <span class="apex-blog-grid__item-category">Mobile Banking</span>
-                    <h3>The Rise of Super Apps: What African Banks Can Learn from Asia</h3>
-                    <p>Super apps are reshaping consumer expectations. Here's how African financial institutions can adapt and thrive.</p>
-                    <div class="apex-blog-grid__item-meta">
-                        <span>January 15, 2026</span>
-                        <span>5 min read</span>
-                    </div>
-                    <a href="#">Read Article →</a>
-                </div>
-            </article>
+            // WordPress query with proper pagination
+            $args = array(
+                'post_type' => 'post',
+                'post_status' => 'publish',
+                'posts_per_page' => $posts_per_page,
+                'paged' => $paged,
+                'orderby' => 'date',
+                'order' => 'DESC',
+                'ignore_sticky_posts' => true
+            );
             
-            <article class="apex-blog-grid__item">
-                <div class="apex-blog-grid__item-image">
-                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400" alt="SACCO Digital" loading="lazy">
-                </div>
-                <div class="apex-blog-grid__item-content">
-                    <span class="apex-blog-grid__item-category">SACCO & MFI</span>
-                    <h3>Digital Transformation Roadmap for SACCOs: A Step-by-Step Guide</h3>
-                    <p>A practical guide for SACCO leaders looking to modernize operations and better serve their members in the digital age.</p>
-                    <div class="apex-blog-grid__item-meta">
-                        <span>January 12, 2026</span>
-                        <span>10 min read</span>
-                    </div>
-                    <a href="#">Read Article →</a>
-                </div>
-            </article>
+            $blog_query = new WP_Query($args);
             
-            <article class="apex-blog-grid__item">
-                <div class="apex-blog-grid__item-image">
-                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400" alt="Cybersecurity" loading="lazy">
-                </div>
-                <div class="apex-blog-grid__item-content">
-                    <span class="apex-blog-grid__item-category">Security & Compliance</span>
-                    <h3>Cybersecurity Best Practices for African Financial Institutions in 2026</h3>
-                    <p>With cyber threats evolving rapidly, here are the essential security measures every financial institution should implement.</p>
-                    <div class="apex-blog-grid__item-meta">
-                        <span>January 10, 2026</span>
-                        <span>8 min read</span>
+            if ($blog_query->have_posts()) :
+                $index = 0;
+                while ($blog_query->have_posts()) : $blog_query->the_post();
+            ?>
+                <article class="apex-blog-grid__item" data-animate="fade-up" data-delay="<?php echo $index * 100; ?>">
+                    <div class="apex-blog-grid__item-image">
+                        <?php if (has_post_thumbnail()) : ?>
+                            <?php the_post_thumbnail('medium_large', ['class' => '', 'loading' => 'lazy']); ?>
+                        <?php else : ?>
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="<?php the_title_attribute(); ?>" loading="lazy">
+                        <?php endif; ?>
                     </div>
-                    <a href="#">Read Article →</a>
-                </div>
-            </article>
-            
-            <article class="apex-blog-grid__item">
-                <div class="apex-blog-grid__item-image">
-                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400" alt="Financial Inclusion" loading="lazy">
-                </div>
-                <div class="apex-blog-grid__item-content">
-                    <span class="apex-blog-grid__item-category">Financial Inclusion</span>
-                    <h3>Agent Banking: Reaching the Last Mile in Rural Africa</h3>
-                    <p>How agent banking networks are bringing financial services to underserved communities across the continent.</p>
-                    <div class="apex-blog-grid__item-meta">
-                        <span>January 8, 2026</span>
-                        <span>6 min read</span>
+                    <div class="apex-blog-grid__item-content">
+                        <?php
+                        $categories = get_the_category();
+                        if ($categories) : ?>
+                            <span class="apex-blog-grid__item-category"><?php echo esc_html($categories[0]->name); ?></span>
+                        <?php endif; ?>
+                        <h3><?php the_title(); ?></h3>
+                        <p><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
+                        <div class="apex-blog-grid__item-meta">
+                            <span><?php echo get_the_date(); ?></span>
+                            <span><?php echo reading_time(); ?> min read</span>
+                        </div>
+                        <a href="<?php the_permalink(); ?>">Read Article →</a>
                     </div>
-                    <a href="#">Read Article →</a>
+                </article>
+            <?php
+                $index++;
+                endwhile;
+                wp_reset_postdata();
+            else :
+            ?>
+                <div class="apex-blog-grid__no-posts">
+                    <p>No articles found. Check back soon for new content!</p>
                 </div>
-            </article>
-        </div>
+            <?php endif; ?>
+        </div></div>
         
         <div class="apex-blog-grid__pagination">
-            <button class="apex-blog-grid__page-btn active">1</button>
-            <button class="apex-blog-grid__page-btn">2</button>
-            <button class="apex-blog-grid__page-btn">3</button>
-            <button class="apex-blog-grid__page-btn">4</button>
-            <button class="apex-blog-grid__page-btn">→</button>
+            <?php
+            // Dynamic pagination
+            $total_pages = $blog_query->max_num_pages;
+            
+            if ($total_pages > 1) :
+                // Previous page link
+                if ($paged > 1) :
+            ?>
+                <a href="<?php echo get_pagenum_link($paged - 1); ?>" class="apex-blog-grid__page-btn">←</a>
+            <?php endif; ?>
+            
+            <?php
+            // Page numbers
+            $show_pages = 4;
+            $start_page = max(1, $paged - floor($show_pages / 2));
+            $end_page = min($total_pages, $start_page + $show_pages - 1);
+            
+            if ($start_page > 1) :
+            ?>
+                <a href="<?php echo get_pagenum_link(1); ?>" class="apex-blog-grid__page-btn">1</a>
+                <?php if ($start_page > 2) : ?>
+                    <span class="apex-blog-grid__page-ellipsis">...</span>
+                <?php endif; ?>
+            <?php endif; ?>
+            
+            <?php for ($i = $start_page; $i <= $end_page; $i++) : ?>
+                <?php if ($i == $paged) : ?>
+                    <button class="apex-blog-grid__page-btn active"><?php echo $i; ?></button>
+                <?php else : ?>
+                    <a href="<?php echo get_pagenum_link($i); ?>" class="apex-blog-grid__page-btn"><?php echo $i; ?></a>
+                <?php endif; ?>
+            <?php endfor; ?>
+            
+            <?php
+            if ($end_page < $total_pages) :
+                if ($end_page < $total_pages - 1) :
+            ?>
+                    <span class="apex-blog-grid__page-ellipsis">...</span>
+                <?php endif; ?>
+                <a href="<?php echo get_pagenum_link($total_pages); ?>" class="apex-blog-grid__page-btn"><?php echo $total_pages; ?></a>
+            <?php endif; ?>
+            
+            <?php
+            // Next page link
+            if ($paged < $total_pages) :
+            ?>
+                <a href="<?php echo get_pagenum_link($paged + 1); ?>" class="apex-blog-grid__page-btn">→</a>
+            <?php endif; ?>
+            
+            <?php endif; ?>
         </div>
     </div>
 </section>

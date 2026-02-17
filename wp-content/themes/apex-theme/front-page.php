@@ -282,19 +282,6 @@ apex_render_whats_new([
 ]);
 ?>
 
-<!-- Optional: WordPress Content Area -->
-<?php if (have_posts() && get_the_content()) : ?>
-<main id="site-main" class="flex-1">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div class="site-content clearfix">
-            <?php 
-            while (have_posts()) : the_post();
-                the_content();
-            endwhile;
-            ?>
-        </div>
-    </div>
-</main>
-<?php endif; ?>
+<!-- Optional: WordPress Content Area - Removed to avoid duplication with Latest News & Insights -->
 
 <?php get_footer(); ?>

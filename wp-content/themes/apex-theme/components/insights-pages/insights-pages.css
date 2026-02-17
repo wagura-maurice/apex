@@ -479,3 +479,39 @@
     color: rgba(255, 255, 255, 0.7);
     margin: 0;
 }
+
+/* Pagination ellipsis */
+.apex-blog-grid__page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+/* Ensure pagination links work properly */
+.apex-blog-grid__pagination a.apex-blog-grid__page-btn {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.apex-blog-grid__pagination a.apex-blog-grid__page-btn:hover {
+    background: #f97316;
+    color: white;
+    border-color: #f97316;
+}
+
+/* No posts message */
+.apex-blog-grid__no-posts {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: #64748b;
+}
+
+.apex-blog-grid__no-posts p {
+    font-size: 1.125rem;
+    margin: 0;
+}

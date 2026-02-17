@@ -7605,34 +7605,6 @@ function apex_render_fallback_form($page_slug, $config) {
             </table>
         </div>
 
-        <!-- Categories Section -->
-        <div style="margin-bottom: 30px;">
-            <h4>📚 Categories Section</h4>
-            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
-                <h5>📋 Section Overview</h5>
-                <p><strong>This section displays the blog categories. Enter 8 categories below.</strong></p>
-            </div>
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><label for="apex_blog_categories_heading">Section Heading</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_categories_heading" name="apex_blog_categories_heading" 
-                               value="<?php echo esc_attr(get_option('apex_blog_categories_heading_' . $page_slug, 'Browse by Topic')); ?>" 
-                               class="large-text" placeholder="Enter the section heading">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_categories_items">Categories List</label></th>
-                    <td>
-                        <textarea id="apex_blog_categories_items" name="apex_blog_categories_items" 
-                                  class="large-text" rows="16" 
-                                  placeholder="Format: ID | Title | Article Count (8 categories)"><?php echo esc_textarea(get_option('apex_blog_categories_items_' . $page_slug, "digital-banking | Digital Banking | 42 articles\nmobile-banking | Mobile Banking | 38 articles\nfinancial-inclusion | Financial Inclusion | 31 articles\nsecurity | Security & Compliance | 28 articles\nai-analytics | AI & Analytics | 24 articles\napi-integration | API & Integration | 19 articles\nsacco-mfi | SACCO & MFI | 35 articles\nproduct-updates | Product Updates | 22 articles")); ?></textarea>
-                        <p class="description">Enter 8 categories. Format per line: <code>ID | Title | Article Count</code> (e.g., <code>digital-banking | Digital Banking | 42 articles</code>)</p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
         <!-- Newsletter Section -->
         <div style="margin-bottom: 30px;">
             <h4>📧 Newsletter Section</h4>
@@ -10594,9 +10566,7 @@ function apex_render_fallback_form($page_slug, $config) {
             update_option('apex_blog_featured_author_title_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_author_title']));
             update_option('apex_blog_featured_link_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_link']));
             
-            // Categories Section
-            update_option('apex_blog_categories_heading_' . $page_slug, sanitize_text_field($_POST['apex_blog_categories_heading']));
-            update_option('apex_blog_categories_items_' . $page_slug, sanitize_textarea_field($_POST['apex_blog_categories_items']));
+            // Categories Section - Removed (now uses WordPress category taxonomy dynamically)
             
             // Newsletter Section
             update_option('apex_blog_newsletter_heading_' . $page_slug, sanitize_text_field($_POST['apex_blog_newsletter_heading']));
@@ -11449,21 +11419,35 @@ function apex_insights_template_redirect() {
     // Map of insights URLs to their templates
     $insights_templates = [
         'insights/blog' => 'page-insights-blog.php',
-        'insights/blog/' => 'page-insights-blog.php',
         'insights/success-stories' => 'page-insights-success-stories.php',
-        'insights/success-stories/' => 'page-insights-success-stories.php',
         'insights/webinars' => 'page-insights-webinars.php',
-        'insights/webinars/' => 'page-insights-webinars.php',
         'insights/whitepapers-reports' => 'page-insights-whitepapers-reports.php',
-        'insights/whitepapers-reports/' => 'page-insights-whitepapers-reports.php',
     ];
     
-    if (isset($insights_templates[$request_uri])) {
-        // Set proper headers
+    // Check for exact match first (strip trailing slash)
+    $clean_uri = rtrim($request_uri, '/');
+    
+    // Check for paginated URLs like insights/blog/page/2
+    $paged = 1;
+    if (preg_match('#^(insights/[a-z-]+)/page/(\d+)/?$#', $clean_uri, $matches)) {
+        $clean_uri = $matches[1];
+        $paged = intval($matches[2]);
+    }
+    
+    if (isset($insights_templates[$clean_uri])) {
+        // Reset 404 status and set proper headers
+        global $wp_query;
+        $wp_query->is_404 = false;
+        $wp_query->is_page = true;
         status_header(200);
+        header('HTTP/1.1 200 OK');
+        
+        // Set the paged query var so WP_Query can use it
+        set_query_var('paged', $paged);
+        $GLOBALS['paged'] = $paged;
         
         // Load the template directly
-        $template = get_template_directory() . '/' . $insights_templates[$request_uri];
+        $template = get_template_directory() . '/' . $insights_templates[$clean_uri];
         if (file_exists($template)) {
             include($template);
             exit;
@@ -11638,3 +11622,11 @@ function apex_about_us_template($template) {
 }
 add_filter('template_include', 'apex_about_us_template');
 
+
+// Helper function to estimate reading time
+function reading_time() {
+    $content = get_the_content();
+    $word_count = str_word_count(strip_tags($content));
+    $reading_time = ceil($word_count / 200); // Assuming 200 words per minute
+    return $reading_time;
+}
