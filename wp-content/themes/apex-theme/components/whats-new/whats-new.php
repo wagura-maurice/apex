@@ -118,51 +118,91 @@ class Apex_WhatsNew_Component {
                 </div>
                 
                 <!-- Posts Grid -->
-                <div class="apex-blog-grid__grid">
+                <div class="apex-whats-new__grid">
                     <?php if ($posts_query->have_posts()) : ?>
                         <?php $index = 0; while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
-                        <article class="apex-blog-grid__item" data-animate="fade-up" data-delay="<?php echo $index * 100; ?>">
-                        <div class="apex-blog-grid__item-image">
-                            <?php if (has_post_thumbnail()) : ?>
-                                <?php the_post_thumbnail('medium_large', ['class' => '', 'loading' => 'lazy']); ?>
-                            <?php else : ?>
-                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="<?php the_title_attribute(); ?>" loading="lazy">
+                        <article class="apex-whats-new__card" data-animate="fade-up" data-delay="<?php echo $index * 100; ?>">
+                            <a href="<?php the_permalink(); ?>" class="apex-whats-new__card-link">
+                                <div class="apex-whats-new__card-image">
+                                    <?php if (has_post_thumbnail()) : ?>
+                                        <?php the_post_thumbnail('medium_large', ['class' => 'apex-whats-new__image', 'loading' => 'lazy']); ?>
+                            <?php else :
+                                $wn_cats = get_the_category();
+                                $wn_cat_name = $wn_cats ? $wn_cats[0]->name : 'Article';
+                                $wn_hash = crc32(get_the_title() . get_the_ID());
+                                $wn_hue = abs($wn_hash) % 360;
+                                $wn_initial = strtoupper(mb_substr($wn_cat_name, 0, 1));
+                            ?>
+                                <div style="width:100%;height:100%;min-height:200px;background:linear-gradient(135deg,hsl(<?php echo $wn_hue; ?>,45%,45%),hsl(<?php echo ($wn_hue+40)%360; ?>,55%,35%));display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-family:sans-serif;">
+                                    <span style="font-size:48px;font-weight:700;opacity:0.9;"><?php echo esc_html($wn_initial); ?></span>
+                                    <span style="font-size:13px;opacity:0.7;margin-top:4px;"><?php echo esc_html($wn_cat_name); ?></span>
+                                </div>
                             <?php endif; ?>
-                        </div>
-                        <div class="apex-blog-grid__item-content">
-                            <?php
-                            $categories = get_the_category();
-                            if ($categories) : ?>
-                                <span class="apex-blog-grid__item-category"><?php echo esc_html($categories[0]->name); ?></span>
-                            <?php endif; ?>
-                            <h3><?php the_title(); ?></h3>
-                            <p><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
-                            <div class="apex-blog-grid__item-meta">
-                                <span><?php echo get_the_date(); ?></span>
-                                <span>5 min read</span>
-                            </div>
-                            <a href="<?php the_permalink(); ?>">Read Article →</a>
-                        </div>
-                    </article>
+                                    <div class="apex-whats-new__card-overlay"></div>
+                                </div>
+                                <div class="apex-whats-new__card-content">
+                                    <div class="apex-whats-new__card-meta">
+                                        <?php 
+                                        $categories = get_the_category();
+                                        if ($categories) : ?>
+                                        <span class="apex-whats-new__card-category"><?php echo esc_html($categories[0]->name); ?></span>
+                                        <?php endif; ?>
+                                        <span class="apex-whats-new__card-date">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            <?php echo get_the_date(); ?>
+                                        </span>
+                                    </div>
+                                    <h3 class="apex-whats-new__card-title"><?php the_title(); ?></h3>
+                                    <p class="apex-whats-new__card-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
+                                    <span class="apex-whats-new__card-read-more">
+                                        Read Article
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </a>
+                        </article>
                         <?php $index++; endwhile; wp_reset_postdata(); ?>
                     <?php else : ?>
                         <?php foreach ($fallback_posts as $index => $post) : ?>
-                                            <article class="apex-blog-grid__item" data-animate="fade-up" data-delay="<?php echo $index * 100; ?>">
-                                                <div class="apex-blog-grid__item-image">
-                                                    <img src="<?php echo esc_url($post['image']); ?>" alt="<?php echo esc_attr($post['title']); ?>" loading="lazy">
-                                                </div>
-                                                <div class="apex-blog-grid__item-content">
-                                                    <span class="apex-blog-grid__item-category"><?php echo esc_html($post['category']); ?></span>
-                                                    <h3><?php echo esc_html($post['title']); ?></h3>
-                                                    <p><?php echo esc_html($post['excerpt']); ?></p>
-                                                    <div class="apex-blog-grid__item-meta">
-                                                        <span><?php echo esc_html($post['date']); ?></span>
-                                                        <span>5 min read</span>
-                                                    </div>
-                                                    <a href="<?php echo esc_url($post['url']); ?>">Read Article →</a>
-                                                </div>
-                                            </article>
-                                        <?php endforeach; ?>
+                        <article class="apex-whats-new__card" data-animate="fade-up" data-delay="<?php echo $index * 100; ?>">
+                            <a href="<?php echo esc_url($post['url']); ?>" class="apex-whats-new__card-link">
+                                <div class="apex-whats-new__card-image">
+                            <?php
+                            $fb_hue = abs(crc32($post['title'])) % 360;
+                            $fb_initial = strtoupper(mb_substr($post['category'], 0, 1));
+                            ?>
+                            <div style="width:100%;height:100%;min-height:200px;background:linear-gradient(135deg,hsl(<?php echo $fb_hue; ?>,45%,45%),hsl(<?php echo ($fb_hue+40)%360; ?>,55%,35%));display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-family:sans-serif;">
+                                <span style="font-size:48px;font-weight:700;opacity:0.9;"><?php echo esc_html($fb_initial); ?></span>
+                                <span style="font-size:13px;opacity:0.7;margin-top:4px;"><?php echo esc_html($post['category']); ?></span>
+                            </div>
+                                    <div class="apex-whats-new__card-overlay"></div>
+                                </div>
+                                <div class="apex-whats-new__card-content">
+                                    <div class="apex-whats-new__card-meta">
+                                        <span class="apex-whats-new__card-category"><?php echo esc_html($post['category']); ?></span>
+                                        <span class="apex-whats-new__card-date">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            <?php echo esc_html($post['date']); ?>
+                                        </span>
+                                    </div>
+                                    <h3 class="apex-whats-new__card-title"><?php echo esc_html($post['title']); ?></h3>
+                                    <p class="apex-whats-new__card-excerpt"><?php echo esc_html($post['excerpt']); ?></p>
+                                    <span class="apex-whats-new__card-read-more">
+                                        Read Article
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </a>
+                        </article>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
                 

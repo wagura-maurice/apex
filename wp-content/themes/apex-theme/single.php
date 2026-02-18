@@ -3,7 +3,7 @@ get_header(); ?>
 
 <main class="flex-1">
 	<!-- Single Post Content -->
-	<section class="py-16 bg-slate-50 px-4">
+	<section class="py-16 bg-slate-50">
 		<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
 			<div class="flex flex-col lg:flex-row gap-8">
 				<!-- main-column -->

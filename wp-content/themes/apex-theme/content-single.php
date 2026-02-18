@@ -1,4 +1,4 @@
-<article class="post bg-white">
+<article class="post bg-white rounded-2xl shadow-md p-6 sm:p-10 lg:p-12 border border-slate-200">
 	<!-- Post Header -->
 	<header class="mb-8">
 		<h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4"><?php the_title(); ?></h1>

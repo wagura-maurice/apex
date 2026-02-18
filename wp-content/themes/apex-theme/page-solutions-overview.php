@@ -66,11 +66,15 @@ apex_render_about_hero([
             ];
             
             foreach (explode("\n", $solutions_items) as $item_line) {
-                $parts = explode(' | ', $item_line);
+            $item_line = trim($item_line);
+            if (empty($item_line)) continue;
+            $parts = explode(' | ', $item_line);
                 if (count($parts) >= 3) {
-                    $title = trim($parts[0]);
-                    $description = trim($parts[1]);
-                    $link = trim($parts[2]);
+                    $title = trim(str_replace(["\r\n", "\r", "\n"], "", $parts[0]));
+                    $description = trim(str_replace(["\r\n", "\r", "\n"], "", $parts[1]));
+                $link = trim($parts[2]);
+                $link = rtrim($link, ' |');
+                $link = rtrim($link);
                     $featured = isset($parts[3]) && trim($parts[3]) === 'featured' ? 'apex-solutions-grid__card--featured' : '';
                     $icon = isset($svg_icons[$title]) ? $svg_icons[$title] : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>';
                     ?>
@@ -123,8 +127,8 @@ apex_render_about_hero([
             foreach (explode("\n", $benefits_items) as $benefit_line) {
                 $parts = explode(' | ', $benefit_line);
                 if (count($parts) >= 2) {
-                    $title = trim($parts[0]);
-                    $description = trim($parts[1]);
+                    $title = trim(str_replace(["\r\n", "\r", "\n"], "", $parts[0]));
+                    $description = trim(str_replace(["\r\n", "\r", "\n"], "", $parts[1]));
                     $icon = isset($benefit_icons[$title]) ? $benefit_icons[$title] : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>';
                     ?>
                     <div class="apex-solutions-benefits__item">

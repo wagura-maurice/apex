@@ -1009,3 +1009,153 @@ Stack trace:
 
 [17-Feb-2026 21:30:00 UTC] Automatic updates starting...
 [17-Feb-2026 21:30:05 UTC] Automatic updates complete.
+[18-Feb-2026 00:19:22 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:19:22 UTC] PHP Warning:  Trying to access array offset on false in /var/www/html/apex/wp-includes/class-wp-recovery-mode-email-service.php on line 367
+[18-Feb-2026 00:19:22 UTC] PHP Warning:  Trying to access array offset on false in /var/www/html/apex/wp-includes/class-wp-recovery-mode-email-service.php on line 368
+[18-Feb-2026 00:19:22 UTC] Apex Mailtrap: Applying SMTP configuration
+[18-Feb-2026 00:19:22 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525, Secure: 
+[18-Feb-2026 00:19:23 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[18-Feb-2026 00:19:23 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[18-Feb-2026 00:19:23 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[18-Feb-2026 00:19:23 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[18-Feb-2026 00:19:24 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[18-Feb-2026 00:19:24 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:19:24 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[18-Feb-2026 00:19:25 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[18-Feb-2026 00:19:25 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[18-Feb-2026 00:19:25 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDE2NDAzOTEyNjMuMTc3MTM3Mzk2NUBzbXRwLm1haWx0cmFwLmlvPg==
+
+[18-Feb-2026 00:19:25 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<administrator@apex-softwares.com>
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Wed, 18 Feb 2026 00:19:22 +0000
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: administrator@apex-softwares.com
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: [Apex Banking Software] Your Site is Experiencing a Technical Issue
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <tNxe2qr2JeHsDXBdFrkE7G4mDUPAnTSQJgdi7qh5sA@apex.devops>
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Howdy!
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: WordPress has a built-in feature that detects when a plugin or theme causes a fatal error on your site, and notifies you with this automated email.
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: In this case, WordPress caught an error with your theme, APEX SOFTWARES - Modern Financial Technology Theme.
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: First, visit your website (http://apex.devops/) and check for any visible issues. Next, visit the page where the error was caught (http://apex.devops/wp-admin/admin-ajax.php) and check for any visible issues.
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Please contact your host for assistance with investigating this issue further.
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: If your site appears broken and you can't access your dashboard normally, WordPress now has a special "recovery mode". This lets you safely login to your dashboard and investigate further.
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/wp-login.php?action=enter_recovery_mode&rm_token=p2j7PKzsFraXtxAE9jrfp8&rm_key=4i8uD9fEQx0kqMl31f8fJI
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To keep your site safe, this link will expire in 1 day. Don't worry about that, though: a new link will be emailed to you if the error occurs again after it expires.
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: When seeking help with this issue, you may be asked for some of the following information:
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: WordPress version 6.9.1
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Active theme: APEX SOFTWARES - Modern Financial Technology Theme (version 1.0)
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Current plugin:  (version )
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: PHP version 8.4.17
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Error Details
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: =============
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: An error of type E_PARSE was caused in line 89 of the file /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php. Error message: syntax error, unexpected token "
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[18-Feb-2026 00:19:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[18-Feb-2026 00:19:27 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[18-Feb-2026 00:19:27 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[18-Feb-2026 00:19:27 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[18-Feb-2026 00:21:22 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:21:25 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:23:22 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:23:26 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:23:31 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:23:32 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:23:34 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:25:22 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 00:25:27 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 89
+[18-Feb-2026 12:31:34 UTC] Automatic updates starting...
+[18-Feb-2026 12:31:36 UTC] Automatic updates complete.
+[18-Feb-2026 14:59:14 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[18-Feb-2026 14:59:14 UTC] Apex Contact Form: POST data: Array
+(
+)
+

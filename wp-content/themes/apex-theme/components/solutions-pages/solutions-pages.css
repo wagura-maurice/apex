@@ -39,13 +39,13 @@
 .apex-solutions-grid__heading {
     font-size: clamp(2rem, 4vw, 2.5rem);
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 1rem 0;
 }
 
 .apex-solutions-grid__description {
     font-size: 1.0625rem;
-    color: #64748b;
+    color: #64748b !important;
     max-width: 700px;
     margin: 0 auto;
 }
@@ -73,13 +73,14 @@
     border-radius: 20px;
     padding: 1.5rem;
     border: 1px solid #e2e8f0;
-    text-decoration: none;
+    text-decoration: none !important;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
 }
 
 .apex-solutions-grid__card:hover {
+    text-decoration: none !important;
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(249, 115, 22, 0.15);
     border-color: #f97316;
@@ -114,8 +115,29 @@
 }
 
 .apex-solutions-grid__card--featured .apex-solutions-grid__card-link {
-    color: #f97316;
+    text-decoration: none !important;
+    color: #ffffff !important;
 }
+
+.apex-solutions-grid__card-link:hover {
+    text-decoration: none !important;
+    color: #f97316 !important;
+}
+
+.apex-solutions-grid__card-content h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a !important;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-solutions-grid__card-content p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #64748b !important;
+    margin: 0 0 1rem 0;
+}
+
 
 .apex-solutions-grid__card--featured .apex-solutions-grid__card-content h3 {
     color: #ffffff !important;
@@ -149,22 +171,38 @@
 .apex-solutions-grid__card h3 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 0.5rem 0;
 }
 
 .apex-solutions-grid__card p {
     font-size: 0.9375rem;
     line-height: 1.6;
-    color: #64748b;
+    color: #64748b !important;
     margin: 0 0 1rem 0;
 }
 
 .apex-solutions-grid__card-link {
+    text-decoration: none !important;
+}
+
+.apex-solutions-grid__card-link:hover {
+    text-decoration: none !important;
+    text-decoration: none !important;
+}
+
+.apex-solutions-grid__card-content h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff !important;
+    margin: 0 0 0.75rem 0;
+}
+
+.apex-solutions-grid__card-content p {
     font-size: 0.875rem;
-    font-weight: 600;
-    color: #f97316;
-    transition: color 0.3s ease;
+    line-height: 1.6;
+    color: #64748b !important;
+    margin: 0 0 1rem 0;
 }
 
 /* ========================================
@@ -201,7 +239,7 @@
 .apex-solutions-benefits__heading {
     font-size: clamp(2rem, 4vw, 2.5rem);
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0;
 }
 
@@ -257,14 +295,14 @@
 .apex-solutions-benefits__item h3 {
     font-size: 1.0625rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 0.5rem 0;
 }
 
 .apex-solutions-benefits__item p {
     font-size: 0.875rem;
     line-height: 1.6;
-    color: #64748b;
+    color: #64748b !important;
     margin: 0;
 }
 
@@ -308,14 +346,14 @@
 .apex-solutions-integration__heading {
     font-size: clamp(1.75rem, 3.5vw, 2.25rem);
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 1rem 0;
 }
 
 .apex-solutions-integration__description {
     font-size: 1rem;
     line-height: 1.7;
-    color: #64748b;
+    color: #64748b !important;
     margin: 0 0 2rem 0;
 }
 
@@ -328,14 +366,14 @@
 .apex-solutions-integration__category h4 {
     font-size: 0.9375rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 0.25rem 0;
 }
 
 .apex-solutions-integration__category p {
     font-size: 0.8125rem;
     line-height: 1.5;
-    color: #64748b;
+    color: #64748b !important;
     margin: 0;
 }
 
@@ -385,7 +423,7 @@
 .apex-solution-features__heading {
     font-size: clamp(2rem, 4vw, 2.5rem);
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0;
 }
 
@@ -441,14 +479,14 @@
 .apex-solution-features__item h3 {
     font-size: 1.0625rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 0.5rem 0;
 }
 
 .apex-solution-features__item p {
     font-size: 0.875rem;
     line-height: 1.6;
-    color: #64748b;
+    color: #64748b !important;
     margin: 0;
 }
 
@@ -492,7 +530,7 @@
 .apex-solution-specs__heading {
     font-size: clamp(1.75rem, 3.5vw, 2.25rem);
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 2rem 0;
 }
 
@@ -509,14 +547,14 @@
 .apex-solution-specs__item h4 {
     font-size: 0.9375rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0 0 0.25rem 0;
 }
 
 .apex-solution-specs__item p {
     font-size: 0.875rem;
     line-height: 1.5;
-    color: #64748b;
+    color: #64748b !important;
     margin: 0;
 }
 
@@ -547,4 +585,19 @@
     .apex-solutions-integration__categories {
         grid-template-columns: 1fr;
     }
+}
+
+
+/* Regular card text colors - ensure visibility */
+.apex-solutions-grid__card:not(.apex-solutions-grid__card--featured) .apex-solutions-grid__card-content h3 {
+    color: #0f172a !important;
+}
+
+.apex-solutions-grid__card:not(.apex-solutions-grid__card--featured) .apex-solutions-grid__card-content p {
+    color: #64748b !important;
+}
+
+.apex-solutions-grid__card:not(.apex-solutions-grid__card--featured) .apex-solutions-grid__card-link {
+    color: #f97316 !important;
+    text-decoration: none !important;
 }

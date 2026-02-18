@@ -1426,44 +1426,134 @@ function apex_theme_assets(): void {
             background: linear-gradient(to right, #ea580c, #dc2626) !important;
         }
         
-        /* Recent Posts & Recent Comments Widgets */
-        .widget_recent_entries ul,
-        .widget_recent_comments ul,
+        /* ===== Sidebar Widget Wrapper ===== */
+        .sidebar-widgets-wrapper .widget-item {
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.75rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .sidebar-widgets-wrapper .widget-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        /* Widget headings (Gutenberg block headings) */
+        .sidebar-widgets-wrapper .wp-block-heading,
+        .sidebar-widgets-wrapper .widget-title {
+            font-size: 1.125rem !important;
+            font-weight: 700 !important;
+            color: #0f172a !important;
+            margin-bottom: 0.75rem !important;
+            padding-bottom: 0.625rem !important;
+            border-bottom: 2px solid #fed7aa !important;
+            line-height: 1.4 !important;
+        }
+
+        /* ===== Recent Posts (Block: wp-block-latest-posts) ===== */
         .wp-block-latest-posts,
-        .wp-block-latest-comments {
+        .widget_recent_entries ul {
             list-style: none !important;
             padding: 0 !important;
             margin: 0 !important;
         }
-        .widget_recent_entries li,
-        .widget_recent_comments li,
-        .wp-block-latest-posts__post-title {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.875rem;
-            line-height: 1.5;
+
+        .wp-block-latest-posts li,
+        .widget_recent_entries li {
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            list-style: none !important;
         }
-        .widget_recent_entries li:last-child,
-        .widget_recent_comments li:last-child {
-            border-bottom: none;
+
+        .wp-block-latest-posts li a,
+        .widget_recent_entries li a {
+            display: block !important;
+            padding: 0.5rem 0.75rem !important;
+            border-radius: 0.5rem !important;
+            background-color: transparent !important;
+            color: #475569 !important;
+            text-decoration: none !important;
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            line-height: 1.5 !important;
+            transition: background-color 0.15s ease, color 0.15s ease !important;
+            border-left: 2px solid transparent !important;
         }
-        .widget_recent_entries a,
-        .widget_recent_comments a,
-        .wp-block-latest-posts a {
-            color: #475569;
-            text-decoration: none;
-            transition: color 0.2s;
+
+        /* Hover: ONLY the single item under the cursor */
+        .wp-block-latest-posts li:hover > a,
+        .widget_recent_entries li:hover > a {
+            background-color: #fff7ed !important;
+            color: #ea580c !important;
+            border-left-color: #ea580c !important;
         }
-        .widget_recent_entries a:hover,
-        .widget_recent_comments a:hover,
-        .wp-block-latest-posts a:hover {
-            color: #f97316;
+
+        /* ===== Recent Comments (Block: wp-block-latest-comments) ===== */
+        .wp-block-latest-comments,
+        .widget_recent_comments ul,
+        .widget_recent_comments ol {
+            list-style: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
+
+        .wp-block-latest-comments__comment,
+        .widget_recent_comments li {
+            margin: 0 !important;
+            padding: 0.625rem 0.75rem !important;
+            border: none !important;
+            border-radius: 0.5rem !important;
+            border-left: 2px solid transparent !important;
+            list-style: none !important;
+            transition: background-color 0.15s ease, border-color 0.15s ease !important;
+        }
+
+        .wp-block-latest-comments__comment:hover,
+        .widget_recent_comments li:hover {
+            background-color: #fff7ed !important;
+            border-left-color: #ea580c !important;
+        }
+
+        /* Comment meta text */
+        .wp-block-latest-comments__comment-meta,
+        .wp-block-latest-comments__comment footer {
+            font-size: 0.8125rem !important;
+            line-height: 1.6 !important;
+            color: #64748b !important;
+        }
+
+        /* Comment author link */
+        .wp-block-latest-comments__comment-author,
         .widget_recent_comments .comment-author-link {
-            font-weight: 600;
-            color: #1e293b;
+            font-weight: 600 !important;
+            color: #1e293b !important;
+            text-decoration: none !important;
+            transition: color 0.15s ease !important;
         }
-        
+
+        /* Comment post link */
+        .wp-block-latest-comments__comment-link {
+            font-weight: 500 !important;
+            color: #475569 !important;
+            text-decoration: none !important;
+            transition: color 0.15s ease !important;
+        }
+
+        /* Hover state for comment links */
+        .wp-block-latest-comments__comment:hover .wp-block-latest-comments__comment-author,
+        .wp-block-latest-comments__comment:hover .wp-block-latest-comments__comment-link,
+        .widget_recent_comments li:hover a {
+            color: #ea580c !important;
+        }
+
+        /* Comment excerpt if shown */
+        .wp-block-latest-comments__comment-excerpt p {
+            font-size: 0.8125rem !important;
+            color: #64748b !important;
+            margin-top: 0.25rem !important;
+            line-height: 1.5 !important;
+        }
         /* Categories & Archives Widgets */
         .widget_categories ul,
         .widget_archive ul {
@@ -7511,7 +7601,7 @@ function apex_render_fallback_form($page_slug, $config) {
             <h4>⭐ Featured Article Section</h4>
             <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
-                <p><strong>This section controls the featured article card (Editor's Pick).</strong></p>
+                <p><strong>This section controls the featured article card (Editor's Pick). Select a published post to feature — its title, excerpt, image, date, category, and author will be pulled automatically.</strong></p>
             </div>
             <table class="form-table">
                 <tr>
@@ -7523,87 +7613,101 @@ function apex_render_fallback_form($page_slug, $config) {
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="apex_blog_featured_image">Featured Image URL</label></th>
+                    <th scope="row"><label for="apex_blog_featured_post_id">Select Featured Post</label></th>
                     <td>
-                        <input type="url" id="apex_blog_featured_image" name="apex_blog_featured_image" 
-                               value="<?php echo esc_url(get_option('apex_blog_featured_image_' . $page_slug, 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800')); ?>" 
-                               class="large-text" placeholder="https://example.com/image.jpg">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_category">Category</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_featured_category" name="apex_blog_featured_category" 
-                               value="<?php echo esc_attr(get_option('apex_blog_featured_category_' . $page_slug, 'Digital Banking')); ?>" 
-                               class="regular-text" placeholder="e.g., Digital Banking">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_date">Date</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_featured_date" name="apex_blog_featured_date" 
-                               value="<?php echo esc_attr(get_option('apex_blog_featured_date_' . $page_slug, 'January 25, 2026')); ?>" 
-                               class="regular-text" placeholder="e.g., January 25, 2026">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_readtime">Read Time</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_featured_readtime" name="apex_blog_featured_readtime" 
-                               value="<?php echo esc_attr(get_option('apex_blog_featured_readtime_' . $page_slug, '8 min read')); ?>" 
-                               class="regular-text" placeholder="e.g., 8 min read">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_title">Article Title</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_featured_title" name="apex_blog_featured_title" 
-                               value="<?php echo esc_attr(get_option('apex_blog_featured_title_' . $page_slug, 'The Future of Digital Banking in Africa: 5 Trends Shaping 2026 and Beyond')); ?>" 
-                               class="large-text" placeholder="Enter the article title">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_excerpt">Article Excerpt</label></th>
-                    <td>
-                        <textarea id="apex_blog_featured_excerpt" name="apex_blog_featured_excerpt" 
-                                  class="large-text" rows="3" 
-                                  placeholder="Enter the article excerpt"><?php echo esc_textarea(get_option('apex_blog_featured_excerpt_' . $page_slug, 'As we enter 2026, the African banking landscape continues to evolve at an unprecedented pace. From embedded finance to AI-driven personalization, discover the key trends that will define the next era of financial services across the continent.')); ?></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_author_image">Author Image URL</label></th>
-                    <td>
-                        <input type="url" id="apex_blog_featured_author_image" name="apex_blog_featured_author_image" 
-                               value="<?php echo esc_url(get_option('apex_blog_featured_author_image_' . $page_slug, 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100')); ?>" 
-                               class="large-text" placeholder="https://example.com/author.jpg">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_author_name">Author Name</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_featured_author_name" name="apex_blog_featured_author_name" 
-                               value="<?php echo esc_attr(get_option('apex_blog_featured_author_name_' . $page_slug, 'Sarah Ochieng')); ?>" 
-                               class="regular-text" placeholder="e.g., Sarah Ochieng">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_author_title">Author Title</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_featured_author_title" name="apex_blog_featured_author_title" 
-                               value="<?php echo esc_attr(get_option('apex_blog_featured_author_title_' . $page_slug, 'Chief Technology Officer')); ?>" 
-                               class="regular-text" placeholder="e.g., Chief Technology Officer">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_blog_featured_link">Article Link URL</label></th>
-                    <td>
-                        <input type="text" id="apex_blog_featured_link" name="apex_blog_featured_link" 
-                               value="<?php echo esc_attr(get_option('apex_blog_featured_link_' . $page_slug, '#')); ?>" 
-                               class="large-text" placeholder="#">
+                        <?php
+                        $selected_post_id = intval(get_option('apex_blog_featured_post_id_' . $page_slug, 0));
+                        $published_posts = get_posts([
+                            'post_type'      => 'post',
+                            'post_status'    => 'publish',
+                            'posts_per_page' => -1,
+                            'orderby'        => 'date',
+                            'order'          => 'DESC',
+                        ]);
+                        ?>
+                        <select id="apex_blog_featured_post_id" name="apex_blog_featured_post_id" class="regular-text" style="min-width: 400px;" onchange="apexUpdateFeaturedPreview(this)">
+                            <option value="0">— Select a published post —</option>
+                            <?php foreach ($published_posts as $p) : ?>
+                                <option value="<?php echo intval($p->ID); ?>" <?php selected($selected_post_id, $p->ID); ?>
+                                    data-thumb="<?php echo esc_attr(get_the_post_thumbnail_url($p->ID, 'medium') ?: ''); ?>"
+                                    data-date="<?php echo esc_attr(get_the_date('F j, Y', $p->ID)); ?>"
+                                    data-category="<?php $cats = get_the_category($p->ID); echo $cats ? esc_attr($cats[0]->name) : ''; ?>"
+                                    data-excerpt="<?php echo esc_attr(wp_trim_words($p->post_excerpt ?: wp_strip_all_tags($p->post_content), 30)); ?>"
+                                    data-author="<?php echo esc_attr(get_the_author_meta('display_name', $p->post_author)); ?>"
+                                    data-avatar="<?php echo esc_attr(get_avatar_url($p->post_author, ['size' => 100])); ?>"
+                                    data-link="<?php echo esc_attr(get_permalink($p->ID)); ?>"
+                                    data-readtime="<?php $wc = str_word_count(wp_strip_all_tags($p->post_content)); echo esc_attr(max(1, ceil($wc / 200)) . ' min read'); ?>"
+                                ><?php echo esc_html($p->post_title); ?> (<?php echo get_the_date('M j, Y', $p->ID); ?>)</option>
+                            <?php endforeach; ?>
+                        </select>
+                        <p class="description">Choose a published post to feature as "Editor's Pick". All article details will be pulled automatically from the post.</p>
                     </td>
                 </tr>
             </table>
+
+            <?php if ($selected_post_id && get_post($selected_post_id)) :
+                $fp = get_post($selected_post_id);
+                $fp_cats = get_the_category($selected_post_id);
+                $fp_thumb = get_the_post_thumbnail_url($selected_post_id, 'medium');
+                $fp_excerpt = wp_trim_words($fp->post_excerpt ?: wp_strip_all_tags($fp->post_content), 30);
+                $fp_author = get_the_author_meta('display_name', $fp->post_author);
+                $fp_avatar = get_avatar_url($fp->post_author, ['size' => 100]);
+                $fp_wc = str_word_count(wp_strip_all_tags($fp->post_content));
+                $fp_readtime = max(1, ceil($fp_wc / 200)) . ' min read';
+            ?>
+            <div id="apex-featured-preview" style="background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-top: 15px;">
+                <h5 style="margin-top:0;">📰 Featured Post Preview</h5>
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <?php if ($fp_thumb) : ?>
+                    <div style="flex-shrink:0;"><img src="<?php echo esc_url($fp_thumb); ?>" style="width:200px; height:130px; object-fit:cover; border-radius:6px;" alt=""></div>
+                    <?php endif; ?>
+                    <div>
+                        <p style="margin:0 0 5px;"><strong>Title:</strong> <?php echo esc_html($fp->post_title); ?></p>
+                        <p style="margin:0 0 5px;"><strong>Category:</strong> <?php echo $fp_cats ? esc_html($fp_cats[0]->name) : 'Uncategorized'; ?></p>
+                        <p style="margin:0 0 5px;"><strong>Date:</strong> <?php echo get_the_date('F j, Y', $selected_post_id); ?></p>
+                        <p style="margin:0 0 5px;"><strong>Read Time:</strong> <?php echo esc_html($fp_readtime); ?></p>
+                        <p style="margin:0 0 5px;"><strong>Author:</strong> <?php echo esc_html($fp_author); ?></p>
+                        <p style="margin:0 0 5px;"><strong>Excerpt:</strong> <?php echo esc_html($fp_excerpt); ?></p>
+                        <p style="margin:0;"><a href="<?php echo esc_url(get_permalink($selected_post_id)); ?>" target="_blank">View Post →</a></p>
+                    </div>
+                </div>
+            </div>
+            <?php else : ?>
+            <div id="apex-featured-preview" style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 15px; margin-top: 15px;">
+                <p style="margin:0;"><em>No post selected. Choose a published post above to see a preview and feature it on the blog page.</em></p>
+            </div>
+            <?php endif; ?>
         </div>
+
+        <script>
+        function apexUpdateFeaturedPreview(sel) {
+            var opt = sel.options[sel.selectedIndex];
+            var preview = document.getElementById('apex-featured-preview');
+            if (!preview) return;
+            if (opt.value === '0') {
+                preview.innerHTML = '<p style="margin:0;"><em>No post selected. Choose a published post above to see a preview and feature it on the blog page.</em></p>';
+                preview.style.background = '#fff8e1';
+                preview.style.border = '1px solid #ffe082';
+                return;
+            }
+            preview.style.background = '#f9f9f9';
+            preview.style.border = '1px solid #ddd';
+            var thumb = opt.getAttribute('data-thumb');
+            var imgHtml = thumb ? '<div style="flex-shrink:0;"><img src="' + thumb + '" style="width:200px;height:130px;object-fit:cover;border-radius:6px;" alt=""></div>' : '';
+            preview.innerHTML = '<h5 style="margin-top:0;">📰 Featured Post Preview</h5>' +
+                '<div style="display:flex;gap:20px;align-items:flex-start;">' + imgHtml +
+                '<div>' +
+                '<p style="margin:0 0 5px;"><strong>Title:</strong> ' + opt.text.replace(/ \(.*\)$/, '') + '</p>' +
+                '<p style="margin:0 0 5px;"><strong>Category:</strong> ' + (opt.getAttribute('data-category') || 'Uncategorized') + '</p>' +
+                '<p style="margin:0 0 5px;"><strong>Date:</strong> ' + (opt.getAttribute('data-date') || '') + '</p>' +
+                '<p style="margin:0 0 5px;"><strong>Read Time:</strong> ' + (opt.getAttribute('data-readtime') || '') + '</p>' +
+                '<p style="margin:0 0 5px;"><strong>Author:</strong> ' + (opt.getAttribute('data-author') || '') + '</p>' +
+                '<p style="margin:0 0 5px;"><strong>Excerpt:</strong> ' + (opt.getAttribute('data-excerpt') || '') + '</p>' +
+                '<p style="margin:0;"><a href="' + (opt.getAttribute('data-link') || '#') + '" target="_blank">View Post →</a></p>' +
+                '</div></div>';
+        }
+        </script>
+
 
         <!-- Newsletter Section -->
         <div style="margin-bottom: 30px;">
@@ -10555,17 +10659,7 @@ function apex_render_fallback_form($page_slug, $config) {
             
             // Featured Article Section
             update_option('apex_blog_featured_badge_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_badge']));
-            update_option('apex_blog_featured_image_' . $page_slug, esc_url_raw($_POST['apex_blog_featured_image']));
-            update_option('apex_blog_featured_category_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_category']));
-            update_option('apex_blog_featured_date_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_date']));
-            update_option('apex_blog_featured_readtime_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_readtime']));
-            update_option('apex_blog_featured_title_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_title']));
-            update_option('apex_blog_featured_excerpt_' . $page_slug, sanitize_textarea_field($_POST['apex_blog_featured_excerpt']));
-            update_option('apex_blog_featured_author_image_' . $page_slug, esc_url_raw($_POST['apex_blog_featured_author_image']));
-            update_option('apex_blog_featured_author_name_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_author_name']));
-            update_option('apex_blog_featured_author_title_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_author_title']));
-            update_option('apex_blog_featured_link_' . $page_slug, sanitize_text_field($_POST['apex_blog_featured_link']));
-            
+            update_option('apex_blog_featured_post_id_' . $page_slug, intval($_POST['apex_blog_featured_post_id']));
             // Categories Section - Removed (now uses WordPress category taxonomy dynamically)
             
             // Newsletter Section

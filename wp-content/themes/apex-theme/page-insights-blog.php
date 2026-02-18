@@ -36,31 +36,110 @@ apex_render_about_hero([
             <span class="apex-blog-featured__badge"><?php echo esc_html(get_option('apex_blog_featured_badge_insights-blog', "Editor's Pick")); ?></span>
         </div>
         
+        <?php
+        // Dynamic Featured Post from selected post ID
+        $featured_post_id = intval(get_option('apex_blog_featured_post_id_insights-blog', 0));
+        $featured_post = $featured_post_id ? get_post($featured_post_id) : null;
+
+        if ($featured_post && $featured_post->post_status === 'publish') :
+            $fp_thumb = get_the_post_thumbnail_url($featured_post_id, 'large');
+            $fp_cats = get_the_category($featured_post_id);
+            $fp_category = $fp_cats ? $fp_cats[0]->name : 'Uncategorized';
+            $fp_date = get_the_date('F j, Y', $featured_post_id);
+            $fp_wc = str_word_count(wp_strip_all_tags($featured_post->post_content));
+            $fp_readtime = max(1, ceil($fp_wc / 200)) . ' min read';
+            $fp_excerpt = wp_trim_words($featured_post->post_excerpt ?: wp_strip_all_tags($featured_post->post_content), 30);
+            $fp_author_name = get_the_author_meta('display_name', $featured_post->post_author);
+            $fp_author_avatar = get_avatar_url($featured_post->post_author, ['size' => 100]);
+            $fp_author_desc = get_the_author_meta('description', $featured_post->post_author);
+            $fp_link = get_permalink($featured_post_id);
+        ?>
         <div class="apex-blog-featured__card">
             <div class="apex-blog-featured__image">
-                <img src="<?php echo esc_url(get_option('apex_blog_featured_image_insights-blog', 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800')); ?>" alt="<?php echo esc_attr(get_option('apex_blog_featured_title_insights-blog', 'Featured Article')); ?>" loading="lazy">
-                <span class="apex-blog-featured__category"><?php echo esc_html(get_option('apex_blog_featured_category_insights-blog', 'Digital Banking')); ?></span>
+                <?php if ($fp_thumb) : ?>
+                    <img src="<?php echo esc_url($fp_thumb); ?>" alt="<?php echo esc_attr($featured_post->post_title); ?>" loading="lazy">
+                <?php else :
+                    $fp_ph_hue = abs(crc32($featured_post->post_title . $featured_post_id)) % 360;
+                ?>
+                    <div style="width:100%;height:100%;min-height:300px;background:linear-gradient(135deg,hsl(<?php echo $fp_ph_hue; ?>,45%,45%),hsl(<?php echo ($fp_ph_hue+40)%360; ?>,55%,35%));display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-family:sans-serif;">
+                        <span style="font-size:64px;font-weight:700;opacity:0.9;"><?php echo esc_html(strtoupper(mb_substr($fp_category, 0, 1))); ?></span>
+                        <span style="font-size:15px;opacity:0.7;margin-top:6px;"><?php echo esc_html($fp_category); ?></span>
+                    </div>
+                <?php endif; ?>
+                <span class="apex-blog-featured__category"><?php echo esc_html($fp_category); ?></span>
             </div>
             <div class="apex-blog-featured__content">
                 <div class="apex-blog-featured__meta">
-                    <span class="apex-blog-featured__date"><?php echo esc_html(get_option('apex_blog_featured_date_insights-blog', 'January 25, 2026')); ?></span>
-                    <span class="apex-blog-featured__read-time"><?php echo esc_html(get_option('apex_blog_featured_readtime_insights-blog', '8 min read')); ?></span>
+                    <span class="apex-blog-featured__date"><?php echo esc_html($fp_date); ?></span>
+                    <span class="apex-blog-featured__read-time"><?php echo esc_html($fp_readtime); ?></span>
                 </div>
-                <h2 class="apex-blog-featured__title"><?php echo esc_html(get_option('apex_blog_featured_title_insights-blog', 'The Future of Digital Banking in Africa: 5 Trends Shaping 2026 and Beyond')); ?></h2>
-                <p class="apex-blog-featured__excerpt"><?php echo esc_html(get_option('apex_blog_featured_excerpt_insights-blog', 'As we enter 2026, the African banking landscape continues to evolve at an unprecedented pace. From embedded finance to AI-driven personalization, discover the key trends that will define the next era of financial services across the continent.')); ?></p>
+                <h2 class="apex-blog-featured__title"><?php echo esc_html($featured_post->post_title); ?></h2>
+                <p class="apex-blog-featured__excerpt"><?php echo esc_html($fp_excerpt); ?></p>
                 <div class="apex-blog-featured__author">
-                    <img src="<?php echo esc_url(get_option('apex_blog_featured_author_image_insights-blog', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100')); ?>" alt="<?php echo esc_attr(get_option('apex_blog_featured_author_name_insights-blog', 'Author')); ?>">
+                    <img src="<?php echo esc_url($fp_author_avatar); ?>" alt="<?php echo esc_attr($fp_author_name); ?>">
                     <div>
-                        <strong><?php echo esc_html(get_option('apex_blog_featured_author_name_insights-blog', 'Sarah Ochieng')); ?></strong>
-                        <span><?php echo esc_html(get_option('apex_blog_featured_author_title_insights-blog', 'Chief Technology Officer')); ?></span>
+                        <strong><?php echo esc_html($fp_author_name); ?></strong>
+                        <span><?php echo esc_html($fp_author_desc ?: 'Contributor'); ?></span>
                     </div>
                 </div>
-                <a href="<?php echo esc_url(get_option('apex_blog_featured_link_insights-blog', '#')); ?>" class="apex-blog-featured__link">
+                <a href="<?php echo esc_url($fp_link); ?>" class="apex-blog-featured__link">
                     Read Full Article
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
         </div>
+        <?php else :
+            // Fallback: show the latest published post if no featured post is selected
+            $latest = get_posts(['post_type' => 'post', 'post_status' => 'publish', 'posts_per_page' => 1, 'orderby' => 'date', 'order' => 'DESC']);
+            if ($latest) :
+                $lp = $latest[0];
+                $lp_thumb = get_the_post_thumbnail_url($lp->ID, 'large');
+                $lp_cats = get_the_category($lp->ID);
+                $lp_category = $lp_cats ? $lp_cats[0]->name : 'Uncategorized';
+                $lp_date = get_the_date('F j, Y', $lp->ID);
+                $lp_wc = str_word_count(wp_strip_all_tags($lp->post_content));
+                $lp_readtime = max(1, ceil($lp_wc / 200)) . ' min read';
+                $lp_excerpt = wp_trim_words($lp->post_excerpt ?: wp_strip_all_tags($lp->post_content), 30);
+                $lp_author_name = get_the_author_meta('display_name', $lp->post_author);
+                $lp_author_avatar = get_avatar_url($lp->post_author, ['size' => 100]);
+                $lp_link = get_permalink($lp->ID);
+        ?>
+        <div class="apex-blog-featured__card">
+            <div class="apex-blog-featured__image">
+                <?php if ($lp_thumb) : ?>
+                    <img src="<?php echo esc_url($lp_thumb); ?>" alt="<?php echo esc_attr($lp->post_title); ?>" loading="lazy">
+                <?php else :
+                    $lp_ph_hue = abs(crc32($lp->post_title . $lp->ID)) % 360;
+                ?>
+                    <div style="width:100%;height:100%;min-height:300px;background:linear-gradient(135deg,hsl(<?php echo $lp_ph_hue; ?>,45%,45%),hsl(<?php echo ($lp_ph_hue+40)%360; ?>,55%,35%));display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-family:sans-serif;">
+                        <span style="font-size:64px;font-weight:700;opacity:0.9;"><?php echo esc_html(strtoupper(mb_substr($lp_category, 0, 1))); ?></span>
+                        <span style="font-size:15px;opacity:0.7;margin-top:6px;"><?php echo esc_html($lp_category); ?></span>
+                    </div>
+                <?php endif; ?>
+                <span class="apex-blog-featured__category"><?php echo esc_html($lp_category); ?></span>
+            </div>
+            <div class="apex-blog-featured__content">
+                <div class="apex-blog-featured__meta">
+                    <span class="apex-blog-featured__date"><?php echo esc_html($lp_date); ?></span>
+                    <span class="apex-blog-featured__read-time"><?php echo esc_html($lp_readtime); ?></span>
+                </div>
+                <h2 class="apex-blog-featured__title"><?php echo esc_html($lp->post_title); ?></h2>
+                <p class="apex-blog-featured__excerpt"><?php echo esc_html($lp_excerpt); ?></p>
+                <div class="apex-blog-featured__author">
+                    <img src="<?php echo esc_url($lp_author_avatar); ?>" alt="<?php echo esc_attr($lp_author_name); ?>">
+                    <div>
+                        <strong><?php echo esc_html($lp_author_name); ?></strong>
+                        <span>Contributor</span>
+                    </div>
+                </div>
+                <a href="<?php echo esc_url($lp_link); ?>" class="apex-blog-featured__link">
+                    Read Full Article
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -141,19 +220,29 @@ apex_render_about_hero([
                 $index = 0;
                 while ($blog_query->have_posts()) : $blog_query->the_post();
             ?>
-                <article class="apex-blog-grid__item" data-animate="fade-up" data-delay="<?php echo $index * 100; ?>">
+                <article class="apex-blog-grid__item">
                     <div class="apex-blog-grid__item-image">
                         <?php if (has_post_thumbnail()) : ?>
                             <?php the_post_thumbnail('medium_large', ['class' => '', 'loading' => 'lazy']); ?>
-                        <?php else : ?>
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="<?php the_title_attribute(); ?>" loading="lazy">
+                        <?php else :
+                            // Generate a unique color-based placeholder from post category
+                            $ph_cats = get_the_category();
+                            $ph_cat_name = $ph_cats ? $ph_cats[0]->name : 'Article';
+                            $ph_hash = crc32(get_the_title() . get_the_ID());
+                            $ph_hue = abs($ph_hash) % 360;
+                            $ph_initial = strtoupper(mb_substr($ph_cat_name, 0, 1));
+                        ?>
+                            <div style="width:100%;height:100%;min-height:200px;background:linear-gradient(135deg,hsl(<?php echo $ph_hue; ?>,45%,45%),hsl(<?php echo ($ph_hue+40)%360; ?>,55%,35%));display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-family:sans-serif;">
+                                <span style="font-size:48px;font-weight:700;opacity:0.9;"><?php echo esc_html($ph_initial); ?></span>
+                                <span style="font-size:13px;opacity:0.7;margin-top:4px;"><?php echo esc_html($ph_cat_name); ?></span>
+                            </div>
                         <?php endif; ?>
                     </div>
                     <div class="apex-blog-grid__item-content">
                         <?php
                         $categories = get_the_category();
                         if ($categories) : ?>
-                            <span class="apex-blog-grid__item-category"><?php echo esc_html($categories[0]->name); ?></span>
+                            <span class="apex-blog-grid__item-category" style="text-transform: uppercase;"><?php echo esc_html($categories[0]->name); ?></span>
                         <?php endif; ?>
                         <h3><?php the_title(); ?></h3>
                         <p><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
