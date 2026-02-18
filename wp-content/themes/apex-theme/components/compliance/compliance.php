@@ -107,7 +107,7 @@ class Apex_Compliance_Component {
             ],
             'cta' => [
                 'text' => 'Download Security Whitepaper',
-                'url' => home_url('/resources/security-whitepaper')
+                'url' => home_url('/insights/whitepapers-reports')
             ]
         ];
         

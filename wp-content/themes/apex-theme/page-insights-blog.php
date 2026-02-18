@@ -221,29 +221,28 @@ apex_render_about_hero([
                 while ($blog_query->have_posts()) : $blog_query->the_post();
             ?>
                 <article class="apex-blog-grid__item">
-                    <div class="apex-blog-grid__item-image">
+                    <div class="apex-blog-grid__item-image" style="position: relative;">
+                        <?php
+                        $ph_cats = get_the_category();
+                        $ph_cat_name = $ph_cats ? $ph_cats[0]->name : 'Article';
+                        ?>
                         <?php if (has_post_thumbnail()) : ?>
                             <?php the_post_thumbnail('medium_large', ['class' => '', 'loading' => 'lazy']); ?>
-                        <?php else :
-                            // Generate a unique color-based placeholder from post category
-                            $ph_cats = get_the_category();
-                            $ph_cat_name = $ph_cats ? $ph_cats[0]->name : 'Article';
+                            <span class="apex-blog-grid__item-category" style="position: absolute; top: 1rem; left: 1rem; padding: 0.5rem 1rem; background: #f97316; color: #ffffff; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; border-radius: 50px;"><?php echo esc_html($ph_cat_name); ?></span>
+                        <?php else : ?>
+                            <?php
                             $ph_hash = crc32(get_the_title() . get_the_ID());
                             $ph_hue = abs($ph_hash) % 360;
                             $ph_initial = strtoupper(mb_substr($ph_cat_name, 0, 1));
-                        ?>
+                            ?>
                             <div style="width:100%;height:100%;min-height:200px;background:linear-gradient(135deg,hsl(<?php echo $ph_hue; ?>,45%,45%),hsl(<?php echo ($ph_hue+40)%360; ?>,55%,35%));display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-family:sans-serif;">
                                 <span style="font-size:48px;font-weight:700;opacity:0.9;"><?php echo esc_html($ph_initial); ?></span>
                                 <span style="font-size:13px;opacity:0.7;margin-top:4px;"><?php echo esc_html($ph_cat_name); ?></span>
                             </div>
+                            <span class="apex-blog-grid__item-category" style="position: absolute; top: 1rem; left: 1rem; padding: 0.5rem 1rem; background: #f97316; color: #ffffff; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; border-radius: 50px;"><?php echo esc_html($ph_cat_name); ?></span>
                         <?php endif; ?>
                     </div>
                     <div class="apex-blog-grid__item-content">
-                        <?php
-                        $categories = get_the_category();
-                        if ($categories) : ?>
-                            <span class="apex-blog-grid__item-category" style="text-transform: uppercase;"><?php echo esc_html($categories[0]->name); ?></span>
-                        <?php endif; ?>
                         <h3><?php the_title(); ?></h3>
                         <p><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
                         <div class="apex-blog-grid__item-meta">
@@ -252,6 +251,7 @@ apex_render_about_hero([
                         </div>
                         <a href="<?php the_permalink(); ?>">Read Article →</a>
                     </div>
+                </article>
                 </article>
             <?php
                 $index++;

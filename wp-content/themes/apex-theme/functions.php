@@ -3537,8 +3537,8 @@ function apex_render_fallback_form($page_slug, $config) {
                     <th scope="row"><label for="apex_compliance_cta_url">CTA Button URL</label></th>
                     <td>
                         <input type="url" id="apex_compliance_cta_url" name="apex_compliance_cta_url" 
-                               value="<?php echo esc_attr(get_option('apex_compliance_cta_url_' . $page_slug, home_url('/resources/security-whitepaper'))); ?>" 
-                               class="regular-text" placeholder="/resources/security-whitepaper">
+                               value="<?php echo esc_attr(get_option('apex_compliance_cta_url_' . $page_slug, home_url('/insights/whitepapers-reports'))); ?>" 
+                               class="regular-text" placeholder="/insights/whitepapers-reports">
                         <p class="description">Call-to-action button URL</p>
                     </td>
                 </tr>

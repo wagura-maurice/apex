@@ -1159,3 +1159,6 @@ Stack trace:
 (
 )
 
+[18-Feb-2026 16:06:42 UTC] PHP Parse error:  syntax error, unexpected identifier "loading", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/page-insights-blog.php on line 230
+[18-Feb-2026 16:06:51 UTC] PHP Parse error:  syntax error, unexpected identifier "loading", expecting "]" in /var/www/html/apex/wp-content/themes/apex-theme/page-insights-blog.php on line 230
+[18-Feb-2026 16:18:22 UTC] PHP Parse error:  syntax error, unexpected token "<" in /var/www/html/apex/wp-content/themes/apex-theme/components/whats-new/whats-new.php on line 146

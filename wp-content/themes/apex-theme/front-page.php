@@ -263,7 +263,7 @@ apex_render_compliance([
     'description' => get_option('apex_compliance_description_home', 'ApexCore meets the highest standards of security, privacy, and regulatory compliance required by financial institutions worldwide.'),
     'cta' => [
         'text' => get_option('apex_compliance_cta_text_home', 'Download Security Whitepaper'),
-        'url' => get_option('apex_compliance_cta_url_home', home_url('/resources/security-whitepaper'))
+        'url' => get_option('apex_compliance_cta_url_home', home_url('/insights/whitepapers-reports'))
     ]
 ]);
 ?>
