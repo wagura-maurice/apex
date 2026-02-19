@@ -11724,3 +11724,58 @@ function reading_time() {
     $reading_time = ceil($word_count / 200); // Assuming 200 words per minute
     return $reading_time;
 }
+
+// Custom rewrite rules for blog posts
+function apex_blog_rewrite_rules() {
+    add_rewrite_rule('^insights/blog/([^/]+)/?$', 'index.php?name=$matches[1]', 'top');
+    
+    // One-time flush of rewrite rules
+    if (!get_option('apex_blog_rewrite_flushed')) {
+        flush_rewrite_rules();
+        update_option('apex_blog_rewrite_flushed', true);
+    }
+}
+add_action('init', 'apex_blog_rewrite_rules');
+
+// Flush rewrite rules on theme activation (for development)
+function apex_flush_rewrite_rules_on_activation() {
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'apex_flush_rewrite_rules_on_activation');
+
+// Redirect old URLs to new structure
+function apex_redirect_old_post_urls() {
+    if (is_single() && !is_admin() && get_post_type() == 'post') {
+        $current_url = $_SERVER['REQUEST_URI'];
+        $post_slug = get_post_field('post_name', get_the_ID());
+        $old_pattern = '/' . get_the_date('Y/m/d') . '/' . $post_slug . '/';
+        
+        if (strpos($current_url, $old_pattern) !== false) {
+            $new_url = home_url('/insights/blog/' . $post_slug . '/');
+            wp_redirect($new_url, 301);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'apex_redirect_old_post_urls');
+
+// Custom permalink for posts
+function apex_custom_post_link($permalink, $post) {
+    if ($post->post_type == 'post') {
+        $permalink = home_url('/insights/blog/' . $post->post_name . '/');
+    }
+    return $permalink;
+}
+add_filter('post_link', 'apex_custom_post_link', 10, 2);
+
+// Custom single template for insight blog posts
+function apex_single_template($template) {
+    if (is_single() && get_post_type() == 'post') {
+        $custom_template = locate_template('single-insight-blog.php');
+        if ($custom_template) {
+            return $custom_template;
+        }
+    }
+    return $template;
+}
+add_filter('single_template', 'apex_single_template');
