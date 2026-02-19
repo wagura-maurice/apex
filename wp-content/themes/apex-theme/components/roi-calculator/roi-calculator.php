@@ -95,7 +95,7 @@ class Apex_ROICalculator_Component {
                 ],
                 [
                     'id' => 'cost-savings',
-                    'label' => 'Annual Cost Savings',
+                    'label' => 'Estimate Licence Cost',
                     'icon' => 'dollar',
                     'prefix' => '$',
                     'color' => 'green'
