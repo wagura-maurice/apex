@@ -34,9 +34,30 @@ get_header(); ?>
 							}
 
 							// Comments
-							if (comments_open() || get_comments_number()) :
+							if (comments_open() || get_comments_number() > 0) {
 								comments_template();
-							endif;
+							} elseif (comments_open()) {
+								// Show styled placeholder when no comments but open
+								echo '<section class="mt-12 pt-8 border-t border-slate-200">';
+								echo '<div class="bg-slate-50 rounded-xl p-8 text-center">';
+								echo '<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">';
+								echo '<svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
+								echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>';
+								echo '</svg>';
+								echo '</div>';
+								echo '<h3 class="text-xl font-semibold text-slate-900 mb-2">No Comments Yet</h3>';
+								echo '<p class="text-slate-600 mb-6">Be the first to share your thoughts on this post. Your comment could start an interesting discussion!</p>';
+								echo '<div class="inline-block">';
+								comment_form(array(
+									'title_reply' => 'Leave a Comment',
+									'comment_notes_before' => '',
+									'comment_notes_after' => '',
+									'class_submit' => 'px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors'
+								));
+								echo '</div>';
+								echo '</div>';
+								echo '</section>';
+							}
 
 						endwhile;
 

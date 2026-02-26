@@ -66,6 +66,11 @@ class Apex_WhatsNew_Component {
             'order' => 'DESC'
         ];
         
+        // Exclude current post on single pages to prevent duplication
+        if (is_single()) {
+            $query_args['post__not_in'] = [get_the_ID()];
+        }
+        
         if (!empty($args['category'])) {
             $query_args['category_name'] = $args['category'];
         }

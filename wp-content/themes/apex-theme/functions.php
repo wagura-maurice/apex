@@ -1150,7 +1150,15 @@ add_action('init', 'apex_test_email');
 function apex_theme_setup(): void {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
+    add_post_type_support('post', 'thumbnail');
+    add_image_size('small-thumbnail', 300, 300, true);
+    add_image_size('banner-image', 1200, 400, true);
     add_theme_support('html5', ['search-form', 'comment-form', 'comment-list', 'gallery', 'caption']);
+    
+    // Block editor support
+    add_theme_support('editor-styles');
+    add_theme_support('wp-block-styles');
+    add_theme_support('align-wide');
 
     register_nav_menus([
         'primary' => __('Primary Menu', 'apex-theme'),
@@ -1158,6 +1166,23 @@ function apex_theme_setup(): void {
     ]);
 }
 add_action('after_setup_theme', 'apex_theme_setup');
+
+/**
+ * Force featured image panel in block editor
+ */
+function apex_force_featured_image_panel() {
+    echo '<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (wp.data && wp.data.select("core/edit-post")) {
+            setTimeout(function() {
+                wp.data.dispatch("core/edit-post").toggleFeature("featuredImage");
+            }, 1000);
+        }
+    });
+    </script>';
+}
+add_action('admin_footer-post-new.php', 'apex_force_featured_image_panel');
+add_action('admin_footer-post.php', 'apex_force_featured_image_panel');
 
 /**
  * Enqueue styles and scripts.

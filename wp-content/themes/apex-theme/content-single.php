@@ -36,10 +36,14 @@
 	</header>
 
 	<!-- Featured Image -->
-	<?php if (has_post_thumbnail()) : ?>
-		<div class="mb-8 rounded-2xl overflow-hidden shadow-lg">
-			<?php the_post_thumbnail('banner-image', ['class' => 'w-full h-auto']); ?>
-		</div>
+	<?php if (has_post_thumbnail()) : 
+		$content = get_post_field('post_content', get_the_ID());
+		$featured_image_id = get_post_thumbnail_id();
+		if (strpos($content, 'wp-image-' . $featured_image_id) === false) : ?>
+			<div class="mb-8 rounded-2xl overflow-hidden shadow-lg">
+				<?php the_post_thumbnail('banner-image', ['class' => 'w-full h-auto']); ?>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	<!-- Post Content -->

@@ -1184,3 +1184,793 @@ Stack trace:
 (
 )
 
+[19-Feb-2026 19:27:02 UTC] Apex Mailtrap: Applying SMTP configuration
+[19-Feb-2026 19:27:02 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525, Secure: 
+[19-Feb-2026 19:27:02 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[19-Feb-2026 19:27:02 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:27:03 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[19-Feb-2026 19:27:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[19-Feb-2026 19:27:03 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[19-Feb-2026 19:27:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:27:04 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[19-Feb-2026 19:27:04 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[19-Feb-2026 19:27:04 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDY3NzYzMTExMy4xNzcxNTI5MjI0QHNtdHAubWFpbHRyYXAuaW8+
+
+[19-Feb-2026 19:27:04 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<administrator@apex-softwares.com>
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Thu, 19 Feb 2026 19:27:02 +0000
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: administrator@apex-softwares.com
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: [Apex Banking Software] Please moderate: "qwertyu"
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <CVg3EVr4IPQw6QclxigNT1xbUxhTOD5yrM9e64@apex.devops>
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: A new comment on the post "qwertyu" is waiting for your approval
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/insights/blog/qwertyu/
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Author: Sade Thomas (IP address: 127.0.0.1, localhost)
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Email: mafenum@mailinator.com
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: URL: https://www.qofoxujijysyhi.me
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Comment: 
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Ea iste sit distinct
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Approve it: http://apex.devops/wp-admin/comment.php?action=approve&c=11#wpbody-content
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Trash it: http://apex.devops/wp-admin/comment.php?action=trash&c=11#wpbody-content
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Spam it: http://apex.devops/wp-admin/comment.php?action=spam&c=11#wpbody-content
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Currently 2 comments are waiting for approval. Please visit the moderation panel:
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/wp-admin/edit-comments.php?comment_status=moderated#wpbody-content
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:27:05 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[19-Feb-2026 19:27:06 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[19-Feb-2026 19:27:06 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[19-Feb-2026 19:27:06 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[19-Feb-2026 19:28:36 UTC] Apex Mailtrap: Applying SMTP configuration
+[19-Feb-2026 19:28:36 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525, Secure: 
+[19-Feb-2026 19:28:37 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[19-Feb-2026 19:28:37 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:28:38 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[19-Feb-2026 19:28:38 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[19-Feb-2026 19:28:38 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[19-Feb-2026 19:28:39 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:28:41 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[19-Feb-2026 19:28:41 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[19-Feb-2026 19:28:42 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDI2ODQzODMwNS4xNzcxNTI5MzIxQHNtdHAubWFpbHRyYXAuaW8+
+
+[19-Feb-2026 19:28:42 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[19-Feb-2026 19:28:42 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[19-Feb-2026 19:28:42 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<administrator@apex-softwares.com>
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Thu, 19 Feb 2026 19:28:36 +0000
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: administrator@apex-softwares.com
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: [Apex Banking Software] Please moderate: "qwertyu"
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <qjc5mw13vuvWYm3ox3sC8ARE4mohN43sN0TfEoemgU8@apex.devops>
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: A new comment on the post "qwertyu" is waiting for your approval
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/insights/blog/qwertyu/
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Author: Naida Riddle (IP address: 127.0.0.1, localhost)
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Email: cybel@mailinator.com
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: URL: https://www.hyxowezu.me
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: In reply to: http://apex.devops/wp-admin/comment.php?action=editcomment&c=11#wpbody-content
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Comment: 
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Proident sit sit vo
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Approve it: http://apex.devops/wp-admin/comment.php?action=approve&c=12#wpbody-content
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Trash it: http://apex.devops/wp-admin/comment.php?action=trash&c=12#wpbody-content
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Spam it: http://apex.devops/wp-admin/comment.php?action=spam&c=12#wpbody-content
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Currently 2 comments are waiting for approval. Please visit the moderation panel:
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/wp-admin/edit-comments.php?comment_status=moderated#wpbody-content
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:28:43 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[19-Feb-2026 19:28:45 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[19-Feb-2026 19:28:45 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[19-Feb-2026 19:28:45 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[19-Feb-2026 19:31:21 UTC] Apex Mailtrap: Applying SMTP configuration
+[19-Feb-2026 19:31:21 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525, Secure: 
+[19-Feb-2026 19:31:22 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[19-Feb-2026 19:31:22 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:31:23 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[19-Feb-2026 19:31:23 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[19-Feb-2026 19:31:23 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[19-Feb-2026 19:31:23 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:31:24 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[19-Feb-2026 19:31:24 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDI0ODAzODk4Ny4xNzcxNTI5NDg0QHNtdHAubWFpbHRyYXAuaW8+
+
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<administrator@apex-softwares.com>
+
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:31:25 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Thu, 19 Feb 2026 19:31:21 +0000
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: administrator@apex-softwares.com
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: [Apex Banking Software] Please moderate: "thu feb 19th"
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <4jPvVspp4weXuoPILT2KtLvxe1gHzsfhg8gJGlpXHE@apex.devops>
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: A new comment on the post "thu feb 19th" is waiting for your approval
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/insights/blog/thu-feb-19th/
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Author: Quinn Mcdonald (IP address: 127.0.0.1, localhost)
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Email: kine@mailinator.com
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: URL: https://www.vapedojohotesyh.me
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Comment: 
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Ex nostrud lorem eni
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Approve it: http://apex.devops/wp-admin/comment.php?action=approve&c=13#wpbody-content
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Trash it: http://apex.devops/wp-admin/comment.php?action=trash&c=13#wpbody-content
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Spam it: http://apex.devops/wp-admin/comment.php?action=spam&c=13#wpbody-content
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Currently 3 comments are waiting for approval. Please visit the moderation panel:
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/wp-admin/edit-comments.php?comment_status=moderated#wpbody-content
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[19-Feb-2026 19:31:26 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[19-Feb-2026 19:31:39 UTC] PHP Warning:  Attempt to read property "post_author" on null in /var/www/html/apex/wp-includes/pluggable.php on line 1752
+[19-Feb-2026 19:31:58 UTC] Apex Mailtrap: Applying SMTP configuration
+[19-Feb-2026 19:31:58 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525, Secure: 
+[19-Feb-2026 19:31:59 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[19-Feb-2026 19:31:59 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:31:59 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[19-Feb-2026 19:31:59 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[19-Feb-2026 19:31:59 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[19-Feb-2026 19:32:00 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:32:01 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[19-Feb-2026 19:32:01 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[19-Feb-2026 19:32:01 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDM2Mzg5NTEzNi4xNzcxNTI5NTIxQHNtdHAubWFpbHRyYXAuaW8+
+
+[19-Feb-2026 19:32:01 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[19-Feb-2026 19:32:01 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[19-Feb-2026 19:32:01 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[19-Feb-2026 19:32:02 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:32:02 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<administrator@apex-softwares.com>
+
+[19-Feb-2026 19:32:02 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:32:02 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Thu, 19 Feb 2026 19:31:58 +0000
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: administrator@apex-softwares.com
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: [Apex Banking Software] Please moderate: "thu feb 19th"
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <2GR6tXAuHWqQFH37vAZLiiM3AXvN735z13qIdUlBM@apex.devops>
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: A new comment on the post "thu feb 19th" is waiting for your approval
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/insights/blog/thu-feb-19th/
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Author: Baxter Washington (IP address: 127.0.0.1, localhost)
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Email: vibosatir@mailinator.com
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: URL: https://www.mazylif.me.uk
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Comment: 
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Corporis totam recus
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Approve it: http://apex.devops/wp-admin/comment.php?action=approve&c=14#wpbody-content
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Trash it: http://apex.devops/wp-admin/comment.php?action=trash&c=14#wpbody-content
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Spam it: http://apex.devops/wp-admin/comment.php?action=spam&c=14#wpbody-content
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Currently 1 comment is waiting for approval. Please visit the moderation panel:
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/wp-admin/edit-comments.php?comment_status=moderated#wpbody-content
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[19-Feb-2026 19:32:03 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[19-Feb-2026 19:32:48 UTC] Apex Mailtrap: Applying SMTP configuration
+[19-Feb-2026 19:32:48 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525, Secure: 
+[19-Feb-2026 19:32:48 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[19-Feb-2026 19:32:48 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:32:49 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[19-Feb-2026 19:32:49 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[19-Feb-2026 19:32:49 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[19-Feb-2026 19:32:50 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:32:51 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[19-Feb-2026 19:32:51 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[19-Feb-2026 19:32:51 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDEyNTQ5OTEzNjQuMTc3MTUyOTU3MUBzbXRwLm1haWx0cmFwLmlvPg==
+
+[19-Feb-2026 19:32:51 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[19-Feb-2026 19:32:51 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[19-Feb-2026 19:32:51 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<administrator@apex-softwares.com>
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Thu, 19 Feb 2026 19:32:48 +0000
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: administrator@apex-softwares.com
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: [Apex Banking Software] Please moderate: "thu feb 19th"
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <3velthTqvjb00jyzx4JewdtxERjpBYL477VwUHGEE@apex.devops>
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: A new comment on the post "thu feb 19th" is waiting for your approval
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/insights/blog/thu-feb-19th/
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Author: Kane Haley (IP address: 127.0.0.1, localhost)
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Email: wekav@mailinator.com
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: URL: https://www.luba.com.au
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: In reply to: http://apex.devops/wp-admin/comment.php?action=editcomment&c=13#wpbody-content
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Comment: 
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Autem consequuntur q
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Approve it: http://apex.devops/wp-admin/comment.php?action=approve&c=15#wpbody-content
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Trash it: http://apex.devops/wp-admin/comment.php?action=trash&c=15#wpbody-content
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Spam it: http://apex.devops/wp-admin/comment.php?action=spam&c=15#wpbody-content
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Currently 1 comment is waiting for approval. Please visit the moderation panel:
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/wp-admin/edit-comments.php?comment_status=moderated#wpbody-content
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:32:52 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[19-Feb-2026 19:32:53 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[19-Feb-2026 19:32:53 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[19-Feb-2026 19:32:53 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[19-Feb-2026 19:36:32 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[19-Feb-2026 19:36:32 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[19-Feb-2026 19:41:30 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[19-Feb-2026 19:41:30 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[19-Feb-2026 19:59:15 UTC] Apex Mailtrap: Applying SMTP configuration
+[19-Feb-2026 19:59:15 UTC] Apex Mailtrap: SMTP configuration applied - Host: sandbox.smtp.mailtrap.io, Port: 2525, Secure: 
+[19-Feb-2026 19:59:16 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 smtp.mailtrap.io ESMTP ready
+
+[19-Feb-2026 19:59:16 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:59:16 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250-AUTH PLAIN LOGIN CRAM-MD5
+250 STARTTLS
+
+[19-Feb-2026 19:59:16 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: STARTTLS
+
+[19-Feb-2026 19:59:16 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 220 2.0.0 Start TLS
+
+[19-Feb-2026 19:59:17 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: EHLO apex.devops
+
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250-smtp.mailtrap.io
+250-SIZE 5242880
+250-PIPELINING
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250-DSN
+250 AUTH PLAIN LOGIN CRAM-MD5
+
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: AUTH CRAM-MD5
+
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 334 PDIxMTQxNDU1MS4xNzcxNTMxMTU4QHNtdHAubWFpbHRyYXAuaW8+
+
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: [credentials hidden]
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 235 2.0.0 OK
+
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MAIL FROM:<wordpress@apex.devops>
+
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:59:18 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: RCPT TO:<administrator@apex-softwares.com>
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.1.0 Ok
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: DATA
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 354 Go ahead
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Date: Thu, 19 Feb 2026 19:59:15 +0000
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: To: administrator@apex-softwares.com
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: From: WordPress <wordpress@apex.devops>
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Subject: [Apex Banking Software] Please moderate: "kjvghcf"
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Message-ID: <eu6vPDVycBPSW9jzNLtVLtZLPhB39Gcnp83G0jFPc5Q@apex.devops>
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: MIME-Version: 1.0
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: A new comment on the post "kjvghcf" is waiting for your approval
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/insights/blog/kjvghcf/
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Author: Gwendolyn Atkinson (IP address: 127.0.0.1, localhost)
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Email: saraparew@mailinator.com
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: URL: https://www.his.cm
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Comment: 
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Proident sed quis d
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Approve it: http://apex.devops/wp-admin/comment.php?action=approve&c=16#wpbody-content
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Trash it: http://apex.devops/wp-admin/comment.php?action=trash&c=16#wpbody-content
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Spam it: http://apex.devops/wp-admin/comment.php?action=spam&c=16#wpbody-content
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: Currently 1 comment is waiting for approval. Please visit the moderation panel:
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: http://apex.devops/wp-admin/edit-comments.php?comment_status=moderated#wpbody-content
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: 
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: .
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 250 2.0.0 Ok: queued
+
+[19-Feb-2026 19:59:19 UTC] Apex Mailtrap SMTP Debug [1]: CLIENT -> SERVER: QUIT
+
+[19-Feb-2026 19:59:20 UTC] Apex Mailtrap SMTP Debug [2]: SERVER -> CLIENT: 221 2.0.0 Bye
+
+[19-Feb-2026 21:30:05 UTC] Automatic updates starting...
+[19-Feb-2026 21:30:07 UTC] Automatic updates complete.
+[22-Feb-2026 11:06:46 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[22-Feb-2026 11:06:46 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[22-Feb-2026 11:06:47 UTC] Automatic updates starting...
+[22-Feb-2026 11:06:49 UTC] Automatic updates complete.
+[25-Feb-2026 22:48:19 UTC] Automatic updates starting...
+[25-Feb-2026 22:48:32 UTC] Automatic updates complete.
+[25-Feb-2026 23:27:16 UTC] PHP Warning:  DOMDocument::loadHTML(): Tag figure invalid in Entity, line: 5 in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[25-Feb-2026 23:58:47 UTC] PHP Warning:  DOMDocument::loadHTML(): Tag figure invalid in Entity, line: 3 in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[25-Feb-2026 23:58:53 UTC] PHP Warning:  DOMDocument::loadHTML(): Tag figure invalid in Entity, line: 3 in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[25-Feb-2026 23:59:17 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[25-Feb-2026 23:59:22 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[25-Feb-2026 23:59:35 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[25-Feb-2026 23:59:49 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[26-Feb-2026 00:00:08 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[26-Feb-2026 00:00:54 UTC] PHP Warning:  DOMDocument::loadHTML(): Tag figure invalid in Entity, line: 1 in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[26-Feb-2026 00:01:13 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[26-Feb-2026 00:01:27 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
+[26-Feb-2026 00:01:43 UTC] PHP Fatal error:  Uncaught ValueError: DOMDocument::loadHTML(): Argument #1 ($source) must not be empty in /var/www/html/apex/wp-content/themes/apex-theme/functions.php:1196
+Stack trace:
+#0 /var/www/html/apex/wp-content/themes/apex-theme/functions.php(1196): DOMDocument->loadHTML()
+#1 /var/www/html/apex/wp-includes/class-wp-hook.php(341): apex_remove_featured_image_from_content()
+#2 /var/www/html/apex/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#3 /var/www/html/apex/wp-includes/post-template.php(256): apply_filters()
+#4 /var/www/html/apex/wp-content/themes/apex-theme/content-single.php(47): the_content()
+#5 /var/www/html/apex/wp-includes/template.php(816): require('...')
+#6 /var/www/html/apex/wp-includes/template.php(749): load_template()
+#7 /var/www/html/apex/wp-includes/general-template.php(206): locate_template()
+#8 /var/www/html/apex/wp-content/themes/apex-theme/single-insight-blog.php(31): get_template_part()
+#9 /var/www/html/apex/wp-includes/template-loader.php(125): include('...')
+#10 /var/www/html/apex/wp-blog-header.php(19): require_once('...')
+#11 /var/www/html/apex/index.php(17): require('...')
+#12 /home/wagura-maurice/.config/composer/vendor/genesisweb/valet-linux-plus/server.php(106): require_once('...')
+#13 {main}
+  thrown in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1196
