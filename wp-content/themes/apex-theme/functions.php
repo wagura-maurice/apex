@@ -12,6 +12,502 @@ require_once get_template_directory() . '/inc/acf-about-us-overview.php';
 require_once get_template_directory() . '/inc/acf-request-demo.php';
 
 /**
+ * Register Success Stories Custom Post Type
+ */
+function apex_register_success_stories_cpt() {
+    $labels = [
+        'name' => 'Success Stories',
+        'singular_name' => 'Success Story',
+        'menu_name' => 'Success Stories',
+        'name_admin_bar' => 'Success Story',
+        'add_new' => 'Add New',
+        'add_new_item' => 'Add New Success Story',
+        'new_item' => 'New Success Story',
+        'edit_item' => 'Edit Success Story',
+        'view_item' => 'View Success Story',
+        'all_items' => 'All Success Stories',
+        'search_items' => 'Search Success Stories',
+        'parent_item_colon' => 'Parent Success Stories:',
+        'not_found' => 'No success stories found.',
+        'not_found_in_trash' => 'No success stories found in Trash.',
+        'featured_image' => 'Featured Image',
+        'set_featured_image' => 'Set featured image',
+        'remove_featured_image' => 'Remove featured image',
+        'use_featured_image' => 'Use as featured image',
+        'archives' => 'Success Story Archives',
+        'insert_into_item' => 'Insert into success story',
+        'uploaded_to_this_item' => 'Uploaded to this success story',
+        'filter_items_list' => 'Filter success stories list',
+        'items_list_navigation' => 'Success stories list navigation',
+        'items_list' => 'Success stories list',
+    ];
+
+    $args = [
+        'label' => 'Success Story',
+        'description' => 'Success stories showcasing client results and case studies',
+        'labels' => $labels,
+        'supports' => ['title', 'editor', 'excerpt', 'author', 'thumbnail', 'custom-fields', 'revisions'],
+        'hierarchical' => false,
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'menu_position' => 5,
+        'menu_icon' => 'dashicons-awards',
+        'show_in_rest' => true,
+        'has_archive' => 'insights/success-stories',
+        'rewrite' => [
+            'slug' => 'success-story',
+            'with_front' => false,
+        ],
+    ];
+
+    register_post_type('success_story', $args);
+}
+add_action('init', 'apex_register_success_stories_cpt');
+
+/**
+ * Register Success Story Categories Taxonomy
+ */
+function apex_register_success_story_categories() {
+    $labels = [
+        'name' => 'Success Story Categories',
+        'singular_name' => 'Success Story Category',
+        'menu_name' => 'Success Story Categories',
+        'all_items' => 'All Success Story Categories',
+        'edit_item' => 'Edit Success Story Category',
+        'view_item' => 'View Success Story Category',
+        'update_item' => 'Update Success Story Category',
+        'add_new_item' => 'Add New Success Story Category',
+        'new_item_name' => 'New Success Story Category Name',
+        'search_items' => 'Search Success Story Categories',
+        'parent_item' => 'Parent Success Story Category',
+        'parent_item_colon' => 'Parent Success Story Category:',
+        'not_found' => 'No success story categories found.',
+        'not_found_in_trash' => 'No success story categories found in Trash.',
+    ];
+
+    $args = [
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => [
+            'slug' => 'success-story-category',
+            'with_front' => false,
+        ],
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_tagcloud' => false,
+    ];
+
+    register_taxonomy('success_story_category', 'success_story', $args);
+}
+add_action('init', 'apex_register_success_story_categories');
+
+/**
+ * Register Success Story Industries Taxonomy
+ */
+function apex_register_success_story_industries() {
+    $labels = [
+        'name' => 'Industries',
+        'singular_name' => 'Industry',
+        'menu_name' => 'Industries',
+        'all_items' => 'All Industries',
+        'edit_item' => 'Edit Industry',
+        'view_item' => 'View Industry',
+        'update_item' => 'Update Industry',
+        'add_new_item' => 'Add New Industry',
+        'new_item_name' => 'New Industry Name',
+        'search_items' => 'Search Industries',
+        'popular_items' => 'Popular Industries',
+        'separate_items_with_commas' => 'Separate industries with commas',
+        'add_or_remove_items' => 'Add or remove industries',
+        'choose_from_most_used' => 'Choose from the most used industries',
+        'not_found' => 'No industries found',
+    ];
+
+    $args = [
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_in_menu' => false,
+        'show_in_quick_edit' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => [
+            'slug' => 'success-story-industry',
+            'with_front' => false,
+        ],
+        'public' => false,
+        'show_in_nav_menus' => false,
+        'show_tagcloud' => false,
+    ];
+
+    register_taxonomy('success_story_industry', 'success_story', $args);
+}
+add_action('init', 'apex_register_success_story_industries');
+
+/**
+ * Register Success Story Regions Taxonomy
+ */
+function apex_register_success_story_regions() {
+    $labels = [
+        'name' => 'Regions',
+        'singular_name' => 'Region',
+        'menu_name' => 'Regions',
+        'all_items' => 'All Regions',
+        'edit_item' => 'Edit Region',
+        'view_item' => 'View Region',
+        'update_item' => 'Update Region',
+        'add_new_item' => 'Add New Region',
+        'new_item_name' => 'New Region Name',
+        'search_items' => 'Search Regions',
+        'popular_items' => 'Popular Regions',
+        'separate_items_with_commas' => 'Separate regions with commas',
+        'add_or_remove_items' => 'Add or remove regions',
+        'choose_from_most_used' => 'Choose from the most used regions',
+        'not_found' => 'No regions found',
+    ];
+
+    $args = [
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_in_menu' => false,
+        'show_in_quick_edit' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => [
+            'slug' => 'success-story-region',
+            'with_front' => false,
+        ],
+        'public' => false,
+        'show_in_nav_menus' => false,
+        'show_tagcloud' => false,
+    ];
+
+    register_taxonomy('success_story_region', 'success_story', $args);
+}
+add_action('init', 'apex_register_success_story_regions');
+
+/**
+ * Register Success Story Solutions Taxonomy
+ */
+function apex_register_success_story_solutions() {
+    $labels = [
+        'name' => 'Solutions',
+        'singular_name' => 'Solution',
+        'menu_name' => 'Solutions',
+        'all_items' => 'All Solutions',
+        'edit_item' => 'Edit Solution',
+        'view_item' => 'View Solution',
+        'update_item' => 'Update Solution',
+        'add_new_item' => 'Add New Solution',
+        'new_item_name' => 'New Solution Name',
+        'search_items' => 'Search Solutions',
+        'popular_items' => 'Popular Solutions',
+        'separate_items_with_commas' => 'Separate solutions with commas',
+        'add_or_remove_items' => 'Add or remove solutions',
+        'choose_from_most_used' => 'Choose from the most used solutions',
+        'not_found' => 'No solutions found',
+    ];
+
+    $args = [
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_in_menu' => false,
+        'show_in_quick_edit' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => [
+            'slug' => 'success-story-solution',
+            'with_front' => false,
+        ],
+        'public' => false,
+        'show_in_nav_menus' => false,
+        'show_tagcloud' => false,
+    ];
+
+    register_taxonomy('success_story_solution', 'success_story', $args);
+}
+add_action('init', 'apex_register_success_story_solutions');
+
+/**
+ * Create default taxonomy terms for success stories
+ */
+function apex_create_default_success_story_terms() {
+    // Default Industries (matching frontend hardcoded options)
+    $industries = ['Commercial Banks', 'Microfinance', 'SACCOs', 'Credit Unions', 'Fintechs', 'Insurance'];
+    foreach ($industries as $industry) {
+        if (!term_exists($industry, 'success_story_industry')) {
+            wp_insert_term($industry, 'success_story_industry');
+        }
+    }
+    
+    // Default Regions (matching frontend hardcoded options)
+    $regions = ['East Africa', 'West Africa', 'Southern Africa', 'North Africa', 'Central Africa'];
+    foreach ($regions as $region) {
+        if (!term_exists($region, 'success_story_region')) {
+            wp_insert_term($region, 'success_story_region');
+        }
+    }
+    
+    // Default Solutions (matching frontend hardcoded options)
+    $solutions = ['Core Banking', 'Mobile Banking', 'Agent Banking', 'Digital Lending', 'Digital Payments', 'Microfinance Software'];
+    foreach ($solutions as $solution) {
+        if (!term_exists($solution, 'success_story_solution')) {
+            wp_insert_term($solution, 'success_story_solution');
+        }
+    }
+}
+add_action('after_setup_theme', 'apex_create_default_success_story_terms');
+
+/**
+ * Save quick edit taxonomy data (backup handler)
+ */
+function apex_save_quick_edit_taxonomies($post_id, $post) {
+    if (!isset($_POST['action']) || $_POST['action'] !== 'inline-save') {
+        return;
+    }
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+    if ($post->post_type !== 'success_story') {
+        return;
+    }
+    
+    $taxonomies = ['success_story_industry', 'success_story_region', 'success_story_solution'];
+    foreach ($taxonomies as $taxonomy) {
+        if (isset($_POST['tax_input'][$taxonomy])) {
+            $terms = array_map('intval', $_POST['tax_input'][$taxonomy]);
+            $terms = array_filter($terms);
+            wp_set_object_terms($post_id, $terms, $taxonomy, false);
+        }
+    }
+}
+add_action('save_post', 'apex_save_quick_edit_taxonomies', 10, 2);
+
+/**
+ * AJAX handler to get taxonomy terms for a post
+ */
+function apex_get_post_taxonomies() {
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'apex_quick_edit_taxonomies')) {
+        wp_die();
+    }
+    
+    // Check user permissions
+    if (!current_user_can('edit_posts')) {
+        wp_die();
+    }
+    
+    $post_id = intval($_POST['post_id']);
+    $taxonomy = sanitize_text_field($_POST['taxonomy']);
+    
+    // Validate taxonomy
+    $valid_taxonomies = ['success_story_industry', 'success_story_region', 'success_story_solution'];
+    if (!in_array($taxonomy, $valid_taxonomies)) {
+        wp_die();
+    }
+    
+    // Get terms for this post
+    $terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'ids']);
+    
+    wp_send_json_success(['terms' => $terms]);
+}
+add_action('wp_ajax_apex_get_post_taxonomies', 'apex_get_post_taxonomies');
+
+/**
+ * Ensure taxonomy columns are displayed for success stories
+ */
+function apex_manage_success_story_columns($columns) {
+    $new_columns = [];
+    foreach ($columns as $key => $value) {
+        $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['client_partner'] = 'Client/Partner';
+        }
+    }
+    if (!isset($new_columns['client_partner'])) {
+        $new_columns['client_partner'] = 'Client/Partner';
+    }
+    return $new_columns;
+}
+add_filter('manage_edit-success_story_columns', 'apex_manage_success_story_columns');
+
+/**
+ * Display custom columns for success stories
+ */
+function apex_manage_success_story_custom_column($column, $post_id) {
+    if ($column === 'client_partner') {
+        $client = get_post_meta($post_id, '_success_story_client_partner', true);
+        echo $client ? esc_html($client) : '—';
+    }
+}
+add_action('manage_success_story_posts_custom_column', 'apex_manage_success_story_custom_column', 10, 2);
+
+/**
+ * Add Client/Partner field to quick edit
+ */
+function apex_client_partner_quick_edit($column_name, $post_type) {
+    if ($post_type !== 'success_story' || $column_name !== 'client_partner') return;
+    ?>
+    <fieldset class="inline-edit-col-right">
+        <div class="inline-edit-col">
+            <label>
+                <span class="title">Client/Partner</span>
+                <span class="input-text-wrap">
+                    <input type="text" name="success_story_client_partner" value="" class="ptitle" />
+                </span>
+            </label>
+        </div>
+    </fieldset>
+    <?php
+}
+add_action('quick_edit_custom_box', 'apex_client_partner_quick_edit', 10, 2);
+
+/**
+ * Save Client/Partner from quick edit
+ */
+function apex_save_client_partner_quick_edit($post_id, $post) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    if ($post->post_type !== 'success_story') return;
+
+    if (isset($_POST['success_story_client_partner'])) {
+        update_post_meta($post_id, '_success_story_client_partner', sanitize_text_field($_POST['success_story_client_partner']));
+    }
+}
+add_action('save_post', 'apex_save_client_partner_quick_edit', 10, 2);
+
+/**
+ * Populate Client/Partner field in quick edit via JavaScript
+ */
+function apex_client_partner_quick_edit_js() {
+    global $current_screen;
+    if (!$current_screen || $current_screen->post_type !== 'success_story') return;
+    ?>
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        var wpInlineEdit = inlineEditPost.edit;
+        inlineEditPost.edit = function(id) {
+            wpInlineEdit.apply(this, arguments);
+            var post_id = 0;
+            if (typeof(id) === 'object') {
+                post_id = parseInt(this.getId(id));
+            }
+            if (post_id > 0) {
+                var $row = $('#post-' + post_id);
+                var clientPartner = $row.find('.column-client_partner').text().trim();
+                if (clientPartner === '—') clientPartner = '';
+                $('input[name="success_story_client_partner"]').val(clientPartner);
+            }
+        };
+    });
+    </script>
+    <?php
+}
+add_action('admin_footer-edit.php', 'apex_client_partner_quick_edit_js');
+
+/**
+ * Add Client/Partner meta box to the post editor
+ */
+function apex_add_client_partner_meta_box() {
+    add_meta_box(
+        'apex_client_partner',
+        'Client/Partner',
+        'apex_client_partner_meta_box_callback',
+        'success_story',
+        'side',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'apex_add_client_partner_meta_box');
+
+/**
+ * Render Client/Partner meta box
+ */
+function apex_client_partner_meta_box_callback($post) {
+    wp_nonce_field('apex_client_partner_nonce', 'apex_client_partner_nonce_field');
+    $value = get_post_meta($post->ID, '_success_story_client_partner', true);
+    ?>
+    <p>
+        <label for="success_story_client_partner_editor">Name of the client or partner organization:</label>
+        <input type="text" id="success_story_client_partner_editor" name="success_story_client_partner" 
+               value="<?php echo esc_attr($value); ?>" class="widefat" 
+               placeholder="e.g., Umoja Microfinance Tanzania" />
+    </p>
+    <?php
+}
+
+/**
+ * Save Client/Partner from the post editor meta box
+ */
+function apex_save_client_partner_meta_box($post_id) {
+    if (!isset($_POST['apex_client_partner_nonce_field'])) return;
+    if (!wp_verify_nonce($_POST['apex_client_partner_nonce_field'], 'apex_client_partner_nonce')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    if (isset($_POST['success_story_client_partner'])) {
+        update_post_meta($post_id, '_success_story_client_partner', sanitize_text_field($_POST['success_story_client_partner']));
+    }
+}
+add_action('save_post_success_story', 'apex_save_client_partner_meta_box');
+
+/**
+ * Add Key Stats meta box to the post editor
+ */
+function apex_add_story_stats_meta_box() {
+    add_meta_box(
+        'apex_story_stats',
+        'Key Stats',
+        'apex_story_stats_meta_box_callback',
+        'success_story',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'apex_add_story_stats_meta_box');
+
+/**
+ * Render Key Stats meta box
+ */
+function apex_story_stats_meta_box_callback($post) {
+    wp_nonce_field('apex_story_stats_nonce', 'apex_story_stats_nonce_field');
+    $value = get_post_meta($post->ID, '_success_story_stats', true);
+    ?>
+    <p>
+        <label for="success_story_stats">Enter stats displayed on the card (one per line, format: <code>Value | Label</code>):</label>
+        <textarea id="success_story_stats" name="success_story_stats" rows="4" class="widefat"
+                  placeholder="300% | Membership Growth&#10;65% | Cost Reduction&#10;4.8/5 | Member Satisfaction"><?php echo esc_textarea($value); ?></textarea>
+    </p>
+    <p class="description"><strong>Example:</strong> <code>300% | Membership Growth</code> — maximum 3 stats recommended for best display.</p>
+    <?php
+}
+
+/**
+ * Save Key Stats from the post editor meta box
+ */
+function apex_save_story_stats_meta_box($post_id) {
+    if (!isset($_POST['apex_story_stats_nonce_field'])) return;
+    if (!wp_verify_nonce($_POST['apex_story_stats_nonce_field'], 'apex_story_stats_nonce')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    if (isset($_POST['success_story_stats'])) {
+        update_post_meta($post_id, '_success_story_stats', sanitize_textarea_field($_POST['success_story_stats']));
+    }
+}
+add_action('save_post_success_story', 'apex_save_story_stats_meta_box');
+
+/**
+ * Configure Mailtrap for email delivery in development
+ */
+
+/**
  * Configure Mailtrap for email delivery in development
  */
 function apex_mailtrap_config($phpmailer) {
@@ -1208,7 +1704,7 @@ function apex_theme_assets(): void {
     wp_enqueue_script(
         'tailwind-cdn',
         'https://cdn.tailwindcss.com?plugins=forms,typography',
-        [],
+        ['jquery'],
         null,
         false
     );
@@ -2673,7 +3169,7 @@ function apex_render_page_editor($page_slug, $page_title) {
         ],
         'insights-success-stories' => [
             'title' => 'Success Stories',
-            'acf_group' => 'group_insights_success_stories'
+            'acf_group' => ''
         ],
         'insights-webinars' => [
             'title' => 'Webinars & Events',
@@ -9708,7 +10204,7 @@ function apex_render_fallback_form($page_slug, $config) {
             <h4>⭐ Featured Story Section</h4>
             <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
-                <p><strong>This section controls the featured success story card.</strong></p>
+                <p><strong>This section controls the featured success story card (Editor's Pick). Select a published success story to feature — its title, excerpt, image, date, category, and author will be pulled automatically.</strong></p>
             </div>
             <table class="form-table">
                 <tr>
@@ -9720,63 +10216,119 @@ function apex_render_fallback_form($page_slug, $config) {
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="apex_stories_featured_image">Story Image URL</label></th>
+                    <th scope="row"><label for="apex_stories_featured_story_id">Select Featured Success Story</label></th>
                     <td>
-                        <input type="url" id="apex_stories_featured_image" name="apex_stories_featured_image" 
-                               value="<?php echo esc_url(get_option('apex_stories_featured_image_' . $page_slug, 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800')); ?>" 
-                               class="large-text" placeholder="https://example.com/image.jpg">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_stories_featured_logo">Company Logo Text</label></th>
-                    <td>
-                        <input type="text" id="apex_stories_featured_logo" name="apex_stories_featured_logo" 
-                               value="<?php echo esc_attr(get_option('apex_stories_featured_logo_' . $page_slug, 'Kenya National SACCO')); ?>" 
-                               class="regular-text" placeholder="e.g., Kenya National SACCO">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_stories_featured_category">Category</label></th>
-                    <td>
-                        <input type="text" id="apex_stories_featured_category" name="apex_stories_featured_category" 
-                               value="<?php echo esc_attr(get_option('apex_stories_featured_category_' . $page_slug, 'SACCO')); ?>" 
-                               class="regular-text" placeholder="e.g., SACCO">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_stories_featured_title">Story Title</label></th>
-                    <td>
-                        <input type="text" id="apex_stories_featured_title" name="apex_stories_featured_title" 
-                               value="<?php echo esc_attr(get_option('apex_stories_featured_title_' . $page_slug, 'How Kenya National SACCO Grew Membership by 300% with Digital Transformation')); ?>" 
-                               class="large-text" placeholder="Enter the story title">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_stories_featured_excerpt">Story Excerpt</label></th>
-                    <td>
-                        <textarea id="apex_stories_featured_excerpt" name="apex_stories_featured_excerpt" 
-                                  class="large-text" rows="3" 
-                                  placeholder="Enter the story excerpt"><?php echo esc_textarea(get_option('apex_stories_featured_excerpt_' . $page_slug, 'Kenya National SACCO faced declining membership and high operational costs. By implementing ApexCore and our mobile banking solution, they transformed their member experience and achieved remarkable growth.')); ?></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_stories_featured_results">Results (3 items)</label></th>
-                    <td>
-                        <textarea id="apex_stories_featured_results" name="apex_stories_featured_results" 
-                                  class="large-text" rows="4" 
-                                  placeholder="Format: Value | Label (3 results, one per line)"><?php echo esc_textarea(get_option('apex_stories_featured_results_' . $page_slug, "300% | Membership Growth\n65% | Cost Reduction\n4.8/5 | Member Satisfaction")); ?></textarea>
-                        <p class="description">Enter 3 results. Format per line: <code>Value | Label</code></p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_stories_featured_link">Story Link URL</label></th>
-                    <td>
-                        <input type="text" id="apex_stories_featured_link" name="apex_stories_featured_link" 
-                               value="<?php echo esc_attr(get_option('apex_stories_featured_link_' . $page_slug, '#')); ?>" 
-                               class="large-text" placeholder="#">
+                        <?php
+                        $selected_story_id = intval(get_option('apex_stories_featured_story_id_' . $page_slug, 0));
+                        $published_stories = get_posts([
+                            'post_type'      => 'success_story',
+                            'post_status'    => 'publish',
+                            'posts_per_page' => -1,
+                            'orderby'        => 'date',
+                            'order'          => 'DESC',
+                        ]);
+                        ?>
+                        <select id="apex_stories_featured_story_id" name="apex_stories_featured_story_id" class="regular-text" style="min-width: 400px;" onchange="apexUpdateFeaturedStoryPreview(this)">
+                            <option value="0">— Select a published success story —</option>
+                            <?php foreach ($published_stories as $s) : ?>
+                                <option value="<?php echo intval($s->ID); ?>" <?php selected($selected_story_id, $s->ID); ?>
+                                    data-thumb="<?php echo esc_attr(get_the_post_thumbnail_url($s->ID, 'medium') ?: ''); ?>"
+                                    data-date="<?php echo esc_attr(get_the_date('F j, Y', $s->ID)); ?>"
+                                    data-category="<?php $cats = get_the_terms($s->ID, 'success_story_category'); echo $cats ? esc_attr($cats[0]->name) : ''; ?>"
+                                    data-excerpt="<?php echo esc_attr(wp_trim_words($s->post_excerpt ?: wp_strip_all_tags($s->post_content), 30)); ?>"
+                                    data-author="<?php echo esc_attr(get_the_author_meta('display_name', $s->post_author)); ?>"
+                                    data-avatar="<?php echo esc_attr(get_avatar_url($s->post_author, ['size' => 100])); ?>"
+                                    data-link="<?php echo esc_attr(get_permalink($s->ID)); ?>"
+                                    data-readtime="<?php $wc = str_word_count(wp_strip_all_tags($s->post_content)); echo esc_attr(max(1, ceil($wc / 200)) . ' min read'); ?>"
+                                ><?php echo esc_html($s->post_title); ?> (<?php echo get_the_date('M j, Y', $s->ID); ?>)</option>
+                            <?php endforeach; ?>
+                        </select>
+                        <p class="description">Choose a published success story to feature as "Featured Story". All story details will be pulled automatically from the success story post.</p>
                     </td>
                 </tr>
             </table>
+
+            <?php if ($selected_story_id && get_post($selected_story_id)) :
+                $fs = get_post($selected_story_id);
+                $fs_cats = get_the_terms($selected_story_id, 'success_story_category');
+                $fs_thumb = get_the_post_thumbnail_url($selected_story_id, 'medium');
+                $fs_excerpt = wp_trim_words($fs->post_excerpt ?: wp_strip_all_tags($fs->post_content), 30);
+                $fs_author = get_the_author_meta('display_name', $fs->post_author);
+                $fs_avatar = get_avatar_url($fs->post_author, ['size' => 100]);
+                $fs_wc = str_word_count(wp_strip_all_tags($fs->post_content));
+                $fs_readtime = max(1, ceil($fs_wc / 200)) . ' min read';
+            ?>
+            <div id="apex-featured-story-preview" style="background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-top: 15px;">
+                <h5 style="margin-top:0;">📰 Featured Success Story Preview</h5>
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <?php if ($fs_thumb): ?>
+                        <div style="flex-shrink: 0;">
+                            <img src="<?php echo esc_url($fs_thumb); ?>" alt="<?php echo esc_attr($fs->post_title); ?>" style="width: 150px; height: 100px; object-fit: cover; border-radius: 6px;">
+                        </div>
+                    <?php endif; ?>
+                    <div style="flex: 1;">
+                        <h6 style="margin:0 0 8px; color: #f97316;"><?php echo esc_html($fs_cats ? $fs_cats[0]->name : 'Success Story'); ?></h6>
+                        <h4 style="margin:0 0 8px;"><?php echo esc_html($fs->post_title); ?></h4>
+                        <p style="margin:0 0 8px; color: #666; font-size: 14px;"><?php echo esc_html($fs_excerpt); ?></p>
+                        <div style="display: flex; gap: 15px; font-size: 13px; color: #888;">
+                            <span>📅 <?php echo get_the_date('F j, Y', $selected_story_id); ?></span>
+                            <span>⏱️ <?php echo esc_html($fs_readtime); ?></span>
+                            <span>👤 <?php echo esc_html($fs_author); ?></span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <a href="<?php echo esc_url(get_permalink($selected_story_id)); ?>" target="_blank" style="color: #0073aa;">View Success Story →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <script>
+            function apexUpdateFeaturedStoryPreview(select) {
+                var selectedOption = select.options[select.selectedIndex];
+                var previewDiv = document.getElementById('apex-featured-story-preview');
+                
+                if (select.value === '0') {
+                    if (previewDiv) previewDiv.style.display = 'none';
+                    return;
+                }
+                
+                if (!previewDiv) {
+                    previewDiv = document.createElement('div');
+                    previewDiv.id = 'apex-featured-story-preview';
+                    previewDiv.style.cssText = 'background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-top: 15px;';
+                    select.closest('table').parentNode.appendChild(previewDiv);
+                }
+                
+                previewDiv.style.display = 'block';
+                previewDiv.innerHTML = 
+                    '<h5 style="margin-top:0;">📰 Featured Success Story Preview</h5>' +
+                    '<div style="display: flex; gap: 20px; align-items: flex-start;">' +
+                    (selectedOption.getAttribute('data-thumb') ? 
+                        '<div style="flex-shrink: 0;"><img src="' + selectedOption.getAttribute('data-thumb') + '" alt="' + selectedOption.text + '" style="width: 150px; height: 100px; object-fit: cover; border-radius: 6px;"></div>' : 
+                        '<div style="flex-shrink: 0; width: 150px; height: 100px; background: #ddd; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #666;">No Image</div>'
+                    ) +
+                    '<div style="flex: 1;">' +
+                    '<h6 style="margin:0 0 8px; color: #f97316;">' + (selectedOption.getAttribute('data-category') || 'Success Story') + '</h6>' +
+                    '<h4 style="margin:0 0 8px;">' + selectedOption.text.split(' (')[0] + '</h4>' +
+                    '<p style="margin:0 0 8px; color: #666; font-size: 14px;">' + (selectedOption.getAttribute('data-excerpt') || '') + '</p>' +
+                    '<div style="display: flex; gap: 15px; font-size: 13px; color: #888;">' +
+                    '<span>📅 ' + (selectedOption.getAttribute('data-date') || '') + '</span>' +
+                    '<span>⏱️ ' + (selectedOption.getAttribute('data-readtime') || '') + '</span>' +
+                    '<span>👤 ' + (selectedOption.getAttribute('data-author') || '') + '</span>' +
+                    '</div>' +
+                    '<div style="margin-top: 10px;">' +
+                    '<a href="' + (selectedOption.getAttribute('data-link') || '#') + '" target="_blank" style="color: #0073aa;">View Success Story →</a>' +
+                    '</div>' +
+                    '</div></div>';
+            }
+            
+            // Initialize preview on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                var select = document.getElementById('apex_stories_featured_story_id');
+                if (select) apexUpdateFeaturedStoryPreview(select);
+            });
+            </script>
         </div>
 
         <!-- Impact Stats Section -->
@@ -9818,6 +10370,98 @@ function apex_render_fallback_form($page_slug, $config) {
                                   class="large-text" rows="6" 
                                   placeholder="Format: Value | Label (4 items)"><?php echo esc_textarea(get_option('apex_stories_impact_items_' . $page_slug, "10M+ | End Users Served\n\$5B+ | Transactions Processed\n2M+ | Previously Unbanked Reached\n500K+ | Small Businesses Empowered")); ?></textarea>
                         <p class="description">Enter 4 impact stats. Format per line: <code>Value | Label</code></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- What Our Clients Say Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>💬 What Our Clients Say Section</h4>
+            <div style="background: #fef3c7; padding: 15px; margin-bottom: 20px; border: 1px solid #f59e0b; border-radius: 6px;">
+                <h5>📋 Section Overview</h5>
+                <p><strong>This section displays client testimonials with their photo, name, role, company, and quote.</strong></p>
+                <p><strong>Format:</strong> <code>Name | Role | Company | Quote | Image URL</code> — one testimonial per line.</p>
+            </div>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_stories_testimonials_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_testimonials_badge" name="apex_stories_testimonials_badge" 
+                               value="<?php echo esc_attr(get_option('apex_stories_testimonials_badge_' . $page_slug, 'What Our Clients Say')); ?>" 
+                               class="regular-text" placeholder="e.g., What Our Clients Say">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_testimonials_heading">Section Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_testimonials_heading" name="apex_stories_testimonials_heading" 
+                               value="<?php echo esc_attr(get_option('apex_stories_testimonials_heading_' . $page_slug, 'Trusted by Leading Financial Institutions')); ?>" 
+                               class="large-text" placeholder="Enter the section heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_testimonials_description">Section Description</label></th>
+                    <td>
+                        <textarea id="apex_stories_testimonials_description" name="apex_stories_testimonials_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the section description"><?php echo esc_textarea(get_option('apex_stories_testimonials_description_' . $page_slug, "Hear directly from our partners about their experience working with Apex Softwares and the impact we've made together.")); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_testimonials_items">Testimonials</label></th>
+                    <td>
+                        <textarea id="apex_stories_testimonials_items" name="apex_stories_testimonials_items" 
+                                  class="large-text" rows="8" 
+                                  placeholder="Name | Role | Company | Quote | Image URL"><?php echo esc_textarea(get_option('apex_stories_testimonials_items_' . $page_slug, "John Mwangi | CEO | Umoja Microfinance | Apex Softwares transformed our operations, increasing efficiency by 300% and helping us reach 10x more customers. | https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150\nSarah Johnson | CTO | PayFast Ghana | The digital banking solution is robust, secure, and perfectly tailored for African markets. Highly recommended! | https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150\nMichael Ochieng | Operations Manager | Teachers Savings SACCO | Member satisfaction scores increased by 150% after implementing Apex Softwares. Best decision we made. | https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150")); ?></textarea>
+                        <p class="description">Enter testimonials. Format per line: <code>Name | Role | Company | Quote | Image URL</code>. Image should be 150x150px.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div style="margin-bottom: 30px;">
+            <h4>📧 Newsletter Section</h4>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_stories_newsletter_heading">Newsletter Heading</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_newsletter_heading" name="apex_stories_newsletter_heading" 
+                               value="<?php echo esc_attr(get_option('apex_stories_newsletter_heading_' . $page_slug, 'Get Success Stories Delivered')); ?>" 
+                               class="large-text" placeholder="Enter the newsletter heading">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_newsletter_description">Newsletter Description</label></th>
+                    <td>
+                        <textarea id="apex_stories_newsletter_description" name="apex_stories_newsletter_description" 
+                                  class="large-text" rows="2" 
+                                  placeholder="Enter the newsletter description"><?php echo esc_textarea(get_option('apex_stories_newsletter_description_' . $page_slug, 'Subscribe to our newsletter for the latest case studies, client success stories, and insights from our team of experts.')); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_newsletter_placeholder">Email Placeholder</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_newsletter_placeholder" name="apex_stories_newsletter_placeholder" 
+                               value="<?php echo esc_attr(get_option('apex_stories_newsletter_placeholder_' . $page_slug, 'Enter your email address')); ?>" 
+                               class="regular-text" placeholder="Enter placeholder text for email field">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_newsletter_button">Button Text</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_newsletter_button" name="apex_stories_newsletter_button" 
+                               value="<?php echo esc_attr(get_option('apex_stories_newsletter_button_' . $page_slug, 'Subscribe')); ?>" 
+                               class="regular-text" placeholder="Enter button text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="apex_stories_newsletter_note">Note Text</label></th>
+                    <td>
+                        <input type="text" id="apex_stories_newsletter_note" name="apex_stories_newsletter_note" 
+                               value="<?php echo esc_attr(get_option('apex_stories_newsletter_note_' . $page_slug, 'Join 10,000+ subscribers. Unsubscribe at any time.')); ?>" 
+                               class="large-text" placeholder="Enter note text below the form">
                     </td>
                 </tr>
             </table>
@@ -10981,13 +11625,7 @@ function apex_render_fallback_form($page_slug, $config) {
             
             // Featured Story Section
             update_option('apex_stories_featured_badge_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_badge']));
-            update_option('apex_stories_featured_image_' . $page_slug, esc_url_raw($_POST['apex_stories_featured_image']));
-            update_option('apex_stories_featured_logo_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_logo']));
-            update_option('apex_stories_featured_category_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_category']));
-            update_option('apex_stories_featured_title_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_title']));
-            update_option('apex_stories_featured_excerpt_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_featured_excerpt']));
-            update_option('apex_stories_featured_results_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_featured_results']));
-            update_option('apex_stories_featured_link_' . $page_slug, sanitize_text_field($_POST['apex_stories_featured_link']));
+            update_option('apex_stories_featured_story_id_' . $page_slug, intval($_POST['apex_stories_featured_story_id']));
             
             // Impact Stats Section
             update_option('apex_stories_impact_badge_' . $page_slug, sanitize_text_field($_POST['apex_stories_impact_badge']));
@@ -10995,7 +11633,20 @@ function apex_render_fallback_form($page_slug, $config) {
             update_option('apex_stories_impact_description_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_impact_description']));
             update_option('apex_stories_impact_items_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_impact_items']));
             
-            echo '<div class="notice notice-success is-dismissible"><p>Success Stories content saved successfully! All sections including hero, featured story, and impact stats have been updated.</p></div>';
+            // What Our Clients Say Section
+            update_option('apex_stories_testimonials_badge_' . $page_slug, sanitize_text_field($_POST['apex_stories_testimonials_badge']));
+            update_option('apex_stories_testimonials_heading_' . $page_slug, sanitize_text_field($_POST['apex_stories_testimonials_heading']));
+            update_option('apex_stories_testimonials_description_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_testimonials_description']));
+            update_option('apex_stories_testimonials_items_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_testimonials_items']));
+            
+            // Newsletter Section
+            update_option('apex_stories_newsletter_heading_' . $page_slug, sanitize_text_field($_POST['apex_stories_newsletter_heading']));
+            update_option('apex_stories_newsletter_description_' . $page_slug, sanitize_textarea_field($_POST['apex_stories_newsletter_description']));
+            update_option('apex_stories_newsletter_placeholder_' . $page_slug, sanitize_text_field($_POST['apex_stories_newsletter_placeholder']));
+            update_option('apex_stories_newsletter_button_' . $page_slug, sanitize_text_field($_POST['apex_stories_newsletter_button']));
+            update_option('apex_stories_newsletter_note_' . $page_slug, sanitize_text_field($_POST['apex_stories_newsletter_note']));
+            
+            echo '<div class="notice notice-success is-dismissible"><p>Success Stories content saved successfully! All sections including hero, featured story, impact stats, testimonials, and newsletter have been updated.</p></div>';
         } elseif ($page_slug === 'request-demo') {
             // Save Request Demo specific sections
             update_option('apex_demo_form_heading_' . $page_slug, sanitize_text_field($_POST['apex_demo_form_heading']));
