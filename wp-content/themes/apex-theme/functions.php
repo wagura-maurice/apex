@@ -504,6 +504,899 @@ function apex_save_story_stats_meta_box($post_id) {
 add_action('save_post_success_story', 'apex_save_story_stats_meta_box');
 
 /**
+ * ============================================================
+ * WEBINARS SYSTEM - Two CPTs under unified admin menu
+ * ============================================================
+ */
+
+/**
+ * Register Webinar Events Custom Post Type (Upcoming Events)
+ */
+function apex_register_webinar_events_cpt() {
+    $labels = [
+        'name' => 'Webinar Events',
+        'singular_name' => 'Webinar Event',
+        'menu_name' => 'Webinars',
+        'name_admin_bar' => 'Webinar Event',
+        'add_new' => 'Add New Event',
+        'add_new_item' => 'Add New Webinar Event',
+        'new_item' => 'New Webinar Event',
+        'edit_item' => 'Edit Webinar Event',
+        'view_item' => 'View Webinar Event',
+        'all_items' => 'Upcoming Events',
+        'search_items' => 'Search Webinar Events',
+        'not_found' => 'No webinar events found.',
+        'not_found_in_trash' => 'No webinar events found in Trash.',
+        'featured_image' => 'Event Thumbnail',
+        'set_featured_image' => 'Set event thumbnail',
+        'remove_featured_image' => 'Remove event thumbnail',
+        'use_featured_image' => 'Use as event thumbnail',
+    ];
+
+    $args = [
+        'label' => 'Webinar Events',
+        'description' => 'Upcoming webinar events and live sessions',
+        'labels' => $labels,
+        'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'],
+        'hierarchical' => false,
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'menu_position' => 26,
+        'menu_icon' => 'dashicons-video-alt3',
+        'show_in_rest' => true,
+        'has_archive' => false,
+        'rewrite' => ['slug' => 'webinar-event', 'with_front' => false],
+    ];
+
+    register_post_type('webinar_event', $args);
+}
+add_action('init', 'apex_register_webinar_events_cpt');
+
+/**
+ * Register Webinar Library Custom Post Type (On-Demand Library)
+ */
+function apex_register_webinar_library_cpt() {
+    $labels = [
+        'name' => 'Webinar Library',
+        'singular_name' => 'Library Item',
+        'menu_name' => 'On-Demand Library',
+        'name_admin_bar' => 'Library Item',
+        'add_new' => 'Add New Recording',
+        'add_new_item' => 'Add New Library Item',
+        'new_item' => 'New Library Item',
+        'edit_item' => 'Edit Library Item',
+        'view_item' => 'View Library Item',
+        'all_items' => 'On-Demand Library',
+        'search_items' => 'Search Library Items',
+        'not_found' => 'No library items found.',
+        'not_found_in_trash' => 'No library items found in Trash.',
+        'featured_image' => 'Video Thumbnail',
+        'set_featured_image' => 'Set video thumbnail',
+        'remove_featured_image' => 'Remove video thumbnail',
+        'use_featured_image' => 'Use as video thumbnail',
+    ];
+
+    $args = [
+        'label' => 'Webinar Library',
+        'description' => 'On-demand recorded webinars and sessions',
+        'labels' => $labels,
+        'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'],
+        'hierarchical' => false,
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => 'edit.php?post_type=webinar_event',
+        'show_in_rest' => true,
+        'has_archive' => false,
+        'rewrite' => ['slug' => 'webinar-library', 'with_front' => false],
+    ];
+
+    register_post_type('webinar_library', $args);
+}
+add_action('init', 'apex_register_webinar_library_cpt');
+
+/**
+ * Register Webinar Library Category Taxonomy
+ */
+function apex_register_webinar_library_categories() {
+    $labels = [
+        'name' => 'Library Categories',
+        'singular_name' => 'Library Category',
+        'menu_name' => 'Library Categories',
+        'all_items' => 'All Library Categories',
+        'edit_item' => 'Edit Library Category',
+        'view_item' => 'View Library Category',
+        'update_item' => 'Update Library Category',
+        'add_new_item' => 'Add New Library Category',
+        'new_item_name' => 'New Library Category Name',
+        'search_items' => 'Search Library Categories',
+        'parent_item' => 'Parent Library Category',
+        'parent_item_colon' => 'Parent Library Category:',
+        'not_found' => 'No library categories found.',
+    ];
+
+    $args = [
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'show_in_menu' => true,
+        'query_var' => true,
+        'rewrite' => ['slug' => 'webinar-category', 'with_front' => false],
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_tagcloud' => false,
+    ];
+
+    register_taxonomy('webinar_library_category', 'webinar_library', $args);
+}
+add_action('init', 'apex_register_webinar_library_categories');
+
+/**
+ * Register Webinar Event Type Taxonomy (Live Webinar, Workshop, Panel Discussion, etc.)
+ */
+function apex_register_webinar_event_types() {
+    $labels = [
+        'name' => 'Event Types',
+        'singular_name' => 'Event Type',
+        'menu_name' => 'Event Types',
+        'all_items' => 'All Event Types',
+        'edit_item' => 'Edit Event Type',
+        'view_item' => 'View Event Type',
+        'update_item' => 'Update Event Type',
+        'add_new_item' => 'Add New Event Type',
+        'new_item_name' => 'New Event Type Name',
+        'search_items' => 'Search Event Types',
+        'not_found' => 'No event types found.',
+    ];
+
+    $args = [
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'show_in_menu' => true,
+        'query_var' => true,
+        'rewrite' => ['slug' => 'event-type', 'with_front' => false],
+        'public' => false,
+        'show_in_nav_menus' => false,
+        'show_tagcloud' => false,
+    ];
+
+    register_taxonomy('webinar_event_type', 'webinar_event', $args);
+}
+add_action('init', 'apex_register_webinar_event_types');
+
+/**
+ * Create default taxonomy terms for webinars
+ */
+function apex_create_default_webinar_terms() {
+    // Default Library Categories
+    $categories = ['Core Banking', 'Mobile Banking', 'Security', 'Compliance'];
+    foreach ($categories as $cat) {
+        if (!term_exists($cat, 'webinar_library_category')) {
+            wp_insert_term($cat, 'webinar_library_category');
+        }
+    }
+    
+    // Default Event Types
+    $types = ['Live Webinar', 'Workshop', 'Panel Discussion'];
+    foreach ($types as $type) {
+        if (!term_exists($type, 'webinar_event_type')) {
+            wp_insert_term($type, 'webinar_event_type');
+        }
+    }
+}
+add_action('after_setup_theme', 'apex_create_default_webinar_terms');
+
+/**
+ * Add Expert Speakers submenu under Webinars menu
+ */
+function apex_add_speakers_submenu() {
+    add_submenu_page(
+        'edit.php?post_type=webinar_event',
+        'Expert Speakers',
+        'Expert Speakers',
+        'edit_posts',
+        'apex-webinar-speakers',
+        'apex_render_webinar_speakers_page'
+    );
+}
+add_action('admin_menu', 'apex_add_speakers_submenu');
+
+/**
+ * Add Conference submenu under Webinars menu
+ */
+function apex_add_conference_submenu() {
+    add_submenu_page(
+        'edit.php?post_type=webinar_event',
+        'Conference',
+        'Conference',
+        'edit_posts',
+        'apex-webinar-conference',
+        'apex_render_conference_page'
+    );
+}
+add_action('admin_menu', 'apex_add_conference_submenu');
+
+/**
+ * ============================================================
+ * WEBINAR EVENTS - Meta Boxes
+ * ============================================================
+ */
+
+/**
+ * Add Webinar Event Details meta box
+ */
+function apex_add_webinar_event_meta_boxes() {
+    add_meta_box(
+        'apex_webinar_event_details',
+        'Event Details',
+        'apex_webinar_event_details_callback',
+        'webinar_event',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'apex_add_webinar_event_meta_boxes');
+
+/**
+ * Render Webinar Event Details meta box
+ */
+function apex_webinar_event_details_callback($post) {
+    wp_nonce_field('apex_webinar_event_nonce', 'apex_webinar_event_nonce_field');
+    
+    $event_date = get_post_meta($post->ID, '_webinar_event_date', true);
+    $event_start_time = get_post_meta($post->ID, '_webinar_event_start_time', true);
+    $event_end_time = get_post_meta($post->ID, '_webinar_event_end_time', true);
+    $event_timezone = get_post_meta($post->ID, '_webinar_event_timezone', true) ?: 'EAT';
+    $event_duration = get_post_meta($post->ID, '_webinar_event_duration', true);
+    $event_registration_url = get_post_meta($post->ID, '_webinar_event_registration_url', true);
+    $event_featured = get_post_meta($post->ID, '_webinar_event_featured', true);
+    $event_speakers = get_post_meta($post->ID, '_webinar_event_speakers', true);
+    ?>
+    <div class="apex-meta-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <p>
+            <label for="webinar_event_date"><strong>Event Date:</strong></label><br>
+            <input type="date" id="webinar_event_date" name="webinar_event_date" 
+                   value="<?php echo esc_attr($event_date); ?>" class="regular-text" />
+        </p>
+        
+        <p>
+            <label for="webinar_event_duration"><strong>Duration:</strong></label><br>
+            <input type="text" id="webinar_event_duration" name="webinar_event_duration" 
+                   value="<?php echo esc_attr($event_duration); ?>" class="regular-text" 
+                   placeholder="e.g., 60 minutes" />
+        </p>
+        
+        <p>
+            <label for="webinar_event_start_time"><strong>Start Time:</strong></label><br>
+            <input type="text" id="webinar_event_start_time" name="webinar_event_start_time" 
+                   value="<?php echo esc_attr($event_start_time); ?>" class="regular-text" 
+                   placeholder="e.g., 2:00 PM" />
+        </p>
+        
+        <p>
+            <label for="webinar_event_end_time"><strong>End Time:</strong></label><br>
+            <input type="text" id="webinar_event_end_time" name="webinar_event_end_time" 
+                   value="<?php echo esc_attr($event_end_time); ?>" class="regular-text" 
+                   placeholder="e.g., 3:00 PM" />
+        </p>
+        
+        <p>
+            <label for="webinar_event_timezone"><strong>Timezone:</strong></label><br>
+            <select id="webinar_event_timezone" name="webinar_event_timezone" class="regular-text">
+                <?php
+                $timezones = ['EAT' => 'East Africa Time (EAT)', 'CAT' => 'Central Africa Time (CAT)', 'WAT' => 'West Africa Time (WAT)', 'SAST' => 'South Africa Standard Time (SAST)', 'GMT' => 'GMT', 'UTC' => 'UTC'];
+                foreach ($timezones as $tz_value => $tz_label) {
+                    echo '<option value="' . esc_attr($tz_value) . '" ' . selected($event_timezone, $tz_value, false) . '>' . esc_html($tz_label) . '</option>';
+                }
+                ?>
+            </select>
+        </p>
+        
+        <p>
+            <label for="webinar_event_registration_url"><strong>Registration URL:</strong></label><br>
+            <input type="url" id="webinar_event_registration_url" name="webinar_event_registration_url" 
+                   value="<?php echo esc_attr($event_registration_url); ?>" class="regular-text" 
+                   placeholder="https://example.com/register" />
+        </p>
+        
+        <p style="grid-column: 1 / -1;">
+            <label for="webinar_event_speakers"><strong>Speakers:</strong></label><br>
+            <input type="text" id="webinar_event_speakers" name="webinar_event_speakers" 
+                   value="<?php echo esc_attr($event_speakers); ?>" class="widefat" 
+                   placeholder="e.g., Sarah Ochieng, John Kamau" />
+            <span class="description">Comma-separated list of speaker names for this event.</span>
+        </p>
+        
+        <p style="grid-column: 1 / -1;">
+            <label>
+                <input type="checkbox" id="webinar_event_featured" name="webinar_event_featured" 
+                       value="1" <?php checked($event_featured, '1'); ?> />
+                <strong>Feature this event (displayed prominently at the top of the Upcoming Events section)</strong>
+            </label>
+        </p>
+    </div>
+    <?php
+}
+
+/**
+ * Save Webinar Event Details meta box
+ */
+function apex_save_webinar_event_meta($post_id) {
+    if (!isset($_POST['apex_webinar_event_nonce_field'])) return;
+    if (!wp_verify_nonce($_POST['apex_webinar_event_nonce_field'], 'apex_webinar_event_nonce')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    $fields = [
+        'webinar_event_date' => 'sanitize_text_field',
+        'webinar_event_start_time' => 'sanitize_text_field',
+        'webinar_event_end_time' => 'sanitize_text_field',
+        'webinar_event_timezone' => 'sanitize_text_field',
+        'webinar_event_duration' => 'sanitize_text_field',
+        'webinar_event_registration_url' => 'esc_url_raw',
+        'webinar_event_speakers' => 'sanitize_text_field',
+    ];
+
+    foreach ($fields as $field => $sanitize_callback) {
+        if (isset($_POST[$field])) {
+            update_post_meta($post_id, '_' . $field, call_user_func($sanitize_callback, $_POST[$field]));
+        }
+    }
+    
+    // Checkbox: featured
+    $featured = isset($_POST['webinar_event_featured']) ? '1' : '';
+    update_post_meta($post_id, '_webinar_event_featured', $featured);
+}
+add_action('save_post_webinar_event', 'apex_save_webinar_event_meta');
+
+/**
+ * Custom columns for Webinar Events
+ */
+function apex_manage_webinar_event_columns($columns) {
+    $new_columns = [];
+    foreach ($columns as $key => $value) {
+        $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['event_date'] = 'Event Date';
+            $new_columns['event_time'] = 'Time';
+            $new_columns['event_featured'] = 'Featured';
+        }
+    }
+    return $new_columns;
+}
+add_filter('manage_edit-webinar_event_columns', 'apex_manage_webinar_event_columns');
+
+function apex_manage_webinar_event_custom_column($column, $post_id) {
+    switch ($column) {
+        case 'event_date':
+            $date = get_post_meta($post_id, '_webinar_event_date', true);
+            $display = $date ? esc_html(date('M j, Y', strtotime($date))) : '—';
+            echo '<span data-date="' . esc_attr($date) . '">' . $display . '</span>';
+            break;
+        case 'event_time':
+            $start = get_post_meta($post_id, '_webinar_event_start_time', true);
+            $end   = get_post_meta($post_id, '_webinar_event_end_time', true);
+            $tz    = get_post_meta($post_id, '_webinar_event_timezone', true);
+            $display = $start ? esc_html($start . ($end ? '–' . $end : '') . ($tz ? ' ' . $tz : '')) : '—';
+            echo '<span data-time="' . esc_attr($start) . '" data-endtime="' . esc_attr($end) . '">' . $display . '</span>';
+            break;
+        case 'event_featured':
+            $featured  = get_post_meta($post_id, '_webinar_event_featured', true) ? '1' : '0';
+            $spk_names = get_post_meta($post_id, '_webinar_event_speakers', true);
+            echo '<span data-featured="' . $featured . '" data-speakers="' . esc_attr($spk_names) . '">' . ($featured === '1' ? '⭐ Yes' : '—') . '</span>';
+            break;
+    }
+}
+add_action('manage_webinar_event_posts_custom_column', 'apex_manage_webinar_event_custom_column', 10, 2);
+
+/**
+ * Make event_date column sortable
+ */
+function apex_webinar_event_sortable_columns($columns) {
+    $columns['event_date'] = 'event_date';
+    return $columns;
+}
+add_filter('manage_edit-webinar_event_sortable_columns', 'apex_webinar_event_sortable_columns');
+
+function apex_webinar_event_orderby($query) {
+    if (!is_admin() || !$query->is_main_query()) return;
+    if ($query->get('orderby') === 'event_date') {
+        $query->set('meta_key', '_webinar_event_date');
+        $query->set('orderby', 'meta_value');
+    }
+}
+add_action('pre_get_posts', 'apex_webinar_event_orderby');
+
+/**
+ * Calculate human-readable duration from start/end times (HH:MM format)
+ * Falls back to manually entered $fallback string if times are missing.
+ */
+function apex_calc_event_duration($start, $end, $fallback = '') {
+    if ($start && $end) {
+        $s = DateTime::createFromFormat('H:i', $start);
+        $e = DateTime::createFromFormat('H:i', $end);
+        if ($s && $e) {
+            if ($e <= $s) {
+                $e->modify('+1 day'); // overnight event
+            }
+            $mins = (int)(($e->getTimestamp() - $s->getTimestamp()) / 60);
+            if ($mins >= 1440) {
+                $days = round($mins / 1440, 1);
+                $d = ($days == floor($days)) ? (int)$days : $days;
+                return $d . ' ' . ($d == 1 ? 'day' : 'days');
+            } elseif ($mins >= 60) {
+                $hrs  = floor($mins / 60);
+                $rem  = $mins % 60;
+                return $hrs . ' ' . ($hrs == 1 ? 'hr' : 'hrs') . ($rem ? ' ' . $rem . ' min' : '');
+            } else {
+                return $mins . ' min' . ($mins != 1 ? 's' : '');
+            }
+        }
+    }
+    return $fallback;
+}
+
+/**
+ * Quick edit fields for Webinar Events (Event Date, Time, Featured)
+ */
+function apex_webinar_event_quick_edit_box($column_name, $post_type) {
+    if ($post_type !== 'webinar_event' || $column_name !== 'event_date') {
+        return;
+    }
+    wp_nonce_field('apex_webinar_event_quick_edit', 'apex_webinar_event_qe_nonce');
+    ?>
+    <fieldset class="inline-edit-col-left" style="clear:both;">
+        <div class="inline-edit-col" style="padding-top:0.5em;">
+            <h4 style="margin:0 0 0.5em;font-size:12px;text-transform:uppercase;color:#555;">Event Details</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75em;margin-bottom:0.75em;">
+                <label>
+                    <span class="title">Event Date</span>
+                    <input type="date" name="webinar_event_date" id="webinar_event_date" class="ptitle" value="">
+                </label>
+                <label>
+                    <span class="title">Start Time</span>
+                    <input type="time" name="webinar_event_start_time" id="webinar_event_start_time" class="ptitle" value="">
+                </label>
+                <label>
+                    <span class="title">End Time</span>
+                    <input type="time" name="webinar_event_end_time" id="webinar_event_end_time" class="ptitle" value="">
+                </label>
+            </div>
+            <label class="alignleft" style="display:flex;align-items:center;gap:0.4em;">
+                <input type="checkbox" name="webinar_event_featured" id="webinar_event_featured" value="1">
+                <span class="checkbox-title" style="font-weight:600;">Featured Event</span>
+                <em style="color:#777;font-size:11px;">(only one can be featured)</em>
+            </label>
+            <?php
+            $all_speakers = apex_parse_webinar_speakers();
+            if (!empty($all_speakers)) :
+            ?>
+            <div style="margin-top:0.85em;">
+                <span style="display:block;font-weight:600;margin-bottom:0.4em;">Speakers</span>
+                <div style="max-height:140px;overflow-y:auto;border:1px solid #ddd;padding:0.5em 0.75em;border-radius:4px;background:#f9f9f9;">
+                    <?php foreach ($all_speakers as $sp) : ?>
+                    <label style="display:flex;align-items:center;gap:0.5em;margin-bottom:0.35em;cursor:pointer;">
+                        <input type="checkbox" name="webinar_event_speakers[]" value="<?php echo esc_attr($sp['name']); ?>">
+                        <?php if (!empty($sp['image'])) : ?>
+                        <img src="<?php echo esc_url($sp['image']); ?>" style="width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+                        <?php endif; ?>
+                        <span style="font-weight:500;"><?php echo esc_html($sp['name']); ?></span>
+                        <em style="color:#777;font-size:11px;"><?php echo esc_html($sp['title']); ?></em>
+                    </label>
+                    <?php endforeach; ?>
+                </div>
+                <p style="margin:0.3em 0 0;font-size:11px;color:#777;">Shown on frontend for featured events only.</p>
+                <input type="hidden" name="webinar_event_speakers_submitted" value="1">
+            </div>
+            <?php endif; ?>
+        </div>
+    </fieldset>
+    <?php
+}
+add_action('quick_edit_custom_box', 'apex_webinar_event_quick_edit_box', 10, 2);
+
+/**
+ * JS to populate quick edit fields from column data
+ */
+function apex_webinar_event_quick_edit_js() {
+    $screen = get_current_screen();
+    if (!$screen || $screen->post_type !== 'webinar_event') return;
+    ?>
+    <script>
+    jQuery(function($) {
+        // Store original inlineEditPost.edit
+        var _edit = inlineEditPost.edit;
+        inlineEditPost.edit = function(id) {
+            _edit.apply(this, arguments);
+            var post_id = typeof id === 'object' ? parseInt(this.getId(id)) : parseInt(id);
+            if (!post_id) return;
+            var $row = $('#post-' + post_id);
+            // Event date
+            var date_raw = $row.find('.column-event_date').data('date') || '';
+            $('#webinar_event_date', '.inline-edit-row').val(date_raw);
+            // Event time
+            var time_raw = $row.find('.column-event_time').data('time') || '';
+            $('#webinar_event_start_time', '.inline-edit-row').val(time_raw);
+            var end_time_raw = $row.find('.column-event_time').data('endtime') || '';
+            $('#webinar_event_end_time', '.inline-edit-row').val(end_time_raw);
+            // Featured
+            var is_featured = $row.find('.column-event_featured').data('featured') == '1';
+            $('#webinar_event_featured', '.inline-edit-row').prop('checked', is_featured);
+            // Speakers
+            var speakers_raw = $row.find('.column-event_featured span').data('speakers') || '';
+            var selected = speakers_raw ? speakers_raw.split(',').map(function(s){ return s.trim(); }) : [];
+            $('input[name="webinar_event_speakers[]"]', '.inline-edit-row').each(function() {
+                $(this).prop('checked', selected.indexOf($(this).val().trim()) !== -1);
+            });
+        };
+    });
+    </script>
+    <?php
+}
+add_action('admin_footer-edit.php', 'apex_webinar_event_quick_edit_js');
+
+/**
+ * Save quick edit fields for Webinar Events
+ */
+function apex_webinar_event_save_quick_edit($post_id, $post) {
+    if ($post->post_type !== 'webinar_event') return;
+    if (!isset($_POST['apex_webinar_event_qe_nonce']) ||
+        !wp_verify_nonce($_POST['apex_webinar_event_qe_nonce'], 'apex_webinar_event_quick_edit')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+
+    // Event date
+    if (array_key_exists('webinar_event_date', $_POST)) {
+        update_post_meta($post_id, '_webinar_event_date', sanitize_text_field($_POST['webinar_event_date']));
+    }
+    // Start time
+    if (array_key_exists('webinar_event_start_time', $_POST)) {
+        update_post_meta($post_id, '_webinar_event_start_time', sanitize_text_field($_POST['webinar_event_start_time']));
+    }
+    // End time
+    if (array_key_exists('webinar_event_end_time', $_POST)) {
+        update_post_meta($post_id, '_webinar_event_end_time', sanitize_text_field($_POST['webinar_event_end_time']));
+    }
+    // Speakers (checkbox array — hidden sentinel ensures clearing when none selected)
+    if (isset($_POST['webinar_event_speakers_submitted'])) {
+        $speakers = isset($_POST['webinar_event_speakers'])
+            ? array_map('sanitize_text_field', (array)$_POST['webinar_event_speakers'])
+            : [];
+        update_post_meta($post_id, '_webinar_event_speakers', implode(', ', array_filter($speakers)));
+    }
+    // Featured — enforce only one
+    $is_featured = !empty($_POST['webinar_event_featured']);
+    if ($is_featured) {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare(
+            "UPDATE {$wpdb->postmeta} SET meta_value = '0'
+             WHERE meta_key = %s AND meta_value = '1' AND post_id != %d",
+            '_webinar_event_featured', $post_id
+        ));
+        update_post_meta($post_id, '_webinar_event_featured', '1');
+    } else {
+        update_post_meta($post_id, '_webinar_event_featured', '0');
+    }
+}
+add_action('save_post', 'apex_webinar_event_save_quick_edit', 10, 2);
+
+/**
+ * ============================================================
+ * WEBINAR LIBRARY - Meta Boxes
+ * ============================================================
+ */
+
+/**
+ * Add Webinar Library Details meta box
+ */
+function apex_add_webinar_library_meta_boxes() {
+    add_meta_box(
+        'apex_webinar_library_details',
+        'Recording Details',
+        'apex_webinar_library_details_callback',
+        'webinar_library',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'apex_add_webinar_library_meta_boxes');
+
+/**
+ * Render Webinar Library Details meta box
+ */
+function apex_webinar_library_details_callback($post) {
+    wp_nonce_field('apex_webinar_library_nonce', 'apex_webinar_library_nonce_field');
+    
+    $video_url = get_post_meta($post->ID, '_webinar_library_video_url', true);
+    $duration = get_post_meta($post->ID, '_webinar_library_duration', true);
+    $views = get_post_meta($post->ID, '_webinar_library_views', true);
+    $speakers = get_post_meta($post->ID, '_webinar_library_speakers', true);
+    $recording_date = get_post_meta($post->ID, '_webinar_library_recording_date', true);
+    $featured = get_post_meta($post->ID, '_webinar_library_featured', true);
+    ?>
+    <div class="apex-meta-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <p style="grid-column: 1 / -1;">
+            <label for="webinar_library_video_url"><strong>Video URL / Embed:</strong></label><br>
+            <input type="url" id="webinar_library_video_url" name="webinar_library_video_url" 
+                   value="<?php echo esc_attr($video_url); ?>" class="widefat" 
+                   placeholder="https://youtube.com/watch?v=... or embed URL" />
+        </p>
+        
+        <p>
+            <label for="webinar_library_duration"><strong>Duration:</strong></label><br>
+            <input type="text" id="webinar_library_duration" name="webinar_library_duration" 
+                   value="<?php echo esc_attr($duration); ?>" class="regular-text" 
+                   placeholder="e.g., 58:32" />
+        </p>
+        
+        <p>
+            <label for="webinar_library_views"><strong>Views:</strong></label><br>
+            <input type="number" id="webinar_library_views" name="webinar_library_views" 
+                   value="<?php echo esc_attr($views); ?>" class="regular-text" 
+                   placeholder="e.g., 1245" min="0" />
+        </p>
+        
+        <p>
+            <label for="webinar_library_recording_date"><strong>Recording Date:</strong></label><br>
+            <input type="date" id="webinar_library_recording_date" name="webinar_library_recording_date" 
+                   value="<?php echo esc_attr($recording_date); ?>" class="regular-text" />
+        </p>
+        
+        <p>
+            <label for="webinar_library_speakers"><strong>Speakers:</strong></label><br>
+            <input type="text" id="webinar_library_speakers" name="webinar_library_speakers" 
+                   value="<?php echo esc_attr($speakers); ?>" class="regular-text" 
+                   placeholder="e.g., Sarah Ochieng, John Kamau" />
+        </p>
+        
+        <p style="grid-column: 1 / -1;">
+            <label>
+                <input type="checkbox" id="webinar_library_featured" name="webinar_library_featured" 
+                       value="1" <?php checked($featured, '1'); ?> />
+                <strong>Feature this recording in the On-Demand Library section</strong>
+            </label>
+        </p>
+    </div>
+    <?php
+}
+
+/**
+ * Save Webinar Library Details meta box
+ */
+function apex_save_webinar_library_meta($post_id) {
+    if (!isset($_POST['apex_webinar_library_nonce_field'])) return;
+    if (!wp_verify_nonce($_POST['apex_webinar_library_nonce_field'], 'apex_webinar_library_nonce')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    $fields = [
+        'webinar_library_video_url' => 'esc_url_raw',
+        'webinar_library_duration' => 'sanitize_text_field',
+        'webinar_library_views' => 'intval',
+        'webinar_library_speakers' => 'sanitize_text_field',
+        'webinar_library_recording_date' => 'sanitize_text_field',
+    ];
+
+    foreach ($fields as $field => $sanitize_callback) {
+        if (isset($_POST[$field])) {
+            update_post_meta($post_id, '_' . $field, call_user_func($sanitize_callback, $_POST[$field]));
+        }
+    }
+    
+    $featured = isset($_POST['webinar_library_featured']) ? '1' : '';
+    update_post_meta($post_id, '_webinar_library_featured', $featured);
+}
+add_action('save_post_webinar_library', 'apex_save_webinar_library_meta');
+
+/**
+ * Custom columns for Webinar Library
+ */
+function apex_manage_webinar_library_columns($columns) {
+    $new_columns = [];
+    foreach ($columns as $key => $value) {
+        $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['library_duration'] = 'Duration';
+            $new_columns['library_views'] = 'Views';
+            $new_columns['library_featured'] = 'Featured';
+        }
+    }
+    return $new_columns;
+}
+add_filter('manage_edit-webinar_library_columns', 'apex_manage_webinar_library_columns');
+
+function apex_manage_webinar_library_custom_column($column, $post_id) {
+    switch ($column) {
+        case 'library_duration':
+            $duration = get_post_meta($post_id, '_webinar_library_duration', true);
+            echo $duration ? esc_html($duration) : '—';
+            break;
+        case 'library_views':
+            $views = get_post_meta($post_id, '_webinar_library_views', true);
+            echo $views ? number_format(intval($views)) : '0';
+            break;
+        case 'library_featured':
+            echo get_post_meta($post_id, '_webinar_library_featured', true) ? '⭐ Yes' : '—';
+            break;
+    }
+}
+add_action('manage_webinar_library_posts_custom_column', 'apex_manage_webinar_library_custom_column', 10, 2);
+
+/**
+ * ============================================================
+ * EXPERT SPEAKERS - Admin Page (similar to testimonials)
+ * ============================================================
+ */
+
+/**
+ * Render Expert Speakers admin page
+ */
+function apex_render_webinar_speakers_page() {
+    // Handle form submission
+    if (isset($_POST['apex_save_speakers']) && check_admin_referer('apex_save_speakers_nonce', 'apex_speakers_nonce')) {
+        update_option('apex_webinar_speakers_items', sanitize_textarea_field($_POST['apex_webinar_speakers_items']));
+        echo '<div class="notice notice-success is-dismissible"><p>Expert Speakers saved successfully!</p></div>';
+    }
+    
+    $speakers_raw = get_option('apex_webinar_speakers_items', '');
+    
+    // If no speakers exist, populate with default data
+    if (empty($speakers_raw)) {
+        $speakers_raw = "Sarah Ochieng | CTO | Apex Softwares | 15+ years in fintech architecture and cloud solutions | https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200\nJohn Kamau | CEO | Apex Softwares | 20+ years leading digital transformation in banking | https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200\nMichael Njoroge | COO | Apex Softwares | Expert in operational excellence and implementation | https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200\nGrace Wanjiku | CFO | Apex Softwares | Financial strategy and sustainable growth expert | https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200";
+    }
+    
+    ?>
+    <div class="wrap">
+        <h1>Expert Speakers</h1>
+        <p>Manage the expert speakers displayed in the "Expert Speakers" section of the <a href="<?php echo home_url('/insights/webinars'); ?>" target="_blank">Webinars & Events</a> page.</p>
+        
+        <form method="post" action="">
+            <?php wp_nonce_field('apex_save_speakers_nonce', 'apex_speakers_nonce'); ?>
+            
+            <div style="background: #fef3c7; padding: 15px; margin-bottom: 20px; border: 1px solid #f59e0b; border-radius: 6px;">
+                <h3 style="margin-top: 0;">📋 Format Guide</h3>
+                <p><strong>Enter one speaker per line using this format:</strong></p>
+                <code>Name | Job Title | Company | Short Bio | Photo URL</code>
+                <p style="margin-bottom: 0;"><strong>Example:</strong><br>
+                <code>Sarah Ochieng | CTO | Apex Softwares | 15+ years in fintech architecture and cloud solutions | https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinar_speakers_items">Speakers List</label></th>
+                    <td>
+                        <textarea id="apex_webinar_speakers_items" name="apex_webinar_speakers_items" 
+                                  class="large-text" rows="12" style="font-family: monospace;"
+                                  placeholder="Name | Job Title | Company | Short Bio | Photo URL"><?php echo esc_textarea($speakers_raw); ?></textarea>
+                        <p class="description">Enter one speaker per line. Format: <code>Name | Job Title | Company | Short Bio | Photo URL</code>. Photo should be ~200x200px.</p>
+                    </td>
+                </tr>
+            </table>
+            
+            <?php submit_button('Save Speakers', 'primary', 'apex_save_speakers'); ?>
+        </form>
+    </div>
+    <?php
+}
+
+/**
+ * Parse speakers from stored option
+ */
+function apex_parse_webinar_speakers() {
+    $speakers_raw = get_option('apex_webinar_speakers_items', '');
+    $speakers = [];
+    
+    if ($speakers_raw) {
+        foreach (explode("\n", $speakers_raw) as $line) {
+            $parts = explode('|', $line);
+            if (count($parts) >= 5) {
+                $speakers[] = [
+                    'name' => trim($parts[0]),
+                    'title' => trim($parts[1]),
+                    'company' => trim($parts[2]),
+                    'bio' => trim($parts[3]),
+                    'image' => trim($parts[4]),
+                ];
+            }
+        }
+    }
+    
+    // Default speakers if none set
+    if (empty($speakers)) {
+        $speakers = [
+            ['name' => 'Sarah Ochieng', 'title' => 'CTO', 'company' => 'Apex Softwares', 'bio' => '15+ years in fintech architecture and cloud solutions', 'image' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200'],
+            ['name' => 'John Kamau', 'title' => 'CEO', 'company' => 'Apex Softwares', 'bio' => '20+ years leading digital transformation in banking', 'image' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200'],
+            ['name' => 'Michael Njoroge', 'title' => 'COO', 'company' => 'Apex Softwares', 'bio' => 'Expert in operational excellence and implementation', 'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200'],
+            ['name' => 'Grace Wanjiku', 'title' => 'CFO', 'company' => 'Apex Softwares', 'bio' => 'Financial strategy and sustainable growth expert', 'image' => 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200'],
+        ];
+    }
+    
+    return $speakers;
+}
+
+/**
+ * Render Conference admin page (similar to Expert Speakers)
+ */
+function apex_render_conference_page() {
+    // Handle form submission
+    if (isset($_POST['apex_save_conference']) && check_admin_referer('apex_save_conference_nonce', 'apex_conference_nonce')) {
+        update_option('apex_webinar_conference_items', sanitize_textarea_field($_POST['apex_webinar_conference_items']));
+        echo '<div class="notice notice-success is-dismissible"><p>Conference saved successfully!</p></div>';
+    }
+    
+    $conference_raw = get_option('apex_webinar_conference_items', '');
+    
+    // If no conference exists, populate with default data
+    if (empty($conference_raw)) {
+        $conference_raw = "Apex Summit 2026 | June 15-17, 2026 | Kenyatta International Convention Centre, Nairobi | 500+ Industry Leaders | Join us for our flagship annual conference bringing together 500+ financial technology leaders, innovators, and practitioners from across Africa. | https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600 | https://example.com/register | https://example.com/agenda | 50+ Sessions across 5 tracks\nKeynotes from industry visionaries\nHands-on product workshops\nNetworking events and awards dinner\nExhibition hall with 30+ vendors";
+    }
+    
+    ?>
+    <div class="wrap">
+        <h1>Conference</h1>
+        <p>Manage the conference displayed in the "Annual Conference" section of the <a href="<?php echo home_url('/insights/webinars'); ?>" target="_blank">Webinars & Events</a> page.</p>
+        
+        <form method="post" action="">
+            <?php wp_nonce_field('apex_save_conference_nonce', 'apex_conference_nonce'); ?>
+            
+            <div style="background: #fef3c7; padding: 15px; margin-bottom: 20px; border: 1px solid #f59e0b; border-radius: 6px;">
+                <h3 style="margin-top: 0;">📋 Format Guide</h3>
+                <p><strong>Enter conference details using this format:</strong></p>
+                <code>Conference Name | Date | Location | Expected Attendees | Description | Image URL | Registration Link | Agenda Link | Highlights (one per line after the main data)</code>
+                <p style="margin-bottom: 0;"><strong>Example:</strong><br>
+                <code>Apex Summit 2026 | June 15-17, 2026 | Kenyatta International Convention Centre, Nairobi | 500+ Industry Leaders | Conference description | https://example.com/image.jpg | https://example.com/register | https://example.com/agenda | Highlight 1<br>Highlight 2<br>Highlight 3</code></p>
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="apex_webinar_conference_items">Conference Details</label></th>
+                    <td>
+                        <textarea id="apex_webinar_conference_items" name="apex_webinar_conference_items" 
+                                  class="large-text" rows="12" style="font-family: monospace;"
+                                  placeholder="Conference Name | Date | Location | Expected Attendees | Description | Image URL | Registration Link | Agenda Link | Highlights"><?php echo esc_textarea($conference_raw); ?></textarea>
+                        <p class="description">Enter conference details. First line: <code>Name | Date | Location | Attendees | Description | Image URL | Registration Link | Agenda Link | Highlights</code>. Additional lines: individual highlights.</p>
+                    </td>
+                </tr>
+            </table>
+            
+            <?php submit_button('Save Conference', 'primary', 'apex_save_conference'); ?>
+        </form>
+    </div>
+    <?php
+}
+
+/**
+ * Parse conference from stored option
+ */
+function apex_parse_webinar_conference() {
+    $conference_raw = get_option('apex_webinar_conference_items', '');
+    
+    if ($conference_raw) {
+        $lines = explode("\n", $conference_raw);
+        $main_line = array_shift($lines);
+        $parts = explode('|', $main_line);
+        
+        if (count($parts) >= 8) {
+            return [
+                'name' => trim($parts[0]),
+                'date' => trim($parts[1]),
+                'location' => trim($parts[2]),
+                'attendees' => trim($parts[3]),
+                'description' => trim($parts[4]),
+                'image' => trim($parts[5]),
+                'register_link' => trim($parts[6]),
+                'agenda_link' => trim($parts[7]),
+                'highlights' => array_filter(array_map('trim', $lines))
+            ];
+        }
+    }
+    
+    return null;
+}
+
+/**
  * Configure Mailtrap for email delivery in development
  */
 
@@ -9801,7 +10694,7 @@ function apex_render_fallback_form($page_slug, $config) {
             <h4>📅 Upcoming Events Section</h4>
             <div style="background: #fff3e0; padding: 15px; margin-bottom: 20px; border: 1px solid #ff9800; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
-                <p><strong>This section controls the upcoming events header and the featured webinar.</strong></p>
+                <p><strong>This section controls the upcoming events header text.</strong> Events are managed dynamically via <a href="<?php echo admin_url('edit.php?post_type=webinar_event'); ?>"><strong>Webinars → Upcoming Events</strong></a> in the sidebar. Mark an event as "Featured" to display it prominently.</p>
             </div>
             <table class="form-table">
                 <tr>
@@ -9836,7 +10729,7 @@ function apex_render_fallback_form($page_slug, $config) {
             <h4>⭐ Featured Webinar</h4>
             <div style="background: #e8f5e9; padding: 15px; margin-bottom: 20px; border: 1px solid #4caf50; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
-                <p><strong>This section controls the featured webinar card.</strong></p>
+                <p><strong>The featured webinar is now managed dynamically.</strong> Go to <a href="<?php echo admin_url('edit.php?post_type=webinar_event'); ?>"><strong>Webinars → Upcoming Events</strong></a>, edit an event and check the "Featured" checkbox. The fields below serve as fallback when no events have been created yet.</p>
             </div>
             <table class="form-table">
                 <tr>
@@ -9936,7 +10829,7 @@ function apex_render_fallback_form($page_slug, $config) {
             <h4>🎪 Conference Section</h4>
             <div style="background: #f3e5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #9c27b0; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
-                <p><strong>This section controls the annual conference display.</strong></p>
+                <p><strong>The conference section is now managed dynamically.</strong> Go to <a href="<?php echo admin_url('edit.php?post_type=webinar_event&page=apex-webinar-conference'); ?>"><strong>Webinars → Conference</strong></a> to manage conference details. The fields below serve as fallback when no conference data has been entered yet.</p>
             </div>
             <table class="form-table">
                 <tr>
@@ -10028,7 +10921,7 @@ function apex_render_fallback_form($page_slug, $config) {
             <h4>📺 On-Demand Library Section</h4>
             <div style="background: #e3f2fd; padding: 15px; margin-bottom: 20px; border: 1px solid #2196f3; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
-                <p><strong>This section controls the on-demand library header.</strong></p>
+                <p><strong>This section controls the on-demand library header text.</strong> Library items are managed dynamically via <a href="<?php echo admin_url('edit.php?post_type=webinar_library'); ?>"><strong>Webinars → On-Demand Library</strong></a> in the sidebar. Categories (Core Banking, Mobile Banking, Security, Compliance) are managed via <a href="<?php echo admin_url('edit-tags.php?taxonomy=webinar_library_category&post_type=webinar_library'); ?>"><strong>Library Categories</strong></a>.</p>
             </div>
             <table class="form-table">
                 <tr>
@@ -10063,7 +10956,7 @@ function apex_render_fallback_form($page_slug, $config) {
             <h4>🎤 Expert Speakers Section</h4>
             <div style="background: #fff8e1; padding: 15px; margin-bottom: 20px; border: 1px solid #ffc107; border-radius: 6px;">
                 <h5>📋 Section Overview</h5>
-                <p><strong>This section controls the speakers display.</strong></p>
+                <p><strong>This section controls the speakers header text.</strong> Speaker profiles are managed dynamically via <a href="<?php echo admin_url('edit.php?post_type=webinar_event&page=apex-webinar-speakers'); ?>"><strong>Webinars → Expert Speakers</strong></a> in the sidebar.</p>
             </div>
             <table class="form-table">
                 <tr>
