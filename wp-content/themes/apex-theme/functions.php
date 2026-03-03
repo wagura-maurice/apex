@@ -14099,6 +14099,20 @@ function apex_news_single_template($template) {
 add_filter('template_include', 'apex_news_single_template');
 
 /**
+ * Load single-success-story.php for success_story CPT single posts
+ */
+function apex_success_story_single_template($template) {
+    if (is_singular('success_story')) {
+        $custom = locate_template('single-success-story.php');
+        if ($custom) {
+            return $custom;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'apex_success_story_single_template');
+
+/**
  * Custom template for About Us pages (fallback)
  */
 function apex_about_us_template($template) {

@@ -29,7 +29,7 @@ class Apex_AboutPages_Component {
         $request_uri = trim($_SERVER['REQUEST_URI'], '/');
         $request_uri = strtok($request_uri, '?');
         
-        if (strpos($request_uri, 'about-us') === 0 || strpos($request_uri, 'news-item') === 0) {
+        if (strpos($request_uri, 'about-us') === 0 || strpos($request_uri, 'news-item') === 0 || strpos($request_uri, 'success-story') === 0) {
             wp_enqueue_style(
                 'apex-about-pages-component',
                 get_template_directory_uri() . '/components/about-pages/about-pages.css',
