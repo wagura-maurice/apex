@@ -525,7 +525,16 @@ apex_render_about_hero([
             <h2 class="apex-blog-newsletter__heading"><?php echo esc_html(get_option('apex_stories_newsletter_heading_insights-success-stories', 'Get Success Stories Delivered')); ?></h2>
             <p class="apex-blog-newsletter__description"><?php echo esc_html(get_option('apex_stories_newsletter_description_insights-success-stories', 'Subscribe to our newsletter for the latest case studies, client success stories, and insights from our team of experts.')); ?></p>
             
-            <form class="apex-blog-newsletter__form">
+            <div id="stories-newsletter-notification" class="apex-blog-newsletter__notification" style="display:none;">
+                <div class="apex-blog-newsletter__notification-content">
+                    <span class="apex-blog-newsletter__notification-icon"></span>
+                    <span class="apex-blog-newsletter__notification-message"></span>
+                    <button type="button" class="apex-blog-newsletter__notification-close" aria-label="Close">×</button>
+                </div>
+            </div>
+
+            <form class="apex-blog-newsletter__form" id="stories-newsletter-form">
+                <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
                 <input type="email" placeholder="<?php echo esc_attr(get_option('apex_stories_newsletter_placeholder_insights-success-stories', 'Enter your email address')); ?>" required>
                 <button type="submit"><?php echo esc_html(get_option('apex_stories_newsletter_button_insights-success-stories', 'Subscribe')); ?></button>
             </form>
@@ -537,7 +546,43 @@ apex_render_about_hero([
 
 <?php get_footer(); ?>
 
-<?php wp_footer(); ?>
+<script>
+(function() {
+    var form = document.getElementById('stories-newsletter-form');
+    if (!form) return;
+    var notification = document.getElementById('stories-newsletter-notification');
+    function showMsg(type, message) {
+        notification.classList.remove('success', 'error');
+        notification.classList.add(type);
+        notification.querySelector('.apex-blog-newsletter__notification-message').textContent = message;
+        notification.style.display = 'block';
+        if (type === 'success') setTimeout(function() { notification.style.display = 'none'; }, 5000);
+    }
+    notification.querySelector('.apex-blog-newsletter__notification-close').addEventListener('click', function() {
+        notification.style.display = 'none';
+    });
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        form.classList.add('loading');
+        var fd = new FormData();
+        fd.append('email', form.querySelector('input[type="email"]').value);
+        fd.append('action', 'apex_newsletter_submit');
+        var nonce = form.querySelector('input[name="apex_newsletter_nonce"]');
+        if (nonce) fd.append('apex_newsletter_nonce', nonce.value);
+        fetch('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', { method: 'POST', body: fd })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                form.classList.remove('loading');
+                if (data.success) { showMsg('success', data.data.message); form.reset(); }
+                else { showMsg('error', data.data.message || 'An error occurred. Please try again.'); }
+            })
+            .catch(function() {
+                form.classList.remove('loading');
+                showMsg('error', 'An error occurred. Please try again.');
+            });
+    });
+})();
+</script>
 
 <script>
 jQuery(document).ready(function($) {

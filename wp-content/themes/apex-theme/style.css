@@ -492,6 +492,12 @@ a[href*="request-demo"] {
   text-decoration: none !important;
 }
 
+/* Footer white CTA button must keep dark text even when pointing to /request-demo */
+a.apex-footer-cta__btn--white,
+a.apex-footer-cta__btn--white:hover {
+  color: #0f172a !important;
+}
+
 a[href*="request-demo"]:hover {
   color: white !important;
   text-decoration: none !important;

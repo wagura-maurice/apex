@@ -671,23 +671,70 @@ apex_render_about_hero([
     </div>
 </section>
 
-<section class="apex-webinars-newsletter">
-    <div class="apex-webinars-newsletter__container">
-        <div class="apex-webinars-newsletter__content">
-            <h2 class="apex-webinars-newsletter__heading"><?php echo esc_html(get_option('apex_webinars_newsletter_heading_insights-webinars', 'Never Miss an Event')); ?></h2>
-            <p class="apex-webinars-newsletter__description"><?php echo esc_html(get_option('apex_webinars_newsletter_description_insights-webinars', 'Subscribe to get notified about upcoming webinars, workshops, and events.')); ?></p>
-            
-            <form class="apex-webinars-newsletter__form">
+<section class="apex-blog-newsletter">
+    <div class="apex-blog-newsletter__container">
+        <div class="apex-blog-newsletter__content">
+            <h2 class="apex-blog-newsletter__heading"><?php echo esc_html(get_option('apex_webinars_newsletter_heading_insights-webinars', 'Never Miss an Event')); ?></h2>
+            <p class="apex-blog-newsletter__description"><?php echo esc_html(get_option('apex_webinars_newsletter_description_insights-webinars', 'Subscribe to get notified about upcoming webinars, workshops, and events.')); ?></p>
+
+            <div id="webinars-newsletter-notification" class="apex-blog-newsletter__notification" style="display:none;">
+                <div class="apex-blog-newsletter__notification-content">
+                    <span class="apex-blog-newsletter__notification-icon"></span>
+                    <span class="apex-blog-newsletter__notification-message"></span>
+                    <button type="button" class="apex-blog-newsletter__notification-close" aria-label="Close">×</button>
+                </div>
+            </div>
+
+            <form class="apex-blog-newsletter__form" id="webinars-newsletter-form">
+                <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
                 <input type="email" placeholder="<?php echo esc_attr(get_option('apex_webinars_newsletter_placeholder_insights-webinars', 'Enter your email address')); ?>" required>
                 <button type="submit"><?php echo esc_html(get_option('apex_webinars_newsletter_button_insights-webinars', 'Subscribe')); ?></button>
             </form>
-            
-            <p class="apex-webinars-newsletter__note"><?php echo esc_html(get_option('apex_webinars_newsletter_note_insights-webinars', 'We respect your privacy. Unsubscribe at any time.')); ?></p>
+
+            <p class="apex-blog-newsletter__note"><?php echo esc_html(get_option('apex_webinars_newsletter_note_insights-webinars', 'We respect your privacy. Unsubscribe at any time.')); ?></p>
         </div>
     </div>
 </section>
 
 <?php get_footer(); ?>
+
+<script>
+(function() {
+    var form = document.getElementById('webinars-newsletter-form');
+    if (!form) return;
+    var notification = document.getElementById('webinars-newsletter-notification');
+    function showMsg(type, message) {
+        notification.classList.remove('success', 'error');
+        notification.classList.add(type);
+        notification.querySelector('.apex-blog-newsletter__notification-message').textContent = message;
+        notification.style.display = 'block';
+        if (type === 'success') setTimeout(function() { notification.style.display = 'none'; }, 5000);
+    }
+    notification.querySelector('.apex-blog-newsletter__notification-close').addEventListener('click', function() {
+        notification.style.display = 'none';
+    });
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        form.classList.add('loading');
+        var fd = new FormData();
+        fd.append('email', form.querySelector('input[type="email"]').value);
+        fd.append('action', 'apex_newsletter_submit');
+        var nonce = form.querySelector('input[name="apex_newsletter_nonce"]');
+        if (nonce) fd.append('apex_newsletter_nonce', nonce.value);
+        fetch('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', { method: 'POST', body: fd })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                form.classList.remove('loading');
+                if (data.success) { showMsg('success', data.data.message); form.reset(); }
+                else { showMsg('error', data.data.message || 'An error occurred. Please try again.'); }
+            })
+            .catch(function() {
+                form.classList.remove('loading');
+                showMsg('error', 'An error occurred. Please try again.');
+            });
+    });
+})();
+</script>
 
 <script>
 jQuery(document).ready(function($) {

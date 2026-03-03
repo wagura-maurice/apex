@@ -31,7 +31,7 @@
     $apex_footer_cta1_title = get_option('apex_footer_cta1_title', 'Ready to Transform Your Institution?');
     $apex_footer_cta1_description = get_option('apex_footer_cta1_description', 'Get in touch to discuss a tailored banking or fintech strategy for your business.');
     $apex_footer_cta1_button_text = get_option('apex_footer_cta1_button_text', 'Request a Demo');
-    $apex_footer_cta1_button_url = get_option('apex_footer_cta1_button_url', '/contact');
+    $apex_footer_cta1_button_url = get_option('apex_footer_cta1_button_url', '/request-demo');
     $apex_footer_cta2_title = get_option('apex_footer_cta2_title', 'Need Support?');
     $apex_footer_cta2_description = get_option('apex_footer_cta2_description', 'For existing customers, access our knowledge base and expert support team.');
     $apex_footer_cta2_button_text = get_option('apex_footer_cta2_button_text', 'Get Support');

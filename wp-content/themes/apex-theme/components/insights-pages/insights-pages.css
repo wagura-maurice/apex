@@ -480,6 +480,83 @@
     margin: 0;
 }
 
+.apex-blog-newsletter__notification {
+    max-width: 500px;
+    margin: 0 auto 1.25rem;
+    border-radius: 8px;
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
+}
+
+.apex-blog-newsletter__notification.success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.apex-blog-newsletter__notification.error {
+    background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+}
+
+.apex-blog-newsletter__notification-content {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    gap: 0.625rem;
+    color: #ffffff;
+}
+
+.apex-blog-newsletter__notification-icon {
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+
+.apex-blog-newsletter__notification.success .apex-blog-newsletter__notification-icon::before {
+    content: "✓";
+    font-weight: bold;
+}
+
+.apex-blog-newsletter__notification.error .apex-blog-newsletter__notification-icon::before {
+    content: "✕";
+    font-weight: bold;
+}
+
+.apex-blog-newsletter__notification-message {
+    flex: 1;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.apex-blog-newsletter__notification-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.apex-blog-newsletter__notification-close:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.apex-blog-newsletter__form.loading button {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Pagination ellipsis */
 .apex-blog-grid__page-ellipsis {
     display: inline-flex;

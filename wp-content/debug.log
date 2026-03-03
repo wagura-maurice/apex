@@ -267,3 +267,121 @@
 [02-Mar-2026 15:41:01 UTC] PHP Warning:  Attempt to read property "post_title" on null in /var/www/html/apex/wp-content/themes/apex-theme/page-insights-webinars.php on line 217
 [02-Mar-2026 15:41:01 UTC] PHP Warning:  Attempt to read property "post_excerpt" on null in /var/www/html/apex/wp-content/themes/apex-theme/page-insights-webinars.php on line 218
 [02-Mar-2026 15:41:01 UTC] PHP Warning:  Attempt to read property "post_content" on null in /var/www/html/apex/wp-content/themes/apex-theme/page-insights-webinars.php on line 218
+[02-Mar-2026 21:14:56 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1961
+[02-Mar-2026 21:14:56 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 1883
+[02-Mar-2026 21:29:56 UTC] Automatic updates starting...
+[02-Mar-2026 21:29:58 UTC] Automatic updates complete.
+[02-Mar-2026 21:41:36 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[02-Mar-2026 21:41:36 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 21:46:44 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 21:51:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:05:16 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:05:30 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:07:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:07:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:07:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:07:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:07:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:07:28 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:07:46 UTC] Apex Newsletter AJAX: Processing newsletter subscription from business@waguramaurice.com
+[02-Mar-2026 22:07:46 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[02-Mar-2026 22:07:46 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[02-Mar-2026 22:07:51 UTC] Apex Direct Email: Email sent successfully
+[02-Mar-2026 22:07:51 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[02-Mar-2026 22:07:51 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[02-Mar-2026 22:11:22 UTC] Apex Newsletter AJAX: Processing newsletter subscription from business@waguramaurice.com
+[02-Mar-2026 22:11:22 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[02-Mar-2026 22:11:22 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[02-Mar-2026 22:11:26 UTC] Apex Direct Email: Email sent successfully
+[02-Mar-2026 22:11:26 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[02-Mar-2026 22:11:26 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[02-Mar-2026 22:11:36 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:11:36 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:11:36 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:11:36 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:11:36 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:11:36 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:11:48 UTC] Apex Newsletter AJAX: Processing newsletter subscription from wagura465@gmail.com
+[02-Mar-2026 22:11:48 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[02-Mar-2026 22:11:48 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[02-Mar-2026 22:11:53 UTC] Apex Direct Email: Email sent successfully
+[02-Mar-2026 22:11:53 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[02-Mar-2026 22:11:53 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[02-Mar-2026 22:12:13 UTC] Apex Newsletter AJAX: Processing newsletter subscription from business@waguramaurice.com
+[02-Mar-2026 22:12:13 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[02-Mar-2026 22:12:13 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[02-Mar-2026 22:12:18 UTC] Apex Direct Email: Email sent successfully
+[02-Mar-2026 22:12:18 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[02-Mar-2026 22:12:18 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[02-Mar-2026 22:12:30 UTC] Apex Newsletter AJAX: Processing newsletter subscription from business@waguramaurice.com
+[02-Mar-2026 22:12:30 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[02-Mar-2026 22:12:30 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[02-Mar-2026 22:12:34 UTC] Apex Direct Email: Email sent successfully
+[02-Mar-2026 22:12:34 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[02-Mar-2026 22:12:34 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[02-Mar-2026 22:12:38 UTC] Apex Newsletter AJAX: Processing newsletter subscription from business@waguramaurice.com
+[02-Mar-2026 22:12:38 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[02-Mar-2026 22:12:38 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[02-Mar-2026 22:12:42 UTC] Apex Direct Email: Email sent successfully
+[02-Mar-2026 22:12:42 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[02-Mar-2026 22:12:42 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[02-Mar-2026 22:13:07 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[02-Mar-2026 22:13:07 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[02-Mar-2026 22:22:25 UTC] Apex Newsletter AJAX: Processing newsletter subscription from business@waguramaurice.com
+[02-Mar-2026 22:22:25 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[02-Mar-2026 22:22:25 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[02-Mar-2026 22:22:29 UTC] Apex Direct Email: Email sent successfully
+[02-Mar-2026 22:22:29 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[02-Mar-2026 22:22:29 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[02-Mar-2026 22:48:50 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 2331
+[02-Mar-2026 22:48:50 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 2253
+[02-Mar-2026 22:58:34 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:58:34 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:58:34 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[02-Mar-2026 22:58:34 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[02-Mar-2026 22:58:34 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[02-Mar-2026 22:58:34 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[03-Mar-2026 00:17:52 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[03-Mar-2026 00:17:52 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[03-Mar-2026 00:17:52 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[03-Mar-2026 00:17:52 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[03-Mar-2026 00:17:52 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[03-Mar-2026 00:17:52 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583

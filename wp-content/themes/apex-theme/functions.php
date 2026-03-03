@@ -66,6 +66,267 @@ function apex_register_success_stories_cpt() {
 add_action('init', 'apex_register_success_stories_cpt');
 
 /**
+ * ============================================================
+ * APEX NEWS - Custom Post Type, Taxonomy, Admin, Quick Edit
+ * ============================================================
+ */
+
+/**
+ * Register Apex News Custom Post Type
+ */
+function apex_register_news_cpt() {
+    $labels = [
+        'name'                  => 'News Items',
+        'singular_name'         => 'News Item',
+        'menu_name'             => 'News & Updates',
+        'name_admin_bar'        => 'News Item',
+        'add_new'               => 'Add New',
+        'add_new_item'          => 'Add New News Item',
+        'new_item'              => 'New News Item',
+        'edit_item'             => 'Edit News Item',
+        'view_item'             => 'View News Item',
+        'all_items'             => 'All News Items',
+        'search_items'          => 'Search News Items',
+        'not_found'             => 'No news items found.',
+        'not_found_in_trash'    => 'No news items found in Trash.',
+        'featured_image'        => 'Featured Image',
+        'set_featured_image'    => 'Set featured image',
+        'remove_featured_image' => 'Remove featured image',
+        'use_featured_image'    => 'Use as featured image',
+    ];
+
+    $args = [
+        'label'         => 'News Items',
+        'description'   => 'News and updates for the About Us > News page',
+        'labels'        => $labels,
+        'supports'      => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'],
+        'hierarchical'  => false,
+        'public'        => true,
+        'show_ui'       => true,
+        'show_in_menu'  => true,
+        'menu_position' => 6,
+        'menu_icon'     => 'dashicons-megaphone',
+        'show_in_rest'  => true,
+        'has_archive'   => false,
+        'rewrite'       => ['slug' => 'news-item', 'with_front' => false],
+    ];
+
+    register_post_type('apex_news', $args);
+}
+add_action('init', 'apex_register_news_cpt');
+
+/**
+ * Register News Category Taxonomy
+ */
+function apex_register_news_category_taxonomy() {
+    $labels = [
+        'name'          => 'News Categories',
+        'singular_name' => 'News Category',
+        'menu_name'     => 'Categories',
+        'all_items'     => 'All Categories',
+        'edit_item'     => 'Edit Category',
+        'update_item'   => 'Update Category',
+        'add_new_item'  => 'Add New Category',
+        'new_item_name' => 'New Category Name',
+        'search_items'  => 'Search Categories',
+        'not_found'     => 'No categories found.',
+    ];
+
+    $args = [
+        'hierarchical'       => true,
+        'labels'             => $labels,
+        'show_ui'            => true,
+        'show_admin_column'  => true,
+        'show_in_quick_edit' => true,
+        'query_var'          => true,
+        'rewrite'            => ['slug' => 'news-category', 'with_front' => false],
+        'public'             => true,
+        'show_in_nav_menus'  => false,
+        'show_tagcloud'      => false,
+        'show_in_rest'       => true,
+    ];
+
+    register_taxonomy('news_category', 'apex_news', $args);
+}
+add_action('init', 'apex_register_news_category_taxonomy');
+
+/**
+ * Create default News Category terms
+ */
+function apex_create_default_news_categories() {
+    $categories = [
+        'Product'  => 'product',
+        'Company'  => 'company',
+        'Industry' => 'industry',
+    ];
+    foreach ($categories as $name => $slug) {
+        if (!term_exists($slug, 'news_category')) {
+            wp_insert_term($name, 'news_category', ['slug' => $slug]);
+        }
+    }
+}
+add_action('init', 'apex_create_default_news_categories', 20);
+
+/**
+ * Add Featured meta box for apex_news
+ */
+function apex_news_add_meta_boxes() {
+    add_meta_box(
+        'apex_news_featured',
+        'Featured Story',
+        'apex_news_featured_meta_box_callback',
+        'apex_news',
+        'side',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'apex_news_add_meta_boxes');
+
+function apex_news_featured_meta_box_callback($post) {
+    wp_nonce_field('apex_news_featured_nonce', 'apex_news_featured_nonce_field');
+    $is_featured = get_post_meta($post->ID, '_apex_news_featured', true);
+    ?>
+    <label>
+        <input type="checkbox" name="apex_news_featured" value="1" <?php checked($is_featured, '1'); ?>>
+        Mark as Featured Story
+    </label>
+    <p class="description" style="margin-top:6px;">The featured story appears prominently at the top of the News &amp; Updates page. Only the most recently published featured item is shown.</p>
+    <?php
+}
+
+/**
+ * Save Featured meta box and Quick Edit
+ */
+function apex_news_save_post_meta($post_id) {
+    if (isset($_POST['apex_news_featured_nonce_field'])) {
+        if (!wp_verify_nonce($_POST['apex_news_featured_nonce_field'], 'apex_news_featured_nonce')) return;
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+        if (!current_user_can('edit_post', $post_id)) return;
+        $featured = isset($_POST['apex_news_featured']) ? '1' : '0';
+        update_post_meta($post_id, '_apex_news_featured', $featured);
+    }
+    if (isset($_POST['_inline_edit']) && wp_verify_nonce($_POST['_inline_edit'], 'inlineeditnonce')) {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+        if (!current_user_can('edit_post', $post_id)) return;
+        $featured = isset($_POST['apex_news_featured']) ? '1' : '0';
+        update_post_meta($post_id, '_apex_news_featured', $featured);
+    }
+}
+add_action('save_post_apex_news', 'apex_news_save_post_meta');
+
+/**
+ * Custom admin columns for apex_news
+ */
+function apex_news_custom_columns($columns) {
+    $new = [];
+    foreach ($columns as $key => $label) {
+        $new[$key] = $label;
+        if ($key === 'title') {
+            $new['news_category']      = 'Category';
+            $new['apex_news_featured'] = 'Featured';
+        }
+    }
+    return $new;
+}
+add_filter('manage_apex_news_posts_columns', 'apex_news_custom_columns');
+
+function apex_news_render_custom_column($column, $post_id) {
+    if ($column === 'news_category') {
+        $terms = get_the_terms($post_id, 'news_category');
+        if ($terms && !is_wp_error($terms)) {
+            echo esc_html(implode(', ', wp_list_pluck($terms, 'name')));
+        } else {
+            echo '<span style="color:#999;">—</span>';
+        }
+    }
+    if ($column === 'apex_news_featured') {
+        $featured = get_post_meta($post_id, '_apex_news_featured', true);
+        echo $featured === '1'
+            ? '<span style="color:#f97316;font-size:18px;" title="Featured Story">&#9733;</span>'
+            : '<span style="color:#ccc;font-size:18px;" title="Not featured">&#9734;</span>';
+    }
+}
+add_action('manage_apex_news_posts_custom_column', 'apex_news_render_custom_column', 10, 2);
+
+/**
+ * Make Featured column sortable
+ */
+function apex_news_sortable_columns($columns) {
+    $columns['apex_news_featured'] = 'apex_news_featured';
+    return $columns;
+}
+add_filter('manage_edit-apex_news_sortable_columns', 'apex_news_sortable_columns');
+
+/**
+ * Quick Edit: add Featured checkbox for apex_news
+ */
+function apex_news_quick_edit_custom_box($column_name, $post_type) {
+    if ($post_type !== 'apex_news' || $column_name !== 'apex_news_featured') return;
+    ?>
+    <fieldset class="inline-edit-col-right">
+        <div class="inline-edit-col">
+            <label class="alignleft">
+                <input type="checkbox" name="apex_news_featured" value="1">
+                <span class="checkbox-title">Mark as Featured Story</span>
+            </label>
+        </div>
+    </fieldset>
+    <?php
+}
+add_action('quick_edit_custom_box', 'apex_news_quick_edit_custom_box', 10, 2);
+
+/**
+ * Populate Quick Edit Featured checkbox via JS
+ */
+function apex_news_admin_footer_scripts() {
+    global $current_screen;
+    if (!$current_screen || $current_screen->id !== 'edit-apex_news') return;
+    ?>
+    <script>
+    (function($) {
+        var $wp_inline_edit = inlineEditPost.edit;
+        inlineEditPost.edit = function(id) {
+            $wp_inline_edit.apply(this, arguments);
+            var postId = typeof id === 'object'
+                ? parseInt($(id).closest('tr').attr('id').replace('post-', ''))
+                : parseInt(id);
+            if (!postId) return;
+            var $row     = $('#post-' + postId);
+            var $editRow = $('#edit-' + postId);
+            var isFeatured = $row.find('.column-apex_news_featured span[title="Featured Story"]').length > 0;
+            $editRow.find('input[name="apex_news_featured"]').prop('checked', isFeatured);
+        };
+    })(jQuery);
+    </script>
+    <?php
+}
+add_action('admin_footer', 'apex_news_admin_footer_scripts');
+
+/**
+ * Rewrite rule for News page pagination
+ */
+function apex_news_page_rewrite_rules() {
+    $page = get_page_by_path('about-us/news');
+    if ($page) {
+        add_rewrite_rule(
+            '^about-us/news/page/([0-9]+)/?$',
+            'index.php?page_id=' . $page->ID . '&paged=$matches[1]',
+            'top'
+        );
+    }
+}
+add_action('init', 'apex_news_page_rewrite_rules', 30);
+
+/**
+ * Register news_cat as a public query var
+ */
+function apex_news_query_vars($vars) {
+    $vars[] = 'news_cat';
+    return $vars;
+}
+add_filter('query_vars', 'apex_news_query_vars');
+
+/**
  * Register Success Story Categories Taxonomy
  */
 function apex_register_success_story_categories() {
@@ -594,6 +855,548 @@ function apex_register_webinar_library_cpt() {
     register_post_type('webinar_library', $args);
 }
 add_action('init', 'apex_register_webinar_library_cpt');
+
+/**
+ * Register Whitepaper Reports Custom Post Type (Publications)
+ */
+function apex_register_whitepaper_report_cpt() {
+    $labels = [
+        'name'                  => 'Publications',
+        'singular_name'         => 'Publication',
+        'menu_name'             => 'Publications',
+        'name_admin_bar'        => 'Publication',
+        'add_new'               => 'Add New Publication',
+        'add_new_item'          => 'Add New Publication',
+        'new_item'              => 'New Publication',
+        'edit_item'             => 'Edit Publication',
+        'view_item'             => 'View Publication',
+        'all_items'             => 'All Publications',
+        'search_items'          => 'Search Publications',
+        'not_found'             => 'No publications found.',
+        'not_found_in_trash'    => 'No publications found in Trash.',
+        'featured_image'        => 'Cover Image',
+        'set_featured_image'    => 'Set cover image',
+        'remove_featured_image' => 'Remove cover image',
+        'use_featured_image'    => 'Use as cover image',
+    ];
+
+    $args = [
+        'label'         => 'Publications',
+        'description'   => 'Whitepapers, industry reports, implementation guides, and benchmark studies',
+        'labels'        => $labels,
+        'supports'      => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'],
+        'hierarchical'  => false,
+        'public'        => true,
+        'show_ui'       => true,
+        'show_in_menu'  => true,
+        'menu_position' => 27,
+        'menu_icon'     => 'dashicons-media-document',
+        'show_in_rest'  => true,
+        'has_archive'   => false,
+        'rewrite'       => ['slug' => 'publication', 'with_front' => false],
+    ];
+
+    register_post_type('whitepaper_report', $args);
+}
+add_action('init', 'apex_register_whitepaper_report_cpt');
+
+/**
+ * Register Report Category Taxonomy
+ */
+function apex_register_report_category_taxonomy() {
+    $labels = [
+        'name'          => 'Report Categories',
+        'singular_name' => 'Report Category',
+        'menu_name'     => 'Categories',
+        'all_items'     => 'All Categories',
+        'edit_item'     => 'Edit Category',
+        'view_item'     => 'View Category',
+        'update_item'   => 'Update Category',
+        'add_new_item'  => 'Add New Category',
+        'new_item_name' => 'New Category Name',
+        'search_items'  => 'Search Categories',
+        'not_found'     => 'No categories found.',
+    ];
+
+    $args = [
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'show_in_menu'      => true,
+        'query_var'         => true,
+        'rewrite'           => ['slug' => 'report-category', 'with_front' => false],
+        'public'            => true,
+        'show_in_nav_menus' => false,
+        'show_tagcloud'     => false,
+        'show_in_rest'      => true,
+    ];
+
+    register_taxonomy('report_category', 'whitepaper_report', $args);
+}
+add_action('init', 'apex_register_report_category_taxonomy');
+
+/**
+ * Create default taxonomy terms for report categories
+ */
+function apex_create_default_report_terms() {
+    $categories = [
+        'Industry Reports'      => 'industry-reports',
+        'Whitepapers'           => 'whitepapers',
+        'Implementation Guides' => 'implementation-guides',
+        'Benchmark Studies'     => 'benchmark-studies',
+    ];
+    foreach ($categories as $name => $slug) {
+        if (!term_exists($slug, 'report_category')) {
+            wp_insert_term($name, 'report_category', ['slug' => $slug]);
+        }
+    }
+}
+add_action('init', 'apex_create_default_report_terms', 20);
+
+/**
+ * Add Custom Research submenu under Publications menu
+ */
+function apex_add_custom_research_submenu() {
+    add_submenu_page(
+        'edit.php?post_type=whitepaper_report',
+        'Custom Research Section',
+        'Custom Research',
+        'edit_posts',
+        'apex-custom-research',
+        'apex_render_custom_research_page'
+    );
+}
+add_action('admin_menu', 'apex_add_custom_research_submenu');
+
+/**
+ * ============================================================
+ * WHITEPAPER REPORTS - Meta Boxes
+ * ============================================================
+ */
+
+/**
+ * Add Publication Details meta box
+ */
+function apex_add_whitepaper_report_meta_boxes() {
+    add_meta_box(
+        'apex_whitepaper_report_details',
+        'Publication Details',
+        'apex_whitepaper_report_details_callback',
+        'whitepaper_report',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'apex_add_whitepaper_report_meta_boxes');
+
+/**
+ * Render Publication Details meta box
+ */
+function apex_whitepaper_report_details_callback($post) {
+    wp_nonce_field('apex_whitepaper_report_nonce', 'apex_whitepaper_report_nonce_field');
+
+    $publish_date   = get_post_meta($post->ID, '_report_publish_date', true);
+    $pages          = get_post_meta($post->ID, '_report_pages', true);
+    $format         = get_post_meta($post->ID, '_report_format', true) ?: 'PDF';
+    $download_url   = get_post_meta($post->ID, '_report_download_url', true);
+    $download_count = get_post_meta($post->ID, '_report_download_count', true);
+    $is_featured    = get_post_meta($post->ID, '_report_is_featured', true);
+    $key_findings   = get_post_meta($post->ID, '_report_key_findings', true);
+    ?>
+    <div class="apex-meta-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <p>
+            <label for="report_publish_date"><strong>Publication Date:</strong></label><br>
+            <input type="date" id="report_publish_date" name="report_publish_date"
+                   value="<?php echo esc_attr($publish_date); ?>" class="regular-text" />
+            <span class="description">Displayed on the frontend as e.g. "January 2026".</span>
+        </p>
+
+        <p>
+            <label for="report_pages"><strong>Number of Pages:</strong></label><br>
+            <input type="number" id="report_pages" name="report_pages"
+                   value="<?php echo esc_attr($pages); ?>" class="regular-text" min="1"
+                   placeholder="e.g., 42" />
+        </p>
+
+        <p>
+            <label for="report_format"><strong>Format:</strong></label><br>
+            <select id="report_format" name="report_format" class="regular-text">
+                <?php foreach (['PDF', 'PDF + Excel', 'Interactive PDF', 'Slides'] as $fmt) : ?>
+                    <option value="<?php echo esc_attr($fmt); ?>" <?php selected($format, $fmt); ?>><?php echo esc_html($fmt); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </p>
+
+        <p>
+            <label for="report_download_count"><strong>Download Count:</strong></label><br>
+            <input type="number" id="report_download_count" name="report_download_count"
+                   value="<?php echo esc_attr($download_count); ?>" class="regular-text" min="0"
+                   placeholder="e.g., 1250" />
+            <span class="description">Shown in the publications grid.</span>
+        </p>
+
+        <p style="grid-column: 1 / -1;">
+            <label for="report_download_url"><strong>Download URL:</strong></label><br>
+            <input type="url" id="report_download_url" name="report_download_url"
+                   value="<?php echo esc_attr($download_url); ?>" class="widefat"
+                   placeholder="https://example.com/report.pdf" />
+            <span class="description">Direct link to the PDF or downloadable file. Used by the Download button.</span>
+        </p>
+
+        <p style="grid-column: 1 / -1;">
+            <label for="report_key_findings"><strong>Key Findings (Featured Report display only):</strong></label><br>
+            <textarea id="report_key_findings" name="report_key_findings"
+                      class="widefat" rows="5"
+                      placeholder="Mobile banking adoption grew 45% year-over-year&#10;AI-powered services now used by 60% of institutions"><?php echo esc_textarea($key_findings); ?></textarea>
+            <span class="description">One finding per line. Only shown when this publication is the Featured Report.</span>
+        </p>
+
+        <p style="grid-column: 1 / -1;">
+            <label>
+                <input type="checkbox" id="report_is_featured" name="report_is_featured"
+                       value="1" <?php checked($is_featured, '1'); ?> />
+                <strong>Feature this publication (shown in the "Featured Report" section at the top of the Whitepapers & Reports page)</strong>
+            </label>
+            <span class="description" style="display:block;margin-top:4px;">Only one publication can be featured at a time — enabling this will unfeature any previously featured publication.</span>
+        </p>
+    </div>
+    <?php
+}
+
+/**
+ * Save Publication Details meta box
+ */
+function apex_save_whitepaper_report_meta($post_id) {
+    if (!isset($_POST['apex_whitepaper_report_nonce_field'])) return;
+    if (!wp_verify_nonce($_POST['apex_whitepaper_report_nonce_field'], 'apex_whitepaper_report_nonce')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    $fields = [
+        'report_publish_date'   => 'sanitize_text_field',
+        'report_pages'          => 'intval',
+        'report_format'         => 'sanitize_text_field',
+        'report_download_url'   => 'esc_url_raw',
+        'report_download_count' => 'intval',
+        'report_key_findings'   => 'sanitize_textarea_field',
+    ];
+
+    foreach ($fields as $field => $sanitize_callback) {
+        if (isset($_POST[$field])) {
+            update_post_meta($post_id, '_' . $field, call_user_func($sanitize_callback, $_POST[$field]));
+        }
+    }
+
+    // Featured — enforce only one at a time
+    $is_featured = !empty($_POST['report_is_featured']);
+    if ($is_featured) {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare(
+            "UPDATE {$wpdb->postmeta} SET meta_value = '0'
+             WHERE meta_key = %s AND meta_value = '1' AND post_id != %d",
+            '_report_is_featured', $post_id
+        ));
+        update_post_meta($post_id, '_report_is_featured', '1');
+    } else {
+        update_post_meta($post_id, '_report_is_featured', '0');
+    }
+}
+add_action('save_post_whitepaper_report', 'apex_save_whitepaper_report_meta');
+
+/**
+ * Custom columns for Whitepaper Reports
+ */
+function apex_manage_whitepaper_report_columns($columns) {
+    $new_columns = [];
+    foreach ($columns as $key => $value) {
+        $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['report_category']     = 'Category';
+            $new_columns['report_publish_date'] = 'Pub. Date';
+            $new_columns['report_pages']        = 'Pages';
+            $new_columns['report_downloads']    = 'Downloads';
+            $new_columns['report_featured']     = 'Featured';
+        }
+    }
+    unset($new_columns['date']);
+    return $new_columns;
+}
+add_filter('manage_edit-whitepaper_report_columns', 'apex_manage_whitepaper_report_columns');
+
+function apex_manage_whitepaper_report_custom_column($column, $post_id) {
+    switch ($column) {
+        case 'report_category':
+            $terms = get_the_terms($post_id, 'report_category');
+            echo ($terms && !is_wp_error($terms)) ? esc_html($terms[0]->name) : '—';
+            break;
+        case 'report_publish_date':
+            $date = get_post_meta($post_id, '_report_publish_date', true);
+            echo $date ? esc_html(date('M j, Y', strtotime($date))) : '—';
+            break;
+        case 'report_pages':
+            $pages = get_post_meta($post_id, '_report_pages', true);
+            echo $pages ? esc_html($pages) . ' pp.' : '—';
+            break;
+        case 'report_downloads':
+            $dl = get_post_meta($post_id, '_report_download_count', true);
+            echo $dl ? number_format(intval($dl)) : '0';
+            break;
+        case 'report_featured':
+            $featured   = get_post_meta($post_id, '_report_is_featured', true);
+            $qe_pubdate = get_post_meta($post_id, '_report_publish_date', true);
+            $qe_pages   = get_post_meta($post_id, '_report_pages', true);
+            $qe_dlurl   = get_post_meta($post_id, '_report_download_url', true);
+            echo '<span class="report-qe-data" style="display:none;"
+                data-featured="' . esc_attr($featured === '1' ? '1' : '0') . '"
+                data-pubdate="' . esc_attr($qe_pubdate) . '"
+                data-pages="' . esc_attr($qe_pages) . '"
+                data-dlurl="' . esc_attr($qe_dlurl) . '"
+            ></span>';
+            echo ($featured === '1') ? '&#11088; Yes' : '&mdash;';
+            break;
+    }
+}
+add_action('manage_whitepaper_report_posts_custom_column', 'apex_manage_whitepaper_report_custom_column', 10, 2);
+
+/**
+ * Make pub date and downloads columns sortable
+ */
+function apex_whitepaper_report_sortable_columns($columns) {
+    $columns['report_publish_date'] = 'report_publish_date';
+    $columns['report_downloads']    = 'report_downloads';
+    return $columns;
+}
+add_filter('manage_edit-whitepaper_report_sortable_columns', 'apex_whitepaper_report_sortable_columns');
+
+function apex_whitepaper_report_admin_orderby($query) {
+    if (!is_admin() || !$query->is_main_query()) return;
+    if ($query->get('post_type') !== 'whitepaper_report') return;
+    if ($query->get('orderby') === 'report_publish_date') {
+        $query->set('meta_key', '_report_publish_date');
+        $query->set('orderby', 'meta_value');
+    } elseif ($query->get('orderby') === 'report_downloads') {
+        $query->set('meta_key', '_report_download_count');
+        $query->set('orderby', 'meta_value_num');
+    }
+}
+add_action('pre_get_posts', 'apex_whitepaper_report_admin_orderby');
+
+/**
+ * Quick Edit box for Whitepaper Reports
+ */
+function apex_whitepaper_report_quick_edit_box($column_name, $post_type) {
+    if ($post_type !== 'whitepaper_report' || $column_name !== 'report_featured') return;
+    wp_nonce_field('apex_whitepaper_report_quick_edit', 'apex_whitepaper_report_qe_nonce');
+    ?>
+    <fieldset class="inline-edit-col-right">
+        <div class="inline-edit-col">
+            <h4 style="margin:0 0 0.6em;font-size:13px;color:#1d2327;">Publication Details</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5em 1.25em;">
+                <label style="display:flex;flex-direction:column;gap:2px;">
+                    <span class="title" style="font-weight:600;font-size:12px;">Publication Date</span>
+                    <input type="date" name="report_publish_date" id="report_qe_publish_date" class="ptitle" value="">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:2px;">
+                    <span class="title" style="font-weight:600;font-size:12px;">Pages</span>
+                    <input type="number" name="report_pages" id="report_qe_pages" class="ptitle" value="" min="1" placeholder="e.g. 42">
+                </label>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:2px;margin-top:0.5em;">
+                <span class="title" style="font-weight:600;font-size:12px;">Download URL</span>
+                <input type="url" name="report_download_url" id="report_qe_download_url" class="ptitle widefat" value="" placeholder="https://example.com/report.pdf">
+            </label>
+            <label style="display:flex;align-items:center;gap:0.5em;margin-top:0.65em;cursor:pointer;">
+                <input type="checkbox" name="report_is_featured" id="report_qe_is_featured" value="1">
+                <span class="checkbox-title" style="font-weight:600;">Featured Publication</span>
+                <em style="color:#777;font-size:11px;">(only one can be featured at a time)</em>
+            </label>
+        </div>
+    </fieldset>
+    <?php
+}
+add_action('quick_edit_custom_box', 'apex_whitepaper_report_quick_edit_box', 10, 2);
+
+/**
+ * JS to populate whitepaper quick edit fields from hidden column data
+ */
+function apex_whitepaper_report_quick_edit_js() {
+    $screen = get_current_screen();
+    if (!$screen || $screen->post_type !== 'whitepaper_report') return;
+    ?>
+    <script>
+    jQuery(function($) {
+        var _edit = inlineEditPost.edit;
+        inlineEditPost.edit = function(id) {
+            _edit.apply(this, arguments);
+            var post_id = typeof id === 'object' ? parseInt(this.getId(id)) : parseInt(id);
+            if (!post_id) return;
+            var $row  = $('#post-' + post_id);
+            var $data = $row.find('.report-qe-data');
+            if (!$data.length) return;
+
+            $('#report_qe_publish_date',  '.inline-edit-row').val($data.data('pubdate') || '');
+            $('#report_qe_pages',         '.inline-edit-row').val($data.data('pages')   || '');
+            $('#report_qe_download_url',  '.inline-edit-row').val($data.data('dlurl')   || '');
+            $('#report_qe_is_featured',   '.inline-edit-row').prop('checked', $data.data('featured') == '1');
+        };
+    });
+    </script>
+    <?php
+}
+add_action('admin_footer-edit.php', 'apex_whitepaper_report_quick_edit_js');
+
+/**
+ * Save quick edit fields for Whitepaper Reports
+ */
+function apex_whitepaper_report_save_quick_edit($post_id, $post) {
+    if ($post->post_type !== 'whitepaper_report') return;
+    if (!isset($_POST['apex_whitepaper_report_qe_nonce']) ||
+        !wp_verify_nonce($_POST['apex_whitepaper_report_qe_nonce'], 'apex_whitepaper_report_quick_edit')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    if (array_key_exists('report_publish_date', $_POST)) {
+        update_post_meta($post_id, '_report_publish_date', sanitize_text_field($_POST['report_publish_date']));
+    }
+    if (array_key_exists('report_pages', $_POST)) {
+        update_post_meta($post_id, '_report_pages', intval($_POST['report_pages']));
+    }
+    if (array_key_exists('report_download_url', $_POST)) {
+        update_post_meta($post_id, '_report_download_url', esc_url_raw($_POST['report_download_url']));
+    }
+
+    // Featured — enforce only one at a time
+    $is_featured = !empty($_POST['report_is_featured']);
+    if ($is_featured) {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare(
+            "UPDATE {$wpdb->postmeta} SET meta_value = '0'
+             WHERE meta_key = %s AND meta_value = '1' AND post_id != %d",
+            '_report_is_featured', $post_id
+        ));
+        update_post_meta($post_id, '_report_is_featured', '1');
+    } else {
+        update_post_meta($post_id, '_report_is_featured', '0');
+    }
+}
+add_action('save_post', 'apex_whitepaper_report_save_quick_edit', 10, 2);
+
+/**
+ * ============================================================
+ * CUSTOM RESEARCH - Admin Page
+ * ============================================================
+ */
+
+/**
+ * Render Custom Research admin page
+ */
+function apex_render_custom_research_page() {
+    if (isset($_POST['apex_save_custom_research']) && check_admin_referer('apex_save_custom_research_nonce', 'apex_custom_research_nonce')) {
+        $fields = [
+            'apex_reports_custom_badge_insights-whitepapers-reports'       => 'sanitize_text_field',
+            'apex_reports_custom_heading_insights-whitepapers-reports'     => 'sanitize_text_field',
+            'apex_reports_custom_description_insights-whitepapers-reports' => 'sanitize_textarea_field',
+            'apex_reports_custom_services_insights-whitepapers-reports'    => 'sanitize_textarea_field',
+            'apex_reports_custom_link_insights-whitepapers-reports'        => 'esc_url_raw',
+            'apex_reports_custom_image_insights-whitepapers-reports'       => 'esc_url_raw',
+        ];
+        foreach ($fields as $key => $cb) {
+            if (isset($_POST[$key])) {
+                update_option($key, call_user_func($cb, $_POST[$key]));
+            }
+        }
+        echo '<div class="notice notice-success is-dismissible"><p>Custom Research section saved successfully!</p></div>';
+    }
+
+    $badge       = get_option('apex_reports_custom_badge_insights-whitepapers-reports', 'Custom Research');
+    $heading     = get_option('apex_reports_custom_heading_insights-whitepapers-reports', 'Need Custom Research?');
+    $description = get_option('apex_reports_custom_description_insights-whitepapers-reports', 'Our research team can conduct custom studies tailored to your specific needs, including market analysis, competitive benchmarking, and feasibility studies.');
+    $services    = get_option('apex_reports_custom_services_insights-whitepapers-reports', "Market Analysis | Deep-dive into specific markets or segments\nCompetitive Benchmarking | Compare your performance against peers\nFeasibility Studies | Assess viability of new initiatives");
+    $link        = get_option('apex_reports_custom_link_insights-whitepapers-reports', home_url('/contact'));
+    $image       = get_option('apex_reports_custom_image_insights-whitepapers-reports', 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500');
+    ?>
+    <div class="wrap">
+        <h1>Custom Research Section</h1>
+        <p>Manage the "Custom Research" CTA section on the <a href="<?php echo esc_url(home_url('/insights/whitepapers-reports')); ?>" target="_blank">Whitepapers &amp; Reports</a> page.</p>
+
+        <form method="post" action="">
+            <?php wp_nonce_field('apex_save_custom_research_nonce', 'apex_custom_research_nonce'); ?>
+
+            <div style="background: #fef3c7; padding: 15px; margin-bottom: 20px; border: 1px solid #f59e0b; border-radius: 6px;">
+                <h3 style="margin-top: 0;">📋 Services Format Guide</h3>
+                <p><strong>Enter one service per line:</strong></p>
+                <code>Service Title | Short description of the service</code>
+                <p style="margin-bottom: 0;"><strong>Example:</strong><br>
+                <code>Market Analysis | Deep-dive into specific markets or segments</code></p>
+            </div>
+
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="cr_badge">Badge Text</label></th>
+                    <td>
+                        <input type="text" id="cr_badge"
+                               name="apex_reports_custom_badge_insights-whitepapers-reports"
+                               value="<?php echo esc_attr($badge); ?>" class="regular-text">
+                        <p class="description">Small label shown above the heading (e.g. "Custom Research").</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="cr_heading">Heading</label></th>
+                    <td>
+                        <input type="text" id="cr_heading"
+                               name="apex_reports_custom_heading_insights-whitepapers-reports"
+                               value="<?php echo esc_attr($heading); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="cr_description">Description</label></th>
+                    <td>
+                        <textarea id="cr_description"
+                                  name="apex_reports_custom_description_insights-whitepapers-reports"
+                                  class="large-text" rows="3"><?php echo esc_textarea($description); ?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="cr_services">Services List</label></th>
+                    <td>
+                        <textarea id="cr_services"
+                                  name="apex_reports_custom_services_insights-whitepapers-reports"
+                                  class="large-text" rows="7" style="font-family: monospace;"
+                                  placeholder="Service Title | Service description"><?php echo esc_textarea($services); ?></textarea>
+                        <p class="description">Format: <code>Service Title | Short description</code>. One service per line. Up to 3 icons are available.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="cr_link">CTA Button URL</label></th>
+                    <td>
+                        <input type="url" id="cr_link"
+                               name="apex_reports_custom_link_insights-whitepapers-reports"
+                               value="<?php echo esc_attr($link); ?>" class="regular-text"
+                               placeholder="https://example.com/contact">
+                        <p class="description">URL for the "Request Custom Research" button.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="cr_image">Section Image URL</label></th>
+                    <td>
+                        <input type="url" id="cr_image"
+                               name="apex_reports_custom_image_insights-whitepapers-reports"
+                               value="<?php echo esc_attr($image); ?>" class="regular-text"
+                               placeholder="https://example.com/image.jpg">
+                        <?php if ($image) : ?>
+                            <br><img src="<?php echo esc_url($image); ?>" style="max-width:200px;margin-top:8px;border-radius:4px;border:1px solid #ddd;">
+                        <?php endif; ?>
+                        <p class="description">Image displayed on the right side of the section (~500px wide recommended).</p>
+                    </td>
+                </tr>
+            </table>
+
+            <?php submit_button('Save Custom Research Section', 'primary', 'apex_save_custom_research'); ?>
+        </form>
+    </div>
+    <?php
+}
 
 /**
  * Register Webinar Library Category Taxonomy
@@ -3333,9 +4136,9 @@ add_action('after_switch_theme', 'apex_flush_rewrite_rules');
  * One-time flush for development (remove in production)
  */
 function apex_maybe_flush_rules() {
-    if (get_option('apex_rewrite_rules_flushed') !== '7') {
+    if (get_option('apex_rewrite_rules_flushed') !== '8') {
         flush_rewrite_rules();
-        update_option('apex_rewrite_rules_flushed', '7');
+        update_option('apex_rewrite_rules_flushed', '8');
     }
 }
 add_action('init', 'apex_maybe_flush_rules', 20);
@@ -13043,27 +13846,39 @@ add_filter('query_vars', 'apex_about_us_query_vars');
 function apex_about_us_template_redirect() {
     $request_uri = trim($_SERVER['REQUEST_URI'], '/');
     $request_uri = strtok($request_uri, '?');
-    
-    // Map of about-us URLs to their templates
+
+    // Map of about-us slugs to their templates
     $about_templates = [
-        'about-us' => 'page-about-us-overview.php',
-        'about-us/' => 'page-about-us-overview.php',
-        'about-us/overview' => 'page-about-us-overview.php',
-        'about-us/overview/' => 'page-about-us-overview.php',
+        'about-us'              => 'page-about-us-overview.php',
+        'about-us/overview'     => 'page-about-us-overview.php',
         'about-us/our-approach' => 'page-about-us-our-approach.php',
-        'about-us/our-approach/' => 'page-about-us-our-approach.php',
         'about-us/leadership-team' => 'page-about-us-leadership-team.php',
-        'about-us/leadership-team/' => 'page-about-us-leadership-team.php',
-        'about-us/news' => 'page-about-us-news.php',
-        'about-us/news/' => 'page-about-us-news.php',
+        'about-us/news'         => 'page-about-us-news.php',
     ];
-    
-    if (isset($about_templates[$request_uri])) {
-        // Set proper headers
+
+    $clean_uri = rtrim($request_uri, '/');
+
+    // Handle paginated URLs like about-us/news/page/2
+    $paged = 1;
+    if (preg_match('#^(about-us/[a-z-]+)/page/(\d+)/?$#', $clean_uri, $matches)) {
+        $clean_uri = $matches[1];
+        $paged = intval($matches[2]);
+    }
+
+    if (isset($about_templates[$clean_uri])) {
+        // Reset 404 status and set proper headers
+        global $wp_query;
+        $wp_query->is_404 = false;
+        $wp_query->is_page = true;
         status_header(200);
-        
+        header('HTTP/1.1 200 OK');
+
+        // Set the paged query var so WP_Query can use it
+        set_query_var('paged', $paged);
+        $GLOBALS['paged'] = $paged;
+
         // Load the template directly
-        $template = get_template_directory() . '/' . $about_templates[$request_uri];
+        $template = get_template_directory() . '/' . $about_templates[$clean_uri];
         if (file_exists($template)) {
             include($template);
             exit;
@@ -13268,6 +14083,20 @@ function apex_support_template_redirect() {
     }
 }
 add_action('template_redirect', 'apex_support_template_redirect', 1);
+
+/**
+ * Load single-news-item.php for apex_news CPT single posts
+ */
+function apex_news_single_template($template) {
+    if (is_singular('apex_news')) {
+        $custom = locate_template('single-news-item.php');
+        if ($custom) {
+            return $custom;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'apex_news_single_template');
 
 /**
  * Custom template for About Us pages (fallback)
