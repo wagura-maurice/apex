@@ -43,7 +43,8 @@ task('release:application', function () {
     run('find {{release_path}} -type d -exec chmod 755 {} \;');
     
     // Set permissions on shared uploads directory
-    run('chmod -R 775 {{deploy_path}}/shared/wp-content/uploads');
+    run('sudo chown -R deployer:www-data {{deploy_path}}/shared/wp-content/uploads');
+    run('sudo chmod -R 775 {{deploy_path}}/shared/wp-content/uploads');
 })->once();
 
 // [Optional] if deploy fails automatically unlock.
