@@ -1844,3 +1844,28 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ========================================
+   Single Insight Blog – Sidebar & Comments
+   ======================================== */
+
+/* Force sidebar to fill the full grid column width */
+.sn-body__side .side-column {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Horizontal padding for body wrap on small/medium screens */
+@media (max-width: 1280px) {
+    .sn-body__wrap {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Comments section spacing inside article */
+.sn-body__comments {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+}
