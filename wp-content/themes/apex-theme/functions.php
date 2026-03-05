@@ -1689,7 +1689,8 @@ function apex_manage_webinar_event_custom_column($column, $post_id) {
         case 'event_featured':
             $featured  = get_post_meta($post_id, '_webinar_event_featured', true) ? '1' : '0';
             $spk_names = get_post_meta($post_id, '_webinar_event_speakers', true);
-            echo '<span data-featured="' . $featured . '" data-speakers="' . esc_attr($spk_names) . '">' . ($featured === '1' ? '⭐ Yes' : '—') . '</span>';
+            $reg_url   = get_post_meta($post_id, '_webinar_event_registration_url', true);
+            echo '<span data-featured="' . $featured . '" data-speakers="' . esc_attr($spk_names) . '" data-registration-url="' . esc_attr($reg_url) . '">' . ($featured === '1' ? '⭐ Yes' : '—') . '</span>';
             break;
     }
 }
@@ -1768,6 +1769,10 @@ function apex_webinar_event_quick_edit_box($column_name, $post_type) {
                     <input type="time" name="webinar_event_end_time" id="webinar_event_end_time" class="ptitle" value="">
                 </label>
             </div>
+            <label style="display:block;margin-bottom:0.75em;">
+                <span class="title">Registration URL</span>
+                <input type="url" name="webinar_event_registration_url" id="webinar_event_registration_url" class="ptitle" value="" placeholder="https://example.com/register" style="width:100%;">
+            </label>
             <label class="alignleft" style="display:flex;align-items:center;gap:0.4em;">
                 <input type="checkbox" name="webinar_event_featured" id="webinar_event_featured" value="1">
                 <span class="checkbox-title" style="font-weight:600;">Featured Event</span>
@@ -1818,15 +1823,18 @@ function apex_webinar_event_quick_edit_js() {
             if (!post_id) return;
             var $row = $('#post-' + post_id);
             // Event date
-            var date_raw = $row.find('.column-event_date').data('date') || '';
+            var date_raw = $row.find('.column-event_date span').data('date') || '';
             $('#webinar_event_date', '.inline-edit-row').val(date_raw);
             // Event time
-            var time_raw = $row.find('.column-event_time').data('time') || '';
+            var time_raw = $row.find('.column-event_time span').data('time') || '';
             $('#webinar_event_start_time', '.inline-edit-row').val(time_raw);
-            var end_time_raw = $row.find('.column-event_time').data('endtime') || '';
+            var end_time_raw = $row.find('.column-event_time span').data('endtime') || '';
             $('#webinar_event_end_time', '.inline-edit-row').val(end_time_raw);
+            // Registration URL
+            var reg_url = $row.find('.column-event_featured span').data('registration-url') || '';
+            $('#webinar_event_registration_url', '.inline-edit-row').val(reg_url);
             // Featured
-            var is_featured = $row.find('.column-event_featured').data('featured') == '1';
+            var is_featured = $row.find('.column-event_featured span').data('featured') == '1';
             $('#webinar_event_featured', '.inline-edit-row').prop('checked', is_featured);
             // Speakers
             var speakers_raw = $row.find('.column-event_featured span').data('speakers') || '';
@@ -1861,6 +1869,10 @@ function apex_webinar_event_save_quick_edit($post_id, $post) {
     // End time
     if (array_key_exists('webinar_event_end_time', $_POST)) {
         update_post_meta($post_id, '_webinar_event_end_time', sanitize_text_field($_POST['webinar_event_end_time']));
+    }
+    // Registration URL
+    if (array_key_exists('webinar_event_registration_url', $_POST)) {
+        update_post_meta($post_id, '_webinar_event_registration_url', esc_url_raw($_POST['webinar_event_registration_url']));
     }
     // Speakers (checkbox array — hidden sentinel ensures clearing when none selected)
     if (isset($_POST['webinar_event_speakers_submitted'])) {
@@ -2338,44 +2350,25 @@ function apex_handle_newsletter_form_submission() {
             wp_die('Security check failed!');
         }
 
-        // Sanitize and validate form data
-        $email = sanitize_email($_POST['email'] ?? '');
+        $email  = sanitize_email($_POST['email'] ?? '');
+        $source = sanitize_text_field($_POST['apex_newsletter_source'] ?? 'Website Newsletter Form');
 
         error_log("Apex Newsletter Form: Processing newsletter subscription from {$email}");
 
-        // Basic validation
         if (empty($email)) {
-            error_log('Apex Newsletter Form: Validation failed - missing email');
             wp_redirect(home_url('/?newsletter_error=missing_email'));
             exit;
         }
-
         if (!is_email($email)) {
-            error_log('Apex Newsletter Form: Invalid email address: ' . $email);
             wp_redirect(home_url('/?newsletter_error=invalid_email'));
             exit;
         }
 
-        // Send email notification using the same email system as contact form
-        error_log('Apex Newsletter Form: Attempting to send notification email');
-        
-        $email_sent = apex_send_email_direct([
-            'to' => 'info@apex-softwares.com',
-            'subject' => 'New Newsletter Subscription from ' . $email,
-            'html_content' => apex_create_newsletter_email_html([
-                'email' => $email,
-                'submission_date' => current_time('F j, Y, g:i a'),
-                'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'Unknown'
-            ])
-        ]);
+        $result = apex_newsletter_send_confirmation($email, $source, $_SERVER['REMOTE_ADDR'] ?? 'Unknown');
 
-        error_log('Apex Newsletter Form: Notification email sending result: ' . ($email_sent ? 'SUCCESS' : 'FAILED'));
-
-        if ($email_sent) {
-            error_log('Apex Newsletter Form: Notification email sent successfully');
+        if ($result) {
             wp_redirect(home_url('/?newsletter_success=1'));
         } else {
-            error_log('Apex Newsletter Form: Notification email sending failed');
             wp_redirect(home_url('/?newsletter_error=send_failed'));
         }
         exit;
@@ -2384,49 +2377,178 @@ function apex_handle_newsletter_form_submission() {
 add_action('init', 'apex_handle_newsletter_form_submission');
 
 /**
- * AJAX handler for newsletter form submission
+ * Handle double opt-in confirmation click: ?apex_confirm=TOKEN
+ */
+function apex_newsletter_process_confirmation() {
+    if (!isset($_GET['apex_confirm'])) {
+        return;
+    }
+    $token = sanitize_text_field($_GET['apex_confirm']);
+    $pending = get_transient('apex_pending_sub_' . $token);
+
+    if (!$pending) {
+        wp_die('<h2 style="font-family:sans-serif;text-align:center;margin-top:60px;">This confirmation link has expired or is invalid.<br><a href="' . esc_url(home_url('/')) . '">Return Home</a></h2>');
+    }
+
+    $email  = $pending['email'];
+    $source = $pending['source'];
+    $ip     = $pending['ip'];
+
+    // Store confirmed subscriber with full metadata
+    $confirmed = get_option('apex_confirmed_subscribers', []);
+    $already   = false;
+    foreach ($confirmed as $entry) {
+        if (is_array($entry) && isset($entry['email']) && $entry['email'] === $email) {
+            $already = true;
+            break;
+        }
+        // legacy plain-string entries
+        if (!is_array($entry) && $entry === $email) {
+            $already = true;
+            break;
+        }
+    }
+    if (!$already) {
+        $confirmed[] = [
+            'email'        => $email,
+            'source'       => $source,
+            'ip'           => $ip,
+            'confirmed_at' => current_time('Y-m-d H:i:s'),
+        ];
+        update_option('apex_confirmed_subscribers', $confirmed);
+    }
+
+    // Delete the pending transient
+    delete_transient('apex_pending_sub_' . $token);
+
+    error_log("Apex Newsletter: Confirmed subscription for {$email}");
+
+    // Notify company
+    apex_send_email_direct([
+        'to'           => 'info@apex-softwares.com',
+        'subject'      => 'New Confirmed Newsletter Subscriber: ' . $email,
+        'html_content' => apex_create_newsletter_email_html([
+            'email'           => $email,
+            'submission_date' => current_time('F j, Y, g:i a'),
+            'ip_address'      => $ip,
+            'source'          => $source,
+        ]),
+    ]);
+
+    wp_die('<div style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;max-width:520px;margin:80px auto;text-align:center;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:40px;">
+        <div style="font-size:56px;">&#10003;</div>
+        <h2 style="color:#166534;margin:16px 0 8px;">Subscription Confirmed!</h2>
+        <p style="color:#15803d;margin:0 0 24px;">Thank you for confirming. You are now subscribed to Apex Softwares insights.</p>
+        <a href="' . esc_url(home_url('/')) . '" style="background:#16a34a;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;">Go to Homepage</a>
+    </div>');
+}
+add_action('init', 'apex_newsletter_process_confirmation');
+
+/**
+ * Handle unsubscribe click: ?apex_unsubscribe=TOKEN
+ */
+function apex_newsletter_process_unsubscribe() {
+    if (!isset($_GET['apex_unsubscribe'])) {
+        return;
+    }
+    $token   = sanitize_text_field($_GET['apex_unsubscribe']);
+    $pending = get_transient('apex_pending_sub_' . $token);
+
+    if ($pending) {
+        delete_transient('apex_pending_sub_' . $token);
+        error_log("Apex Newsletter: Unsubscribe request for {$pending['email']}");
+    }
+
+    // Also remove from confirmed list if present
+    if ($pending) {
+        $confirmed = get_option('apex_confirmed_subscribers', []);
+        $confirmed = array_filter($confirmed, function($e) use ($pending) { return $e !== $pending['email']; });
+        update_option('apex_confirmed_subscribers', array_values($confirmed));
+    }
+
+    wp_die('<div style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;max-width:520px;margin:80px auto;text-align:center;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:40px;">
+        <div style="font-size:56px;">&#128075;</div>
+        <h2 style="color:#9a3412;margin:16px 0 8px;">You\'ve opted out</h2>
+        <p style="color:#c2410c;margin:0 0 24px;">Your subscription request has been cancelled. You will not receive any newsletters from us.</p>
+        <a href="' . esc_url(home_url('/')) . '" style="background:#ea580c;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;">Go to Homepage</a>
+    </div>');
+}
+add_action('init', 'apex_newsletter_process_unsubscribe');
+
+/**
+ * Core double opt-in helper: generate token, store transient, send confirmation email to subscriber
+ */
+function apex_newsletter_send_confirmation($email, $source, $ip) {
+    $token = bin2hex(random_bytes(32));
+    set_transient('apex_pending_sub_' . $token, [
+        'email'  => $email,
+        'source' => $source,
+        'ip'     => $ip,
+        'created'=> time(),
+    ], 48 * HOUR_IN_SECONDS);
+
+    $confirm_url     = add_query_arg('apex_confirm', $token, home_url('/'));
+    $unsubscribe_url = add_query_arg('apex_unsubscribe', $token, home_url('/'));
+
+    error_log("Apex Newsletter: Sending confirmation email to {$email}");
+
+    $sent = apex_send_email_direct([
+        'to'           => $email,
+        'to_name'      => '',
+        'subject'      => 'Please confirm your subscription to Apex Softwares',
+        'html_content' => apex_create_subscriber_confirmation_email_html([
+            'email'           => $email,
+            'confirm_url'     => $confirm_url,
+            'unsubscribe_url' => $unsubscribe_url,
+            'source'          => $source,
+        ]),
+    ]);
+
+    // Also notify company immediately about the pending subscription request
+    if ($sent) {
+        apex_send_email_direct([
+            'to'           => 'info@apex-softwares.com',
+            'subject'      => 'New Newsletter Subscription Request (Pending Confirmation): ' . $email,
+            'html_content' => apex_create_newsletter_email_html([
+                'email'           => $email,
+                'submission_date' => current_time('F j, Y, g:i a'),
+                'ip_address'      => $ip,
+                'source'          => $source . ' (Pending Double Opt-In Confirmation)',
+            ]),
+        ]);
+    }
+
+    return $sent;
+}
+
+/**
+ * AJAX handler for newsletter form submission (double opt-in)
  */
 function apex_newsletter_ajax_handler() {
-    // Verify nonce for security
     if (!isset($_POST['apex_newsletter_nonce']) || !wp_verify_nonce($_POST['apex_newsletter_nonce'], 'apex_newsletter_form')) {
         wp_send_json_error(['message' => 'Security check failed!']);
     }
 
-    // Sanitize and validate form data
-    $email = sanitize_email($_POST['email'] ?? '');
+    $email  = sanitize_email($_POST['email'] ?? '');
+    $source = sanitize_text_field($_POST['apex_newsletter_source'] ?? 'Website Newsletter Form');
 
-    error_log("Apex Newsletter AJAX: Processing newsletter subscription from {$email}");
+    error_log("Apex Newsletter AJAX: Processing subscription from {$email} (source: {$source})");
 
-    // Basic validation
     if (empty($email)) {
         wp_send_json_error(['message' => 'Please enter your email address.']);
     }
-
     if (!is_email($email)) {
         wp_send_json_error(['message' => 'Please enter a valid email address.']);
     }
 
-    // Send email notification using the same email system as contact form
-    error_log('Apex Newsletter AJAX: Attempting to send notification email');
-    
-    $email_sent = apex_send_email_direct([
-        'to' => 'info@apex-softwares.com',
-        'subject' => 'New Newsletter Subscription from ' . $email,
-        'html_content' => apex_create_newsletter_email_html([
-            'email' => $email,
-            'submission_date' => current_time('F j, Y, g:i a'),
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'Unknown'
-        ])
-    ]);
+    $sent = apex_newsletter_send_confirmation($email, $source, $_SERVER['REMOTE_ADDR'] ?? 'Unknown');
 
-    error_log('Apex Newsletter AJAX: Notification email sending result: ' . ($email_sent ? 'SUCCESS' : 'FAILED'));
+    error_log('Apex Newsletter AJAX: Confirmation email result: ' . ($sent ? 'SUCCESS' : 'FAILED'));
 
-    if ($email_sent) {
-        error_log('Apex Newsletter AJAX: Notification email sent successfully');
-        wp_send_json_success(['message' => 'Thank you for subscribing! Check your email for confirmation.']);
+    if ($sent) {
+        wp_send_json_success(['message' => 'Almost there! Please check your inbox and click the confirmation link to complete your subscription.']);
     } else {
-        error_log('Apex Newsletter AJAX: Notification email sending failed');
-        wp_send_json_error(['message' => 'Failed to subscribe. Please try again later.']);
+        wp_send_json_error(['message' => 'Failed to send confirmation email. Please try again later.']);
     }
 }
 add_action('wp_ajax_apex_newsletter_submit', 'apex_newsletter_ajax_handler');
@@ -2653,8 +2775,9 @@ function apex_send_email_direct($args) {
         ini_set('sendmail_path', '');
 
         // Recipients
-        $mail->setFrom('contact@apex-softwares.com', 'Apex Contact Form');
-        $mail->addAddress($args['to'], 'Apex Softwares');
+        $mail->setFrom('contact@apex-softwares.com', 'Apex Softwares');
+        $to_name = isset($args['to_name']) ? $args['to_name'] : '';
+        $mail->addAddress($args['to'], $to_name);
 
         // Content
         $mail->isHTML(true);
@@ -2983,20 +3106,20 @@ function apex_create_newsletter_email_html($data) {
                     <div class="field-label">Submission Information</div>
                     <p class="field-value"><strong>Submitted:</strong> <?php echo esc_html($data['submission_date']); ?></p>
                     <p class="field-value"><strong>IP Address:</strong> <?php echo esc_html($data['ip_address']); ?></p>
-                    <p class="field-value"><strong>Source:</strong> Apex Website Footer Newsletter Form</p>
+                    <p class="field-value"><strong>Source:</strong> <?php echo esc_html(!empty($data['source']) ? $data['source'] : 'Apex Website Newsletter Form'); ?></p>
                 </div>
                 
                 <div class="field-group">
                     <div class="field-label">Next Steps</div>
-                    <p class="field-value">✅ This email has been added to your newsletter list</p>
-                    <p class="field-value">📧 Consider sending a welcome email to the subscriber</p>
-                    <p class="field-value">🔄 Add this contact to your email marketing platform</p>
+                    <p class="field-value">&#9989; Subscriber has double opt-in confirmed their subscription</p>
+                    <p class="field-value">&#128231; Consider sending a welcome email to the subscriber</p>
+                    <p class="field-value">&#128260; Add this contact to your email marketing platform</p>
                 </div>
             </div>
             
             <div class="footer">
                 <p>This email was sent from the Apex Softwares website newsletter form.</p>
-                <p>The subscriber has opted-in to receive your newsletter and updates.</p>
+                <p>The subscriber has confirmed their opt-in to receive your newsletter and updates.</p>
             </div>
         </div>
     </body>
@@ -3004,6 +3127,508 @@ function apex_create_newsletter_email_html($data) {
     <?php
     return ob_get_clean();
 }
+
+/**
+ * Create HTML confirmation email sent to subscriber for double opt-in
+ */
+function apex_create_subscriber_confirmation_email_html($data) {
+    $confirm_url     = esc_url($data['confirm_url']);
+    $unsubscribe_url = esc_url($data['unsubscribe_url']);
+    $email           = esc_html($data['email']);
+    $source          = esc_html(!empty($data['source']) ? $data['source'] : 'Apex Softwares website');
+    ob_start();
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Confirm your subscription – Apex Softwares</title>
+    </head>
+    <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,sans-serif;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f1f5f9;padding:40px 20px;">
+            <tr>
+                <td align="center">
+                    <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+                        <!-- Header -->
+                        <tr>
+                            <td style="background:linear-gradient(135deg,#1e3a5f 0%,#2d6a9f 100%);padding:36px 40px;text-align:center;">
+                                <div style="font-size:28px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">Apex Softwares</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Digital Banking Solutions</div>
+                            </td>
+                        </tr>
+
+                        <!-- Hero message -->
+                        <tr>
+                            <td style="padding:40px 40px 0;text-align:center;">
+                                <div style="width:64px;height:64px;background:linear-gradient(135deg,#e0f2fe,#bfdbfe);border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:64px;">&#9993;</div>
+                                <h1 style="margin:0 0 12px;font-size:26px;font-weight:700;color:#0f172a;line-height:1.3;">One step to go!</h1>
+                                <p style="margin:0;font-size:16px;color:#475569;line-height:1.6;">Please confirm your email address to complete your subscription to Apex Softwares insights and updates.</p>
+                            </td>
+                        </tr>
+
+                        <!-- Instruction box -->
+                        <tr>
+                            <td style="padding:28px 40px 0;">
+                                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:24px;">
+                                    <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">What happens next</p>
+                                    <p style="margin:0;font-size:15px;color:#334155;line-height:1.7;">Click the button below to verify your email address. This confirms you want to subscribe and ensures you receive our updates. If you did not sign up, you can safely ignore this email or click Unsubscribe.</p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Confirm button -->
+                        <tr>
+                            <td style="padding:32px 40px;text-align:center;">
+                                <a href="<?php echo $confirm_url; ?>"
+                                   style="display:inline-block;background:linear-gradient(135deg,#1e3a5f 0%,#2d6a9f 100%);color:#ffffff;text-decoration:none;font-size:17px;font-weight:700;padding:16px 44px;border-radius:8px;letter-spacing:0.3px;box-shadow:0 4px 14px rgba(30,58,95,0.35);">
+                                    &#10003;&nbsp; Confirm Subscription
+                                </a>
+                                <p style="margin:16px 0 0;font-size:13px;color:#94a3b8;">Button not working? Copy and paste this link into your browser:</p>
+                                <p style="margin:6px 0 0;font-size:12px;color:#2d6a9f;word-break:break-all;"><?php echo $confirm_url; ?></p>
+                            </td>
+                        </tr>
+
+                        <!-- Divider -->
+                        <tr>
+                            <td style="padding:0 40px;">
+                                <hr style="border:none;border-top:1px solid #e2e8f0;margin:0;">
+                            </td>
+                        </tr>
+
+                        <!-- Subscriber info -->
+                        <tr>
+                            <td style="padding:24px 40px;">
+                                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                        <td style="font-size:13px;color:#64748b;">
+                                            <strong style="color:#334155;">Subscribing address:</strong> <?php echo $email; ?>
+                                        </td>
+                                        <td style="font-size:13px;color:#64748b;text-align:right;">
+                                            <strong style="color:#334155;">Source:</strong> <?php echo $source; ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <!-- Unsubscribe section -->
+                        <tr>
+                            <td style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:20px 40px;text-align:center;border-radius:0 0 12px 12px;">
+                                <p style="margin:0 0 10px;font-size:13px;color:#64748b;">Not interested? No problem — you were never subscribed.</p>
+                                <a href="<?php echo $unsubscribe_url; ?>"
+                                   style="display:inline-block;color:#94a3b8;font-size:13px;text-decoration:underline;">
+                                    Unsubscribe / Cancel this request
+                                </a>
+                                <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;">This link expires in 48 hours &nbsp;|&nbsp; Apex Softwares, Digital Banking Solutions</p>
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Render a reusable newsletter subscription section (HTML + inline JS)
+ *
+ * @param array $args {
+ *   'form_id'         string  Unique HTML id for the <form> element
+ *   'heading'         string  Section heading text
+ *   'description'     string  Subheading / description text
+ *   'placeholder'     string  Email input placeholder
+ *   'button_text'     string  Submit button label
+ *   'note'            string  Small print below the form
+ *   'source'          string  Hidden source identifier sent with the AJAX request
+ *   'css_prefix'      string  BEM block prefix, default 'apex-blog-newsletter'
+ * }
+ */
+function apex_render_newsletter_section($args = []) {
+    $args = wp_parse_args($args, [
+        'form_id'     => 'newsletter-form-section',
+        'heading'     => 'Stay Updated',
+        'description' => 'Subscribe to our newsletter for the latest insights and updates.',
+        'placeholder' => 'Enter your email address',
+        'button_text' => 'Subscribe',
+        'note'        => 'Unsubscribe at any time.',
+        'source'      => 'Apex Website Newsletter Form',
+        'css_prefix'  => 'apex-blog-newsletter',
+    ]);
+
+    $p           = esc_attr($args['css_prefix']);
+    $form_id     = esc_attr($args['form_id']);
+    $notif_id    = esc_attr($args['form_id'] . '-notification');
+    $ajax_url    = esc_url(admin_url('admin-ajax.php'));
+    $source      = esc_attr($args['source']);
+    $msg_class   = esc_attr($args['css_prefix'] . '__notification-message');
+    $close_class = esc_attr($args['css_prefix'] . '__notification-close');
+    ?>
+<section class="<?php echo $p; ?>">
+    <div class="<?php echo $p; ?>__container">
+        <div class="<?php echo $p; ?>__content">
+            <h2 class="<?php echo $p; ?>__heading"><?php echo esc_html($args['heading']); ?></h2>
+            <p class="<?php echo $p; ?>__description"><?php echo esc_html($args['description']); ?></p>
+
+            <div id="<?php echo $notif_id; ?>" class="<?php echo $p; ?>__notification" style="display:none;">
+                <div class="<?php echo $p; ?>__notification-content">
+                    <span class="<?php echo $p; ?>__notification-icon"></span>
+                    <span class="<?php echo $p; ?>__notification-message"></span>
+                    <button type="button" class="<?php echo $p; ?>__notification-close" aria-label="Close">&times;</button>
+                </div>
+            </div>
+
+            <form class="<?php echo $p; ?>__form apex-newsletter-form"
+                  id="<?php echo $form_id; ?>"
+                  data-notification="<?php echo $notif_id; ?>"
+                  data-msg-class="<?php echo $msg_class; ?>"
+                  data-close-class="<?php echo $close_class; ?>">
+                <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
+                <input type="hidden" name="apex_newsletter_source" value="<?php echo $source; ?>">
+                <input type="email" name="email" placeholder="<?php echo esc_attr($args['placeholder']); ?>" required>
+                <button type="submit"><?php echo esc_html($args['button_text']); ?></button>
+            </form>
+
+            <p class="<?php echo $p; ?>__note"><?php echo esc_html($args['note']); ?></p>
+        </div>
+    </div>
+</section>
+    <?php
+}
+
+/**
+ * Register the Newsletter Subscribers admin menu page
+ */
+function apex_newsletter_admin_menu() {
+    add_menu_page(
+        'Newsletter Subscribers',
+        'Subscribers',
+        'manage_options',
+        'apex-newsletter-subscribers',
+        'apex_newsletter_admin_page',
+        'dashicons-email-alt',
+        30
+    );
+}
+add_action('admin_menu', 'apex_newsletter_admin_menu');
+
+/**
+ * Handle CSV export of confirmed subscribers
+ */
+function apex_newsletter_handle_csv_export() {
+    if (!is_admin()) return;
+    if (!isset($_GET['page']) || $_GET['page'] !== 'apex-newsletter-subscribers') return;
+    if (!isset($_GET['apex_export_csv']) || $_GET['apex_export_csv'] !== '1') return;
+    if (!current_user_can('manage_options')) wp_die('Unauthorized');
+    if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'apex_export_csv')) {
+        wp_die('Security check failed.');
+    }
+
+    $confirmed = get_option('apex_confirmed_subscribers', []);
+
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="apex-subscribers-' . date('Y-m-d') . '.csv"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
+    $output = fopen('php://output', 'w');
+    fputcsv($output, ['#', 'Email', 'Source', 'IP Address', 'Confirmed At']);
+
+    $i = 1;
+    foreach ($confirmed as $entry) {
+        if (is_array($entry)) {
+            fputcsv($output, [
+                $i++,
+                $entry['email']        ?? '',
+                $entry['source']       ?? '',
+                $entry['ip']           ?? '',
+                $entry['confirmed_at'] ?? '',
+            ]);
+        } else {
+            fputcsv($output, [$i++, $entry, '', '', '']);
+        }
+    }
+    fclose($output);
+    exit;
+}
+add_action('admin_init', 'apex_newsletter_handle_csv_export');
+
+/**
+ * Handle single subscriber deletion
+ */
+function apex_newsletter_handle_delete() {
+    if (!is_admin()) return;
+    if (!isset($_GET['page']) || $_GET['page'] !== 'apex-newsletter-subscribers') return;
+    if (!isset($_GET['apex_delete_subscriber'])) return;
+    if (!current_user_can('manage_options')) wp_die('Unauthorized');
+    if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'apex_delete_subscriber')) {
+        wp_die('Security check failed.');
+    }
+
+    $email_to_delete = sanitize_email($_GET['apex_delete_subscriber']);
+    $confirmed = get_option('apex_confirmed_subscribers', []);
+    $confirmed = array_values(array_filter($confirmed, function($entry) use ($email_to_delete) {
+        if (is_array($entry)) return $entry['email'] !== $email_to_delete;
+        return $entry !== $email_to_delete;
+    }));
+    update_option('apex_confirmed_subscribers', $confirmed);
+
+    wp_redirect(admin_url('admin.php?page=apex-newsletter-subscribers&deleted=1'));
+    exit;
+}
+add_action('admin_init', 'apex_newsletter_handle_delete');
+
+/**
+ * Render the Newsletter Subscribers admin page
+ */
+function apex_newsletter_admin_page() {
+    if (!current_user_can('manage_options')) return;
+
+    $confirmed = get_option('apex_confirmed_subscribers', []);
+    $total     = count($confirmed);
+
+    // Search filter
+    $search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
+    if ($search) {
+        $confirmed = array_values(array_filter($confirmed, function($entry) use ($search) {
+            $email  = is_array($entry) ? ($entry['email']  ?? '') : $entry;
+            $source = is_array($entry) ? ($entry['source'] ?? '') : '';
+            return stripos($email, $search) !== false || stripos($source, $search) !== false;
+        }));
+    }
+
+    // Sort: newest first
+    usort($confirmed, function($a, $b) {
+        $da = is_array($a) ? ($a['confirmed_at'] ?? '1970-01-01') : '1970-01-01';
+        $db = is_array($b) ? ($b['confirmed_at'] ?? '1970-01-01') : '1970-01-01';
+        return strcmp($db, $da);
+    });
+
+    // Pagination
+    $per_page    = 10;
+    $current_page = max(1, intval($_GET['paged'] ?? 1));
+    $total_filtered = count($confirmed);
+    $total_pages = max(1, ceil($total_filtered / $per_page));
+    $current_page = min($current_page, $total_pages);
+    $slice = array_slice($confirmed, ($current_page - 1) * $per_page, $per_page);
+
+    $export_url = wp_nonce_url(
+        admin_url('admin.php?page=apex-newsletter-subscribers&apex_export_csv=1'),
+        'apex_export_csv'
+    );
+
+    $deleted_msg = isset($_GET['deleted']) ? '<div class="notice notice-success is-dismissible"><p>Subscriber removed.</p></div>' : '';
+    ?>
+    <div class="wrap">
+        <h1 class="wp-heading-inline" style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:28px;">📬</span> Newsletter Subscribers
+        </h1>
+        <a href="<?php echo esc_url($export_url); ?>" class="page-title-action" style="margin-left:12px;">
+            ⬇ Export CSV
+        </a>
+        <hr class="wp-header-end">
+
+        <?php echo $deleted_msg; ?>
+
+        <!-- Stats bar -->
+        <div style="display:flex;gap:20px;margin:20px 0;flex-wrap:wrap;">
+            <div style="background:#fff;border:1px solid #c3c4c7;border-radius:8px;padding:18px 28px;min-width:160px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);">
+                <div style="font-size:32px;font-weight:700;color:#1e3a5f;"><?php echo $total; ?></div>
+                <div style="font-size:13px;color:#646970;margin-top:4px;">Total Confirmed</div>
+            </div>
+            <?php
+            // Source breakdown
+            $sources = [];
+            foreach (get_option('apex_confirmed_subscribers', []) as $entry) {
+                $src = is_array($entry) ? ($entry['source'] ?? 'Unknown') : 'Unknown';
+                $sources[$src] = ($sources[$src] ?? 0) + 1;
+            }
+            arsort($sources);
+            $top = array_slice($sources, 0, 3, true);
+            foreach ($top as $src => $cnt) :
+            ?>
+            <div style="background:#fff;border:1px solid #c3c4c7;border-radius:8px;padding:18px 28px;min-width:160px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);">
+                <div style="font-size:26px;font-weight:700;color:#2d6a9f;"><?php echo $cnt; ?></div>
+                <div style="font-size:12px;color:#646970;margin-top:4px;max-width:140px;word-break:break-word;"><?php echo esc_html(str_replace('Apex Website ', '', $src)); ?></div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Search form -->
+        <form method="get" style="margin-bottom:16px;">
+            <input type="hidden" name="page" value="apex-newsletter-subscribers">
+            <input type="search" name="s" value="<?php echo esc_attr($search); ?>"
+                   placeholder="Search by email or source…"
+                   style="width:280px;padding:6px 10px;border:1px solid #c3c4c7;border-radius:4px;">
+            <button type="submit" class="button">Search</button>
+            <?php if ($search) : ?>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=apex-newsletter-subscribers')); ?>" class="button">Clear</a>
+            <?php endif; ?>
+        </form>
+
+        <?php if (empty($confirmed)) : ?>
+            <div style="background:#fff;border:1px solid #c3c4c7;border-radius:8px;padding:40px;text-align:center;color:#646970;">
+                <?php echo $search ? 'No subscribers match your search.' : 'No confirmed subscribers yet.'; ?>
+            </div>
+        <?php else : ?>
+
+        <p style="color:#646970;font-size:13px;margin:0 0 8px;">
+            Showing <?php echo count($slice); ?> of <?php echo $total_filtered; ?> subscriber<?php echo $total_filtered !== 1 ? 's' : ''; ?><?php echo $search ? ' matching "' . esc_html($search) . '"' : ''; ?>
+        </p>
+
+        <table class="wp-list-table widefat fixed striped" style="border-radius:8px;overflow:hidden;">
+            <thead>
+                <tr style="background:#1e3a5f;">
+                    <th style="width:40px;color:#fff;background:#1e3a5f;">#</th>
+                    <th style="color:#fff;background:#1e3a5f;">Email</th>
+                    <th style="color:#fff;background:#1e3a5f;">Source</th>
+                    <th style="width:140px;color:#fff;background:#1e3a5f;">IP Address</th>
+                    <th style="width:160px;color:#fff;background:#1e3a5f;">Confirmed At</th>
+                    <th style="width:80px;color:#fff;background:#1e3a5f;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            $row_start = ($current_page - 1) * $per_page + 1;
+            foreach ($slice as $idx => $entry) :
+                if (is_array($entry)) {
+                    $e_email  = $entry['email']        ?? '—';
+                    $e_source = $entry['source']       ?? '—';
+                    $e_ip     = $entry['ip']           ?? '—';
+                    $e_date   = $entry['confirmed_at'] ?? '—';
+                } else {
+                    $e_email  = $entry;
+                    $e_source = '—';
+                    $e_ip     = '—';
+                    $e_date   = '—';
+                }
+                $delete_url = wp_nonce_url(
+                    admin_url('admin.php?page=apex-newsletter-subscribers&apex_delete_subscriber=' . urlencode($e_email)),
+                    'apex_delete_subscriber'
+                );
+            ?>
+                <tr>
+                    <td style="color:#646970;"><?php echo $row_start + $idx; ?></td>
+                    <td>
+                        <strong><?php echo esc_html($e_email); ?></strong>
+                        <div class="row-actions">
+                            <span><a href="mailto:<?php echo esc_attr($e_email); ?>">Email</a></span>
+                        </div>
+                    </td>
+                    <td style="font-size:12px;color:#646970;"><?php echo esc_html($e_source); ?></td>
+                    <td style="font-size:12px;color:#646970;font-family:monospace;"><?php echo esc_html($e_ip); ?></td>
+                    <td style="font-size:12px;color:#646970;">
+                        <?php echo $e_date !== '—' ? esc_html(date('M j, Y g:i a', strtotime($e_date))) : '—'; ?>
+                    </td>
+                    <td>
+                        <a href="<?php echo esc_url($delete_url); ?>"
+                           onclick="return confirm('Remove <?php echo esc_js($e_email); ?> from subscribers?');"
+                           style="color:#d63638;font-size:12px;text-decoration:none;">Remove</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <?php if ($total_pages > 1) : ?>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <?php for ($p = 1; $p <= $total_pages; $p++) :
+                $page_url = add_query_arg([
+                    'page'  => 'apex-newsletter-subscribers',
+                    'paged' => $p,
+                    's'     => $search,
+                ], admin_url('admin.php'));
+            ?>
+            <a href="<?php echo esc_url($page_url); ?>"
+               style="display:inline-block;padding:5px 11px;border:1px solid <?php echo $p === $current_page ? '#1e3a5f' : '#c3c4c7'; ?>;border-radius:4px;background:<?php echo $p === $current_page ? '#1e3a5f' : '#fff'; ?>;color:<?php echo $p === $current_page ? '#fff' : '#2c3338'; ?>;text-decoration:none;font-size:13px;">
+                <?php echo $p; ?>
+            </a>
+            <?php endfor; ?>
+        </div>
+        <?php endif; ?>
+
+        <?php endif; ?>
+    </div>
+    <?php
+}
+
+/**
+ * Output the single shared newsletter JS handler via wp_footer (handles all .apex-newsletter-form instances)
+ */
+function apex_newsletter_shared_js() {
+    $ajax_url = esc_url(admin_url('admin-ajax.php'));
+    ?>
+<script>
+(function() {
+    'use strict';
+    function apexNewsletterInit(form) {
+        var notifId    = form.getAttribute('data-notification');
+        var msgClass   = form.getAttribute('data-msg-class')   || 'apex-blog-newsletter__notification-message';
+        var closeClass = form.getAttribute('data-close-class') || 'apex-blog-newsletter__notification-close';
+        var notification = document.getElementById(notifId);
+        if (!notification) return;
+
+        function showMsg(type, message) {
+            notification.classList.remove('success', 'error');
+            notification.classList.add(type);
+            var msgEl = notification.querySelector('.' + msgClass.replace(/ /g, '.'));
+            if (msgEl) msgEl.textContent = message;
+            notification.style.display = 'block';
+            if (type === 'success') setTimeout(function() { notification.style.display = 'none'; }, 6000);
+        }
+
+        var closeBtn = notification.querySelector('.' + closeClass.replace(/ /g, '.'));
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() { notification.style.display = 'none'; });
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            form.classList.add('loading');
+            var fd = new FormData();
+            var emailInput = form.querySelector('input[type="email"]');
+            fd.append('email', emailInput ? emailInput.value : '');
+            fd.append('action', 'apex_newsletter_submit');
+            var nonceField = form.querySelector('input[name="apex_newsletter_nonce"]');
+            if (nonceField) fd.append('apex_newsletter_nonce', nonceField.value);
+            var sourceField = form.querySelector('input[name="apex_newsletter_source"]');
+            if (sourceField) fd.append('apex_newsletter_source', sourceField.value);
+
+            fetch('<?php echo $ajax_url; ?>', { method: 'POST', body: fd })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    form.classList.remove('loading');
+                    if (data.success) {
+                        showMsg('success', data.data.message);
+                        form.reset();
+                    } else {
+                        showMsg('error', (data.data && data.data.message) ? data.data.message : 'An error occurred. Please try again.');
+                    }
+                })
+                .catch(function() {
+                    form.classList.remove('loading');
+                    showMsg('error', 'An error occurred. Please try again.');
+                });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var forms = document.querySelectorAll('.apex-newsletter-form');
+        for (var i = 0; i < forms.length; i++) {
+            apexNewsletterInit(forms[i]);
+        }
+    });
+})();
+</script>
+    <?php
+}
+add_action('wp_footer', 'apex_newsletter_shared_js');
 
 /**
  * Create HTML email template for demo request form submissions

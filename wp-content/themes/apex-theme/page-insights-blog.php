@@ -320,67 +320,17 @@ apex_render_about_hero([
     </div>
 </section>
 
-<section class="apex-blog-newsletter">
-    <div class="apex-blog-newsletter__container">
-        <div class="apex-blog-newsletter__content">
-            <h2 class="apex-blog-newsletter__heading"><?php echo esc_html(get_option('apex_blog_newsletter_heading_insights-blog', 'Get Insights Delivered')); ?></h2>
-            <p class="apex-blog-newsletter__description"><?php echo esc_html(get_option('apex_blog_newsletter_description_insights-blog', 'Subscribe to our weekly newsletter for the latest articles, industry news, and exclusive insights from our team of experts.')); ?></p>
-            
-            <div id="blog-newsletter-notification" class="apex-blog-newsletter__notification" style="display:none;">
-                <div class="apex-blog-newsletter__notification-content">
-                    <span class="apex-blog-newsletter__notification-icon"></span>
-                    <span class="apex-blog-newsletter__notification-message"></span>
-                    <button type="button" class="apex-blog-newsletter__notification-close" aria-label="Close">×</button>
-                </div>
-            </div>
-
-            <form class="apex-blog-newsletter__form" id="blog-newsletter-form">
-                <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
-                <input type="email" placeholder="<?php echo esc_attr(get_option('apex_blog_newsletter_placeholder_insights-blog', 'Enter your email address')); ?>" required>
-                <button type="submit"><?php echo esc_html(get_option('apex_blog_newsletter_button_insights-blog', 'Subscribe')); ?></button>
-            </form>
-            
-            <p class="apex-blog-newsletter__note"><?php echo esc_html(get_option('apex_blog_newsletter_note_insights-blog', 'Join 10,000+ subscribers. Unsubscribe at any time.')); ?></p>
-        </div>
-    </div>
-</section>
+<?php
+apex_render_newsletter_section([
+    'form_id'     => 'blog-newsletter-form',
+    'heading'     => get_option('apex_blog_newsletter_heading_insights-blog', 'Get Insights Delivered'),
+    'description' => get_option('apex_blog_newsletter_description_insights-blog', 'Subscribe to our weekly newsletter for the latest articles, industry news, and exclusive insights from our team of experts.'),
+    'placeholder' => get_option('apex_blog_newsletter_placeholder_insights-blog', 'Enter your email address'),
+    'button_text' => get_option('apex_blog_newsletter_button_insights-blog', 'Subscribe'),
+    'note'        => get_option('apex_blog_newsletter_note_insights-blog', 'Join 10,000+ subscribers. Unsubscribe at any time.'),
+    'source'      => 'Apex Website Blog Newsletter Form',
+    'css_prefix'  => 'apex-blog-newsletter',
+]);
+?>
 
 <?php get_footer(); ?>
-
-<script>
-(function() {
-    var form = document.getElementById('blog-newsletter-form');
-    if (!form) return;
-    var notification = document.getElementById('blog-newsletter-notification');
-    function showMsg(type, message) {
-        notification.classList.remove('success', 'error');
-        notification.classList.add(type);
-        notification.querySelector('.apex-blog-newsletter__notification-message').textContent = message;
-        notification.style.display = 'block';
-        if (type === 'success') setTimeout(function() { notification.style.display = 'none'; }, 5000);
-    }
-    notification.querySelector('.apex-blog-newsletter__notification-close').addEventListener('click', function() {
-        notification.style.display = 'none';
-    });
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        form.classList.add('loading');
-        var fd = new FormData();
-        fd.append('email', form.querySelector('input[type="email"]').value);
-        fd.append('action', 'apex_newsletter_submit');
-        var nonce = form.querySelector('input[name="apex_newsletter_nonce"]');
-        if (nonce) fd.append('apex_newsletter_nonce', nonce.value);
-        fetch('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', { method: 'POST', body: fd })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                form.classList.remove('loading');
-                if (data.success) { showMsg('success', data.data.message); form.reset(); }
-                else { showMsg('error', data.data.message || 'An error occurred. Please try again.'); }
-            })
-            .catch(function() {
-                form.classList.remove('loading');
-                showMsg('error', 'An error occurred. Please try again.');
-            });
-    });
-})();
-</script>

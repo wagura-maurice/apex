@@ -583,3 +583,253 @@
 (
 )
 
+[05-Mar-2026 16:54:21 UTC] Apex Newsletter AJAX: Processing newsletter subscription from wagura465@gmail.com
+[05-Mar-2026 16:54:21 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[05-Mar-2026 16:54:21 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 16:54:27 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 16:54:27 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[05-Mar-2026 16:54:27 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[05-Mar-2026 16:56:56 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[05-Mar-2026 16:56:56 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[05-Mar-2026 16:56:56 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[05-Mar-2026 16:56:56 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[05-Mar-2026 16:56:56 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[05-Mar-2026 16:56:56 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[05-Mar-2026 17:03:00 UTC] Apex Newsletter AJAX: Processing newsletter subscription from wagura465@gmail.com
+[05-Mar-2026 17:03:00 UTC] Apex Newsletter AJAX: Attempting to send notification email
+[05-Mar-2026 17:03:00 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:03:06 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:03:06 UTC] Apex Newsletter AJAX: Notification email sending result: SUCCESS
+[05-Mar-2026 17:03:06 UTC] Apex Newsletter AJAX: Notification email sent successfully
+[05-Mar-2026 17:10:20 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[05-Mar-2026 17:10:20 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[05-Mar-2026 17:10:20 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[05-Mar-2026 17:10:20 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[05-Mar-2026 17:10:20 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[05-Mar-2026 17:10:20 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[05-Mar-2026 17:22:11 UTC] Apex Newsletter AJAX: Processing subscription from business@waguramaurice.com (source: Apex Website Webinars Newsletter Form)
+[05-Mar-2026 17:22:11 UTC] Apex Newsletter: Sending confirmation email to business@waguramaurice.com
+[05-Mar-2026 17:22:11 UTC] Apex Direct Email: Attempting to send email to business@waguramaurice.com
+[05-Mar-2026 17:22:15 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:22:15 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:27:39 UTC] Apex Newsletter AJAX: Processing subscription from business@waguramaurice.com (source: Apex Website Webinars Newsletter Form)
+[05-Mar-2026 17:27:39 UTC] Apex Newsletter: Sending confirmation email to business@waguramaurice.com
+[05-Mar-2026 17:27:39 UTC] Apex Direct Email: Attempting to send email to business@waguramaurice.com
+[05-Mar-2026 17:27:44 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:27:44 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:28:00 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[05-Mar-2026 17:28:00 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[05-Mar-2026 17:28:00 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[05-Mar-2026 17:28:00 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[05-Mar-2026 17:28:00 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[05-Mar-2026 17:28:00 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[05-Mar-2026 17:28:08 UTC] Apex Newsletter AJAX: Processing subscription from wagura465@gmail.com (source: Apex Website Success Stories Newsletter Form)
+[05-Mar-2026 17:28:08 UTC] Apex Newsletter: Sending confirmation email to wagura465@gmail.com
+[05-Mar-2026 17:28:08 UTC] Apex Direct Email: Attempting to send email to wagura465@gmail.com
+[05-Mar-2026 17:28:13 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:28:13 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:30:49 UTC] Apex Newsletter AJAX: Processing subscription from business@waguramaurice.com (source: Apex Website Success Stories Newsletter Form)
+[05-Mar-2026 17:30:49 UTC] Apex Newsletter: Sending confirmation email to business@waguramaurice.com
+[05-Mar-2026 17:30:49 UTC] Apex Direct Email: Attempting to send email to business@waguramaurice.com
+[05-Mar-2026 17:30:54 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:30:54 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:30:59 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:30:59 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:31:23 UTC] Apex Newsletter: Confirmed subscription for business@waguramaurice.com
+[05-Mar-2026 17:31:23 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:31:28 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:31:40 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[05-Mar-2026 17:31:40 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[05-Mar-2026 17:31:45 UTC] Apex Newsletter AJAX: Processing subscription from wagura465@gmail.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:31:45 UTC] Apex Newsletter: Sending confirmation email to wagura465@gmail.com
+[05-Mar-2026 17:31:45 UTC] Apex Direct Email: Attempting to send email to wagura465@gmail.com
+[05-Mar-2026 17:31:50 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:31:50 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:31:54 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:31:54 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:32:11 UTC] Apex Newsletter: Confirmed subscription for wagura465@gmail.com
+[05-Mar-2026 17:32:11 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:32:16 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:33:54 UTC] Apex Newsletter AJAX: Processing subscription from qylugixyfi@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:33:54 UTC] Apex Newsletter: Sending confirmation email to qylugixyfi@mailinator.com
+[05-Mar-2026 17:33:54 UTC] Apex Direct Email: Attempting to send email to qylugixyfi@mailinator.com
+[05-Mar-2026 17:33:58 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:33:58 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:34:02 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:34:02 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:34:03 UTC] Apex Newsletter: Confirmed subscription for qylugixyfi@mailinator.com
+[05-Mar-2026 17:34:03 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:34:07 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:34:19 UTC] Apex Newsletter AJAX: Processing subscription from lewataty@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:34:19 UTC] Apex Newsletter: Sending confirmation email to lewataty@mailinator.com
+[05-Mar-2026 17:34:19 UTC] Apex Direct Email: Attempting to send email to lewataty@mailinator.com
+[05-Mar-2026 17:34:23 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:34:23 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:34:27 UTC] Apex Newsletter: Confirmed subscription for lewataty@mailinator.com
+[05-Mar-2026 17:34:27 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:34:28 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:34:28 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:34:31 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:34:47 UTC] Apex Newsletter AJAX: Processing subscription from saze@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:34:47 UTC] Apex Newsletter: Sending confirmation email to saze@mailinator.com
+[05-Mar-2026 17:34:47 UTC] Apex Direct Email: Attempting to send email to saze@mailinator.com
+[05-Mar-2026 17:34:52 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:34:52 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:34:57 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:34:57 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:35:04 UTC] Apex Newsletter: Confirmed subscription for saze@mailinator.com
+[05-Mar-2026 17:35:04 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:35:09 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:35:12 UTC] Apex Newsletter AJAX: Processing subscription from metup@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:35:12 UTC] Apex Newsletter: Sending confirmation email to metup@mailinator.com
+[05-Mar-2026 17:35:12 UTC] Apex Direct Email: Attempting to send email to metup@mailinator.com
+[05-Mar-2026 17:35:16 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:35:16 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:35:20 UTC] Apex Newsletter: Confirmed subscription for metup@mailinator.com
+[05-Mar-2026 17:35:20 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:35:20 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:35:20 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:35:25 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:35:26 UTC] Apex Newsletter AJAX: Processing subscription from vimujujuzo@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:35:26 UTC] Apex Newsletter: Sending confirmation email to vimujujuzo@mailinator.com
+[05-Mar-2026 17:35:26 UTC] Apex Direct Email: Attempting to send email to vimujujuzo@mailinator.com
+[05-Mar-2026 17:35:30 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:35:30 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:35:35 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:35:35 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:35:36 UTC] Apex Newsletter: Confirmed subscription for vimujujuzo@mailinator.com
+[05-Mar-2026 17:35:36 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:35:42 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:02 UTC] Apex Newsletter AJAX: Processing subscription from buluwuwowe@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:36:02 UTC] Apex Newsletter: Sending confirmation email to buluwuwowe@mailinator.com
+[05-Mar-2026 17:36:02 UTC] Apex Direct Email: Attempting to send email to buluwuwowe@mailinator.com
+[05-Mar-2026 17:36:07 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:07 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:36:11 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:11 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:36:16 UTC] Apex Newsletter: Confirmed subscription for buluwuwowe@mailinator.com
+[05-Mar-2026 17:36:16 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:36:21 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:23 UTC] Apex Newsletter AJAX: Processing subscription from wyhaqyca@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:36:23 UTC] Apex Newsletter: Sending confirmation email to wyhaqyca@mailinator.com
+[05-Mar-2026 17:36:23 UTC] Apex Direct Email: Attempting to send email to wyhaqyca@mailinator.com
+[05-Mar-2026 17:36:27 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:27 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:36:31 UTC] Apex Newsletter: Confirmed subscription for wyhaqyca@mailinator.com
+[05-Mar-2026 17:36:31 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:36:32 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:32 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:36:35 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:41 UTC] Apex Newsletter AJAX: Processing subscription from vijinac@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:36:41 UTC] Apex Newsletter: Sending confirmation email to vijinac@mailinator.com
+[05-Mar-2026 17:36:41 UTC] Apex Direct Email: Attempting to send email to vijinac@mailinator.com
+[05-Mar-2026 17:36:46 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:46 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:36:50 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:36:50 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:36:56 UTC] Apex Newsletter: Confirmed subscription for vijinac@mailinator.com
+[05-Mar-2026 17:36:56 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:37:01 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:08 UTC] Apex Newsletter AJAX: Processing subscription from lymuxikax@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:37:08 UTC] Apex Newsletter: Sending confirmation email to lymuxikax@mailinator.com
+[05-Mar-2026 17:37:08 UTC] Apex Direct Email: Attempting to send email to lymuxikax@mailinator.com
+[05-Mar-2026 17:37:12 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:12 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:37:16 UTC] Apex Newsletter: Confirmed subscription for lymuxikax@mailinator.com
+[05-Mar-2026 17:37:16 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:37:17 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:17 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:37:21 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:27 UTC] Apex Newsletter AJAX: Processing subscription from toqocihog@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:37:27 UTC] Apex Newsletter: Sending confirmation email to toqocihog@mailinator.com
+[05-Mar-2026 17:37:27 UTC] Apex Direct Email: Attempting to send email to toqocihog@mailinator.com
+[05-Mar-2026 17:37:31 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:31 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:37:34 UTC] Apex Newsletter: Confirmed subscription for toqocihog@mailinator.com
+[05-Mar-2026 17:37:35 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:37:36 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:36 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:37:39 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:45 UTC] Apex Newsletter AJAX: Processing subscription from mugiwyfylo@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:37:45 UTC] Apex Newsletter: Sending confirmation email to mugiwyfylo@mailinator.com
+[05-Mar-2026 17:37:45 UTC] Apex Direct Email: Attempting to send email to mugiwyfylo@mailinator.com
+[05-Mar-2026 17:37:50 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:50 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:37:53 UTC] Apex Newsletter: Confirmed subscription for mugiwyfylo@mailinator.com
+[05-Mar-2026 17:37:53 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:37:55 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:37:55 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:37:58 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:38:02 UTC] Apex Newsletter AJAX: Processing subscription from wobopezyq@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:38:02 UTC] Apex Newsletter: Sending confirmation email to wobopezyq@mailinator.com
+[05-Mar-2026 17:38:02 UTC] Apex Direct Email: Attempting to send email to wobopezyq@mailinator.com
+[05-Mar-2026 17:38:07 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:38:07 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:38:11 UTC] Apex Newsletter: Confirmed subscription for wobopezyq@mailinator.com
+[05-Mar-2026 17:38:11 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:38:11 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:38:11 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:38:16 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:38:21 UTC] Apex Newsletter AJAX: Processing subscription from dewyzomy@mailinator.com (source: Apex Website Footer Newsletter Form)
+[05-Mar-2026 17:38:21 UTC] Apex Newsletter: Sending confirmation email to dewyzomy@mailinator.com
+[05-Mar-2026 17:38:21 UTC] Apex Direct Email: Attempting to send email to dewyzomy@mailinator.com
+[05-Mar-2026 17:38:25 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:38:25 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:38:29 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:38:29 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:38:30 UTC] Apex Newsletter: Confirmed subscription for dewyzomy@mailinator.com
+[05-Mar-2026 17:38:30 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:38:34 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:41:34 UTC] Apex Newsletter AJAX: Processing subscription from wuro@mailinator.com (source: Apex Website News Newsletter Form)
+[05-Mar-2026 17:41:34 UTC] Apex Newsletter: Sending confirmation email to wuro@mailinator.com
+[05-Mar-2026 17:41:34 UTC] Apex Direct Email: Attempting to send email to wuro@mailinator.com
+[05-Mar-2026 17:41:38 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:41:38 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:41:43 UTC] Apex Newsletter: Confirmed subscription for wuro@mailinator.com
+[05-Mar-2026 17:41:43 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:41:43 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:41:43 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:41:47 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:41:58 UTC] Apex Newsletter AJAX: Processing subscription from riqurunyqu@mailinator.com (source: Apex Website News Newsletter Form)
+[05-Mar-2026 17:41:58 UTC] Apex Newsletter: Sending confirmation email to riqurunyqu@mailinator.com
+[05-Mar-2026 17:41:58 UTC] Apex Direct Email: Attempting to send email to riqurunyqu@mailinator.com
+[05-Mar-2026 17:42:02 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:42:02 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:42:06 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:42:06 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:42:09 UTC] Apex Newsletter: Confirmed subscription for riqurunyqu@mailinator.com
+[05-Mar-2026 17:42:09 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:42:14 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:42:25 UTC] Apex Newsletter AJAX: Processing subscription from lugigapeze@mailinator.com (source: Apex Website News Newsletter Form)
+[05-Mar-2026 17:42:25 UTC] Apex Newsletter: Sending confirmation email to lugigapeze@mailinator.com
+[05-Mar-2026 17:42:25 UTC] Apex Direct Email: Attempting to send email to lugigapeze@mailinator.com
+[05-Mar-2026 17:42:30 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:42:30 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:42:34 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:42:34 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:42:42 UTC] Apex Newsletter AJAX: Processing subscription from mepyxivus@mailinator.com (source: Apex Website News Newsletter Form)
+[05-Mar-2026 17:42:42 UTC] Apex Newsletter: Sending confirmation email to mepyxivus@mailinator.com
+[05-Mar-2026 17:42:42 UTC] Apex Direct Email: Attempting to send email to mepyxivus@mailinator.com
+[05-Mar-2026 17:42:46 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:42:46 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:42:50 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:42:50 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:43:21 UTC] Apex Newsletter AJAX: Processing subscription from keluzazo@mailinator.com (source: Apex Website Whitepapers & Reports Newsletter Form)
+[05-Mar-2026 17:43:21 UTC] Apex Newsletter: Sending confirmation email to keluzazo@mailinator.com
+[05-Mar-2026 17:43:21 UTC] Apex Direct Email: Attempting to send email to keluzazo@mailinator.com
+[05-Mar-2026 17:43:25 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:43:25 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:43:30 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:43:30 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[05-Mar-2026 17:43:38 UTC] Apex Newsletter: Confirmed subscription for lugigapeze@mailinator.com
+[05-Mar-2026 17:43:38 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:43:43 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:43:44 UTC] Apex Newsletter: Confirmed subscription for mepyxivus@mailinator.com
+[05-Mar-2026 17:43:44 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:43:48 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 17:44:01 UTC] Apex Newsletter: Confirmed subscription for keluzazo@mailinator.com
+[05-Mar-2026 17:44:01 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[05-Mar-2026 17:44:05 UTC] Apex Direct Email: Email sent successfully

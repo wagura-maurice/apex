@@ -238,30 +238,18 @@ $press_lines = array_filter(array_map('trim', explode("\n", $press_items_raw)));
     </div>
 </section>
 
-<section class="apex-news-newsletter">
-    <div class="apex-news-newsletter__container">
-        <div class="apex-news-newsletter__content">
-            <h2 class="apex-news-newsletter__heading">Stay Updated</h2>
-            <p class="apex-news-newsletter__description">Subscribe to our newsletter for the latest news, product updates, and industry insights delivered to your inbox.</p>
-            
-            <div id="news-newsletter-notification" class="apex-news-newsletter__notification" style="display:none;">
-                <div class="apex-news-newsletter__notification-content">
-                    <span class="apex-news-newsletter__notification-icon"></span>
-                    <span class="apex-news-newsletter__notification-message"></span>
-                    <button type="button" class="apex-news-newsletter__notification-close" aria-label="Close">×</button>
-                </div>
-            </div>
-
-            <form class="apex-news-newsletter__form" id="news-newsletter-form">
-                <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
-                <input type="email" placeholder="Enter your email address" required>
-                <button type="submit">Subscribe</button>
-            </form>
-            
-            <p class="apex-news-newsletter__note">By subscribing, you agree to our Privacy Policy. Unsubscribe at any time.</p>
-        </div>
-    </div>
-</section>
+<?php
+apex_render_newsletter_section([
+    'form_id'     => 'news-newsletter-form',
+    'heading'     => 'Stay Updated',
+    'description' => 'Subscribe to our newsletter for the latest news, product updates, and industry insights delivered to your inbox.',
+    'placeholder' => 'Enter your email address',
+    'button_text' => 'Subscribe',
+    'note'        => 'By subscribing, you agree to our Privacy Policy. Unsubscribe at any time.',
+    'source'      => 'Apex Website News Newsletter Form',
+    'css_prefix'  => 'apex-news-newsletter',
+]);
+?>
 
 <section class="apex-news-contact">
     <div class="apex-news-contact__container">
@@ -314,40 +302,3 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-<script>
-(function() {
-    var form = document.getElementById('news-newsletter-form');
-    if (!form) return;
-    var notification = document.getElementById('news-newsletter-notification');
-    function showMsg(type, message) {
-        notification.classList.remove('success', 'error');
-        notification.classList.add(type);
-        notification.querySelector('.apex-news-newsletter__notification-message').textContent = message;
-        notification.style.display = 'block';
-        if (type === 'success') setTimeout(function() { notification.style.display = 'none'; }, 5000);
-    }
-    notification.querySelector('.apex-news-newsletter__notification-close').addEventListener('click', function() {
-        notification.style.display = 'none';
-    });
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        form.classList.add('loading');
-        var fd = new FormData();
-        fd.append('email', form.querySelector('input[type="email"]').value);
-        fd.append('action', 'apex_newsletter_submit');
-        var nonce = form.querySelector('input[name="apex_newsletter_nonce"]');
-        if (nonce) fd.append('apex_newsletter_nonce', nonce.value);
-        fetch('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', { method: 'POST', body: fd })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                form.classList.remove('loading');
-                if (data.success) { showMsg('success', data.data.message); form.reset(); }
-                else { showMsg('error', data.data.message || 'An error occurred. Please try again.'); }
-            })
-            .catch(function() {
-                form.classList.remove('loading');
-                showMsg('error', 'An error occurred. Please try again.');
-            });
-    });
-})();
-</script>

@@ -156,12 +156,16 @@
                                 <div class="notification-content">
                                     <span class="notification-icon"></span>
                                     <span class="notification-message"></span>
-                                    <button type="button" class="notification-close" onclick="hideNewsletterNotification()">×</button>
+                                    <button type="button" class="notification-close" aria-label="Close">×</button>
                                 </div>
                             </div>
                             
-                            <form class="apex-footer-main__newsletter-form" action="#" method="post" id="newsletter-form">
+                            <form class="apex-footer-main__newsletter-form apex-newsletter-form" action="#" method="post" id="newsletter-form"
+                                  data-notification="newsletter-notification"
+                                  data-msg-class="notification-message"
+                                  data-close-class="notification-close">
                                 <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
+                                <input type="hidden" name="apex_newsletter_source" value="Apex Website Footer Newsletter Form">
                                 <input type="email" name="email" placeholder="Enter your email" required id="newsletter-email">
                                 <button type="submit" id="newsletter-submit">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -416,109 +420,7 @@
 }
 </style>
 
-<!-- Newsletter Notification JavaScript -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const newsletterForm = document.getElementById('newsletter-form');
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('newsletter-email').value;
-            const submitBtn = document.getElementById('newsletter-submit');
-            
-            // Show loading state
-            newsletterForm.classList.add('loading');
-            
-            // Create form data
-            const formData = new FormData();
-            formData.append('email', email);
-            formData.append('action', 'apex_newsletter_submit');
-            
-            // Get nonce from the form
-            const nonceField = newsletterForm.querySelector('input[name="apex_newsletter_nonce"]');
-            if (nonceField) {
-                formData.append('apex_newsletter_nonce', nonceField.value);
-            }
-            
-            // Send AJAX request
-            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                newsletterForm.classList.remove('loading');
-                
-                if (data.success) {
-                    showNewsletterNotification('success', data.data.message);
-                    newsletterForm.reset();
-                } else {
-                    showNewsletterNotification('error', data.data.message || 'An error occurred. Please try again.');
-                }
-            })
-            .catch(error => {
-                newsletterForm.classList.remove('loading');
-                showNewsletterNotification('error', 'An error occurred. Please try again.');
-                console.error('Newsletter submission error:', error);
-            });
-        });
-    }
-    
-    // Check for URL parameters and show notifications
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('newsletter_success') === '1') {
-        showNewsletterNotification('success', 'Thank you for subscribing! Check your email for confirmation.');
-        // Clean URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (urlParams.get('newsletter_error')) {
-        const errorType = urlParams.get('newsletter_error');
-        let errorMessage = 'An error occurred. Please try again.';
-        
-        switch(errorType) {
-            case 'missing_email':
-                errorMessage = 'Please enter your email address.';
-                break;
-            case 'invalid_email':
-                errorMessage = 'Please enter a valid email address.';
-                break;
-            case 'send_failed':
-                errorMessage = 'Failed to subscribe. Please try again later.';
-                break;
-        }
-        
-        showNewsletterNotification('error', errorMessage);
-        // Clean URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-});
-
-function showNewsletterNotification(type, message) {
-    const notification = document.getElementById('newsletter-notification');
-    const icon = notification.querySelector('.notification-icon');
-    const messageElement = notification.querySelector('.notification-message');
-    
-    // Remove existing classes
-    notification.classList.remove('success', 'error');
-    
-    // Add new class and set message
-    notification.classList.add(type);
-    messageElement.textContent = message;
-    
-    // Show notification
-    notification.style.display = 'block';
-    
-    // Auto-hide after 5 seconds for success messages
-    if (type === 'success') {
-        setTimeout(hideNewsletterNotification, 5000);
-    }
-}
-
-function hideNewsletterNotification() {
-    const notification = document.getElementById('newsletter-notification');
-    notification.style.display = 'none';
-}
-</script>
+<!-- Newsletter JS is handled by the shared apex_newsletter_shared_js() handler in functions.php -->
 
 <?php wp_footer(); ?>
 </body>

@@ -445,70 +445,17 @@ if (!function_exists('apex_reports_page_link')) {
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     NEWSLETTER
-════════════════════════════════════════════════════════════════════════════ -->
-<section class="apex-blog-newsletter">
-    <div class="apex-blog-newsletter__container">
-        <div class="apex-blog-newsletter__content">
-            <h2 class="apex-blog-newsletter__heading"><?php echo esc_html(get_option('apex_reports_newsletter_heading_insights-whitepapers-reports', 'Get New Reports First')); ?></h2>
-            <p class="apex-blog-newsletter__description"><?php echo esc_html(get_option('apex_reports_newsletter_description_insights-whitepapers-reports', 'Subscribe to be notified when we publish new research, whitepapers, and industry reports.')); ?></p>
-
-            <div id="reports-newsletter-notification" class="apex-blog-newsletter__notification" style="display:none;">
-                <div class="apex-blog-newsletter__notification-content">
-                    <span class="apex-blog-newsletter__notification-icon"></span>
-                    <span class="apex-blog-newsletter__notification-message"></span>
-                    <button type="button" class="apex-blog-newsletter__notification-close" aria-label="Close">×</button>
-                </div>
-            </div>
-
-            <form class="apex-blog-newsletter__form" id="reports-newsletter-form">
-                <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
-                <input type="email" placeholder="<?php echo esc_attr(get_option('apex_reports_newsletter_placeholder_insights-whitepapers-reports', 'Enter your email address')); ?>" required>
-                <button type="submit"><?php echo esc_html(get_option('apex_reports_newsletter_button_insights-whitepapers-reports', 'Subscribe')); ?></button>
-            </form>
-
-            <p class="apex-blog-newsletter__note"><?php echo esc_html(get_option('apex_reports_newsletter_note_insights-whitepapers-reports', 'Join 5,000+ subscribers. We respect your privacy.')); ?></p>
-        </div>
-    </div>
-</section>
+<?php
+apex_render_newsletter_section([
+    'form_id'     => 'reports-newsletter-form',
+    'heading'     => get_option('apex_reports_newsletter_heading_insights-whitepapers-reports', 'Get New Reports First'),
+    'description' => get_option('apex_reports_newsletter_description_insights-whitepapers-reports', 'Subscribe to be notified when we publish new research, whitepapers, and industry reports.'),
+    'placeholder' => get_option('apex_reports_newsletter_placeholder_insights-whitepapers-reports', 'Enter your email address'),
+    'button_text' => get_option('apex_reports_newsletter_button_insights-whitepapers-reports', 'Subscribe'),
+    'note'        => get_option('apex_reports_newsletter_note_insights-whitepapers-reports', 'Join 5,000+ subscribers. We respect your privacy.'),
+    'source'      => 'Apex Website Whitepapers & Reports Newsletter Form',
+    'css_prefix'  => 'apex-blog-newsletter',
+]);
+?>
 
 <?php get_footer(); ?>
-
-<script>
-(function() {
-    var form = document.getElementById('reports-newsletter-form');
-    if (!form) return;
-    var notification = document.getElementById('reports-newsletter-notification');
-    function showMsg(type, message) {
-        notification.classList.remove('success', 'error');
-        notification.classList.add(type);
-        notification.querySelector('.apex-blog-newsletter__notification-message').textContent = message;
-        notification.style.display = 'block';
-        if (type === 'success') setTimeout(function() { notification.style.display = 'none'; }, 5000);
-    }
-    notification.querySelector('.apex-blog-newsletter__notification-close').addEventListener('click', function() {
-        notification.style.display = 'none';
-    });
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        form.classList.add('loading');
-        var fd = new FormData();
-        fd.append('email', form.querySelector('input[type="email"]').value);
-        fd.append('action', 'apex_newsletter_submit');
-        var nonce = form.querySelector('input[name="apex_newsletter_nonce"]');
-        if (nonce) fd.append('apex_newsletter_nonce', nonce.value);
-        fetch('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', { method: 'POST', body: fd })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                form.classList.remove('loading');
-                if (data.success) { showMsg('success', data.data.message); form.reset(); }
-                else { showMsg('error', data.data.message || 'An error occurred. Please try again.'); }
-            })
-            .catch(function() {
-                form.classList.remove('loading');
-                showMsg('error', 'An error occurred. Please try again.');
-            });
-    });
-})();
-</script>
