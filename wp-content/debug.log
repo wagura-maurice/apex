@@ -833,3 +833,66 @@
 [05-Mar-2026 17:44:01 UTC] Apex Newsletter: Confirmed subscription for keluzazo@mailinator.com
 [05-Mar-2026 17:44:01 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
 [05-Mar-2026 17:44:05 UTC] Apex Direct Email: Email sent successfully
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3340
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[05-Mar-2026 18:06:08 UTC] PHP Deprecated:  fputcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 3345
+[06-Mar-2026 12:32:08 UTC] Automatic updates starting...
+[06-Mar-2026 12:32:09 UTC] Automatic updates complete.
+[06-Mar-2026 22:47:19 UTC] Automatic updates starting...
+[06-Mar-2026 22:47:21 UTC] Automatic updates complete.
+[08-Mar-2026 21:30:40 UTC] Automatic updates starting...
+[08-Mar-2026 21:30:41 UTC] Automatic updates complete.
+[09-Mar-2026 09:29:16 UTC] Automatic updates starting...
+[09-Mar-2026 09:29:18 UTC] Automatic updates complete.
+[09-Mar-2026 21:29:47 UTC] Automatic updates starting...
+[09-Mar-2026 21:29:50 UTC] Automatic updates complete.
+[14-Mar-2026 14:37:14 UTC] Automatic updates starting...
+[14-Mar-2026 14:37:23 UTC] Automatic updates complete.
+[14-Mar-2026 14:37:25 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Mar-2026 14:37:25 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Mar-2026 14:37:41 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Mar-2026 14:37:41 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Mar-2026 14:52:10 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Mar-2026 14:52:10 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Mar-2026 15:00:35 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Mar-2026 15:00:35 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Mar-2026 15:32:04 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[14-Mar-2026 15:32:04 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[14-Mar-2026 15:32:04 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[14-Mar-2026 15:32:04 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[14-Mar-2026 15:32:04 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[14-Mar-2026 15:32:04 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[14-Mar-2026 21:31:12 UTC] Automatic updates starting...
+[14-Mar-2026 21:31:14 UTC] Automatic updates complete.
+[15-Mar-2026 09:30:14 UTC] Automatic updates starting...
+[15-Mar-2026 09:30:17 UTC] Automatic updates complete.

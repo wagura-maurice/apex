@@ -498,6 +498,12 @@ a.apex-footer-cta__btn--white:hover {
   color: #0f172a !important;
 }
 
+/* Solutions detail secondary CTA must keep dark text even when pointing to /request-demo */
+a.apex-solutions-detail__btn-secondary,
+a.apex-solutions-detail__btn-secondary:hover {
+  color: #0f172a !important;
+}
+
 a[href*="request-demo"]:hover {
   color: white !important;
   text-decoration: none !important;

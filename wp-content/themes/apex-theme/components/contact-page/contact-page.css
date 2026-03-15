@@ -584,6 +584,35 @@
 }
 
 /* ========================================
+   Hours Detailed Rows
+   ======================================== */
+.apex-contact-main__info-hours-detailed {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.apex-contact-main__info-hours-detailed .hours-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.apex-contact-main__info-hours-detailed .hours-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.apex-contact-main__info-hours-detailed .hours-time {
+    font-size: 0.8125rem;
+    color: #64748b;
+}
+
+/* ========================================
    Responsive Adjustments
    ======================================== */
 @media (max-width: 768px) {
@@ -592,9 +621,40 @@
     .apex-contact-map {
         padding: 4rem 1rem;
     }
+
+    .apex-contact-main__container,
+    .apex-contact-offices__container,
+    .apex-contact-map__container {
+        overflow-x: hidden;
+    }
+
+    .apex-contact-main__grid {
+        gap: 2rem;
+    }
     
     .apex-contact-main__form-wrapper {
-        padding: 1.5rem;
+        padding: 1.25rem;
+        border-radius: 16px;
+    }
+
+    .apex-contact-main__form-title {
+        font-size: 1.5rem;
+    }
+
+    .apex-contact-main__form-description {
+        font-size: 0.9375rem;
+    }
+    
+    .apex-contact-main__sidebar {
+        gap: 1rem;
+    }
+
+    .apex-contact-main__info-card {
+        padding: 1.25rem;
+    }
+
+    .apex-contact-main__social-links {
+        flex-wrap: wrap;
     }
     
     .apex-contact-map__info {
@@ -603,5 +663,97 @@
     
     .apex-contact-map__embed iframe {
         height: 350px;
+    }
+
+    .apex-contact-offices__header,
+    .apex-contact-map__header {
+        margin-bottom: 2rem;
+    }
+
+    .apex-contact-offices__card {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .apex-contact-main,
+    .apex-contact-offices,
+    .apex-contact-map {
+        padding: 3rem 0.75rem;
+    }
+
+    .apex-contact-main__grid {
+        gap: 1.5rem;
+    }
+
+    .apex-contact-main__form-wrapper {
+        padding: 1rem;
+        border-radius: 14px;
+    }
+
+    .apex-contact-main__form-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .apex-contact-main__form-title {
+        font-size: 1.35rem;
+    }
+
+    .apex-contact-main__form {
+        gap: 1.25rem;
+    }
+
+    .apex-contact-main__form-group input,
+    .apex-contact-main__form-group select,
+    .apex-contact-main__form-group textarea {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.9375rem;
+        border-radius: 10px;
+    }
+
+    .apex-contact-main__form-submit {
+        width: 100%;
+        padding: 0.875rem 1.5rem;
+    }
+
+    .apex-contact-main__checkbox {
+        align-items: flex-start;
+    }
+
+    .apex-contact-main__checkbox span {
+        font-size: 0.8125rem;
+    }
+
+    .apex-contact-main__info-card {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .apex-contact-main__social-links {
+        gap: 0.5rem;
+    }
+
+    .apex-contact-main__social-links a {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+    }
+
+    .apex-contact-main__social-links a svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .apex-contact-map__info {
+        padding: 1.25rem;
+        border-radius: 14px;
+    }
+
+    .apex-contact-map__embed iframe {
+        height: 280px;
+    }
+
+    .apex-contact-offices__card {
+        padding: 1rem;
     }
 }

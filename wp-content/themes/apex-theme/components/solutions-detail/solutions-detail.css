@@ -530,4 +530,112 @@
         width: 24px;
         height: 24px;
     }
+
+    .apex-solutions-detail__comparison {
+        margin-top: 3rem;
+    }
+
+    .apex-solutions-detail__comparison-title {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .apex-solutions-detail__comparison-wrapper {
+        border-radius: 12px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .apex-solutions-detail__comparison-table {
+        min-width: 480px;
+    }
+
+    .apex-solutions-detail__comparison-table th,
+    .apex-solutions-detail__comparison-table td {
+        padding: 0.75rem 0.75rem;
+        font-size: 0.8125rem;
+    }
+
+    .apex-solutions-detail__comparison-table th {
+        font-size: 0.6875rem;
+    }
+
+    .apex-solutions-detail__check svg,
+    .apex-solutions-detail__check-muted svg,
+    .apex-solutions-detail__cross svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .apex-solutions-detail__panel-cta {
+        flex-direction: column;
+    }
+
+    .apex-solutions-detail__btn-primary,
+    .apex-solutions-detail__btn-secondary {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .apex-solutions-detail__btn-secondary {
+        border-color: #0f172a;
+        background: #f8fafc;
+    }
+}
+
+@media (max-width: 480px) {
+    .apex-solutions-detail {
+        padding: 3rem 0.75rem;
+    }
+
+    .apex-solutions-detail__panel {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+
+    .apex-solutions-detail__comparison-table {
+        min-width: 380px;
+    }
+
+    .apex-solutions-detail__comparison-table th,
+    .apex-solutions-detail__comparison-table td {
+        padding: 0.625rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .apex-solutions-detail__comparison-table th {
+        font-size: 0.625rem;
+        letter-spacing: 0;
+    }
+
+    .apex-solutions-detail__comparison-table th:first-child,
+    .apex-solutions-detail__comparison-table td:first-child {
+        padding-left: 0.75rem;
+        min-width: 110px;
+    }
+
+    .apex-solutions-detail__check svg,
+    .apex-solutions-detail__check-muted svg,
+    .apex-solutions-detail__cross svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .apex-solutions-detail__comparison-wrapper {
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .apex-solutions-detail__spec-card {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .apex-solutions-detail__spec-value {
+        font-size: 1.0625rem;
+    }
+
+    .apex-solutions-detail__header {
+        margin-bottom: 2rem;
+    }
 }
