@@ -27,7 +27,7 @@ function apex_load_components() {
         'whats-new/whats-new.php',
         'solutions-detail/solutions-detail.php',
         'roi-calculator/roi-calculator.php',
-        'case-studies/case-studies.php',
+        'success-stories/success-stories.php',
         'api-integration/api-integration.php',
         'compliance/compliance.php',
         // About Us page components

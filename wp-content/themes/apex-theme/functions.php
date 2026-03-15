@@ -6195,64 +6195,6 @@ function apex_render_fallback_form($page_slug, $config) {
             </table>
         </div>
 
-        <!-- Case Studies Section -->
-        <div style="margin-bottom: 30px;">
-            <h4>📚 Case Studies Section</h4>
-            <div style="background: #e7f3ff; padding: 15px; margin-bottom: 20px; border: 1px solid #3498db; border-radius: 6px;">
-                <h5>📋 Section Overview</h5>
-                <p><strong>This section showcases client success stories and case studies.</strong> Includes badge, heading, description, and call-to-action.</p>
-            </div>
-            
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><label for="apex_case_studies_badge">Section Badge</label></th>
-                    <td>
-                        <input type="text" id="apex_case_studies_badge" name="apex_case_studies_badge" 
-                               value="<?php echo esc_attr(get_option('apex_case_studies_badge_' . $page_slug, 'Case Studies')); ?>" 
-                               class="regular-text" placeholder="e.g., Case Studies">
-                        <p class="description">The small badge text above the section heading</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_case_studies_heading">Section Heading</label></th>
-                    <td>
-                        <input type="text" id="apex_case_studies_heading" name="apex_case_studies_heading" 
-                               value="<?php echo esc_attr(get_option('apex_case_studies_heading_' . $page_slug, 'Real Results from Real Clients')); ?>" 
-                               class="regular-text" placeholder="Section heading">
-                        <p class="description">The main heading for the case studies section</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_case_studies_description">Section Description</label></th>
-                    <td>
-                        <textarea id="apex_case_studies_description" name="apex_case_studies_description" rows="3" class="large-text"
-                                  placeholder="Case studies description"><?php 
-                            echo esc_textarea(get_option('apex_case_studies_description_' . $page_slug, 'Discover how financial institutions across Africa have transformed their operations with ApexCore.'));
-                        ?></textarea>
-                        <p class="description">Brief description of the case studies</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_case_studies_cta_text">CTA Button Text</label></th>
-                    <td>
-                        <input type="text" id="apex_case_studies_cta_text" name="apex_case_studies_cta_text" 
-                               value="<?php echo esc_attr(get_option('apex_case_studies_cta_text_' . $page_slug, 'View All Case Studies')); ?>" 
-                               class="regular-text" placeholder="e.g., View All Case Studies">
-                        <p class="description">Call-to-action button text</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="apex_case_studies_cta_url">CTA Button URL</label></th>
-                    <td>
-                        <input type="url" id="apex_case_studies_cta_url" name="apex_case_studies_cta_url" 
-                               value="<?php echo esc_attr(get_option('apex_case_studies_cta_url_' . $page_slug, home_url('/case-studies'))); ?>" 
-                               class="regular-text" placeholder="/case-studies">
-                        <p class="description">Call-to-action button URL</p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
         <!-- API Integration Section -->
         <div style="margin-bottom: 30px;">
             <h4>🔌 API Integration Section</h4>
@@ -13079,13 +13021,6 @@ function apex_render_fallback_form($page_slug, $config) {
             update_option('apex_roi_description_' . $page_slug, sanitize_textarea_field($_POST['apex_roi_description']));
             update_option('apex_roi_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_roi_cta_text']));
             update_option('apex_roi_cta_url_' . $page_slug, esc_url_raw($_POST['apex_roi_cta_url']));
-            
-            // Case Studies Section
-            update_option('apex_case_studies_badge_' . $page_slug, sanitize_text_field($_POST['apex_case_studies_badge']));
-            update_option('apex_case_studies_heading_' . $page_slug, sanitize_text_field($_POST['apex_case_studies_heading']));
-            update_option('apex_case_studies_description_' . $page_slug, sanitize_textarea_field($_POST['apex_case_studies_description']));
-            update_option('apex_case_studies_cta_text_' . $page_slug, sanitize_text_field($_POST['apex_case_studies_cta_text']));
-            update_option('apex_case_studies_cta_url_' . $page_slug, esc_url_raw($_POST['apex_case_studies_cta_url']));
             
             // API Integration Section
             update_option('apex_api_badge_' . $page_slug, sanitize_text_field($_POST['apex_api_badge']));

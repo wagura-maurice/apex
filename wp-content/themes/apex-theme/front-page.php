@@ -224,14 +224,14 @@ apex_render_roi_calculator([
 ?>
 
 <?php 
-// Dynamic Case Studies Component - Admin Controlled
+// Dynamic Success Stories Component - Admin Controlled
 apex_render_case_studies([
-    'badge' => get_option('apex_case_studies_badge_home', 'Case Studies'),
+    'badge' => get_option('apex_case_studies_badge_home', 'Success Stories'),
     'heading' => get_option('apex_case_studies_heading_home', 'Real Results from Real Clients'),
     'description' => get_option('apex_case_studies_description_home', 'Discover how financial institutions across Africa have transformed their operations with ApexCore.'),
     'cta' => [
-        'text' => get_option('apex_case_studies_cta_text_home', 'View All Case Studies'),
-        'url' => get_option('apex_case_studies_cta_url_home', home_url('/case-studies'))
+        'text' => get_option('apex_case_studies_cta_text_home', 'View All Success Stories'),
+        'url' => get_option('apex_case_studies_cta_url_home', home_url('/insights/success-stories'))
     ]
 ]);
 ?>

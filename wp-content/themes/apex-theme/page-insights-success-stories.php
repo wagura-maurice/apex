@@ -102,7 +102,7 @@ apex_render_about_hero([
                 </div>
                 <?php endif; ?>
                 <a href="<?php echo esc_url($fs_link); ?>" class="apex-stories-featured__link">
-                    Read Full Case Study
+                    Read Full Success Story
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
@@ -160,7 +160,7 @@ apex_render_about_hero([
                 </div>
                 <?php endif; ?>
                 <a href="<?php echo esc_url($ls_link); ?>" class="apex-stories-featured__link">
-                    Read Full Case Study
+                    Read Full Success Story
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>

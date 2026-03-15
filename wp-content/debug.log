@@ -896,3 +896,21 @@
 [14-Mar-2026 21:31:14 UTC] Automatic updates complete.
 [15-Mar-2026 09:30:14 UTC] Automatic updates starting...
 [15-Mar-2026 09:30:17 UTC] Automatic updates complete.
+[15-Mar-2026 22:15:08 UTC] Automatic updates starting...
+[15-Mar-2026 22:15:13 UTC] Automatic updates complete.
+[15-Mar-2026 22:15:53 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[15-Mar-2026 22:15:53 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[15-Mar-2026 22:15:53 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[15-Mar-2026 22:15:54 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[15-Mar-2026 22:15:54 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[15-Mar-2026 22:15:54 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[15-Mar-2026 22:35:13 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 2343
+[15-Mar-2026 22:35:13 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 2265
+[15-Mar-2026 22:36:26 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 2343
+[15-Mar-2026 22:36:26 UTC] PHP Warning:  Undefined array key "REQUEST_METHOD" in /var/www/html/apex/wp-content/themes/apex-theme/functions.php on line 2265
+[15-Mar-2026 22:41:46 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[15-Mar-2026 22:41:46 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[15-Mar-2026 22:41:46 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
+[15-Mar-2026 22:41:46 UTC] PHP Warning:  Undefined property: WP_Post_Type::$ID in /var/www/html/apex/wp-includes/class-wp-query.php on line 4579
+[15-Mar-2026 22:41:46 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_title in /var/www/html/apex/wp-includes/class-wp-query.php on line 4581
+[15-Mar-2026 22:41:46 UTC] PHP Warning:  Undefined property: WP_Post_Type::$post_name in /var/www/html/apex/wp-includes/class-wp-query.php on line 4583
