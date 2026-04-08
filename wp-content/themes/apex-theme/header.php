@@ -53,7 +53,7 @@ $apex_request_demo_href = home_url('/request-demo');
                                 'items' => [
                                     ['label' => 'About Apex Softwares', 'href' => home_url('/about-us/overview')],
                                     ['label' => 'Our Approach', 'href' => home_url('/about-us/our-approach')],
-                                    ['label' => 'Leadership Team', 'href' => home_url('/about-us/leadership-team')],
+                                    // ['label' => 'Leadership Team', 'href' => home_url('/about-us/leadership-team')],
                                     ['label' => 'News & Updates', 'href' => home_url('/about-us/news')],
                                 ],
                             ],
