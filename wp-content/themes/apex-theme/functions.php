@@ -2764,11 +2764,6 @@ add_action('wp_ajax_nopriv_apex_demo_request_submit', 'apex_demo_request_ajax_ha
 
 add_action('init', 'apex_handle_contact_form_submission');
 
-// Include PHPMailer classes at global scope
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
 /**
  * Send email using Brevo (Sendinblue) API
  * Works over HTTPS (port 443) - won't be blocked by cPanel
@@ -2866,154 +2861,16 @@ function apex_send_email_brevo($args, $debug = false) {
 }
 
 /**
- * Send email using direct PHPMailer
- * Auto-detects environment: uses SMTP for dev, isMail() for production/cPanel
+ * Send email using Brevo API
+ * Unified email sending for all environments (dev and production)
+ * Works over HTTPS (port 443) - won't be blocked by cPanel
  * 
- * @param array $args Email arguments
+ * @param array $args Email arguments (to, subject, html_content, reply_to, reply_to_name, to_name)
  * @param bool $debug If true, returns detailed error info instead of bool
  * @return bool|array True on success, false on failure, or array with debug info if $debug=true
  */
 function apex_send_email_direct($args, $debug = false) {
-    // Include PHPMailer directly
-    require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-    require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-    require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-
-    $mail = new PHPMailer(true);
-    $debug_info = [
-        'environment' => [],
-        'mailer_config' => [],
-        'errors' => []
-    ];
-
-    try {
-        // Detect environment
-        $host = $_SERVER['HTTP_HOST'] ?? '';
-        $is_local_dev = in_array($host, ['localhost', '127.0.0.1', '::1']) || 
-                        strpos($host, '.test') !== false || 
-                        strpos($host, '.local') !== false ||
-                        strpos($host, '.devops') !== false ||
-                        strpos($host, '.dev') !== false ||
-                        file_exists('/.dockerenv');
-
-        $debug_info['environment'] = [
-            'http_host' => $host,
-            'is_local_dev' => $is_local_dev,
-            'php_version' => PHP_VERSION,
-            'sendmail_path' => ini_get('sendmail_path')
-        ];
-
-        if ($is_local_dev) {
-            // Development: Use Mailtrap SMTP
-            $mail->SMTPDebug = $debug ? 2 : 0;
-            $mail->isSMTP();
-            $mail->Host       = 'sandbox.smtp.mailtrap.io';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'be6e87f82be3a7';
-            $mail->Password   = '2b1dadf3db173f';
-            $mail->SMTPSecure = '';
-            $mail->Port       = 2525;
-            $debug_info['mailer_config'] = [
-                'type' => 'SMTP (Mailtrap)',
-                'host' => $mail->Host,
-                'port' => $mail->Port,
-                'secure' => $mail->SMTPSecure
-            ];
-            error_log('Apex Direct Email: Using SMTP (Mailtrap) for development');
-        } else {
-            // Production/cPanel: Check if mail() is disabled, use SMTP if so
-            $mail_disabled = stripos(ini_get('disable_functions'), 'mail') !== false || !function_exists('mail');
-            
-            if ($mail_disabled) {
-                // mail() is disabled - use Brevo API (works over HTTPS, won't be blocked)
-                error_log('Apex Direct Email: mail() DISABLED, using Brevo API fallback');
-                return apex_send_email_brevo($args, $debug);
-            } else {
-                // mail() is available - use isMail()
-                $mail->isMail();
-                
-                $debug_info['mailer_config'] = [
-                    'type' => 'isMail() - PHP mail()',
-                    'sendmail_path' => ini_get('sendmail_path'),
-                    'sendmail_from' => ini_get('sendmail_from'),
-                    'mail_function_exists' => function_exists('mail'),
-                ];
-                
-                error_log('Apex Direct Email: Using isMail() for production/cPanel');
-            }
-            
-            // Log diagnostics
-            error_log('Apex Direct Email: Mail diagnostics - ' . json_encode($debug_info['mailer_config']));
-        }
-
-        // Recipients
-        $mail->setFrom('contact@apex-softwares.com', 'Apex Softwares');
-        $to_name = isset($args['to_name']) ? $args['to_name'] : '';
-        $mail->addAddress($args['to'], $to_name);
-
-        // Reply-To: use sender's email if provided (for contact forms)
-        if (!empty($args['reply_to']) && is_email($args['reply_to'])) {
-            $reply_to_name = isset($args['reply_to_name']) ? $args['reply_to_name'] : '';
-            $mail->addReplyTo($args['reply_to'], $reply_to_name);
-        }
-
-        // Content
-        $mail->isHTML(true);
-        $mail->Subject = $args['subject'];
-        $mail->Body    = $args['html_content'];
-        $mail->AltBody = strip_tags(str_replace('<br>', "\n", $args['html_content']));
-
-        // Attachments (optional)
-        if (!empty($args['attachments']) && is_array($args['attachments'])) {
-            foreach ($args['attachments'] as $attachment) {
-                if (!empty($attachment['path']) && file_exists($attachment['path'])) {
-                    $attach_name = !empty($attachment['name']) ? $attachment['name'] : basename($attachment['path']);
-                    $mail->addAttachment($attachment['path'], $attach_name);
-                    error_log('Apex Direct Email: Attached file - ' . $attach_name);
-                }
-            }
-        }
-
-        error_log('Apex Direct Email: Attempting to send email to ' . $args['to']);
-        
-        // Enable PHPMailer exception throwing for better error capture
-        if (!$is_local_dev) {
-            // In production, also capture pre-send diagnostics
-            error_log('Apex Direct Email: Pre-send check - From: ' . $mail->From . ', To count: ' . count($mail->getToAddresses()));
-        }
-
-        $result = $mail->send();
-
-        if ($result) {
-            error_log('Apex Direct Email: Email sent successfully');
-            return $debug ? ['success' => true, 'debug' => $debug_info] : true;
-        } else {
-            $error_msg = $mail->ErrorInfo;
-            error_log('Apex Direct Email: Email sending failed - ' . $error_msg);
-            
-            // Additional debugging for mail() specific errors
-            if (!$is_local_dev) {
-                $last_error = error_get_last();
-                if ($last_error) {
-                    error_log('Apex Direct Email: Last PHP error - ' . json_encode($last_error));
-                    $debug_info['php_error'] = $last_error;
-                }
-                
-                // Log mail() specific diagnostics
-                error_log('Apex Direct Email: Mail() diagnostics - sendmail_path: ' . ini_get('sendmail_path') . 
-                          ', mail() disabled: ' . (stripos(ini_get('disable_functions'), 'mail') !== false ? 'YES' : 'NO'));
-            }
-            
-            $debug_info['errors'][] = $error_msg;
-            return $debug ? ['success' => false, 'debug' => $debug_info, 'error' => $error_msg] : false;
-        }
-
-    } catch (Exception $e) {
-        $error_msg = $mail->ErrorInfo . ' | Exception: ' . $e->getMessage();
-        error_log('Apex Direct Email: Exception - ' . $error_msg);
-        $debug_info['errors'][] = $error_msg;
-        return $debug ? ['success' => false, 'debug' => $debug_info, 'error' => $error_msg] : false;
-    }
+    return apex_send_email_brevo($args, $debug);
 }
 
 /**

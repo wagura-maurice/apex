@@ -1155,3 +1155,22 @@ Stack trace:
 (
 )
 
+[14-Apr-2026 13:37:01 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 13:37:01 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 13:37:07 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 13:37:07 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 13:37:13 UTC] Apex Newsletter AJAX: Processing subscription from wagura465@gmail.com (source: Apex Website Footer Newsletter Form)
+[14-Apr-2026 13:37:13 UTC] Apex Newsletter: Sending confirmation email to wagura465@gmail.com
+[14-Apr-2026 13:37:13 UTC] Apex Direct Email: Using SMTP (Mailtrap) for development
+[14-Apr-2026 13:37:13 UTC] Apex Direct Email: Attempting to send email to wagura465@gmail.com
+[14-Apr-2026 13:37:17 UTC] Apex Direct Email: Email sent successfully
+[14-Apr-2026 13:37:17 UTC] Apex Direct Email: Using SMTP (Mailtrap) for development
+[14-Apr-2026 13:37:17 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[14-Apr-2026 13:37:21 UTC] Apex Direct Email: Email sent successfully
+[14-Apr-2026 13:37:21 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS

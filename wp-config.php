@@ -114,7 +114,7 @@ date_default_timezone_set( 'Africa/Nairobi' );
 // Brevo (Sendinblue) API key for email sending
 // Get your API key from: https://app.brevo.com/settings/keys/api
 // NOTE: Set this manually on production server - do not commit real key to git
-define( 'BREVO_API_KEY', 'YOUR_BREVO_API_KEY_HERE' );
+define( 'BREVO_API_KEY', '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' );
 
 /* That's all, stop editing! Happy publishing. */
 
