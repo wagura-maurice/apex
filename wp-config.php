@@ -107,7 +107,9 @@ define( 'WP_DEBUG_DISPLAY', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
-
+// Set timezone to Nairobi, Africa
+define( 'WP_DATE_TIMEZONE', 'Africa/Nairobi' );
+date_default_timezone_set( 'Africa/Nairobi' );
 
 /* That's all, stop editing! Happy publishing. */
 
