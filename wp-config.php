@@ -41,9 +41,9 @@ if ($environment === 'local') {
     define( 'DB_HOST', 'localhost' );
 } else {
     // Production
-    define( 'DB_NAME', 'apex' );
-    define( 'DB_USER', 'root' );
-    define( 'DB_PASSWORD', 'v1b3qqNMddevyh8Rn1U/IRoF8UBfWAnl6kCmF68TCJM=' );
+    define( 'DB_NAME', 'apexsoft_apex' );
+    define( 'DB_USER', 'apexsoft_apex' );
+    define( 'DB_PASSWORD', 'VMY?v+&?T%#w' );
     define( 'DB_HOST', 'localhost' );
 }
 

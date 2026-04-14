@@ -2825,36 +2825,46 @@ function apex_send_email_direct($args, $debug = false) {
             ];
             error_log('Apex Direct Email: Using SMTP (Mailtrap) for development');
         } else {
-            // Production/cPanel: Use PHP mail() - works with cPanel's sendmail
-            $mail->isMail();
+            // Production/cPanel: Check if mail() is disabled, use SMTP if so
+            $mail_disabled = stripos(ini_get('disable_functions'), 'mail') !== false || !function_exists('mail');
             
-            // Enhanced diagnostics for production mail() debugging
-            $mail_diagnostics = [
-                'type' => 'isMail() - PHP mail()',
-                'sendmail_path' => ini_get('sendmail_path'),
-                'sendmail_from' => ini_get('sendmail_from'),
-                'mail_function_exists' => function_exists('mail'),
-                'safe_mode' => ini_get('safe_mode'),
-                'disable_functions' => ini_get('disable_functions'),
-                'smtp' => ini_get('SMTP'),
-                'smtp_port' => ini_get('smtp_port'),
-                'hostname' => gethostname(),
-            ];
-            
-            // Check if sendmail path is valid
-            $sendmail_path = ini_get('sendmail_path');
-            if (!empty($sendmail_path)) {
-                $parts = explode(' ', $sendmail_path);
-                $binary = $parts[0];
-                $mail_diagnostics['sendmail_binary'] = $binary;
-                $mail_diagnostics['sendmail_exists'] = file_exists($binary);
-                $mail_diagnostics['sendmail_executable'] = is_executable($binary);
+            if ($mail_disabled) {
+                // mail() is disabled - use cPanel SMTP
+                $mail->isSMTP();
+                $mail->Host       = 'bhs105.truehost.cloud'; // cPanel server hostname
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'contact@apex-softwares.com'; // cPanel email account
+                $mail->Password   = 'your-email-password-here'; // REPLACE WITH ACTUAL PASSWORD
+                $mail->SMTPSecure = 'tls';
+                $mail->Port       = 587;
+                $mail->SMTPDebug  = $debug ? 2 : 0;
+                
+                $debug_info['mailer_config'] = [
+                    'type' => 'SMTP (cPanel fallback - mail() disabled)',
+                    'host' => $mail->Host,
+                    'port' => $mail->Port,
+                    'secure' => $mail->SMTPSecure,
+                    'username' => $mail->Username,
+                    'mail_disabled_reason' => 'mail() in disable_functions'
+                ];
+                
+                error_log('Apex Direct Email: mail() DISABLED, using SMTP fallback');
+            } else {
+                // mail() is available - use isMail()
+                $mail->isMail();
+                
+                $debug_info['mailer_config'] = [
+                    'type' => 'isMail() - PHP mail()',
+                    'sendmail_path' => ini_get('sendmail_path'),
+                    'sendmail_from' => ini_get('sendmail_from'),
+                    'mail_function_exists' => function_exists('mail'),
+                ];
+                
+                error_log('Apex Direct Email: Using isMail() for production/cPanel');
             }
             
-            $debug_info['mailer_config'] = $mail_diagnostics;
-            
-            error_log('Apex Direct Email: Using isMail() for production/cPanel');
-            error_log('Apex Direct Email: Mail diagnostics - ' . json_encode($mail_diagnostics));
+            // Log diagnostics
+            error_log('Apex Direct Email: Mail diagnostics - ' . json_encode($debug_info['mailer_config']));
         }
 
         // Recipients
