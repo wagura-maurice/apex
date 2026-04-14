@@ -2829,26 +2829,28 @@ function apex_send_email_direct($args, $debug = false) {
             $mail_disabled = stripos(ini_get('disable_functions'), 'mail') !== false || !function_exists('mail');
             
             if ($mail_disabled) {
-                // mail() is disabled - use cPanel SMTP
+                // mail() is disabled - use Mailtrap SMTP (temporary solution)
+                // TODO: Replace with cPanel email credentials for production
                 $mail->isSMTP();
-                $mail->Host       = 'bhs105.truehost.cloud'; // cPanel server hostname
+                $mail->Host       = 'sandbox.smtp.mailtrap.io';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'contact@apex-softwares.com'; // cPanel email account
-                $mail->Password   = 'your-email-password-here'; // REPLACE WITH ACTUAL PASSWORD
-                $mail->SMTPSecure = 'tls';
-                $mail->Port       = 587;
+                $mail->Username   = 'be6e87f82be3a7';
+                $mail->Password   = '2b1dadf3db173f';
+                $mail->SMTPSecure = '';
+                $mail->Port       = 2525;
                 $mail->SMTPDebug  = $debug ? 2 : 0;
                 
                 $debug_info['mailer_config'] = [
-                    'type' => 'SMTP (cPanel fallback - mail() disabled)',
+                    'type' => 'SMTP (Mailtrap - temporary fallback for mail() disabled)',
                     'host' => $mail->Host,
                     'port' => $mail->Port,
                     'secure' => $mail->SMTPSecure,
                     'username' => $mail->Username,
-                    'mail_disabled_reason' => 'mail() in disable_functions'
+                    'mail_disabled_reason' => 'mail() in disable_functions',
+                    'note' => 'Emails go to Mailtrap inbox - not real recipients!'
                 ];
                 
-                error_log('Apex Direct Email: mail() DISABLED, using SMTP fallback');
+                error_log('Apex Direct Email: mail() DISABLED, using Mailtrap SMTP fallback (emails go to inbox, not real recipients)');
             } else {
                 // mail() is available - use isMail()
                 $mail->isMail();
