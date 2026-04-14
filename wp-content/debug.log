@@ -1174,3 +1174,63 @@ Stack trace:
 [14-Apr-2026 13:37:17 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
 [14-Apr-2026 13:37:21 UTC] Apex Direct Email: Email sent successfully
 [14-Apr-2026 13:37:21 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[14-Apr-2026 14:06:46 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 14:06:46 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 14:06:53 UTC] Apex Newsletter AJAX: Processing subscription from wagura465@gmail.com (source: Apex Website Footer Newsletter Form)
+[14-Apr-2026 14:06:53 UTC] Apex Newsletter: Sending confirmation email to wagura465@gmail.com
+[14-Apr-2026 14:06:53 UTC] Apex Brevo Email: API key not configured. Please set BREVO_API_KEY in wp-config.php
+[14-Apr-2026 14:06:53 UTC] Apex Newsletter AJAX: Confirmation email result: FAILED
+[14-Apr-2026 14:09:36 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 14:09:36 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 14:09:42 UTC] Apex Newsletter AJAX: Processing subscription from wagura465@gmail.com (source: Apex Website Footer Newsletter Form)
+[14-Apr-2026 14:09:42 UTC] Apex Newsletter: Sending confirmation email to wagura465@gmail.com
+[14-Apr-2026 14:09:42 UTC] Apex Direct Email: Attempting to send email to wagura465@gmail.com
+[14-Apr-2026 14:09:47 UTC] Apex Direct Email: Email sent successfully
+[14-Apr-2026 14:09:47 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[14-Apr-2026 14:09:51 UTC] Apex Direct Email: Email sent successfully
+[14-Apr-2026 14:09:51 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[14-Apr-2026 14:26:12 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 14:26:12 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 14:39:00 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 14:39:00 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 14:39:03 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 14:39:03 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 14:42:38 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 14:42:38 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 14:42:44 UTC] Apex Newsletter AJAX: Processing subscription from wagura465@gmail.com (source: Apex Website Footer Newsletter Form)
+[14-Apr-2026 14:42:44 UTC] Apex Newsletter: Sending confirmation email to wagura465@gmail.com
+[14-Apr-2026 14:42:44 UTC] Apex Resend Email: Attempting to send email to wagura465@gmail.com
+[14-Apr-2026 14:42:45 UTC] Apex Resend Email: Email sent successfully. ID: a4c12e61-5fc9-404d-bb36-915fe05cdc95
+[14-Apr-2026 14:42:45 UTC] Apex Resend Email: Attempting to send email to info@apex-softwares.com
+[14-Apr-2026 14:42:47 UTC] Apex Resend Email: Email sent successfully. ID: d00ba408-3ff9-49ba-922b-afe982bab13c
+[14-Apr-2026 14:42:47 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS
+[14-Apr-2026 15:13:00 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 15:13:00 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 15:13:09 UTC] Apex Newsletter AJAX: Processing subscription from wagura465@gmail.com (source: Apex Website Footer Newsletter Form)
+[14-Apr-2026 15:13:09 UTC] Apex Newsletter: Sending confirmation email to wagura465@gmail.com
+[14-Apr-2026 15:13:09 UTC] Apex Resend Email: Attempting to send email to wagura465@gmail.com
+[14-Apr-2026 15:13:11 UTC] Apex Resend Email: Email sent successfully. ID: 3caa9898-2b5d-450c-b0b8-d3c9ace7c831
+[14-Apr-2026 15:13:11 UTC] Apex Resend Email: Attempting to send email to info@apex-softwares.com
+[14-Apr-2026 15:13:12 UTC] Apex Resend Email: Email sent successfully. ID: cad3cfee-391a-4cb2-9c86-c38d735c59a3
+[14-Apr-2026 15:13:12 UTC] Apex Newsletter AJAX: Confirmation email result: SUCCESS

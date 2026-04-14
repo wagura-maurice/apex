@@ -2704,96 +2704,73 @@ add_action('wp_ajax_nopriv_apex_demo_request_submit', 'apex_demo_request_ajax_ha
 
 add_action('init', 'apex_handle_contact_form_submission');
 
+// Include PHPMailer classes at global scope
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 /**
- * Send email using Resend API
+ * Send email using direct PHPMailer to bypass MailHog
  */
 function apex_send_email_direct($args) {
-    $api_key = defined( 'RESEND_API_KEY' ) ? RESEND_API_KEY : '';
+    // Include PHPMailer directly
+    require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 
-    if ( empty( $api_key ) ) {
-        error_log( 'Apex Resend Email: RESEND_API_KEY not configured in wp-config.php' );
-        return false;
-    }
+    $mail = new PHPMailer(true);
 
-    $api_url = 'https://api.resend.com/emails';
+    try {
+        // Server settings
+        $mail->SMTPDebug = 0; // No debug output in production
+        $mail->isSMTP();
+        $mail->Mailer = 'smtp';
+        $mail->Host       = 'sandbox.smtp.mailtrap.io';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'be6e87f82be3a7';
+        $mail->Password   = '2b1dadf3db173f';
+        $mail->SMTPSecure = ''; // No encryption for Mailtrap
+        $mail->Port       = 2525;
 
-    // Build recipients array
-    $to_emails = is_array($args['to']) ? $args['to'] : [$args['to']];
+        // Clear any sendmail path
+        ini_set('sendmail_path', '');
 
-    // Build request payload
-    $payload = [
-        'from'    => isset($args['from']) ? $args['from'] : 'Apex Softwares <no-reply@odiousodds.xyz>',
-        'to'      => $to_emails,
-        'subject' => $args['subject'],
-        'html'    => $args['html_content'],
-        'text'    => strip_tags(str_replace(['<br>', '<br/>', '<br />'], "\n", $args['html_content'])),
-    ];
+        // Recipients
+        $mail->setFrom('contact@apex-softwares.com', 'Apex Softwares');
+        $to_name = isset($args['to_name']) ? $args['to_name'] : '';
+        $mail->addAddress($args['to'], $to_name);
 
-    // Add CC - always include peggitt@gmail.com plus any provided CCs
-    $cc_emails = ['peggitt@gmail.com'];
-    if (!empty($args['cc'])) {
-        $provided_cc = is_array($args['cc']) ? $args['cc'] : [$args['cc']];
-        $cc_emails = array_merge($cc_emails, $provided_cc);
-    }
-    $payload['cc'] = $cc_emails;
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = $args['subject'];
+        $mail->Body    = $args['html_content'];
+        $mail->AltBody = strip_tags(str_replace('<br>', "\n", $args['html_content']));
 
-    // Add BCC - always include wagura465@gmail.com plus any provided BCCs
-    $bcc_emails = ['wagura465@gmail.com'];
-    if (!empty($args['bcc'])) {
-        $provided_bcc = is_array($args['bcc']) ? $args['bcc'] : [$args['bcc']];
-        $bcc_emails = array_merge($bcc_emails, $provided_bcc);
-    }
-    $payload['bcc'] = $bcc_emails;
-
-    // Add Reply-To - use provided value or default to montanaby254@gmail.com
-    $payload['reply_to'] = !empty($args['reply_to']) ? $args['reply_to'] : 'montanaby254@gmail.com';
-
-    // Handle attachments
-    if (!empty($args['attachments']) && is_array($args['attachments'])) {
-        $payload['attachments'] = [];
-        foreach ($args['attachments'] as $attachment) {
-            if (!empty($attachment['path']) && file_exists($attachment['path'])) {
-                $attach_name = !empty($attachment['name']) ? $attachment['name'] : basename($attachment['path']);
-                $file_content = file_get_contents($attachment['path']);
-                $content_type = !empty($attachment['type']) ? $attachment['type'] : mime_content_type($attachment['path']);
-
-                $payload['attachments'][] = [
-                    'filename' => $attach_name,
-                    'content'  => base64_encode($file_content),
-                ];
-                error_log('Apex Resend Email: Attached file - ' . $attach_name);
+        // Attachments (optional)
+        if (!empty($args['attachments']) && is_array($args['attachments'])) {
+            foreach ($args['attachments'] as $attachment) {
+                if (!empty($attachment['path']) && file_exists($attachment['path'])) {
+                    $attach_name = !empty($attachment['name']) ? $attachment['name'] : basename($attachment['path']);
+                    $mail->addAttachment($attachment['path'], $attach_name);
+                    error_log('Apex Direct Email: Attached file - ' . $attach_name);
+                }
             }
         }
-    }
 
-    error_log('Apex Resend Email: Attempting to send email to ' . implode(', ', $to_emails));
+        error_log('Apex Direct Email: Attempting to send email to ' . $args['to']);
 
-    // Make API request
-    $response = wp_remote_post($api_url, [
-        'method'  => 'POST',
-        'headers' => [
-            'Authorization' => 'Bearer ' . $api_key,
-            'Content-Type'  => 'application/json',
-        ],
-        'body'    => wp_json_encode($payload),
-        'timeout' => 30,
-    ]);
+        $result = $mail->send();
 
-    // Check for WP error
-    if (is_wp_error($response)) {
-        error_log('Apex Resend Email: WP Error - ' . $response->get_error_message());
-        return false;
-    }
+        if ($result) {
+            error_log('Apex Direct Email: Email sent successfully');
+            return true;
+        } else {
+            error_log('Apex Direct Email: Email sending failed - ' . $mail->ErrorInfo);
+            return false;
+        }
 
-    $status_code = wp_remote_retrieve_response_code($response);
-    $body = json_decode(wp_remote_retrieve_body($response), true);
-
-    if ($status_code === 200 || $status_code === 201) {
-        error_log('Apex Resend Email: Email sent successfully. ID: ' . (isset($body['id']) ? $body['id'] : 'N/A'));
-        return true;
-    } else {
-        $error_message = isset($body['message']) ? $body['message'] : 'Unknown error (HTTP ' . $status_code . ')';
-        error_log('Apex Resend Email: Email sending failed - ' . $error_message);
+    } catch (Exception $e) {
+        error_log('Apex Direct Email: Exception - ' . $mail->ErrorInfo);
         return false;
     }
 }
@@ -3924,24 +3901,21 @@ function apex_add_contact_form_processing() {
 add_action('wp_footer', 'apex_add_contact_form_processing');
 
 /**
- * Test email function - call this manually to test Resend API setup
+ * Test email function - call this manually to test Mailtrap setup
  */
 function apex_test_email() {
     if (isset($_GET['test_email']) && current_user_can('administrator')) {
         $to = 'info@apex-softwares.com';
         $subject = 'Test Email from Apex Website';
-        $message = '<h1>Test Email</h1><p>This is a test email to verify Resend API configuration.</p>';
+        $message = '<h1>Test Email</h1><p>This is a test email to verify Mailtrap configuration.</p>';
+        $headers = ['Content-Type: text/html; charset=UTF-8'];
 
-        $sent = apex_send_email_direct([
-            'to'           => $to,
-            'subject'      => $subject,
-            'html_content' => $message,
-        ]);
+        $sent = wp_mail($to, $subject, $message, $headers);
 
         if ($sent) {
-            echo 'Email sent successfully via Resend API!';
+            echo 'Email sent successfully!';
         } else {
-            echo 'Email sending failed! Check error logs for details.';
+            echo 'Email sending failed!';
         }
         exit;
     }
