@@ -111,6 +111,11 @@ define( 'WP_DEBUG_DISPLAY', false );
 define( 'WP_DATE_TIMEZONE', 'Africa/Nairobi' );
 date_default_timezone_set( 'Africa/Nairobi' );
 
+// Resend API key for email sending
+// Get your API key from: https://resend.com/api-keys
+// NOTE: Set this manually on production server - do not commit real key to git
+define( 'RESEND_API_KEY', 're_15SkTcmH_B2DFAtSWZS1PfcirHJ8jDTcC' );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
