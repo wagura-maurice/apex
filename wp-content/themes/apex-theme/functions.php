@@ -2212,45 +2212,6 @@ function apex_parse_webinar_conference() {
 }
 
 /**
- * Configure Mailtrap for email delivery in development
- */
-
-/**
- * Configure Mailtrap for email delivery in development
- */
-function apex_mailtrap_config($phpmailer) {
-    // Debug: Log that Mailtrap config is being applied
-    error_log('Apex Mailtrap: Applying SMTP configuration');
-
-    // Force SMTP mode and clear any existing mailer settings
-    $phpmailer->isSMTP();
-    $phpmailer->Mailer = 'smtp';
-
-    // Mailtrap SMTP settings
-    $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
-    $phpmailer->SMTPAuth = true;
-    $phpmailer->Port = 2525;
-    $phpmailer->Username = 'be6e87f82be3a7';
-    $phpmailer->Password = '2b1dadf3db173f';
-    $phpmailer->SMTPSecure = ''; // No encryption for Mailtrap sandbox
-
-    // Force authentication
-    $phpmailer->SMTPAuth = true;
-
-    // Enable SMTP debugging
-    $phpmailer->SMTPDebug = 2;
-    $phpmailer->Debugoutput = function($str, $level) {
-        error_log("Apex Mailtrap SMTP Debug [{$level}]: {$str}");
-    };
-
-    // Clear any sendmail path that might be set
-    ini_set('sendmail_path', '');
-
-    error_log('Apex Mailtrap: SMTP configuration applied - Host: ' . $phpmailer->Host . ', Port: ' . $phpmailer->Port . ', Secure: ' . $phpmailer->SMTPSecure);
-}
-add_action('phpmailer_init', 'apex_mailtrap_config', 999); // High priority to override other configs
-
-/**
  * Handle contact form submission
  */
 function apex_handle_contact_form_submission() {
