@@ -2710,7 +2710,8 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 /**
- * Send email using direct PHPMailer to bypass MailHog
+ * Send email using direct PHPMailer
+ * Auto-detects environment: uses SMTP for dev, isMail() for production/cPanel
  */
 function apex_send_email_direct($args) {
     // Include PHPMailer directly
@@ -2721,24 +2722,40 @@ function apex_send_email_direct($args) {
     $mail = new PHPMailer(true);
 
     try {
-        // Server settings
-        $mail->SMTPDebug = 0; // No debug output in production
-        $mail->isSMTP();
-        $mail->Mailer = 'smtp';
-        $mail->Host       = 'sandbox.smtp.mailtrap.io';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'be6e87f82be3a7';
-        $mail->Password   = '2b1dadf3db173f';
-        $mail->SMTPSecure = ''; // No encryption for Mailtrap
-        $mail->Port       = 2525;
+        // Detect environment
+        $host = $_SERVER['HTTP_HOST'] ?? '';
+        $is_local_dev = in_array($host, ['localhost', '127.0.0.1', '::1']) || 
+                        strpos($host, '.test') !== false || 
+                        strpos($host, '.local') !== false ||
+                        file_exists('/.dockerenv');
 
-        // Clear any sendmail path
-        ini_set('sendmail_path', '');
+        if ($is_local_dev) {
+            // Development: Use Mailtrap SMTP
+            $mail->SMTPDebug = 2;
+            $mail->isSMTP();
+            $mail->Host       = 'sandbox.smtp.mailtrap.io';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'be6e87f82be3a7';
+            $mail->Password   = '2b1dadf3db173f';
+            $mail->SMTPSecure = '';
+            $mail->Port       = 2525;
+            error_log('Apex Direct Email: Using SMTP (Mailtrap) for development');
+        } else {
+            // Production/cPanel: Use PHP mail() - works with cPanel's sendmail
+            $mail->isMail();
+            error_log('Apex Direct Email: Using isMail() for production/cPanel');
+        }
 
         // Recipients
         $mail->setFrom('contact@apex-softwares.com', 'Apex Softwares');
         $to_name = isset($args['to_name']) ? $args['to_name'] : '';
         $mail->addAddress($args['to'], $to_name);
+
+        // Reply-To: use sender's email if provided (for contact forms)
+        if (!empty($args['reply_to']) && is_email($args['reply_to'])) {
+            $reply_to_name = isset($args['reply_to_name']) ? $args['reply_to_name'] : '';
+            $mail->addReplyTo($args['reply_to'], $reply_to_name);
+        }
 
         // Content
         $mail->isHTML(true);
