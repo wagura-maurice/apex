@@ -1145,3 +1145,13 @@ Stack trace:
 (
 )
 
+[14-Apr-2026 12:39:45 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 12:39:45 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 13:17:54 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 13:17:54 UTC] Apex Contact Form: POST data: Array
+(
+)
+

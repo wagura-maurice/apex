@@ -111,6 +111,11 @@ define( 'WP_DEBUG_DISPLAY', false );
 define( 'WP_DATE_TIMEZONE', 'Africa/Nairobi' );
 date_default_timezone_set( 'Africa/Nairobi' );
 
+// Brevo (Sendinblue) API key for email sending
+// Get your API key from: https://app.brevo.com/settings/keys/api
+// NOTE: Set this manually on production server - do not commit real key to git
+define( 'BREVO_API_KEY', 'YOUR_BREVO_API_KEY_HERE' );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

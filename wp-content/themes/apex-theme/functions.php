@@ -2770,6 +2770,102 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 /**
+ * Send email using Brevo (Sendinblue) API
+ * Works over HTTPS (port 443) - won't be blocked by cPanel
+ * 
+ * @param array $args Email arguments (to, subject, html_content, reply_to, reply_to_name)
+ * @param bool $debug If true, returns detailed error info instead of bool
+ * @return bool|array True on success, false on failure, or array with debug info if $debug=true
+ */
+function apex_send_email_brevo($args, $debug = false) {
+    $api_key = defined('BREVO_API_KEY') ? BREVO_API_KEY : '';
+    
+    if (empty($api_key) || $api_key === 'YOUR_BREVO_API_KEY_HERE') {
+        error_log('Apex Brevo Email: API key not configured. Please set BREVO_API_KEY in wp-config.php');
+        if ($debug) {
+            return ['success' => false, 'error' => 'Brevo API key not configured', 'debug' => ['api_key_set' => defined('BREVO_API_KEY')]];
+        }
+        return false;
+    }
+    
+    $debug_info = [
+        'api' => 'Brevo (Sendinblue)',
+        'endpoint' => 'https://api.brevo.com/v3/smtp/email',
+        'to' => $args['to'] ?? 'unknown',
+    ];
+    
+    // Prepare Brevo API payload
+    $sender = [
+        'email' => 'contact@apex-softwares.com',
+        'name' => 'Apex Softwares'
+    ];
+    
+    $to = [[
+        'email' => $args['to'],
+        'name' => $args['to_name'] ?? ''
+    ]];
+    
+    $payload = [
+        'sender' => $sender,
+        'to' => $to,
+        'subject' => $args['subject'] ?? 'No Subject',
+        'htmlContent' => $args['html_content'] ?? '',
+    ];
+    
+    // Add reply-to if provided
+    if (!empty($args['reply_to']) && is_email($args['reply_to'])) {
+        $payload['replyTo'] = [
+            'email' => $args['reply_to'],
+            'name' => $args['reply_to_name'] ?? ''
+        ];
+    }
+    
+    error_log('Apex Brevo Email: Sending email to ' . $args['to']);
+    
+    // Send via Brevo API
+    $response = wp_remote_post('https://api.brevo.com/v3/smtp/email', [
+        'headers' => [
+            'accept' => 'application/json',
+            'api-key' => $api_key,
+            'content-type' => 'application/json',
+        ],
+        'body' => json_encode($payload),
+        'timeout' => 30,
+    ]);
+    
+    if (is_wp_error($response)) {
+        $error_msg = $response->get_error_message();
+        error_log('Apex Brevo Email: WordPress error - ' . $error_msg);
+        $debug_info['errors'][] = $error_msg;
+        if ($debug) {
+            return ['success' => false, 'error' => $error_msg, 'debug' => $debug_info];
+        }
+        return false;
+    }
+    
+    $body = wp_remote_retrieve_body($response);
+    $status_code = wp_remote_retrieve_response_code($response);
+    
+    $debug_info['status_code'] = $status_code;
+    $debug_info['response'] = $body;
+    
+    if ($status_code >= 200 && $status_code < 300) {
+        error_log('Apex Brevo Email: Email sent successfully');
+        if ($debug) {
+            return ['success' => true, 'debug' => $debug_info];
+        }
+        return true;
+    } else {
+        error_log('Apex Brevo Email: API error - Status: ' . $status_code . ', Response: ' . $body);
+        $debug_info['errors'][] = 'API returned status ' . $status_code;
+        if ($debug) {
+            return ['success' => false, 'error' => 'API error: ' . $body, 'debug' => $debug_info];
+        }
+        return false;
+    }
+}
+
+/**
  * Send email using direct PHPMailer
  * Auto-detects environment: uses SMTP for dev, isMail() for production/cPanel
  * 
@@ -2829,28 +2925,9 @@ function apex_send_email_direct($args, $debug = false) {
             $mail_disabled = stripos(ini_get('disable_functions'), 'mail') !== false || !function_exists('mail');
             
             if ($mail_disabled) {
-                // mail() is disabled - use Mailtrap SMTP (temporary solution)
-                // TODO: Replace with cPanel email credentials for production
-                $mail->isSMTP();
-                $mail->Host       = 'sandbox.smtp.mailtrap.io';
-                $mail->SMTPAuth   = true;
-                $mail->Username   = 'be6e87f82be3a7';
-                $mail->Password   = '2b1dadf3db173f';
-                $mail->SMTPSecure = '';
-                $mail->Port       = 2525;
-                $mail->SMTPDebug  = $debug ? 2 : 0;
-                
-                $debug_info['mailer_config'] = [
-                    'type' => 'SMTP (Mailtrap - temporary fallback for mail() disabled)',
-                    'host' => $mail->Host,
-                    'port' => $mail->Port,
-                    'secure' => $mail->SMTPSecure,
-                    'username' => $mail->Username,
-                    'mail_disabled_reason' => 'mail() in disable_functions',
-                    'note' => 'Emails go to Mailtrap inbox - not real recipients!'
-                ];
-                
-                error_log('Apex Direct Email: mail() DISABLED, using Mailtrap SMTP fallback (emails go to inbox, not real recipients)');
+                // mail() is disabled - use Brevo API (works over HTTPS, won't be blocked)
+                error_log('Apex Direct Email: mail() DISABLED, using Brevo API fallback');
+                return apex_send_email_brevo($args, $debug);
             } else {
                 // mail() is available - use isMail()
                 $mail->isMail();
