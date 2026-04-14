@@ -1036,3 +1036,74 @@ Stack trace:
 (
 )
 
+[14-Apr-2026 11:44:48 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:44:48 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Herrod
+    [last_name] => Barker
+    [email] => celuruxom@mailinator.com
+    [phone] => +1 (682) 499-6719
+    [company] => Benjamin and Harrell Trading
+    [institution_type] => bank
+    [interest] => pricing
+    [message] => Dolore saepe harum e
+    [consent] => on
+    [apex_contact_nonce] => 0c477bddf8
+)
+
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: Processing submission from Herrod Barker <celuruxom@mailinator.com>
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: Attempting to send email via direct PHPMailer
+[14-Apr-2026 11:44:55 UTC] Apex Direct Email: Using isMail() for production/cPanel
+[14-Apr-2026 11:44:55 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[14-Apr-2026 11:44:55 UTC] Apex Direct Email: Exception - Could not instantiate mail function. | Exception: Could not instantiate mail function.
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: Direct email sending result: FAILED
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: Email sending failed
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:44:55 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 11:45:14 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:45:14 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 11:45:17 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:45:17 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Emily
+    [last_name] => Blankenship
+    [email] => rebube@mailinator.com
+    [phone] => +1 (624) 106-4482
+    [company] => Walton Garrison Plc
+    [institution_type] => fintech
+    [interest] => support
+    [message] => Reprehenderit proide
+    [consent] => on
+    [apex_contact_nonce] => 0c477bddf8
+)
+
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: Processing submission from Emily Blankenship <rebube@mailinator.com>
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: Attempting to send email via direct PHPMailer
+[14-Apr-2026 11:45:28 UTC] Apex Direct Email: Using isMail() for production/cPanel
+[14-Apr-2026 11:45:28 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[14-Apr-2026 11:45:28 UTC] Apex Direct Email: Exception - Could not instantiate mail function. | Exception: Could not instantiate mail function.
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: Direct email sending result: FAILED
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: Email sending failed
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:45:28 UTC] Apex Contact Form: POST data: Array
+(
+)
+

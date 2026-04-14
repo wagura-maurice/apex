@@ -2215,6 +2215,9 @@ function apex_parse_webinar_conference() {
  * Handle contact form submission
  */
 function apex_handle_contact_form_submission() {
+    // DEBUG MODE: Check for debug_contact in POST or GET
+    $debug_mode = isset($_GET['debug_contact']) || isset($_POST['debug_contact']);
+
     // Debug: Log all requests to contact page
     $current_url = $_SERVER['REQUEST_URI'] ?? '';
     if (strpos($current_url, 'contact') !== false) {
@@ -2231,6 +2234,7 @@ function apex_handle_contact_form_submission() {
         // Verify nonce for security
         if (!isset($_POST['apex_contact_nonce']) || !wp_verify_nonce($_POST['apex_contact_nonce'], 'apex_contact_form')) {
             error_log('Apex Contact Form: Nonce verification failed');
+            if ($debug_mode) dd(['error' => 'Security/nonce check failed!', 'post' => $_POST]);
             wp_die('Security check failed!');
         }
 
@@ -2250,12 +2254,14 @@ function apex_handle_contact_form_submission() {
         // Basic validation
         if (empty($first_name) || empty($last_name) || empty($email) || empty($message) || !$consent) {
             error_log('Apex Contact Form: Validation failed - missing required fields');
+            if ($debug_mode) dd(['error' => 'Validation failed', 'missing' => compact('first_name', 'last_name', 'email', 'message', 'consent')]);
             wp_redirect(home_url('/contact?error=missing_fields'));
             exit;
         }
 
         if (!is_email($email)) {
             error_log('Apex Contact Form: Invalid email address: ' . $email);
+            if ($debug_mode) dd(['error' => 'Invalid email', 'email' => $email]);
             wp_redirect(home_url('/contact?error=invalid_email'));
             exit;
         }
@@ -2263,7 +2269,7 @@ function apex_handle_contact_form_submission() {
         // Send email using direct PHPMailer to bypass MailHog
         error_log('Apex Contact Form: Attempting to send email via direct PHPMailer');
         
-        $email_sent = apex_send_email_direct([
+        $email_result = apex_send_email_direct([
             'to' => 'info@apex-softwares.com',
             'subject' => 'New Contact Form Submission from ' . $first_name . ' ' . $last_name,
             'html_content' => apex_create_contact_email_html([
@@ -2277,7 +2283,9 @@ function apex_handle_contact_form_submission() {
                 'message' => $message,
                 'submission_date' => current_time('F j, Y, g:i a')
             ])
-        ]);
+        ], $debug_mode);
+
+        $email_sent = ($email_result === true || (is_array($email_result) && $email_result['success']));
 
         error_log('Apex Contact Form: Direct email sending result: ' . ($email_sent ? 'SUCCESS' : 'FAILED'));
 
@@ -2286,6 +2294,14 @@ function apex_handle_contact_form_submission() {
             wp_redirect(home_url('/contact?success=1'));
         } else {
             error_log('Apex Contact Form: Email sending failed');
+            if ($debug_mode && is_array($email_result)) {
+                dd([
+                    'error' => 'Email sending failed',
+                    'form_data' => compact('first_name', 'last_name', 'email'),
+                    'email_debug' => $email_result['debug'] ?? [],
+                    'phpmailer_error' => $email_result['error'] ?? 'Unknown error'
+                ]);
+            }
             wp_redirect(home_url('/contact?error=send_failed'));
         }
         exit;
@@ -2780,6 +2796,8 @@ function apex_send_email_direct($args, $debug = false) {
         $is_local_dev = in_array($host, ['localhost', '127.0.0.1', '::1']) || 
                         strpos($host, '.test') !== false || 
                         strpos($host, '.local') !== false ||
+                        strpos($host, '.devops') !== false ||
+                        strpos($host, '.dev') !== false ||
                         file_exists('/.dockerenv');
 
         $debug_info['environment'] = [
