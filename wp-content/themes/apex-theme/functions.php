@@ -2438,8 +2438,14 @@ add_action('init', 'apex_newsletter_process_unsubscribe');
 
 /**
  * Core double opt-in helper: generate token, store transient, send confirmation email to subscriber
+ * 
+ * @param string $email Subscriber email
+ * @param string $source Source of subscription
+ * @param string $ip IP address
+ * @param bool $debug If true, returns detailed debug info instead of bool
+ * @return bool|array True on success, false on failure, or array with debug info if $debug=true
  */
-function apex_newsletter_send_confirmation($email, $source, $ip) {
+function apex_newsletter_send_confirmation($email, $source, $ip, $debug = false) {
     $token = bin2hex(random_bytes(32));
     set_transient('apex_pending_sub_' . $token, [
         'email'  => $email,
@@ -2463,10 +2469,10 @@ function apex_newsletter_send_confirmation($email, $source, $ip) {
             'unsubscribe_url' => $unsubscribe_url,
             'source'          => $source,
         ]),
-    ]);
+    ], $debug);
 
     // Also notify company immediately about the pending subscription request
-    if ($sent) {
+    if (($sent === true) || (is_array($sent) && $sent['success'])) {
         apex_send_email_direct([
             'to'           => 'info@apex-softwares.com',
             'subject'      => 'New Newsletter Subscription Request (Pending Confirmation): ' . $email,
@@ -2483,10 +2489,32 @@ function apex_newsletter_send_confirmation($email, $source, $ip) {
 }
 
 /**
+ * Laravel-style dump and die for debugging
+ * Usage: dd($var1, $var2, ...) or dd(['key' => $value])
+ */
+if (!function_exists('dd')) {
+    function dd(...$vars) {
+        header('Content-Type: application/json');
+        $output = [];
+        foreach ($vars as $i => $var) {
+            $output['dump_' . $i] = $var;
+        }
+        echo json_encode($output, JSON_PRETTY_PRINT);
+        die();
+    }
+}
+
+/**
  * AJAX handler for newsletter form submission (double opt-in)
  */
 function apex_newsletter_ajax_handler() {
+    // DEBUG MODE: Set to true to enable dd() output
+    $debug_mode = isset($_GET['debug_newsletter']) || isset($_POST['debug_newsletter']);
+
     if (!isset($_POST['apex_newsletter_nonce']) || !wp_verify_nonce($_POST['apex_newsletter_nonce'], 'apex_newsletter_form')) {
+        if ($debug_mode) {
+            dd(['error' => 'Security check failed!', 'post_data' => $_POST]);
+        }
         wp_send_json_error(['message' => 'Security check failed!']);
     }
 
@@ -2496,19 +2524,35 @@ function apex_newsletter_ajax_handler() {
     error_log("Apex Newsletter AJAX: Processing subscription from {$email} (source: {$source})");
 
     if (empty($email)) {
+        if ($debug_mode) dd(['error' => 'Empty email', 'post' => $_POST]);
         wp_send_json_error(['message' => 'Please enter your email address.']);
     }
     if (!is_email($email)) {
+        if ($debug_mode) dd(['error' => 'Invalid email', 'email' => $email]);
         wp_send_json_error(['message' => 'Please enter a valid email address.']);
     }
 
-    $sent = apex_newsletter_send_confirmation($email, $source, $_SERVER['REMOTE_ADDR'] ?? 'Unknown');
+    // DEBUG: Pass debug flag to get detailed error info
+    $confirmation_args = [$email, $source, $_SERVER['REMOTE_ADDR'] ?? 'Unknown'];
+    if ($debug_mode) {
+        $confirmation_args[] = true; // Enable debug mode
+    }
+    $sent = apex_newsletter_send_confirmation(...$confirmation_args);
 
     error_log('Apex Newsletter AJAX: Confirmation email result: ' . ($sent ? 'SUCCESS' : 'FAILED'));
 
-    if ($sent) {
+    if ($sent === true || (is_array($sent) && $sent['success'])) {
         wp_send_json_success(['message' => 'Almost there! Please check your inbox and click the confirmation link to complete your subscription.']);
     } else {
+        if ($debug_mode && is_array($sent)) {
+            dd([
+                'error' => 'Email sending failed',
+                'email' => $email,
+                'source' => $source,
+                'debug_info' => $sent['debug'] ?? 'No debug info available',
+                'phpmailer_error' => $sent['error'] ?? 'Unknown error'
+            ]);
+        }
         wp_send_json_error(['message' => 'Failed to send confirmation email. Please try again later.']);
     }
 }
@@ -2712,14 +2756,23 @@ use PHPMailer\PHPMailer\Exception;
 /**
  * Send email using direct PHPMailer
  * Auto-detects environment: uses SMTP for dev, isMail() for production/cPanel
+ * 
+ * @param array $args Email arguments
+ * @param bool $debug If true, returns detailed error info instead of bool
+ * @return bool|array True on success, false on failure, or array with debug info if $debug=true
  */
-function apex_send_email_direct($args) {
+function apex_send_email_direct($args, $debug = false) {
     // Include PHPMailer directly
     require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
     require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
     require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 
     $mail = new PHPMailer(true);
+    $debug_info = [
+        'environment' => [],
+        'mailer_config' => [],
+        'errors' => []
+    ];
 
     try {
         // Detect environment
@@ -2729,9 +2782,16 @@ function apex_send_email_direct($args) {
                         strpos($host, '.local') !== false ||
                         file_exists('/.dockerenv');
 
+        $debug_info['environment'] = [
+            'http_host' => $host,
+            'is_local_dev' => $is_local_dev,
+            'php_version' => PHP_VERSION,
+            'sendmail_path' => ini_get('sendmail_path')
+        ];
+
         if ($is_local_dev) {
             // Development: Use Mailtrap SMTP
-            $mail->SMTPDebug = 2;
+            $mail->SMTPDebug = $debug ? 2 : 0;
             $mail->isSMTP();
             $mail->Host       = 'sandbox.smtp.mailtrap.io';
             $mail->SMTPAuth   = true;
@@ -2739,10 +2799,21 @@ function apex_send_email_direct($args) {
             $mail->Password   = '2b1dadf3db173f';
             $mail->SMTPSecure = '';
             $mail->Port       = 2525;
+            $debug_info['mailer_config'] = [
+                'type' => 'SMTP (Mailtrap)',
+                'host' => $mail->Host,
+                'port' => $mail->Port,
+                'secure' => $mail->SMTPSecure
+            ];
             error_log('Apex Direct Email: Using SMTP (Mailtrap) for development');
         } else {
             // Production/cPanel: Use PHP mail() - works with cPanel's sendmail
             $mail->isMail();
+            $debug_info['mailer_config'] = [
+                'type' => 'isMail() - PHP mail()',
+                'sendmail_path' => ini_get('sendmail_path'),
+                'sendmail_from' => ini_get('sendmail_from')
+            ];
             error_log('Apex Direct Email: Using isMail() for production/cPanel');
         }
 
@@ -2780,15 +2851,19 @@ function apex_send_email_direct($args) {
 
         if ($result) {
             error_log('Apex Direct Email: Email sent successfully');
-            return true;
+            return $debug ? ['success' => true, 'debug' => $debug_info] : true;
         } else {
-            error_log('Apex Direct Email: Email sending failed - ' . $mail->ErrorInfo);
-            return false;
+            $error_msg = $mail->ErrorInfo;
+            error_log('Apex Direct Email: Email sending failed - ' . $error_msg);
+            $debug_info['errors'][] = $error_msg;
+            return $debug ? ['success' => false, 'debug' => $debug_info, 'error' => $error_msg] : false;
         }
 
     } catch (Exception $e) {
-        error_log('Apex Direct Email: Exception - ' . $mail->ErrorInfo);
-        return false;
+        $error_msg = $mail->ErrorInfo . ' | Exception: ' . $e->getMessage();
+        error_log('Apex Direct Email: Exception - ' . $error_msg);
+        $debug_info['errors'][] = $error_msg;
+        return $debug ? ['success' => false, 'debug' => $debug_info, 'error' => $error_msg] : false;
     }
 }
 
