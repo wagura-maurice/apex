@@ -1107,3 +1107,41 @@ Stack trace:
 (
 )
 
+[14-Apr-2026 11:49:25 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:49:25 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 11:49:31 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:49:31 UTC] Apex Contact Form: POST data: Array
+(
+)
+
+[14-Apr-2026 11:49:39 UTC] Apex Contact Form: Contact page accessed - Method: POST
+[14-Apr-2026 11:49:39 UTC] Apex Contact Form: POST data: Array
+(
+    [first_name] => Ava
+    [last_name] => Riddle
+    [email] => nokekos@mailinator.com
+    [phone] => +1 (902) 802-1821
+    [company] => Suarez and Pena Plc
+    [institution_type] => bank
+    [interest] => general
+    [message] => Eu ut vel non illum
+    [consent] => on
+    [apex_contact_nonce] => 0c477bddf8
+)
+
+[14-Apr-2026 11:49:39 UTC] Apex Contact Form: Form submission detected - PROCESSING
+[14-Apr-2026 11:49:39 UTC] Apex Contact Form: Processing submission from Ava Riddle <nokekos@mailinator.com>
+[14-Apr-2026 11:49:39 UTC] Apex Contact Form: Attempting to send email via direct PHPMailer
+[14-Apr-2026 11:49:39 UTC] Apex Direct Email: Using SMTP (Mailtrap) for development
+[14-Apr-2026 11:49:39 UTC] Apex Direct Email: Attempting to send email to info@apex-softwares.com
+[14-Apr-2026 11:49:45 UTC] Apex Direct Email: Email sent successfully
+[14-Apr-2026 11:49:45 UTC] Apex Contact Form: Direct email sending result: SUCCESS
+[14-Apr-2026 11:49:45 UTC] Apex Contact Form: Email sent successfully
+[14-Apr-2026 11:49:46 UTC] Apex Contact Form: Contact page accessed - Method: GET
+[14-Apr-2026 11:49:46 UTC] Apex Contact Form: POST data: Array
+(
+)
+

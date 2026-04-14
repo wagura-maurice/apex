@@ -2827,12 +2827,34 @@ function apex_send_email_direct($args, $debug = false) {
         } else {
             // Production/cPanel: Use PHP mail() - works with cPanel's sendmail
             $mail->isMail();
-            $debug_info['mailer_config'] = [
+            
+            // Enhanced diagnostics for production mail() debugging
+            $mail_diagnostics = [
                 'type' => 'isMail() - PHP mail()',
                 'sendmail_path' => ini_get('sendmail_path'),
-                'sendmail_from' => ini_get('sendmail_from')
+                'sendmail_from' => ini_get('sendmail_from'),
+                'mail_function_exists' => function_exists('mail'),
+                'safe_mode' => ini_get('safe_mode'),
+                'disable_functions' => ini_get('disable_functions'),
+                'smtp' => ini_get('SMTP'),
+                'smtp_port' => ini_get('smtp_port'),
+                'hostname' => gethostname(),
             ];
+            
+            // Check if sendmail path is valid
+            $sendmail_path = ini_get('sendmail_path');
+            if (!empty($sendmail_path)) {
+                $parts = explode(' ', $sendmail_path);
+                $binary = $parts[0];
+                $mail_diagnostics['sendmail_binary'] = $binary;
+                $mail_diagnostics['sendmail_exists'] = file_exists($binary);
+                $mail_diagnostics['sendmail_executable'] = is_executable($binary);
+            }
+            
+            $debug_info['mailer_config'] = $mail_diagnostics;
+            
             error_log('Apex Direct Email: Using isMail() for production/cPanel');
+            error_log('Apex Direct Email: Mail diagnostics - ' . json_encode($mail_diagnostics));
         }
 
         // Recipients
@@ -2864,6 +2886,12 @@ function apex_send_email_direct($args, $debug = false) {
         }
 
         error_log('Apex Direct Email: Attempting to send email to ' . $args['to']);
+        
+        // Enable PHPMailer exception throwing for better error capture
+        if (!$is_local_dev) {
+            // In production, also capture pre-send diagnostics
+            error_log('Apex Direct Email: Pre-send check - From: ' . $mail->From . ', To count: ' . count($mail->getToAddresses()));
+        }
 
         $result = $mail->send();
 
@@ -2873,6 +2901,20 @@ function apex_send_email_direct($args, $debug = false) {
         } else {
             $error_msg = $mail->ErrorInfo;
             error_log('Apex Direct Email: Email sending failed - ' . $error_msg);
+            
+            // Additional debugging for mail() specific errors
+            if (!$is_local_dev) {
+                $last_error = error_get_last();
+                if ($last_error) {
+                    error_log('Apex Direct Email: Last PHP error - ' . json_encode($last_error));
+                    $debug_info['php_error'] = $last_error;
+                }
+                
+                // Log mail() specific diagnostics
+                error_log('Apex Direct Email: Mail() diagnostics - sendmail_path: ' . ini_get('sendmail_path') . 
+                          ', mail() disabled: ' . (stripos(ini_get('disable_functions'), 'mail') !== false ? 'YES' : 'NO'));
+            }
+            
             $debug_info['errors'][] = $error_msg;
             return $debug ? ['success' => false, 'debug' => $debug_info, 'error' => $error_msg] : false;
         }
