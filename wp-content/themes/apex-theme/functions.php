@@ -2264,7 +2264,7 @@ function apex_handle_contact_form_submission() {
         error_log('Apex Contact Form: Attempting to send email via direct PHPMailer');
         
         $email_sent = apex_send_email_direct([
-            'to' => 'info@apex-softwares.com',
+            'to' => $email,
             'subject' => 'New Contact Form Submission from ' . $first_name . ' ' . $last_name,
             'html_content' => apex_create_contact_email_html([
                 'first_name' => $first_name,
@@ -2660,7 +2660,7 @@ function apex_demo_request_ajax_handler() {
 
     // Build email
     $email_args = [
-        'to'           => 'info@apex-softwares.com',
+        'to'           => $email,
         'subject'      => 'New Demo Request from ' . $first_name . ' ' . $last_name . ' (' . $company . ')',
         'html_content' => apex_create_demo_request_email_html([
             'first_name'       => $first_name,
