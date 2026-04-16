@@ -2745,8 +2745,8 @@ function apex_send_email_direct($args) {
     }
     $payload['bcc'] = $bcc_emails;
 
-    // Add Reply-To - use provided value or default to montanaby254@gmail.com
-    $payload['reply_to'] = !empty($args['reply_to']) ? $args['reply_to'] : 'montanaby254@gmail.com';
+    // Add Reply-To - use provided value or default to info@apex-softwares.com
+    $payload['reply_to'] = !empty($args['reply_to']) ? $args['reply_to'] : 'info@apex-softwares.com';
 
     // Handle attachments
     if (!empty($args['attachments']) && is_array($args['attachments'])) {
