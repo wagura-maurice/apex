@@ -613,6 +613,96 @@
 }
 
 /* ========================================
+   Enhanced Support Hours Section
+   ======================================== */
+.apex-contact-main__info-card--hours {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.apex-contact-main__info-card--hours::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);
+}
+
+.apex-contact-main__info-icon--hours {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(234, 88, 12, 0.15) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.apex-contact-main__hours-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.apex-contact-main__hours-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.apex-contact-main__hours-item:hover {
+    border-color: #f97316;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.1);
+    transform: translateY(-1px);
+}
+
+.apex-contact-main__hours-day {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.apex-contact-main__hours-day svg {
+    width: 16px;
+    height: 16px;
+    color: #f97316;
+    flex-shrink: 0;
+}
+
+.apex-contact-main__hours-day span {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.apex-contact-main__hours-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.125rem;
+}
+
+.apex-contact-main__hours-time span {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #f97316;
+}
+
+.apex-contact-main__hours-time small {
+    font-size: 0.6875rem;
+    color: #94a3b8;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ========================================
    Responsive Adjustments
    ======================================== */
 @media (max-width: 768px) {
@@ -672,6 +762,20 @@
 
     .apex-contact-offices__card {
         padding: 1.25rem;
+    }
+
+    /* Enhanced Hours Section Responsive */
+    .apex-contact-main__hours-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.625rem;
+    }
+
+    .apex-contact-main__hours-time {
+        align-items: flex-start;
+        width: 100%;
+        padding-left: 2rem;
     }
 }
 

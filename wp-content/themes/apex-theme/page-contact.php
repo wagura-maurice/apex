@@ -233,27 +233,7 @@ apex_render_about_hero([
                             <?php if (!empty($card['phone'])): ?>
                                 <a href="tel:<?php echo esc_attr(str_replace(' ', '', $card['phone'])); ?>"><?php echo esc_html($card['phone']); ?></a>
                             <?php endif; ?>
-                            <?php if (!empty($card['weekday_hours'])): ?>
-                                <div class="apex-contact-main__info-hours-detailed">
-                                    <div class="hours-row">
-                                        <span class="hours-label">Weekdays:</span>
-                                        <span class="hours-time">Mon - Fri <?php echo esc_html($card['weekday_hours']); ?></span>
-                                    </div>
-                                    <?php if (!empty($card['saturday_hours'])): ?>
-                                    <div class="hours-row">
-                                        <span class="hours-label">Saturday:</span>
-                                        <span class="hours-time"><?php echo esc_html($card['saturday_hours']); ?></span>
-                                    </div>
-                                    <?php endif; ?>
-                                    <?php if (!empty($card['sunday_holiday_status'])): ?>
-                                    <div class="hours-row">
-                                        <span class="hours-label">Sunday & Holidays:</span>
-                                        <span class="hours-time"><?php echo esc_html($card['sunday_holiday_status']); ?></span>
-                                    </div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                                                    </div>
                     
                     <?php elseif ($card['type'] === 'email'): ?>
                         <div class="apex-contact-main__info-card">
@@ -271,29 +251,47 @@ apex_render_about_hero([
                         </div>
                     
                     <?php elseif ($card['type'] === 'hours'): ?>
-                        <div class="apex-contact-main__info-card">
-                            <div class="apex-contact-main__info-icon">
+                        <div class="apex-contact-main__info-card apex-contact-main__info-card--hours">
+                            <div class="apex-contact-main__info-icon apex-contact-main__info-icon--hours">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                             </div>
                             <h3><?php echo esc_html($card['title']); ?></h3>
                             <p><?php echo esc_html($card['description']); ?></p>
-                            <div class="apex-contact-main__info-hours-detailed">
+                            <div class="apex-contact-main__hours-grid">
                                 <?php if (!empty($card['weekday_hours'])): ?>
-                                <div class="hours-row">
-                                    <span class="hours-label">Weekdays:</span>
-                                    <span class="hours-time">Mon - Fri <?php echo esc_html($card['weekday_hours']); ?></span>
+                                <div class="apex-contact-main__hours-item">
+                                    <div class="apex-contact-main__hours-day">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                        <span>Mon - Fri</span>
+                                    </div>
+                                    <div class="apex-contact-main__hours-time">
+                                        <span><?php echo esc_html($card['weekday_hours']); ?></span>
+                                        <small>Regular Hours</small>
+                                    </div>
                                 </div>
                                 <?php endif; ?>
                                 <?php if (!empty($card['saturday_hours'])): ?>
-                                <div class="hours-row">
-                                    <span class="hours-label">Saturday:</span>
-                                    <span class="hours-time"><?php echo esc_html($card['saturday_hours']); ?></span>
+                                <div class="apex-contact-main__hours-item">
+                                    <div class="apex-contact-main__hours-day">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                        <span>Saturday</span>
+                                    </div>
+                                    <div class="apex-contact-main__hours-time">
+                                        <span><?php echo esc_html($card['saturday_hours']); ?></span>
+                                        <small>Limited Hours</small>
+                                    </div>
                                 </div>
                                 <?php endif; ?>
                                 <?php if (!empty($card['sunday_holiday_status'])): ?>
-                                <div class="hours-row">
-                                    <span class="hours-label">Sunday & Holidays:</span>
-                                    <span class="hours-time"><?php echo esc_html($card['sunday_holiday_status']); ?></span>
+                                <div class="apex-contact-main__hours-item">
+                                    <div class="apex-contact-main__hours-day">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                        <span>Sunday & Holidays</span>
+                                    </div>
+                                    <div class="apex-contact-main__hours-time">
+                                        <span><?php echo esc_html($card['sunday_holiday_status']); ?></span>
+                                        <small>Special Schedule</small>
+                                    </div>
                                 </div>
                                 <?php endif; ?>
                             </div>
