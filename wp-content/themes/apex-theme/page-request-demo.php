@@ -214,7 +214,10 @@ apex_render_about_hero([
                         <span>I agree to the <a href="<?php echo home_url('/privacy-policy'); ?>">Privacy Policy</a> and consent to being contacted.</span>
                     </label>
                 </div>
-                
+
+                <!-- reCAPTCHA v3 (invisible) -->
+                <?php apex_render_recaptcha_widget('demo'); ?>
+
                 <button type="submit" class="apex-request-demo__submit">
                     <span>Request Demo</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -653,37 +656,58 @@ document.addEventListener('DOMContentLoaded', function() {
             const originalBtnHTML = submitBtn.innerHTML;
             submitBtn.innerHTML = '<span>Submitting...</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>';
 
-            // Build FormData (includes file automatically)
-            const formData = new FormData(demoForm);
-            formData.append('action', 'apex_demo_request_submit');
+            // Get reCAPTCHA action
+            const recaptchaField = demoForm.querySelector('.g-recaptcha-response');
+            const recaptchaAction = recaptchaField ? recaptchaField.getAttribute('data-action') : 'demo';
+            
+            // Execute reCAPTCHA v3 using helper function
+            if (typeof executeRecaptcha === 'function') {
+                executeRecaptcha(recaptchaAction, function(token) {
+                    if (!token) {
+                        demoForm.classList.remove('loading');
+                        submitBtn.innerHTML = originalBtnHTML;
+                        showDemoNotification('error', 'Security verification failed. Please try again.');
+                        return;
+                    }
+                    
+                    // Build FormData (includes file automatically)
+                    const formData = new FormData(demoForm);
+                    formData.append('action', 'apex_demo_request_submit');
+                    formData.append('g-recaptcha-response', token);
 
-            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
+                    fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        demoForm.classList.remove('loading');
+                        submitBtn.innerHTML = originalBtnHTML;
+
+                        if (data.success) {
+                            showDemoNotification('success', data.data.message);
+                            demoForm.reset();
+                            // Reset file preview
+                            dropzoneContent.style.display = 'block';
+                            dropzonePreview.style.display = 'none';
+                            // Scroll to notification
+                            document.getElementById('demo-notification').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } else {
+                            showDemoNotification('error', data.data.message || 'An error occurred. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        demoForm.classList.remove('loading');
+                        submitBtn.innerHTML = originalBtnHTML;
+                        showDemoNotification('error', 'An error occurred. Please try again.');
+                        console.error('Demo request submission error:', error);
+                    });
+                });
+            } else {
                 demoForm.classList.remove('loading');
                 submitBtn.innerHTML = originalBtnHTML;
-
-                if (data.success) {
-                    showDemoNotification('success', data.data.message);
-                    demoForm.reset();
-                    // Reset file preview
-                    dropzoneContent.style.display = 'block';
-                    dropzonePreview.style.display = 'none';
-                    // Scroll to notification
-                    document.getElementById('demo-notification').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    showDemoNotification('error', data.data.message || 'An error occurred. Please try again.');
-                }
-            })
-            .catch(error => {
-                demoForm.classList.remove('loading');
-                submitBtn.innerHTML = originalBtnHTML;
-                showDemoNotification('error', 'An error occurred. Please try again.');
-                console.error('Demo request submission error:', error);
-            });
+                showDemoNotification('error', 'Security verification not available. Please refresh and try again.');
+            }
         });
     }
 });

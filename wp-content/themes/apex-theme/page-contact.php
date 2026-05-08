@@ -120,6 +120,31 @@ if (isset($_GET['test_email'])) {
 }
 ?>
 
+<!-- Google reCAPTCHA v3 for contact page -->
+<script src="https://www.google.com/recaptcha/api.js?render=<?php echo RECAPTCHA_SITE_KEY; ?>"></script>
+<script>
+// reCAPTCHA v3 - Invisible
+// Execute reCAPTCHA for a specific action - uses grecaptcha.ready() for proper initialization
+function executeRecaptcha(action, callback) {
+    if (typeof grecaptcha === 'undefined') {
+        console.error('reCAPTCHA not loaded');
+        if (callback) callback(null);
+        return;
+    }
+    
+    grecaptcha.ready(function() {
+        grecaptcha.execute('<?php echo RECAPTCHA_SITE_KEY; ?>', {action: action})
+            .then(function(token) {
+                if (callback) callback(token);
+            })
+            .catch(function(error) {
+                console.error('reCAPTCHA execution error:', error);
+                if (callback) callback(null);
+            });
+    });
+}
+</script>
+
 <?php 
 // Page Hero
 apex_render_about_hero([
@@ -146,7 +171,7 @@ apex_render_about_hero([
                     <p class="apex-contact-main__form-description">Fill out the form below and we'll get back to you within 24 hours.</p>
                 </div>
                 
-                <form class="apex-contact-main__form" action="#" method="post">
+                <form class="apex-contact-main__form" id="apex-contact-form" action="#" method="post">
                     <div class="apex-contact-main__form-row">
                         <div class="apex-contact-main__form-group">
                             <label for="contact-first-name">First Name *</label>
@@ -212,7 +237,10 @@ apex_render_about_hero([
                             <span>I agree to the <a href="<?php echo home_url('/privacy-policy'); ?>">Privacy Policy</a> and consent to being contacted regarding my inquiry.</span>
                         </label>
                     </div>
-                    
+
+                    <!-- reCAPTCHA v3 (invisible) -->
+                    <?php apex_render_recaptcha_widget('contact'); ?>
+
                     <button type="submit" class="apex-contact-main__form-submit">
                         Send Message
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -620,5 +648,43 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 </style>
+
+<script>
+// reCAPTCHA v3 handler for contact form
+(function() {
+    var contactForm = document.getElementById('apex-contact-form');
+    if (!contactForm) return;
+    
+    var recaptchaField = contactForm.querySelector('.g-recaptcha-response');
+    var recaptchaAction = recaptchaField ? recaptchaField.getAttribute('data-action') : 'contact';
+    
+    // Prevent default submission and handle manually
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Generate token and submit
+        if (typeof executeRecaptcha === 'function') {
+            executeRecaptcha(recaptchaAction, function(token) {
+                if (token && recaptchaField) {
+                    recaptchaField.value = token;
+                    // Create hidden input for form submission
+                    var hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'g-recaptcha-response';
+                    hiddenInput.value = token;
+                    contactForm.appendChild(hiddenInput);
+                    
+                    // Submit the form
+                    contactForm.submit();
+                } else {
+                    alert('Security verification failed. Please try again.');
+                }
+            });
+        } else {
+            alert('Security verification not available. Please refresh the page.');
+        }
+    });
+})();
+</script>
 
 <?php get_footer(); ?>

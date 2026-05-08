@@ -703,6 +703,25 @@
 }
 
 /* ========================================
+   reCAPTCHA v3 - Invisible (no visible UI)
+   ======================================== */
+
+/* Hidden reCAPTCHA input field - takes no space */
+.g-recaptcha-response {
+    display: none;
+}
+
+/* reCAPTCHA badge styling (the small Google logo that appears) */
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+/* Show the badge only when needed for debugging */
+body.recaptcha-debug .grecaptcha-badge {
+    visibility: visible;
+}
+
+/* ========================================
    Responsive Adjustments
    ======================================== */
 @media (max-width: 768px) {

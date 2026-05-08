@@ -2234,6 +2234,14 @@ function apex_handle_contact_form_submission() {
             wp_die('Security check failed!');
         }
 
+        // Verify reCAPTCHA v3
+        $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
+        if (!apex_verify_recaptcha($recaptcha_response, 'contact')) {
+            error_log('Apex Contact Form: reCAPTCHA verification failed');
+            wp_redirect(home_url('/contact?error=recaptcha_failed'));
+            exit;
+        }
+
         // Sanitize and validate form data
         $first_name = sanitize_text_field($_POST['first_name'] ?? '');
         $last_name = sanitize_text_field($_POST['last_name'] ?? '');
@@ -2486,8 +2494,17 @@ function apex_newsletter_send_confirmation($email, $source, $ip) {
  * AJAX handler for newsletter form submission (double opt-in)
  */
 function apex_newsletter_ajax_handler() {
+    // Log POST data for debugging
+    error_log('Apex Newsletter: POST data: ' . print_r($_POST, true));
+    
     if (!isset($_POST['apex_newsletter_nonce']) || !wp_verify_nonce($_POST['apex_newsletter_nonce'], 'apex_newsletter_form')) {
         wp_send_json_error(['message' => 'Security check failed!']);
+    }
+
+    // Verify reCAPTCHA v3
+    $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
+    if (!apex_verify_recaptcha($recaptcha_response, 'newsletter')) {
+        wp_send_json_error(['message' => 'Security verification failed. Please try again.']);
     }
 
     $email  = sanitize_email($_POST['email'] ?? '');
@@ -2519,9 +2536,18 @@ add_action('wp_ajax_nopriv_apex_newsletter_submit', 'apex_newsletter_ajax_handle
  * AJAX handler for demo request form submission (with file upload)
  */
 function apex_demo_request_ajax_handler() {
+    // Log POST data for debugging
+    error_log('Apex Demo Request: POST data: ' . print_r($_POST, true));
+    
     // Verify nonce
     if (!isset($_POST['apex_demo_nonce']) || !wp_verify_nonce($_POST['apex_demo_nonce'], 'apex_demo_request_form')) {
         wp_send_json_error(['message' => 'Security check failed!']);
+    }
+
+    // Verify reCAPTCHA v3
+    $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
+    if (!apex_verify_recaptcha($recaptcha_response, 'demo')) {
+        wp_send_json_error(['message' => 'Security verification failed. Please try again.']);
     }
 
     // Sanitize form fields
@@ -3575,30 +3601,60 @@ function apex_newsletter_shared_js() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             form.classList.add('loading');
-            var fd = new FormData();
-            var emailInput = form.querySelector('input[type="email"]');
-            fd.append('email', emailInput ? emailInput.value : '');
-            fd.append('action', 'apex_newsletter_submit');
-            var nonceField = form.querySelector('input[name="apex_newsletter_nonce"]');
-            if (nonceField) fd.append('apex_newsletter_nonce', nonceField.value);
-            var sourceField = form.querySelector('input[name="apex_newsletter_source"]');
-            if (sourceField) fd.append('apex_newsletter_source', sourceField.value);
+            
+            // Get the reCAPTCHA action from the hidden field
+            var recaptchaField = form.querySelector('.g-recaptcha-response');
+            var recaptchaAction = recaptchaField ? recaptchaField.getAttribute('data-action') : 'newsletter';
+            
+            // Execute reCAPTCHA v3 using grecaptcha.ready()
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('<?php echo RECAPTCHA_SITE_KEY; ?>', {action: recaptchaAction})
+                        .then(function(token) {
+                            if (!token) {
+                                form.classList.remove('loading');
+                                showMsg('error', 'Security verification failed. Please try again.');
+                                return;
+                            }
+                            
+                            var fd = new FormData();
+                            var emailInput = form.querySelector('input[type="email"]');
+                            fd.append('email', emailInput ? emailInput.value : '');
+                            fd.append('action', 'apex_newsletter_submit');
+                            var nonceField = form.querySelector('input[name="apex_newsletter_nonce"]');
+                            if (nonceField) fd.append('apex_newsletter_nonce', nonceField.value);
+                            var sourceField = form.querySelector('input[name="apex_newsletter_source"]');
+                            if (sourceField) fd.append('apex_newsletter_source', sourceField.value);
+                            
+                            // Add reCAPTCHA token
+                            fd.append('g-recaptcha-response', token);
 
-            fetch('<?php echo $ajax_url; ?>', { method: 'POST', body: fd })
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    form.classList.remove('loading');
-                    if (data.success) {
-                        showMsg('success', data.data.message);
-                        form.reset();
-                    } else {
-                        showMsg('error', (data.data && data.data.message) ? data.data.message : 'An error occurred. Please try again.');
-                    }
-                })
-                .catch(function() {
-                    form.classList.remove('loading');
-                    showMsg('error', 'An error occurred. Please try again.');
+                            fetch('<?php echo $ajax_url; ?>', { method: 'POST', body: fd })
+                                .then(function(r) { return r.json(); })
+                                .then(function(data) {
+                                    form.classList.remove('loading');
+                                    if (data.success) {
+                                        showMsg('success', data.data.message);
+                                        form.reset();
+                                    } else {
+                                        showMsg('error', (data.data && data.data.message) ? data.data.message : 'An error occurred. Please try again.');
+                                    }
+                                })
+                                .catch(function() {
+                                    form.classList.remove('loading');
+                                    showMsg('error', 'An error occurred. Please try again.');
+                                });
+                        })
+                        .catch(function(error) {
+                            console.error('reCAPTCHA error:', error);
+                            form.classList.remove('loading');
+                            showMsg('error', 'Security verification failed. Please try again.');
+                        });
                 });
+            } else {
+                form.classList.remove('loading');
+                showMsg('error', 'Security verification not available. Please refresh and try again.');
+            }
         });
     }
 
@@ -14738,3 +14794,125 @@ function apex_single_template($template) {
     return $template;
 }
 add_filter('single_template', 'apex_single_template');
+
+/**
+ * ============================================================
+ * GOOGLE RECAPTCHA INTEGRATION
+ * ============================================================
+ */
+
+// reCAPTCHA Keys (stored as constants for easy access)
+define('RECAPTCHA_SITE_KEY', '6LcyYuAsAAAAAE2LHRxAUsB0MoGeHakjweIMdQiy');
+define('RECAPTCHA_SECRET_KEY', '6LcyYuAsAAAAAHoqer7NRuac39pLVUrFU79cu5KO');
+
+/**
+ * Verify Google reCAPTCHA v3 response
+ * 
+ * @param string $recaptcha_response The g-recaptcha-response from the form
+ * @param string $action The action name for context (e.g., 'contact', 'demo', 'newsletter')
+ * @return bool True if verification passed, false otherwise
+ */
+function apex_verify_recaptcha($recaptcha_response, $action = 'submit') {
+    if (empty($recaptcha_response)) {
+        error_log('reCAPTCHA v3 verification failed: Empty response');
+        return false;
+    }
+
+    $verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+    $response = wp_remote_post($verify_url, [
+        'body' => [
+            'secret'   => RECAPTCHA_SECRET_KEY,
+            'response' => $recaptcha_response,
+            'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        ],
+        'timeout' => 30,
+    ]);
+
+    if (is_wp_error($response)) {
+        error_log('reCAPTCHA v3 verification failed: ' . $response->get_error_message());
+        return false;
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $result = json_decode($body, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log('reCAPTCHA v3 verification failed: Invalid JSON response');
+        return false;
+    }
+
+    if (isset($result['success']) && $result['success'] === true) {
+        // Check score for reCAPTCHA v3 (0.0 to 1.0)
+        $score = $result['score'] ?? 0;
+        
+        // Minimum score threshold (0.3 is more permissive for testing)
+        // Google recommends 0.5 for production, but 0.3 helps during development
+        $threshold = 0.3;
+        
+        // Verify action matches (but be lenient if no action returned)
+        $returned_action = $result['action'] ?? '';
+        $action_mismatch = !empty($action) && !empty($returned_action) && $returned_action !== $action;
+        
+        if ($score < $threshold) {
+            error_log('reCAPTCHA v3: Score too low (' . $score . ' < ' . $threshold . ') for action: ' . $action);
+            return false;
+        }
+        
+        if ($action_mismatch) {
+            error_log('reCAPTCHA v3: Action mismatch. Expected: ' . $action . ', Got: ' . $returned_action);
+            return false;
+        }
+        
+        error_log('reCAPTCHA v3 verification passed. Score: ' . $score . ', Action: ' . ($returned_action ?: $action));
+        return true;
+    }
+
+    if (isset($result['error-codes'])) {
+        error_log('reCAPTCHA v3 verification failed: ' . implode(', ', $result['error-codes']));
+    }
+
+    return false;
+}
+
+/**
+ * Output reCAPTCHA v3 script and initialization in head
+ */
+function apex_recaptcha_v3_scripts() {
+    ?>
+<!-- Google reCAPTCHA v3 -->
+<script src="https://www.google.com/recaptcha/api.js?render=<?php echo RECAPTCHA_SITE_KEY; ?>"></script>
+<script>
+    // reCAPTCHA v3 - Invisible
+    // Execute reCAPTCHA for a specific action - uses grecaptcha.ready() for proper initialization
+    function executeRecaptcha(action, callback) {
+        if (typeof grecaptcha === 'undefined') {
+            console.error('reCAPTCHA not loaded');
+            if (callback) callback(null);
+            return;
+        }
+        
+        grecaptcha.ready(function() {
+            grecaptcha.execute('<?php echo RECAPTCHA_SITE_KEY; ?>', {action: action})
+                .then(function(token) {
+                    if (callback) callback(token);
+                })
+                .catch(function(error) {
+                    console.error('reCAPTCHA execution error:', error);
+                    if (callback) callback(null);
+                });
+        });
+    }
+</script>
+    <?php
+}
+add_action('wp_head', 'apex_recaptcha_v3_scripts', 1);
+
+/**
+ * Helper function to render hidden reCAPTCHA token field
+ * 
+ * @param string $form_id Unique identifier for the form (e.g., 'contact', 'demo', 'newsletter')
+ */
+function apex_render_recaptcha_widget($form_id = '') {
+    $action = esc_attr($form_id);
+    echo '<input type="hidden" name="g-recaptcha-response" class="g-recaptcha-response" data-action="' . $action . '" value="">';
+}

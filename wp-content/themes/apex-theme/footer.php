@@ -167,6 +167,8 @@
                                 <?php wp_nonce_field('apex_newsletter_form', 'apex_newsletter_nonce'); ?>
                                 <input type="hidden" name="apex_newsletter_source" value="Apex Website Footer Newsletter Form">
                                 <input type="email" name="email" placeholder="Enter your email" required id="newsletter-email">
+                                <!-- reCAPTCHA v3 (invisible) -->
+                                <?php apex_render_recaptcha_widget('newsletter'); ?>
                                 <button type="submit" id="newsletter-submit">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                                 </button>
