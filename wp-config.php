@@ -41,9 +41,9 @@ if ($environment === 'local') {
     define( 'DB_HOST', 'localhost' );
 } else {
     // Production
-    define( 'DB_NAME', 'apexsoft_apex' );
-    define( 'DB_USER', 'apexsoft_apex' );
-    define( 'DB_PASSWORD', 'VMY?v+&?T%#w' );
+    define( 'DB_NAME', 'kblktyep_apex' );
+    define( 'DB_USER', 'kblktyep_apex' );
+    define( 'DB_PASSWORD', '38%rRtE.+%nE{p@H' );
     define( 'DB_HOST', 'localhost' );
 }
 
@@ -125,3 +125,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
+define('DISALLOW_FILE_EDIT', true);
